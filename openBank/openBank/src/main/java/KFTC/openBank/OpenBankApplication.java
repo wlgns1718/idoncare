@@ -1,13 +1,13 @@
-package ssafital.Idontcare;
+package KFTC.openBank;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IdontcareApplication {
+public class OpenBankApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IdontcareApplication.class, args);
+		SpringApplication.run(OpenBankApplication.class, args);
 	}
 
 }

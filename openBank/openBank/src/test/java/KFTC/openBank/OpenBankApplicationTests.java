@@ -1,10 +1,10 @@
-package ssafital.Idontcare;
+package KFTC.openBank;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class IdontcareApplicationTests {
+class OpenBankApplicationTests {
 
 	@Test
 	void contextLoads() {
