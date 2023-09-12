@@ -1,0 +1,20 @@
+# Server Setting #
+server.port={Integer port_number}
+
+# DB Setting #
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://{String host}:{String port}/{String database}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+spring.datasource.username={String username}
+spring.datasource.password={String password}
+
+# DB Logging #
+# Development Level #
+decorator.datasource.p6spy.enable-logging=true
+
+# JPQ Setting #
+# create -> create-drop -> update -> none
+spring.jpa.hibernate.ddl-auto=create
+spring.main.allow-bean-definition-overriding=true
+
+# Batch Loading #
+spring.jpa.properties.hibernate.default_batch_fetch_size=100
