@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "main";
+  src: url("/src/assets//fonts//NotoSansKR-Medium.ttf");
+}
+
+@font-face {
+  font-family: "strong";
+  src: url("/src/assets//fonts//NotoSansKR-Bold.ttf");
+}
+
+html {
+  font-size: 10px;
+}
