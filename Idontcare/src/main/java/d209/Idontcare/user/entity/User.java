@@ -3,7 +3,6 @@ package d209.Idontcare.user.entity;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 @javax.persistence.Entity
