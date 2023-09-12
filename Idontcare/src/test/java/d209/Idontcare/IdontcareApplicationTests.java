@@ -8,6 +8,6 @@ class IdontcareApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
 
+	}
 }
