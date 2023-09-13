@@ -6,7 +6,7 @@ import LoginButton from "../components/login/LoginButton";
 const Login = () => {
   return (
     <>
-      <Header pageTitle="로그인" headerType="normal" />
+      <Header pageTitle="로그인" headerType="normal" headerLink="/" />
       <LoginLogo />
       <LoginButton />
     </>
