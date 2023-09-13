@@ -1,8 +1,7 @@
 package d209.Idontcare.pocketmoney.entity;
 
 import d209.Idontcare.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -11,7 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Getter @Setter
+@Getter @Setter @Builder @ToString
+@NoArgsConstructor @AllArgsConstructor
 public class RegularPocketMoney {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class RegularPocketMoney {
   
   private Integer amount;
   
-  private Integer duDate;
+  private Integer dueDate;
   
   @CreatedDate
   private LocalDateTime createdAt;
