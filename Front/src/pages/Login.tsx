@@ -1,12 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
+import LoginLogo from "../components/login/LoginLogo";
+import LoginButton from "../components/login/LoginButton";
 
 const Login = () => {
   return (
     <>
       <Header pageTitle="로그인" headerType="normal" />
-      <Link to="/">Login</Link>
+      <LoginLogo />
+      <LoginButton />
     </>
   );
 };
