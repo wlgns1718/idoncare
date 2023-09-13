@@ -2,16 +2,15 @@ package d209.Idontcare.pocketmoney.dto.req;
 
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@Getter @ToString
-@Builder
+@Getter @Builder @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistRegularPocketMoneyReqDto {
   @Schema(description="정기용돈타입", example="DAY | WEEK | MONTH", allowableValues = {"DAY", "WEEK", "MONTH"})
   @Valid

@@ -1,6 +1,7 @@
 package d209.Idontcare.pocketmoney.entity;
 
 import d209.Idontcare.User;
+import d209.Idontcare.common.entity.BaseEntity;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,10 +10,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@Getter @Setter @Builder @ToString
+@Data @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class RegularPocketMoney {
+public class RegularPocketMoney extends BaseEntity {
 
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long regularPocketMoneyId;
@@ -33,9 +33,6 @@ public class RegularPocketMoney {
   private Integer amount;
   
   private Integer dueDate;
-  
-  @CreatedDate
-  private LocalDateTime createdAt;
   
   public static enum Type{
     DAY, WEEK, MONTH;

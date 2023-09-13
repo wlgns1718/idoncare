@@ -3,10 +3,10 @@ package d209.Idontcare.pocketmoney.service;
 import d209.Idontcare.User;
 import d209.Idontcare.UserRepository;
 import d209.Idontcare.UserService;
-import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
+import d209.Idontcare.common.exception.NoSuchUserException;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
@@ -18,7 +18,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Map;
 
 @Transactional
 @RequiredArgsConstructor
@@ -72,7 +71,12 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     if(parent.getType() != User.Type.PARENT) throw new MustParentException("부모만 요청을 처리할 수 있습니다");
     
-    User child = userService.findByUserId(req.getChildUserId());
+    User child = null;
+    try{
+      child = userService.findByUserId(req.getChildUserId());
+    } catch(NoSuchUserException e){
+      throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
+    }
     if(child.getType() != User.Type.CHILD) throw new MustChildException("대상이 아이가 아닙니다");
     
     /* TODO : 부모와 아이 간의 관계 확인 필요 */

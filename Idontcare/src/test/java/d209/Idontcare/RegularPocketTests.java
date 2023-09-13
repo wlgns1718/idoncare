@@ -3,7 +3,6 @@ package d209.Idontcare;
 import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.res.RegistRegularPocketMoneyResDto;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney.Type;
 import d209.Idontcare.pocketmoney.service.PocketMoneyServiceImpl;
@@ -105,7 +104,9 @@ public class RegularPocketTests {
             .cycle(null)
             .amount(1000)
             .build();
-    pocketMoneyService.registryRegularPocketMoney(parent, req, LocalDateTime.now());
+    RegularPocketMoney saved = pocketMoneyService.registryRegularPocketMoney(parent, req, LocalDateTime.now());
+    
+    assert saved.getRegularPocketMoneyId().equals(1L);
     
     /* 대상이 아이가 아닌 경우 -> 에러가 발생해야한다 */
     req = RegistRegularPocketMoneyReqDto.builder()
@@ -121,4 +122,6 @@ public class RegularPocketTests {
     /* 부모가 아닌 사람이 요청 한 경우 -> 에러가 발생해야한다 */
     Assertions.assertThrows(MustParentException.class, () -> pocketMoneyService.registryRegularPocketMoney(child, finalReq, LocalDateTime.now()));
   }
+  
+  
 }

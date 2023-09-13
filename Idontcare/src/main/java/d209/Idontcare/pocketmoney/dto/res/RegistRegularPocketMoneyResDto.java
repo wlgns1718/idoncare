@@ -10,7 +10,5 @@ public class RegistRegularPocketMoneyResDto{
   
   @Schema(description="등록된 정기용돈의 id", example="1")
   Long regularPocketMoneyId;
-  
-  public static class Swagger extends ResponseDto<RegistRegularPocketMoneyResDto> {};
 }
 

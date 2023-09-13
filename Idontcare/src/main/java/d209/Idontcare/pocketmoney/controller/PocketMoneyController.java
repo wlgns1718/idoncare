@@ -28,15 +28,15 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PocketMoneyController {
 
-    private static UserRepository userRepository;
-    private static PocketMoneyService pocketMoneyService;
+    private final UserRepository userRepository;
+    private final PocketMoneyService pocketMoneyService;
     
     //부모가 아이에게 정기용돈 등록
     @PostMapping("/regular")
     @Operation(summary="정기용돈 등록", description="부모가 아이에게 정기적으로 줄 용돈을 설정")
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
-            content=@Content(schema = @Schema(implementation= RegistRegularPocketMoneyResDto.Swagger.class))),
+            content=@Content(schema = @Schema(implementation= RegistRegularPocketMoneyResDto.class))),
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
     })
