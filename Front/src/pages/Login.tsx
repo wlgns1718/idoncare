@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import Header from "../components/common/Header";
+import LoginLogo from "../components/login/LoginLogo";
+import LoginButton from "../components/login/LoginButton";
 
 const Login = () => {
   return (
-    <div>
-      <p>Login</p>
-      <div className="flex flex-col bg-red-100">
-        <Link to="main">main</Link>
-        <Link to="wallet">wallet</Link>
-        <Link to="pocketMoney">pocketMoney</Link>
-      </div>
-    </div>
+    <>
+      <Header pageTitle="로그인" headerType="normal" headerLink="/" />
+      <LoginLogo />
+      <LoginButton />
+    </>
   );
 };
 
