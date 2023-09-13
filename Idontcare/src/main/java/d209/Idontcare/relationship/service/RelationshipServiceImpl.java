@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -47,5 +48,14 @@ public class RelationshipServiceImpl implements RelationshipService{
     RelationshipRequest saved = relationshipRequestRepository.save(relationshipRequest);
     
     return saved;
+  }
+  
+  @Override
+  public List<RelationshipRequest> getReceivedRequestList(User child) throws MustChildException {
+    if(child.getType() != User.Type.CHILD) throw new MustChildException();
+    
+    List<RelationshipRequest> requests = relationshipRequestRepository.findAllByChild(child);
+    
+    return requests;
   }
 }

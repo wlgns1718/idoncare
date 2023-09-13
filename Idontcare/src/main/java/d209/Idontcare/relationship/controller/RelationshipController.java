@@ -4,6 +4,8 @@ import d209.Idontcare.User;
 import d209.Idontcare.UserRepository;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.*;
+import d209.Idontcare.relationship.dto.req.ProcessReceivedRequestResDto;
+import d209.Idontcare.relationship.dto.req.ReceivedRequestResDto;
 import d209.Idontcare.relationship.dto.req.RequestRelationshipReqDto;
 import d209.Idontcare.relationship.dto.res.RequestRelationshipResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
@@ -15,12 +17,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Tag(name="관계관리 API")
 @RestController
@@ -60,4 +60,33 @@ public class RelationshipController {
     }
   }
   
+  @GetMapping("/child/request")
+  @Operation(summary="관계 요청 받은 리스트", description="아이가 부모로부터 받은 요청을 볼 수 있습니다")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode="200", description = "성공",
+          content=@Content(schema = @Schema(implementation= ReceivedRequestResDto.class))),
+      @ApiResponse(responseCode=MustChildException.CODE, description = MustChildException.DESCRIPTION),
+  })
+  public ResponseDto<?> getReceivedRequestList(){
+  
+    /* TODO : 로그인 된 사람 받아오기 필요 */
+    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    
+    try{
+      List<RelationshipRequest> requests = relationshipService.getReceivedRequestList(child);
+      return ResponseDto.success(new ReceivedRequestResDto(requests));
+    }catch(CommonException e){
+     return ResponseDto.fail(e);
+    }
+  }
+  
+  @PostMapping("/child/request")
+  @Operation(summary="요청에 대해 수락 처리", description="아이가 부모로부터 받은 요청에 대해 처리")
+  public ResponseDto<?> processReceivedRequest(ProcessReceivedRequestResDto req){
+    
+    /* TODO : 로그인 된 사람 받아오기 필요 */
+    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    
+    return null;
+  }
 }
