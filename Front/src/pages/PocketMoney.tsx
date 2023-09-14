@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Header from "../components/common/Header";
 
 const PocketMoney: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const PocketMoney: React.FC = () => {
         <Link to="/">Login</Link>
       </div>
 
-      <div>◀용돈</div>
+      <Header pageTitle="용돈" headerType="normal" headerLink="/" />
 
       <div className="m-10">
 
@@ -20,7 +21,9 @@ const PocketMoney: React.FC = () => {
           <div className="flex justify-between items-center text-s mb-8">
             <div className="flex items-center">
               <img src="/icons/icon-letter.png" alt="Icon" className="ml-2 mr-5 w-10 h-10"/>
-              <div>이우철</div>
+              <Link to="/childReguestMoney">
+                <div>이우철</div>
+              </Link>
             </div>
             <div className="mr-3">3000원</div>
           </div>
@@ -41,7 +44,7 @@ const PocketMoney: React.FC = () => {
           </div>
 
           <div className="flex justify-between">
-            <Link to="/" className="bg-yellow border-yellow box-content rounded-xl h-40 w-60 pt-9 pl-10 border-4 mr-10 text-sm text-white">
+            <Link to="/sendPocketMoney" className="bg-yellow border-yellow box-content rounded-xl h-40 w-60 pt-9 pl-10 border-4 mr-10 text-sm text-white">
               용돈보내기</Link>
             <Link to="/" className="bg-sky border-sky box-content rounded-lg h-40 w-60 pt-9 pl-10 border-4 text-sm text-white">정기용돈으로<br/>
               편하게 용돈 주기</Link>
