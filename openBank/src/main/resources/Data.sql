@@ -25,20 +25,26 @@ INSERT INTO bank(bank_id, name) VALUES ("34", "Sh수협은행");
 
 
 INSERT INTO bank_account(account_number, bank_id, money, name, birth)
-VALUES(111111111111, 51, 100000000, "아이돈케어", "202309011");
+VALUES("111111111111", "51", 100000000, "아이돈케어", "202309011");
 
 INSERT INTO bank_account(account_number, bank_id, money, name, birth)
-VALUES(111111111112, 51, 1000000, "김싸피", "200001011");
+VALUES("111111111112", "51", 1000000, "김싸피", "200001011");
 
 
 INSERT INTO user(name, phone_number, role)
 VALUES("아이돈케어", "01012345678", "CORPORATION");
 
-INSERT INTO fin_tech_service(fin_tech_service_id, name, login_id, login_password, client_id, client_secret, redirect_url)
-VALUES(1234512345, "아이돈케어", "idontcare", "1234", "12u4hi1b245hj124", "123ijn4u123h5bkjn", "http://127.0.0.1/test");
+INSERT INTO user(name, phone_number, role)
+VALUES("김싸피", "01099999999", "INDIVIDUAL");
 
-INSERT INTO account(fintech_use_num, bank_id, user_id, account_number, fin_tech_service_id, money)
-values(00000000001, 51, 1, 111111111111, 1234512345, 100000000);
+INSERT INTO fin_tech_service(fin_tech_service_id, name, login_id, login_password, client_id, client_secret, redirect_url)
+VALUES("1234512345", "아이돈케어", "idontcare", "1234", "12u4hi1b245hj124", "123ijn4u123h5bkjn", "http://127.0.0.1/test");
+
+INSERT INTO account(fintech_use_num, bank_id, user_id, account_number, fin_tech_service_id)
+values("00000000001", "51", "1", "111111111111", "1234512345");
+
+INSERT INTO account(fintech_use_num, bank_id, user_id, account_number, fin_tech_service_id)
+values("00000000002", "51", "2", "111111111112", "1234512345");
 
 
 

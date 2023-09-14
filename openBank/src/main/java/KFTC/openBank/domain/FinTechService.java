@@ -14,7 +14,7 @@ public class FinTechService {
 
     @Id
     @Column(name = "FIN_TECH_SERVICE_ID")
-    Long id;
+    String id;
 
     @Column(length = 20)
     String name;

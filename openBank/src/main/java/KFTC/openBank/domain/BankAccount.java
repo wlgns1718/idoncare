@@ -28,4 +28,14 @@ public class BankAccount {
 
     @Column(name = "birth")
     String birth;
+
+    public Long withdraw(Long money){
+        this.money -= money;
+        return this.money;
+    }
+
+    public Long deposit(Long money){
+        this.money += money;
+        return this.money;
+    }
 }

@@ -1,5 +1,6 @@
 package KFTC.openBank.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ public class WithdrawReponseDto {
     /*
     rsp_code : 응답코드(API)
      */
-
+    @Schema(description = "응답번호", example = "A0000")
     private String rsp_code;
 
     public WithdrawReponseDto(String rsp_code) {

@@ -37,4 +37,13 @@ public class TransactionHistory {
 
     @Column
     Long balance;
+
+    public TransactionHistory(BankAccount bankAccount, String content, LocalDateTime localDateTime, Long amount, Type type, Long balance) {
+        this.bankAccount = bankAccount;
+        this.content = content;
+        this.localDateTime = localDateTime;
+        this.amount = amount;
+        this.type = type;
+        this.balance = balance;
+    }
 }

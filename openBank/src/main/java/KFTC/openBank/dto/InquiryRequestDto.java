@@ -28,7 +28,4 @@ public class InquiryRequestDto {
     private String accountHolderInfo;
     @Schema(description = "요청일시", example = "2023-09-14T10:30:00")
     private LocalDateTime tranDtime;
-
-
-
 }

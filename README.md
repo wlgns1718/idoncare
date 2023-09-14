@@ -69,7 +69,11 @@ wd_print_content : 출금 계좌에 남길 내역(내 계좌에 남길 내역)
 cntr_account_num : 입금하고자 하는 계좌 번호
 cntr_account_bank_code_std : 입금하고자 하는 은행 코드
 dps_print_content : 입금 계좌에 남길 내역(보낼 계좌에 남길 내역)
+tran_amt : 요청 금액
 tran_dtime : 요청 일시
 req_client_name : 요청 고객 성명
 응답
 rsp_code : 응답코드(API)
+
+//출금에 필요한 것?
+계좌, 출금 계좌에 남길 내역, 입금 하고자 하는 계좌, 입금 계좌에 남길 내역., 요청 금액.

@@ -2,6 +2,7 @@ package KFTC.openBank.controller;
 
 import KFTC.openBank.dto.*;
 import KFTC.openBank.exception.AccountException;
+import KFTC.openBank.exception.BackAccountException;
 import KFTC.openBank.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/openbanking")
@@ -36,6 +38,7 @@ public class AccountController {
     })
     @GetMapping("/account/balance/fin_num")
     public ResponseEntity<?> balance(@RequestBody BalanceRequestDto balanceRequestDto, HttpServletRequest request){
+        balanceRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
         try{
             BalanceResponseDto balance = accountService.findBalance(balanceRequestDto.getFintechUseName());
@@ -51,18 +54,43 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 실명을 조회하였습니다.",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = InquiryResponseDto.class))
+                    schema = @Schema(implementation = InquiryResponseDto.class))
             ),
             @ApiResponse(responseCode = "404", description = "요청한 계좌 정보에 해당하는 실명이 없을 때.")
     })
     @GetMapping("/inquiry/real_name")
     public ResponseEntity<?> realName(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest request){
+        inquiryRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
         try{
             InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 실명 조회 완료", realName));
         } catch (AccountException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("400", e.getMessage(), null));
+        }
+    }
+
+    //6.출금 이체
+    @Operation(operationId = "withdraw", summary = "출금 이체", description = "고객의 계좌에서 출금 이체", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 출금 이체를 성공하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = WithdrawReponseDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "핀테크 이용 번호가 등록 된 것이 아닐 때, 잔액 부족, 입금을 원하는 계좌가 없을 때"),
+            @ApiResponse(responseCode = "500", description = "출금 또는 입금 중 오류가 발생.")
+        })
+    @PostMapping("/transfer/withdraw/fin_num")
+    public ResponseEntity<?> withdraw(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
+        withdrawRequestDto.setTranDtime(LocalDateTime.now());
+        String token = request.getHeader("Authorization");
+        try{
+            WithdrawReponseDto withdraw = accountService.withdrawLogic(withdrawRequestDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 완료", withdraw));
+        } catch (AccountException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
+        }catch (BackAccountException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
 
@@ -96,14 +124,4 @@ public class AccountController {
 //        }
 //    }
 
-    //6.출금 이체
-    public ResponseEntity<?> withdraw(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        try{
-//            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 실명 조회 완료", realName));
-        } catch (AccountException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("400", e.getMessage(), null));
-        }
-    }
 }
