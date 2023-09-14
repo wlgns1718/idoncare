@@ -1,14 +1,13 @@
 package d209.Idontcare;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Getter @Setter @ToString
+@Builder @NoArgsConstructor @AllArgsConstructor
 public class User{
   
   @Id @Column(name="USER_ID")

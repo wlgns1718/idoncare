@@ -4,12 +4,14 @@ import d209.Idontcare.User;
 import d209.Idontcare.UserService;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.RequestRelationshipReqDto;
+import d209.Idontcare.relationship.dto.res.ReceivedRequestResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import d209.Idontcare.relationship.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import javax.persistence.Tuple;
 import java.util.List;
 
 @Transactional
@@ -31,7 +33,7 @@ public class RelationshipServiceImpl implements RelationshipService{
     User child = null;
     try{
       child = userService.findByPhoneNumber(req.getChildPhoneNumber());
-    } catch(NoSuchUserException e){
+    } catch(NoSuchUserException e) {
       throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
     }
     
@@ -51,11 +53,12 @@ public class RelationshipServiceImpl implements RelationshipService{
   }
   
   @Override
-  public List<RelationshipRequest> getReceivedRequestList(User child) throws MustChildException {
+  @Transactional(readOnly=true)
+  public List<ReceivedRequestResDto> getReceivedRequestList(User child) throws MustChildException {
     if(child.getType() != User.Type.CHILD) throw new MustChildException();
     
-    List<RelationshipRequest> requests = relationshipRequestRepository.findAllByChild(child);
+    List<Tuple> requests = relationshipRequestRepository.findAllByChild(child);
     
-    return requests;
+    return requests.stream().map(ReceivedRequestResDto::new).toList();
   }
 }

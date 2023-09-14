@@ -6,6 +6,7 @@ import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
 import d209.Idontcare.common.exception.NoSuchUserException;
 import d209.Idontcare.relationship.dto.req.RequestRelationshipReqDto;
+import d209.Idontcare.relationship.dto.res.ReceivedRequestResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,6 @@ public interface RelationshipService {
   RelationshipRequest requestRelationship(User parent, RequestRelationshipReqDto req)
       throws NoSuchUserException, MustParentException, MustChildException, DuplicatedException;
   
-  List<RelationshipRequest> getReceivedRequestList(User child)
+  List<ReceivedRequestResDto> getReceivedRequestList(User child)
       throws MustChildException;
 }

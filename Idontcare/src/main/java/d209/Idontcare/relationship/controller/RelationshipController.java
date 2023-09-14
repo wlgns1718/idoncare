@@ -5,7 +5,7 @@ import d209.Idontcare.UserRepository;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.ProcessReceivedRequestResDto;
-import d209.Idontcare.relationship.dto.req.ReceivedRequestResDto;
+import d209.Idontcare.relationship.dto.res.ReceivedRequestResDto;
 import d209.Idontcare.relationship.dto.req.RequestRelationshipReqDto;
 import d209.Idontcare.relationship.dto.res.RequestRelationshipResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
@@ -64,7 +64,7 @@ public class RelationshipController {
   @Operation(summary="관계 요청 받은 리스트", description="아이가 부모로부터 받은 요청을 볼 수 있습니다")
   @ApiResponses(value = {
       @ApiResponse(responseCode="200", description = "성공",
-          content=@Content(schema = @Schema(implementation= ReceivedRequestResDto.class))),
+          content=@Content(schema = @Schema(implementation= ReceivedRequestResDto.Result.class))),
       @ApiResponse(responseCode=MustChildException.CODE, description = MustChildException.DESCRIPTION),
   })
   public ResponseDto<?> getReceivedRequestList(){
@@ -73,8 +73,8 @@ public class RelationshipController {
     User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
     
     try{
-      List<RelationshipRequest> requests = relationshipService.getReceivedRequestList(child);
-      return ResponseDto.success(new ReceivedRequestResDto(requests));
+      List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
+      return ResponseDto.success(new ReceivedRequestResDto.Result(requests));
     }catch(CommonException e){
      return ResponseDto.fail(e);
     }
