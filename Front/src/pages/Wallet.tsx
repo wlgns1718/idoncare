@@ -1,7 +1,4 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-
 
 const Icon = ({ h = 6, w = 6 }) => {
   return (
@@ -22,7 +19,6 @@ const Icon = ({ h = 6, w = 6 }) => {
   );
 };
 
-
 const TradeList = () => {
   return (
     <div className="">
@@ -41,22 +37,24 @@ const TradeList = () => {
 };
 
 const TradeListItem = () => {
-  return (<div className="flex m-5">
-          <div className="bg-gray w-[40px] h-[40px] rounded-[50%] flex items-center justify-center">
-            <Icon />
-          </div>
-          <div className="flex w-full justify-between">
-            <div className="ml-10">
-              <div>이우철 용돈</div>
-              <div>11:20</div>
-            </div>
-            <div>
-              <div className="text-main text-left">-2,500 원</div>
-              <div className="text-darkgray text-left">남은 돈 15,000 원</div>
-            </div>
-          </div>
-        </div>)
-}
+  return (
+    <div className="flex m-5">
+      <div className="bg-gray w-[40px] h-[40px] rounded-[50%] flex items-center justify-center">
+        <Icon />
+      </div>
+      <div className="flex justify-between w-full">
+        <div className="ml-10">
+          <div>이우철 용돈</div>
+          <div>11:20</div>
+        </div>
+        <div>
+          <div className="text-left text-main">-2,500 원</div>
+          <div className="text-left text-darkgray">남은 돈 15,000 원</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Wallet = () => {
   const navigate = useNavigate();
@@ -75,21 +73,21 @@ const Wallet = () => {
             </div>
             <div className="flex justify-between px-6 py-5 text-center">
               <div>
-                <div className="bg-neutral-800 w-14 h-10">아이콘</div>
+                <div className="h-10 bg-neutral-800 w-14">아이콘</div>
                 <div>용돈 관리</div>
               </div>
               <div>
-                <div className="bg-neutral-800 w-14 h-10">아이콘</div>
+                <div className="h-10 bg-neutral-800 w-14">아이콘</div>
                 <div>충전</div>
               </div>
               <div>
-                <div className="bg-neutral-800 w-14 h-10">아이콘</div>
+                <div className="h-10 bg-neutral-800 w-14">아이콘</div>
                 <div>송금</div>
               </div>
             </div>
           </div>
           <div>
-            <div className="flex p-6 justify-between">
+            <div className="flex justify-between p-6">
               <div className="flex gap-5">
                 <div className="rounded-[15px] w-[60px] h-[30px] text-center text-main text-m bg-light">
                   전체
@@ -101,7 +99,7 @@ const Wallet = () => {
                 <Icon />
               </button>
             </div>
-            <div className="bg-gray h-16 rounded-xl flex justify-between p-4 items-center">
+            <div className="flex items-center justify-between h-16 p-4 bg-gray rounded-xl">
               <Icon />
               <div>{"2023년 09월"}</div>
               <Icon />
