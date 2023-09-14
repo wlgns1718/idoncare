@@ -28,4 +28,15 @@ public class User{
   public static enum Type{
     PARENT, CHILD;
   }
+  
+  @Override
+  public int hashCode(){
+    return (int)(this.userId % Integer.MAX_VALUE);
+  }
+  
+  @Override
+  public boolean equals(Object other){
+    User o = (User)other;
+    return this.userId.equals(o.userId);
+  }
 }

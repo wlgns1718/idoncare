@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity @Data @Builder
+@Entity @Getter @Setter @ToString @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Relationship extends BaseEntity {
   

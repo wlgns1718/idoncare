@@ -2,10 +2,7 @@ package d209.Idontcare.relationship.entity;
 
 import d209.Idontcare.User;
 import d209.Idontcare.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data @Builder
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor @AllArgsConstructor
 public class RelationshipRequest extends BaseEntity {
   
@@ -24,7 +22,4 @@ public class RelationshipRequest extends BaseEntity {
   
   @ManyToOne(fetch = FetchType.LAZY)
   private User child;
-  
-  @CreatedDate
-  private LocalDateTime createdAt;
 }

@@ -18,4 +18,15 @@ public class BaseEntity {
   @CreatedDate
   @Column(updatable=false)
   private LocalDateTime createdAt;
+  
+  @Override
+  public int hashCode(){
+    return createdAt.hashCode();
+  }
+  
+  @Override
+  public boolean equals(Object other){
+    LocalDateTime o = (LocalDateTime) other;
+    return this.createdAt.equals(o);
+  }
 }
