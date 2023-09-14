@@ -17,17 +17,17 @@ public class PaymentDto {
 
     Money : 돈
      */
-    String Withdrawer;
-    String WithdrawerBankId;
-    String WithdrawerBankName;
-    String WithdrawerContent;
-    String WithdrawerAccountNum;
+    private String Withdrawer;
+    private String WithdrawerBankId;
+    private String WithdrawerBankName;
+    private String WithdrawerContent;
+    private String WithdrawerAccountNum;
 
-    String Depositor;
-    String DepositorBankId;
-    String DepositorBankName;
-    String DepositorContent;
-    String DepositorAccountNum;
+    private String Depositor;
+    private String DepositorBankId;
+    private String DepositorBankName;
+    private String DepositorContent;
+    private String DepositorAccountNum;
 
     Long Money;
 

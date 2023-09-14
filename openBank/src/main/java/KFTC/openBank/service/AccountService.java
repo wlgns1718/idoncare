@@ -7,6 +7,7 @@ import KFTC.openBank.domain.Type;
 import KFTC.openBank.dto.*;
 import KFTC.openBank.exception.AccountException;
 import KFTC.openBank.exception.BackAccountException;
+import KFTC.openBank.exception.TransactionHistoryException;
 import KFTC.openBank.repository.AccountRepository;
 import KFTC.openBank.repository.BankAccountRepository;
 import KFTC.openBank.repository.BankRepository;
@@ -17,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Tuple;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,7 +59,43 @@ public class AccountService {
         return new InquiryResponseDto(accountName);
     }
 
+    //거래 내역 조회
+    public TransactionResponseDto findTransactionList(TransactionRequestDto transactionRequestDto) throws TransactionHistoryException{
+        System.out.println(transactionRequestDto.getFintechUseNum());
+        Tuple result = accountRepository.findBankAndAccountNumberById(transactionRequestDto.getFintechUseNum());
+        if(result==null){
+            throw new AccountException.FintechNumNotFoundException("요청 하신 핀테크 이용 번호는 등록되어 있지 않습니다.");
+        }
+        //은행 코드 및 계좌 번호
+        String bankId = (String) result.get(0);
+        String accountNumber = (String) result.get(1);
+        List<TransactionHistory> transactionHistories = new ArrayList<>();
+        if(transactionRequestDto.getInquiryType().equals("A") || transactionRequestDto.getInquiryType().equals("a")){
+            transactionHistories = transactionHistoryRepository.findByDateAll(transactionRequestDto.getFromDate(), transactionRequestDto.getToDate(), accountNumber);
+        }
+        else if(transactionRequestDto.getInquiryType().equals("I") || transactionRequestDto.getInquiryType().equals("i")){
+            transactionHistories = transactionHistoryRepository.findByCondition(transactionRequestDto.getFromDate(), transactionRequestDto.getToDate(), accountNumber, Type.DEPOSIT);
+        }
+        else if(transactionRequestDto.getInquiryType().equals("O") || transactionRequestDto.getInquiryType().equals("o")){
+            transactionHistories = transactionHistoryRepository.findByCondition(transactionRequestDto.getFromDate(), transactionRequestDto.getToDate(), accountNumber, Type.WITHDRAWAL);
+        }
+        else{
+            throw new TransactionHistoryException("올바른 inquiryType을 입력해주세요.");
+        }
+        List<ResList> resLists = new ArrayList<>();
+        if(transactionHistories.size() == 0){
+            throw new TransactionHistoryException("조회 결과가 없습니다.");
+        }
+        for (TransactionHistory trans : transactionHistories) {
+            String formattedDate1 = trans.getLocalDateTime().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String formattedDate2 = trans.getLocalDateTime().format(DateTimeFormatter.ofPattern("HHmmss"));
+            resLists.add(new ResList(formattedDate1, formattedDate2, trans.getType().toString(), trans.getContent(), trans.getAmount(), trans.getBalance()));
+        }
+        return  new TransactionResponseDto("A0000", resLists);
+    }
     //입금 이체
+
+
 
     //출금 이체
     @Transactional(rollbackFor = {AccountException.class, BackAccountException.class})

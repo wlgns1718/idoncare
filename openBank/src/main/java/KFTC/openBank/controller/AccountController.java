@@ -3,6 +3,7 @@ package KFTC.openBank.controller;
 import KFTC.openBank.dto.*;
 import KFTC.openBank.exception.AccountException;
 import KFTC.openBank.exception.BackAccountException;
+import KFTC.openBank.exception.TransactionHistoryException;
 import KFTC.openBank.service.AccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -70,6 +71,40 @@ public class AccountController {
         }
     }
 
+
+    //4.거래 내역 조회
+    @Operation(operationId = "transaction_list", summary = "거래 내역 조회", description = "은행 계좌 거래 내역 조회", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 거래 내역을 불러왔습니다..",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TransactionResponseDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "거래 내역이 0일 때.")
+    })
+    @GetMapping("/account/transaction_list/fin_num")
+    public ResponseEntity<?> transactionList(@RequestBody TransactionRequestDto transactionRequestDto, HttpServletRequest request){
+        transactionRequestDto.setTranDtime(LocalDateTime.now());
+        String token = request.getHeader("Authorization");
+        try {
+            TransactionResponseDto transactionList = accountService.findTransactionList(transactionRequestDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200","거래 내역 조회 완료", transactionList));
+        }catch (TransactionHistoryException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+        }
+    }
+
+    //    //5.입금 이체
+//    @PostMapping("/transfer/deposit/fin_num")
+//    public ResponseEntity<?> deposit(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
+//        String token = request.getHeader("Authorization");
+//        try{
+//            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 실명 조회 완료", realName));
+//        } catch (AccountException e){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("400", e.getMessage(), null));
+//        }
+//    }
+
     //6.출금 이체
     @Operation(operationId = "withdraw", summary = "출금 이체", description = "고객의 계좌에서 출금 이체", tags = {"AccountController"})
     @ApiResponses(value = {
@@ -112,16 +147,6 @@ public class AccountController {
 //    }
 
 
-//    //5.입금 이체
-//    @PostMapping("/transfer/deposit/fin_num")
-//    public ResponseEntity<?> deposit(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
-//        String token = request.getHeader("Authorization");
-//        try{
-//            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 실명 조회 완료", realName));
-//        } catch (AccountException e){
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("400", e.getMessage(), null));
-//        }
-//    }
+
 
 }
