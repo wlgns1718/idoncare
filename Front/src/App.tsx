@@ -4,6 +4,7 @@ import PocketMoney from "./pages/PocketMoney";
 import Wallet from "./pages/Wallet";
 import Home from "./pages/Home";
 import { AppLayout } from "./layouts/AppLayout";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
+            <Route path="signup" element={<Signup />} />
           </Routes>
         </BrowserRouter>
       </AppLayout>
