@@ -1,17 +1,31 @@
 package d209.Idontcare.relationship.service;
 
-import d209.Idontcare.User;
-import d209.Idontcare.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import d209.Idontcare.TUser;
+import d209.Idontcare.TUserService;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;
 import d209.Idontcare.relationship.entity.*;
 import d209.Idontcare.relationship.repository.*;
-import lombok.RequiredArgsConstructor;
+import io.swagger.v3.core.util.Json;
+import lombok.*;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
+import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.Tuple;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,25 +34,31 @@ import java.util.List;
 @Service
 public class RelationshipServiceImpl implements RelationshipService{
   
-  private final UserService userService;
+  private final TUserService TUserService;
   private final RelationshipRepository relationshipRepository;
   private final RelationshipRequestRepository relationshipRequestRepository;
+  private RestTemplate restTemplate;
+  
+  @PostConstruct
+  void init(){
+    restTemplate = new RestTemplate();
+  }
   
   @Override
-  public RelationshipRequest requestRelationship(User parent, RequestRelationshipReqDto req){
+  public RelationshipRequest requestRelationship(TUser parent, RequestRelationshipReqDto req){
     
-    if(parent.getType() != User.Type.PARENT){
+    if(parent.getType() != TUser.Type.PARENT){
       throw new MustParentException();
     }
     
-    User child = null;
+    TUser child = null;
     try{
-      child = userService.findByPhoneNumber(req.getChildPhoneNumber());
+      child = TUserService.findByPhoneNumber(req.getChildPhoneNumber());
     } catch(NoSuchUserException e) {
       throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
     }
     
-    if(child.getType() != User.Type.CHILD) throw new MustChildException("자녀에게만 요청할 수 있습니다");
+    if(child.getType() != TUser.Type.CHILD) throw new MustChildException("자녀에게만 요청할 수 있습니다");
     
     relationshipRepository.findOneByParentAndChild(parent.getUserId(), child.getUserId()).ifPresent((r) -> {throw new DuplicatedException("이미 자식입니다"); });
     relationshipRequestRepository.findOneByParentAndChild(parent.getUserId(), child.getUserId()).ifPresent((r) -> {throw new DuplicatedException("이미 요청되었습니다"); });
@@ -55,8 +75,8 @@ public class RelationshipServiceImpl implements RelationshipService{
   
   @Override
   @Transactional(readOnly=true)
-  public List<ReceivedRequestResDto> getReceivedRequestList(User child) {
-    if(child.getType() != User.Type.CHILD) throw new MustChildException();
+  public List<ReceivedRequestResDto> getReceivedRequestList(TUser child) {
+    if(child.getType() != TUser.Type.CHILD) throw new MustChildException();
     
     List<Tuple> requests = relationshipRequestRepository.findAllByChild(child);
     
@@ -64,15 +84,15 @@ public class RelationshipServiceImpl implements RelationshipService{
   }
   
   @Override
-  public void processReceivedRequest(User child, ProcessReceivedRequestReqDto req){
-    if(child.getType() != User.Type.CHILD) throw new MustChildException();
+  public void processReceivedRequest(TUser child, ProcessReceivedRequestReqDto req){
+    if(child.getType() != TUser.Type.CHILD) throw new MustChildException();
     
     Long relationRequestId = req.getRelationRequestId();
     ProcessReceivedRequestReqDto.Type type = req.getProcess();
     
     RelationshipRequest request = relationshipRequestRepository.findById(relationRequestId).orElseThrow(() -> new NoSuchContentException("해당 관계 요청을 찾을 수 없습니다"));
-    User parent = request.getParent();
-    User savedChild = request.getChild();
+    TUser parent = request.getParent();
+    TUser savedChild = request.getChild();
     
     if( !savedChild.equals(child) ) throw new AuthorizationException();
     
@@ -97,17 +117,59 @@ public class RelationshipServiceImpl implements RelationshipService{
   
   @Transactional(readOnly = true)
   @Override
-  public List<RelationshipResDto> getRelationshipList(User user) throws MustChildException {
+  public List<RelationshipResDto> getRelationshipList(TUser user) throws MustChildException {
     List<RelationshipResDto> list = new LinkedList<>();
-    if(user.getType() == User.Type.PARENT){
+    if(user.getType() == TUser.Type.PARENT){
       //부모 이면
       list = relationshipRepository.findAllByParent(user).stream().map(RelationshipResDto::new).toList();
     }
-    else if(user.getType() == User.Type.CHILD){
+    else if(user.getType() == TUser.Type.CHILD){
       //자식 이면
       list = relationshipRepository.findAllByChild(user).stream().map(RelationshipResDto::new).toList();
     }
     
     return list;
+  }
+  
+  public void getTest(){
+    String result = restTemplate.getForObject("http://localhost:3000", String.class);
+    System.out.println(result);
+  }
+  
+  public class Result{
+    String result;
+  }
+  
+  public Object postTest() throws JsonProcessingException {
+    @Data
+    @AllArgsConstructor
+    class Request{
+      String name;
+      Integer age;
+    }
+
+    String URL = "http://localhost:3000";
+    
+    Request requestBody = new Request("이우철" , 22);
+    
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+    
+    ObjectMapper mapper = new ObjectMapper();
+    String jsonBody = mapper.writeValueAsString(requestBody);
+    
+    HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
+    
+    ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, entity, String.class);
+    System.out.println(response.getBody());
+    
+    @Getter
+    @Setter
+    class Response{
+      String result;
+    }
+    
+    return mapper.readValue(response.getBody(), Response.class);
   }
 }

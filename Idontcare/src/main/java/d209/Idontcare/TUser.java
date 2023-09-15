@@ -8,7 +8,7 @@ import java.util.UUID;
 @Entity
 @Getter @Setter @ToString
 @Builder @NoArgsConstructor @AllArgsConstructor
-public class User{
+public class TUser {
   
   @Id @Column(name="USER_ID")
   private Long userId;
@@ -20,7 +20,7 @@ public class User{
   @Enumerated(EnumType.STRING)
   private Type type;
   
-  public User setUUID(){
+  public TUser setUUID(){
     userId = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
     return this;
   }
@@ -36,7 +36,7 @@ public class User{
   
   @Override
   public boolean equals(Object other){
-    User o = (User)other;
+    TUser o = (TUser)other;
     return this.userId.equals(o.userId);
   }
 }
