@@ -1,6 +1,5 @@
 package d209.Idontcare.relationship.service;
 
-import d209.Idontcare.User;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;

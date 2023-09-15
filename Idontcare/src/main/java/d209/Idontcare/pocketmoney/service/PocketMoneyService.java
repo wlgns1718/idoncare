@@ -1,6 +1,5 @@
 package d209.Idontcare.pocketmoney.service;
 
-import d209.Idontcare.User;
 import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.DuplicatedException;
 import d209.Idontcare.common.exception.MustChildException;

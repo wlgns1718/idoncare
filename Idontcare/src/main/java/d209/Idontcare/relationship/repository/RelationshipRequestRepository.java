@@ -1,7 +1,5 @@
 package d209.Idontcare.relationship.repository;
 
-import d209.Idontcare.User;
-import d209.Idontcare.relationship.dto.res.ReceivedRequestResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

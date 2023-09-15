@@ -1,0 +1,49 @@
+
+L
+java:S3740."/Provide the parametrized type for this generic.(à³§8Ö±è¡©1
+L
+java:S37400"/Provide the parametrized type for this generic.(ëáİÄ8×±è¡©1
+L
+java:S3740D"/Provide the parametrized type for this generic.(Õî÷ù8×±è¡©1
+L
+java:S3740F"/Provide the parametrized type for this generic.(ëáİÄ8×±è¡©1
+L
+java:S3740Z"/Provide the parametrized type for this generic.(À›×Ê8×±è¡©1
+Q
+java:S3740\"/Provide the parametrized type for this generic.(Ä‡¤äÿÿÿÿÿ8×±è¡©1
+Q
+java:S3740|"/Provide the parametrized type for this generic.(Ä„úÓÿÿÿÿÿ8×±è¡©1
+Q
+java:S3740~"/Provide the parametrized type for this generic.(Ä‡¤äÿÿÿÿÿ8×±è¡©1
+R
+java:S3740€"/Provide the parametrized type for this generic.(æúÔéüÿÿÿÿ8×±è¡©1
+p
+java:S1192+"NDefine a constant instead of duplicating this literal "Authorization" 4 times.(°‚é”ıÿÿÿÿ8×±è¡©1
+{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(–ÑÑ«üÿÿÿÿ8Ø±è¡©1
+[
+java:S1854+"9Remove this useless assignment to local variable "token".(°‚é”ıÿÿÿÿ8é±è¡©1
+C
+java:S1452)"&Remove usage of generic wildcard type.(À¹¯Ä8é±è¡©1
+L
+java:S1481+"*Remove this unused "token" local variable.(°‚é”ıÿÿÿÿ8ê±è¡©1
+[
+java:S1854A"9Remove this useless assignment to local variable "token".(°‚é”ıÿÿÿÿ8ë±è¡©1
+C
+java:S1452?"&Remove usage of generic wildcard type.(­àÕÕ8ë±è¡©1
+L
+java:S1481A"*Remove this unused "token" local variable.(°‚é”ıÿÿÿÿ8ì±è¡©1
+[
+java:S1854W"9Remove this useless assignment to local variable "token".(°‚é”ıÿÿÿÿ8ì±è¡©1
+H
+java:S1452U"&Remove usage of generic wildcard type.(ÜÖ¸²ùÿÿÿÿ8í±è¡©1
+L
+java:S1481W"*Remove this unused "token" local variable.(°‚é”ıÿÿÿÿ8í±è¡©1
+[
+java:S1854y"9Remove this useless assignment to local variable "token".(°‚é”ıÿÿÿÿ8î±è¡©1
+H
+java:S1452w"&Remove usage of generic wildcard type.(ÒÃ¿ûüÿÿÿÿ8î±è¡©1
+W	java:S125b"<This block of commented-out lines of code should be removed.(”µ°V8î±è¡©1
+L
+java:S1481y"*Remove this unused "token" local variable.(°‚é”ıÿÿÿÿ8î±è¡©1
+Y	java:S125†"<This block of commented-out lines of code should be removed.(µÚæ8ğ±è¡©1
+Y	java:S125‘"<This block of commented-out lines of code should be removed.(’¦Ú”8ğ±è¡©1

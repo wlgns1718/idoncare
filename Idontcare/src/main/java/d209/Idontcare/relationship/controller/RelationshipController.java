@@ -1,7 +1,5 @@
 package d209.Idontcare.relationship.controller;
 
-import d209.Idontcare.User;
-import d209.Idontcare.UserRepository;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.ProcessReceivedRequestReqDto;

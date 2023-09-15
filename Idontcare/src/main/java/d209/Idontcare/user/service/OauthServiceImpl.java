@@ -45,6 +45,7 @@ public class OauthServiceImpl implements OauthService{
         conn.setRequestMethod("POST"); // 요청방식 설정
         conn.setRequestProperty("Content-type","application/x-www-form-urlencoded");
         //Request Header값 셋팅 setRequestProperty(String key, String value)
+
         conn.setConnectTimeout(connTimeout); //서버 접속시 연결 시간
         conn.setReadTimeout(readTimeout); //Read시 연결 시간
         conn.setDoOutput(true); //OutputStream으로 POST 데이터를 넘겨주겠다는 옵션 디폴트는 false
@@ -63,13 +64,13 @@ public class OauthServiceImpl implements OauthService{
            System.out.println("ERRDR");
            throw new Exception();
            //커스텀 에러 발생
-
        }
-       //Response 값 받아오기
+       // Response 값 받아오기
 
         br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-       String temp = "";
-       sb.setLength(0);
+        String temp = "";
+        sb.setLength(0);
+
        while((temp = br.readLine()) != null){
           sb.append(temp);
        }
@@ -101,7 +102,6 @@ public class OauthServiceImpl implements OauthService{
         System.out.println(conn.getContentType());
         int responseCode = conn.getResponseCode();
         System.out.println("responseCode : " + responseCode);
-
 
         return null;
     }

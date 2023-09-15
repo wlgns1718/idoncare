@@ -1,6 +1,5 @@
 package d209.Idontcare.relationship.entity;
 
-import d209.Idontcare.User;
 import d209.Idontcare.common.entity.BaseEntity;
 import lombok.*;
 

@@ -1,7 +1,5 @@
 package d209.Idontcare.pocketmoney.controller;
 
-import d209.Idontcare.User;
-import d209.Idontcare.UserRepository;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.CommonException;
@@ -28,7 +26,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PocketMoneyController {
 
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
     private final PocketMoneyService pocketMoneyService;
     
     //부모가 아이에게 정기용돈 등록
