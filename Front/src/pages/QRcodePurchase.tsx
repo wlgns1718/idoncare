@@ -19,11 +19,15 @@ function QRcodePurchase() {
 
     return () => clearInterval(timer);
   }, [expiryTime]);
+
+  const increaseTime = () => { 
+    setExpiryTime(Date.now() + 3 * 60 * 1000);
+  }
   return (
     <div>
       <Header pageTitle="QR 코드 결제" headerLink="/purchase" headerType="normal" />
       <div className="flex justify-center bg-darkgray rounded-2xl py-20">
-        <QRCode value="as;dfj;adsf" size="200" />
+        <QRCode value="as;dfj;adsf" size={200} />
       </div>
       <div>
         <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">
@@ -35,6 +39,7 @@ function QRcodePurchase() {
             남은시간 {Math.floor(timeLeft / 60000)}:
             {((timeLeft % 60000) / 1000).toFixed(0).padEnd(2, "0")}
           </div>
+          <div onClick={()=>increaseTime()}>연장</div>
         </div>
       </div>
     </div>

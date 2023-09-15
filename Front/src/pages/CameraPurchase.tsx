@@ -34,7 +34,7 @@ function CameraPurchase() {
           delay={delay}
           style={previewStyle}
           onError={handleError}
-          onScan={handleScan}
+          onScan={()=>handleScan}
           onLoad={() => {}}
         />
       </div>
