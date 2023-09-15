@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-public class git ResponseDto<T> {
+public class ResponseDto<T> {
   @Schema(description = "각 상태에 맞는 code", example="200")
   private int code;
   @Schema(description = "200번대가 아닌 에러시 에러 메시지", example="에러시 에러메시지 출력")

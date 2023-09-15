@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 
 @RestController
@@ -20,15 +21,14 @@ public class UserController {
     private final OauthService oauthService;
 
     @PostMapping(value = "/login/kakao")
-    public ResponseDto login(@RequestBody KakaoDto kakao){
-        ResponseDto responseDto = new ResponseDto(200,HttpStatus.ACCEPTED);
+    public ResponseDto<?> login(@RequestBody KakaoDto kakao){
         try {
             oauthService.getOauthAccessToken(kakao.getCode());
 
-        } catch (Exception e) {
+        }catch (Exception e){
             e.getMessage();
         }
-        return responseDto;
+        return ResponseDto.success("SUCCESS");
     }
 
 }
