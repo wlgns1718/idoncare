@@ -4,7 +4,7 @@ import FullBtn from '../components/common/FullBtn';
 
 const MoneySendDone: React.FC = () => {
   return (
-    <div className="p-10 flex flex-col h-screen justify-between">
+    <div className="pb-60 flex flex-col h-screen justify-between">
         <div className="flex flex-col items-center justify-center flex-grow">
             <img src="/icons/icon-check.png" alt="Icon" 
             className="w-32 h-32 mx-auto block"/>
@@ -18,8 +18,8 @@ const MoneySendDone: React.FC = () => {
             <div className="text-darkgray text-sm">
                 남은 잔액 102,000원
             </div>
-        </div>
 
+        </div>
         <FullBtn className="mb-6"/>
     </div>
   )

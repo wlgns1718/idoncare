@@ -7,6 +7,9 @@ import ChildReguestMoney from "./pages/ChildReguestMoney";
 import MoneySendDone from "./pages/MoneySendDone";
 import SendPocketMoney from "./pages/SendPocketMoney";
 import SendPocketMoneyMsg from "./pages/SendPocketMoneyMsg";
+import SendRegularMoney from "./pages/SendRegularMoney";
+import RegularMoneyDone from "./pages/RegularMoneyDone";
+import ReguestedMoney from "./pages/ReguestedMoney";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
@@ -30,6 +33,9 @@ function App() {
             <Route path="moneySendDone" element={<MoneySendDone />} />
             <Route path="sendPocketMoney" element={<SendPocketMoney />} />
             <Route path="sendPocketMoneyMsg" element={<SendPocketMoneyMsg />} />
+            <Route path="sendRegularMoney" element={<SendRegularMoney />} />
+            <Route path="regularMoneyDone" element={<RegularMoneyDone />} />
+            <Route path="reguestedMoney" element={<ReguestedMoney />} />
             <Route path="signup" element={<Signup />} />
             <Route path="newAccount" element={<NewAccount />} />
           </Routes>
