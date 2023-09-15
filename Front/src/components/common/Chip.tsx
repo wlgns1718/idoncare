@@ -1,5 +1,10 @@
-import React from "react";
-import { ChipProps } from "../../types/ChipProps";
+import { TradeCategory, TradeHistoryCategory } from "../../types/WalletTypes";
+
+export interface ChipProps {
+  isSelected: boolean;
+  category: TradeHistoryCategory;
+  handler: (text: TradeCategory) => void;
+}
 
 const Chip = ({ isSelected, category, handler }: ChipProps) => {
   return (
