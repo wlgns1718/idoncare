@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Icon from "./Icon";
 
 const BottomTaps = [
@@ -8,7 +9,7 @@ const BottomTaps = [
   },
   {
     icon: <Icon name="home" size="medium" />,
-    link: "/home",
+    link: "/",
     text: "홈",
   },
   {
@@ -19,6 +20,7 @@ const BottomTaps = [
 ];
 
 function BottomNav() {
+  const navigate = useNavigate();
   return (
     <div>
       <div className="h-[40px]"></div>
@@ -28,6 +30,7 @@ function BottomNav() {
             <div
               className={`flex-col content-center flex justify-center text-center items-center`}
               key={index}
+              onClick={()=>{navigate(item.link)}}
             >
               <div className="w-[8vw]">{item.icon}</div>
               <div className="text-m">{item.text}</div>

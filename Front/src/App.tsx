@@ -11,6 +11,8 @@ import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
 import WalletRecharge from "./pages/WalletRecharge";
+import Purchase from "./pages/Purchase";
+import QRcodePurchase from "./pages/QRcodePurchase";
 
 function App() {
   return (
@@ -23,6 +25,9 @@ function App() {
             <Route path="wallet" element={<Wallet />} />
             <Route path="wallet/search" element={<WalletSearch />} />
             <Route path="wallet/recharge" element={<WalletRecharge />} />
+            <Route path="purchase" element={<Purchase />} />
+            <Route path="purchase/qrcode" element={<QRcodePurchase />} />
+            <Route path="purchase/camera" element={<Purchase />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
             <Route path="childReguestMoney" element={<ChildReguestMoney />} />
             <Route path="moneySendDone" element={<MoneySendDone />} />
