@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../components/common/Header";
 
 const menus = [
@@ -17,9 +17,10 @@ const menus = [
 ];
 
 function Purchase() {
+  const navigate = useNavigate();
   return (
     <div>
-      <Header pageTitle="결제" headerLink="back" headerType="normal" />
+      <Header pageTitle="결제" headerLink="/" headerType="normal" />
       <div className="mt-20">
         <div className="w-[190px] h-[110px] mx-auto p-4 rounded-lg [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
           <div className="mb-10">아이콘</div>
@@ -34,6 +35,7 @@ function Purchase() {
               <div
                 className="w-full mt-8 p-7 rounded-xl bg-gray flex shadow-xl"
                 key={index}
+                onClick={()=>navigate(item.link)}
               >
                 <div className="mx-6">
                   <img src={item.icon} alt="" />
@@ -47,8 +49,6 @@ function Purchase() {
           })}
         </div>
       </div>
-      <Link to="qrcode">현장결제 QR</Link>
-      <Link to="camera">온라인</Link>
     </div>
   );
 }

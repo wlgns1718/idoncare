@@ -13,6 +13,7 @@ import { AppLayout } from "./layouts/AppLayout";
 import WalletRecharge from "./pages/WalletRecharge";
 import Purchase from "./pages/Purchase";
 import QRcodePurchase from "./pages/QRcodePurchase";
+import CameraPurchase from "./pages/CameraPurchase";
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
             <Route path="wallet/recharge" element={<WalletRecharge />} />
             <Route path="purchase" element={<Purchase />} />
             <Route path="purchase/qrcode" element={<QRcodePurchase />} />
-            <Route path="purchase/camera" element={<Purchase />} />
+            <Route path="purchase/camera" element={<CameraPurchase />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
             <Route path="childReguestMoney" element={<ChildReguestMoney />} />
             <Route path="moneySendDone" element={<MoneySendDone />} />
