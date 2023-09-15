@@ -10,25 +10,24 @@ interface HeaderProps {
   headerLink?: HeaderLink;
 }
 
-const Header = ({ pageTitle, headerType="normal", headerLink="back" }: HeaderProps) => {
-  const navigate = useNavigate()
+const Header = ({ pageTitle, headerType = "normal", headerLink = "back" }: HeaderProps) => {
+  const navigate = useNavigate();
   const handleLink = () => {
-    if(headerLink == "back"){
-      navigate(-1)
+    if (headerLink == "back") {
+      navigate(-1);
+    } else {
+      navigate(headerLink);
     }
-    else{
-      navigate(headerLink)
-    }
-  }
+  };
   return (
-    <ul className="flex items-center justify-between w-full">
+    <ul className="flex items-center justify-between w-full h-[60px]">
       {headerType === "normal" ? (
         <>
-          <li className={`text-x`}>
+          <li className={`text-[40px]`}>
             <button onClick={handleLink}>&lt;</button>
           </li>
           <li className="text-l">{pageTitle}</li>
-          <li className={`text-x text-transparent`}>X</li>
+          <li className={`text-[40px] text-transparent`}>X</li>
         </>
       ) : (
         <>

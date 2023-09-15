@@ -12,6 +12,7 @@ import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
 import BottomNav from "./components/common/BottomNav";
 import WalletRecharge from "./pages/WalletRecharge";
+import NewAccount from "./pages/NewAccount";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="sendPocketMoney" element={<SendPocketMoney />} />
             <Route path="sendPocketMoneyMsg" element={<SendPocketMoneyMsg />} />
             <Route path="signup" element={<Signup />} />
+            <Route path="newAccount" element={<NewAccount />} />
           </Routes>
         </BrowserRouter>
         <BottomNav />

@@ -5,24 +5,34 @@ import FullBtn from "../common/FullBtn";
 
 type Question = string;
 type Answer = string;
+type Caption = string;
 
 interface SignupQuestionProps {
   question: Question;
   answer?: Answer;
+  caption?: Caption;
   onNextStep: () => void;
 }
 
-const SignupQuestion = ({ onNextStep, question, answer = "" }: SignupQuestionProps) => {
+const SignupQuestion = ({
+  onNextStep,
+  question,
+  answer = "",
+  caption = "",
+}: SignupQuestionProps) => {
   console.log(onNextStep);
   const [answerText, setAnswerText] = useState<string>(answer);
   return (
     <div className="flex flex-col w-full">
-      <div className="relative rounded-[10px] bg-red-50 w-[220px] h-[80px] p-[20px] mb-[40px] flex items-center">
+      <div className="relative rounded-[30px] bg-red-50 w-[220px] h-[80px] p-[20px] mb-[40px] flex items-center">
         <img className="absolute w-[100px] h-[100px] top-[-80px]" src={smile} alt="smile img" />
-        <p className="text-m">{question}</p>
+        <div className="flex-col">
+          <p className="text-m">{question}</p>
+          <p className={`${caption === undefined && "hidden"} text-s flex`}>{caption}</p>
+        </div>
       </div>
       <div className="flex justify-end">
-        <div className="flex items-center justify-end bg-main rounded-[10px] w-[160px] h-[40px] px-[10px]">
+        <div className="flex items-center justify-end bg-main rounded-[20px] w-[160px] h-[40px] px-[10px]">
           <input
             className="w-full h-full text-white bg-transparent text-m"
             type="text"
@@ -33,7 +43,9 @@ const SignupQuestion = ({ onNextStep, question, answer = "" }: SignupQuestionPro
           <img className="w-[20px] h-[20px]" src={pencil} alt="편집 이미지" />
         </div>
       </div>
-      <FullBtn />
+      <div className="absolute bottom-0 w-[calc(100%-40px)] left-[20px]" onClick={onNextStep}>
+        <FullBtn buttonText="다음" buttonLink="/signup" className="w-full" />
+      </div>
     </div>
   );
 };

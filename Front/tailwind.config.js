@@ -16,12 +16,12 @@ export default {
         sky: "#75C2F6",
       },
       fontSize: {
-        s: "1.2rem",
+        t: "1.2rem",
+        s: "1.4rem",
         m: "1.6rem",
         l: "2rem",
         x: "2.4rem",
         // 임시 추가
-        sm: "1.4rem",
       },
       fontFamily: {
         main: ["main"],
