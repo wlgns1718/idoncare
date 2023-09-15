@@ -10,7 +10,6 @@ import SendPocketMoneyMsg from "./pages/SendPocketMoneyMsg";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
-import BottomNav from "./components/common/BottomNav";
 import WalletRecharge from "./pages/WalletRecharge";
 
 function App() {
@@ -32,7 +31,6 @@ function App() {
             <Route path="signup" element={<Signup />} />
           </Routes>
         </BrowserRouter>
-        <BottomNav />
       </AppLayout>
     </>
   );

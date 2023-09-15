@@ -9,7 +9,7 @@ function WalletRecharge() {
       <Header pageTitle="계좌 충전" headerLink="back" headerType="normal" />
       <div>
         <RechargeInput />
-        <RechargeAccountList/>
+        <RechargeAccountList />
       </div>
     </div>
   );

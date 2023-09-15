@@ -64,7 +64,9 @@ export const Icon = ({
 }) => {
   
   return (
-    <div className={`h-[${iconSizeObject[size].width}vh]`}>
+    <div
+      className={`w-[${iconSizeObject[size].width}vw]`}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -72,9 +74,7 @@ export const Icon = ({
         strokeWidth={1.5}
         stroke="currentColor"
       >
-        {
-          iconPathObject[name]
-        }
+        {iconPathObject[name]}
       </svg>
     </div>
   );

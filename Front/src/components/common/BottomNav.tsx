@@ -19,20 +19,22 @@ const BottomTaps = [
 ];
 
 function BottomNav() {
-  const iconWidth = "60px";
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-white rounded-t-3xl border-t-2 p-x flex justify-evenly ">
-      {BottomTaps.map((item, index) => {
-        return (
-          <div
-            className={`h-[${iconWidth}] w-[${iconWidth}] flex-col content-center flex justify-center text-center items-center`}
-            key={index}
-          >
-            {item.icon}
-            <div className="text-m">{item.text}</div>
-          </div>
-        );
-      })}
+    <div>
+      <div className="h-[40px]"></div>
+      <div className="fixed bottom-0 left-0 w-full bg-white rounded-t-3xl border-t-2 pt-2 flex justify-evenly">
+        {BottomTaps.map((item, index) => {
+          return (
+            <div
+              className={`flex-col content-center flex justify-center text-center items-center`}
+              key={index}
+            >
+              <div className="w-[8vw]">{item.icon}</div>
+              <div className="text-m">{item.text}</div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
