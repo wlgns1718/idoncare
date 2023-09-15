@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
+import ChildReguestMoney from "../components/pocketmoney/ChildReguestMoney";
 
 const PocketMoney: React.FC = () => {
   return (
-    <div>
-      <p>PocketMoney</p>
+    <div className="pb-60">
+
       <div className="bg-green-100">
-        <Link to="/">Login</Link>
+        <Link to="/reguestedMoney">ReguestedMoney</Link>
       </div>
 
       <Header pageTitle="용돈" headerType="normal" headerLink="/" />
@@ -18,22 +19,20 @@ const PocketMoney: React.FC = () => {
           
       {/* 용돈 요청 리스트 */}
         <div className="ml-4">
+
           <div className="flex justify-between items-center text-s mb-8">
-            <div className="flex items-center">
+            
+            <ChildReguestMoney name="김슬기" amount="30,000"/>
+            
+            {/* <div className="flex items-center">
               <img src="/icons/icon-letter.png" alt="Icon" className="ml-2 mr-5 w-10 h-10"/>
               <Link to="/childReguestMoney">
                 <div>이우철</div>
               </Link>
             </div>
             <div className="mr-3">3000원</div>
-          </div>
+          </div> */}
 
-          <div className="flex justify-between items-center text-s mb-8">
-            <div className="flex items-center">
-              <img src="/icons/icon-letter.png" alt="Icon" className="ml-2 mr-5 w-10 h-10"/>
-              <div>이우철</div>
-            </div>
-            <div className="mr-3">3000원</div>
           </div>
         </div>
 
@@ -46,8 +45,8 @@ const PocketMoney: React.FC = () => {
           <div className="flex justify-between">
             <Link to="/sendPocketMoney" className="bg-yellow border-yellow box-content rounded-xl h-40 w-60 pt-9 pl-10 border-4 mr-10 text-sm text-white">
               용돈보내기</Link>
-            <Link to="/" className="bg-sky border-sky box-content rounded-lg h-40 w-60 pt-9 pl-10 border-4 text-sm text-white">정기용돈으로<br/>
-              편하게 용돈 주기</Link>
+            <Link to="/sendRegularMoney" className="bg-sky border-sky box-content rounded-lg h-40 w-60 pt-9 pl-10 border-4 text-sm text-white">
+              정기용돈으로<br/>편하게 용돈 주기</Link>
           </div>
 
           <div className="text-m mt-14 font-strong">정기 용돈 목록</div>

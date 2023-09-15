@@ -6,7 +6,7 @@ import FullBtn from '../components/common/FullBtn';
 
 function SendPocketMoney() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen pb-60">
         <Header pageTitle="용돈 보내기" headerType="normal" headerLink="/" />
 
         <div className="m-10 text-center flex-grow">

@@ -5,7 +5,7 @@ import YesNoBtn from '../components/common/YesNoBtn';
 
 const ChildReguestMoney: React.FC = () => {
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen pb-60">
           <Header pageTitle="용돈 요청 관리" headerType="normal" headerLink="/" />
   
           <div className="m-10 text-center flex flex-col flex-grow">

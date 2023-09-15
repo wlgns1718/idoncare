@@ -5,11 +5,11 @@ import FullBtn from '../components/common/FullBtn';
 
 function SendPocketMoneyMsg() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen pb-60">
         <Header pageTitle="용돈 보내기" headerType="normal" headerLink="/" />
 
-        <div className="m-10 flex-grow">
-            <div className="m-1">
+        <div className="flex-grow">
+            <div>
                 <div className="text-m mt-20 mb-32 text-center">
                     <span className="text-main m-2">이우철</span>님에게<br/>
                     <span className="text-main">1,000원</span>을 보낼게요            
@@ -25,8 +25,8 @@ function SendPocketMoneyMsg() {
                 </div>
             </div>
 
-        </div>
-            <FullBtn buttonText="확인" buttonLink="/" />
+            </div>
+            <FullBtn buttonText="확인" buttonLink="/MoneySendDone" />
         </div>
   )
 }
