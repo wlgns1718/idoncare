@@ -40,6 +40,9 @@ const SignupTypeSelect = ({ onNextStep, onSetType, userType }: SignupTypeSelectP
         <p>용돈을 줄래요!</p>
       </div>
       <div className="absolute bottom-0 w-[calc(100%-40px)] left-[20px]" onClick={onNextStep}>
+        {/* <div
+          className={`absolute w-full bg-red-200 h-[40px] ${userType !== undefined && "hidden"}`}
+        ></div> */}
         <FullBtn buttonText="다음" buttonLink="/signup" className="w-full" />
       </div>
     </>

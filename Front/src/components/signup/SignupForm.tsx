@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SignupName from "./SignupName";
+import SignupQuestion from "./SignupQuestion";
 import { SignupUserInfo } from "../../types/SignupUserInfo";
 import SignupTypeSelect from "./SignupTypeSelect";
 
@@ -23,7 +23,7 @@ const SignupForm = () => {
           onSetType={setType}
         />
       )}
-      {step === 2 && <SignupName onNextStep={nextStep} />}
+      {step === 2 && <SignupQuestion onNextStep={nextStep} question="이름을 알려주세요." />}
     </div>
   );
 };
