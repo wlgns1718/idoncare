@@ -14,6 +14,7 @@ import WalletRecharge from "./pages/WalletRecharge";
 import Purchase from "./pages/Purchase";
 import QRcodePurchase from "./pages/QRcodePurchase";
 import CameraPurchase from "./pages/CameraPurchase";
+import MyPage from "./pages/MyPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="login" element={<Login />} />
+            <Route path="mypage" element={<MyPage />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="wallet/search" element={<WalletSearch />} />
             <Route path="wallet/recharge" element={<WalletRecharge />} />

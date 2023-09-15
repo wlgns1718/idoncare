@@ -14,7 +14,7 @@ const BottomTaps = [
   },
   {
     icon: <Icon name="total" size="medium" />,
-    link: "/total",
+    link: "/mypage",
     text: "전체",
   },
 ];

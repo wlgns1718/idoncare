@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 
-type ICON_NAME =
+export type ICON_NAME =
   | "home"
   | "search"
   | "total"
