@@ -28,6 +28,24 @@ public class AccountController {
 
     public final AccountService accountService;
 
+    //1.1 OAuth인증 문자 인증
+//    @PostMapping("/oauth/2.0/token1")
+//    public ResponseEntity<?> token1(@RequestBody MobileRequestDto mobileRequestDto) {
+//        try{
+//            mobileService.Check_user(mobileRequestDto);
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.ACCEPTED, "사용자 번호 인증 성공", null));
+//        }catch (MobileException e){
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.ACCEPTED,  e.getMessage(), null));
+//        }
+//    }
+
+    //1.2 OAuth인증 accessToken 인증
+//    @PostMapping("/oauth/2.0/token2")
+//    public ResponseEntity<?> token2() {
+//        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.ACCEPTED, "테스트 성공", null));
+//    }
+
+
     //2.잔액 조회
     @Operation(operationId = "balance", summary = "잔액 조회", description = "미리 등록한 계좌의 잔액 조회", tags = {"AccountController"})
     @ApiResponses(value = {
@@ -129,22 +147,6 @@ public class AccountController {
         }
     }
 
-    //1.1 OAuth인증 문자 인증
-//    @PostMapping("/oauth/2.0/token1")
-//    public ResponseEntity<?> token1(@RequestBody MobileRequestDto mobileRequestDto) {
-//        try{
-//            mobileService.Check_user(mobileRequestDto);
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.ACCEPTED, "사용자 번호 인증 성공", null));
-//        }catch (MobileException e){
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.ACCEPTED,  e.getMessage(), null));
-//        }
-//    }
-
-    //1.2 OAuth인증 accessToken 인증
-//    @PostMapping("/oauth/2.0/token2")
-//    public ResponseEntity<?> token2() {
-//        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(HttpStatus.ACCEPTED, "테스트 성공", null));
-//    }
 
 
 

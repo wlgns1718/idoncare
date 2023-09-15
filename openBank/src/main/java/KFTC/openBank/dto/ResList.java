@@ -1,6 +1,7 @@
 package KFTC.openBank.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +16,17 @@ public class ResList {
     tran_amt : 거래금액
     after_balance_amt : 거래 후 잔액
     */
+    @Schema(description = "거래일자", example = "2016031")
     private String TranData;
+    @Schema(description = "거래시간", example = "113000")
     private String TranTime;
+    @Schema(description = "입금 출금 구분", example = "DEPOSIT, WITHDRAWAL")
     private String inout_type;
+    @Schema(description = "통장 인자 내용", example = "가상 계좌에 이체")
     private String print_content;
+    @Schema(description = "거래금액", example = "10000")
     private Long tran_amt;
+    @Schema(description = "거래 후 잔액", example = "100000")
     private Long after_balance_amt;
 
     public ResList(String tranData, String tranTime, String inout_type, String print_content, Long tran_amt, Long after_balance_amt) {

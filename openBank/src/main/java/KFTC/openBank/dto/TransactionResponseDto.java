@@ -1,5 +1,6 @@
 package KFTC.openBank.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,8 +21,9 @@ public class TransactionResponseDto {
             tran_amt : 거래금액
             after_balance_amt : 거래 후 잔액
      */
-
+    @Schema(description = "응답코드(API)", example = "A0000")
     private String RspCode;
+    @Schema(description = "거래내역", example = "JSON")
     private List<ResList> resList = new ArrayList<>();
 
     public TransactionResponseDto(String rspCode, List<ResList> resList) {
