@@ -1,7 +1,12 @@
 import pencil from "../../assets/imgs/signup/pencil.png";
 import smile from "../../assets/imgs/signup/smile.png";
 
-const SignupName = () => {
+interface SignupNameProps {
+  onNextStep: () => void;
+}
+
+const SignupName = ({ onNextStep }: SignupNameProps) => {
+  console.log(onNextStep);
   return (
     <div className="flex flex-col w-full">
       <div className="relative rounded-[10px] bg-red-50 w-[220px] h-[80px] p-[20px] mb-[40px] flex items-center">
