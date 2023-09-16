@@ -166,22 +166,4 @@ public class RelationshipTests {
     assert listByChild.get(1).getRelationshipId().equals(listByParent.get(0).getRelationshipId());
     
   }
-  
-  @Test
-  @DisplayName("RestTemplate 테스트")
-  void restTemplateTest(){
-    
-    @Getter @Setter
-    class Response{
-      String result;
-    }
-    
-    try{
-      Response res = (Response)relationshipService.postTest();
-      System.out.println(res);
-    } catch(Exception e){
-      System.out.println(e.getMessage());
-      Assertions.fail();
-    }
-  }
 }

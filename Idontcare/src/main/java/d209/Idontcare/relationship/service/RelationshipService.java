@@ -36,8 +36,4 @@ public interface RelationshipService {
    */
   List<RelationshipResDto> getRelationshipList(TUser TUser)
       throws MustChildException;
-  
-  void getTest();
-  
-  Object postTest() throws JsonProcessingException;
 }

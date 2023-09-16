@@ -37,12 +37,7 @@ public class RelationshipServiceImpl implements RelationshipService{
   private final TUserService TUserService;
   private final RelationshipRepository relationshipRepository;
   private final RelationshipRequestRepository relationshipRequestRepository;
-  private RestTemplate restTemplate;
-  
-  @PostConstruct
-  void init(){
-    restTemplate = new RestTemplate();
-  }
+
   
   @Override
   public RelationshipRequest requestRelationship(TUser parent, RequestRelationshipReqDto req){
@@ -131,45 +126,5 @@ public class RelationshipServiceImpl implements RelationshipService{
     return list;
   }
   
-  public void getTest(){
-    String result = restTemplate.getForObject("http://localhost:3000", String.class);
-    System.out.println(result);
-  }
-  
-  public class Result{
-    String result;
-  }
-  
-  public Object postTest() throws JsonProcessingException {
-    @Data
-    @AllArgsConstructor
-    class Request{
-      String name;
-      Integer age;
-    }
 
-    String URL = "http://localhost:3000";
-    
-    Request requestBody = new Request("이우철" , 22);
-    
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-    
-    ObjectMapper mapper = new ObjectMapper();
-    String jsonBody = mapper.writeValueAsString(requestBody);
-    
-    HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
-    
-    ResponseEntity<String> response = restTemplate.exchange(URL, HttpMethod.POST, entity, String.class);
-    System.out.println(response.getBody());
-    
-    @Getter
-    @Setter
-    class Response{
-      String result;
-    }
-    
-    return mapper.readValue(response.getBody(), Response.class);
-  }
 }
