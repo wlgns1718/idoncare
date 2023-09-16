@@ -34,11 +34,6 @@ public class APIServiceImpl implements APIService {
   }
   
   @Override
-  public <Body> APIResultDto<Map<String, String>, Body> get(String path, Class<Body> bodyType) {
-    return get(path, (Map<String, Object>) null, (Map<String, Object>) null, bodyType);
-  }
-  
-  @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Map<String, Object> headers) {
     return get(path, headers, (Map<String, Object>) null);
   }
@@ -49,11 +44,6 @@ public class APIServiceImpl implements APIService {
     Map<String, Object> map = mapper.convertValue(headers, Map.class);
     
     return get(path, map);
-  }
-  
-  @Override
-  public <Body> APIResultDto<Map<String, String>, Body> get(String path, Map<String, Object> headers, Class<Body> bodyType) {
-    return get(path, headers, (Map<String, Object>) null, bodyType);
   }
   
   @Override
@@ -74,6 +64,8 @@ public class APIServiceImpl implements APIService {
                                                                           new HttpEntity(requestHeader),
                                                                           new ParameterizedTypeReference<Map<String, Object>>(){}
                                                                         );
+    
+    System.out.println(response.getBody());
     
     APIResultDto<Map<String, String>, Map<String, Object>> apiResult = new APIResultDto<>();
     
@@ -98,30 +90,8 @@ public class APIServiceImpl implements APIService {
   }
   
   @Override
-  public <Body> APIResultDto<Map<String, String>, Body> get(String path, Map<String, Object> headers, Map<String, Object> queries, Class<Body> bodyType) {
-    APIResultDto<Map<String, String>, Map<String, Object>> apiResult = this.get(path, headers, queries);
-    
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(apiResult.getBody());
-    
-    Body body = gson.fromJson(jsonElement, bodyType);
-    
-    APIResultDto<Map<String, String>, Body> transformed = new APIResultDto<>();
-    transformed.setStatus(apiResult.getStatus());
-    transformed.setHeader(apiResult.getHeader());
-    transformed.setBody(bodyType.cast(body));
-
-    return transformed;
-  }
-  
-  @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> post(String path) {
     return post(path, (Map<String, Object>) null, (Map<String, Object>)null);
-  }
-  
-  @Override
-  public <Body> APIResultDto<Map<String, String>, Body> post(String path, Class<Body> bodyType) {
-    return post(path, (Map<String, Object>) null, (Map<String, Object>)null, bodyType);
   }
   
   @Override
@@ -129,10 +99,6 @@ public class APIServiceImpl implements APIService {
     return post(path, headers, (Map<String, Object>)null);
   }
   
-  @Override
-  public <Body> APIResultDto<Map<String, String>, Body> post(String path, Map<String, Object> headers, Class<Body> bodyType) {
-    return post(path, headers, (Map<String, Object>)null, bodyType);
-  }
   
   @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers, Map<String, Object> body){
@@ -166,20 +132,4 @@ public class APIServiceImpl implements APIService {
     return apiResult;
   }
   
-  @Override
-  public <Body> APIResultDto<Map<String, String>, Body> post(String path, Map<String, Object> headers, Map<String, Object> body, Class<Body> bodyType) {
-    APIResultDto<Map<String, String>, Map<String, Object>> apiResult = this.post(path, headers, body);
-    
-    Gson gson = new Gson();
-    JsonElement jsonElement = gson.toJsonTree(apiResult.getBody());
-    
-    Body b = gson.fromJson(jsonElement, bodyType);
-    
-    APIResultDto<Map<String, String>, Body> transformed = new APIResultDto<>();
-    transformed.setStatus(apiResult.getStatus());
-    transformed.setHeader(apiResult.getHeader());
-    transformed.setBody(bodyType.cast(b));
-    
-    return transformed;
-  }
 }

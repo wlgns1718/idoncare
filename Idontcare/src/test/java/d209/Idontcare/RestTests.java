@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import d209.Idontcare.common.service.APIService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,25 +44,17 @@ public class RestTests {
     System.out.println(result.getBody());
     result = apiService.get(URL, null, queries);
     System.out.println(result.getBody());
-    
-    System.out.println("TYPE START");
-    
-    APIResultDto<Map<String, String>, TestBody> result2 = null;
-    result2 = apiService.get(URL, headers, queries, TestBody.class);
-    System.out.println(result2.getBody());
-    result2 = apiService.get(URL, headers, TestBody.class);
-    System.out.println(result2.getBody());
-    result2 = apiService.get(URL, headers, queries, TestBody.class);
-    System.out.println(result2.getBody());
-    result2 = apiService.get(URL, null, queries, TestBody.class);
-    System.out.println(result2.getBody());
-    
+
     System.out.println("HEADER START");
     TestHeader headerDto = new TestHeader("hello", 1);
     result = apiService.get(URL, headerDto);
     System.out.println(result.getBody());
     result = apiService.get(URL, headerDto, queries);
     System.out.println(result.getBody());
+    
+    TestBody body = result.getBody(TestBody.class);
+    System.out.println(body.getName());
+    System.out.println(Arrays.toString(body.getAge()));
   }
   
   @Test
@@ -84,18 +77,5 @@ public class RestTests {
     System.out.println(result.getBody());
     result = apiService.post(URL, null, body);
     System.out.println(result.getBody());
-    
-    System.out.println("Type Start");
-    
-    APIResultDto<Map<String, String>, TestBody> result2 = null;
-    result2 = apiService.post(URL, TestBody.class);
-    System.out.println(result2.getBody());
-    result2 = apiService.post(URL, headers, TestBody.class);
-    System.out.println(result2.getBody());
-    result2 = apiService.post(URL, headers, body, TestBody.class);
-    System.out.println(result2.getBody());
-    result2 = apiService.post(URL, null, body, TestBody.class);
-    System.out.println(result2.getBody());
-    
   }
 }

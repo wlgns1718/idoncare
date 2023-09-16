@@ -1,33 +1,21 @@
 package d209.Idontcare.relationship.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import d209.Idontcare.TUser;
 import d209.Idontcare.TUserService;
+import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.exception.*;
+import d209.Idontcare.common.service.APIService;
 import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;
 import d209.Idontcare.relationship.entity.*;
 import d209.Idontcare.relationship.repository.*;
-import io.swagger.v3.core.util.Json;
 import lombok.*;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.Tuple;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Transactional
 @RequiredArgsConstructor
@@ -37,7 +25,6 @@ public class RelationshipServiceImpl implements RelationshipService{
   private final TUserService TUserService;
   private final RelationshipRepository relationshipRepository;
   private final RelationshipRequestRepository relationshipRequestRepository;
-
   
   @Override
   public RelationshipRequest requestRelationship(TUser parent, RequestRelationshipReqDto req){
