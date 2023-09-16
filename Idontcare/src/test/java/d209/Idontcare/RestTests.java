@@ -3,8 +3,6 @@ package d209.Idontcare;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.dto.TestBody;
 import d209.Idontcare.dto.TestHeader;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +75,36 @@ public class RestTests {
     System.out.println(result.getBody());
     result = apiService.post(URL, null, body);
     System.out.println(result.getBody());
+    
+    class RequestBody{
+      String name;
+      Integer age;
+      
+      public String getName() {
+        return name;
+      }
+      
+      public void setName(String name) {
+        this.name = name;
+      }
+      
+      public Integer getAge() {
+        return age;
+      }
+      
+      public void setAge(Integer age) {
+        this.age = age;
+      }
+      
+      public RequestBody(String name, Integer age){
+        this.name = name;
+        this.age = age;
+      }
+    }
+    
+    RequestBody reqBody = new RequestBody("이우철", 22);
+    
+    APIResultDto<Map<String, String>, Map<String, Object>> res = apiService.post(URL, null, reqBody);
+    System.out.printf("%s\n", res.getBody());
   }
 }

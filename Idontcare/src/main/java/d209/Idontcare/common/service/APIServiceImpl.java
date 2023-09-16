@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -28,6 +29,12 @@ public class APIServiceImpl implements APIService {
     return builder.encode().build().toUri();
   }
   
+  private Map<String, Object> toMap(Object obj){
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Object> map = mapper.convertValue(obj, Map.class);
+    return map;
+  }
+  
   @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> get(String path) {
     return get(path, (Map<String, Object>) null, (Map<String, Object>) null);
@@ -40,10 +47,16 @@ public class APIServiceImpl implements APIService {
   
   @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Object headers) {
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> map = mapper.convertValue(headers, Map.class);
-    
+    Map<String, Object> map = toMap(headers);
     return get(path, map);
+  }
+  
+  @Override
+  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Object headers, Object queries) {
+    Map<String, Object> headersMap = toMap(headers);
+    Map<String, Object> queriesMap = toMap(queries);
+    
+    return get(path, headersMap, queriesMap);
   }
   
   @Override
@@ -83,10 +96,15 @@ public class APIServiceImpl implements APIService {
   
   @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Object headers, Map<String, Object> queries) {
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> map = mapper.convertValue(headers, Map.class);
-    
+    Map<String, Object> map = toMap(headers);
     return get(path, map, queries);
+  }
+  
+  @Override
+  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Map<String, Object> headers, Object queries) {
+    Map<String, Object> map = toMap(queries);
+    
+    return get(path, headers, map);
   }
   
   @Override
@@ -99,6 +117,26 @@ public class APIServiceImpl implements APIService {
     return post(path, headers, (Map<String, Object>)null);
   }
   
+  @Override
+  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Object headers) {
+    return null;
+  }
+  
+  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Object headers, Object body){
+    Map<String, Object> headersMap = toMap(headers);
+    Map<String, Object> bodyMap = toMap(body);
+    
+    return post(path, headersMap, bodyMap);
+  }
+  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Object headers, Map<String, Object> body){
+    Map<String, Object> map = toMap(headers);
+    return post(path, map, body);
+  }
+  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers, Object body){
+    Map<String, Object> map = toMap(body);
+    
+    return post(path, headers, map);
+  }
   
   @Override
   public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers, Map<String, Object> body){
