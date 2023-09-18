@@ -18,16 +18,15 @@ const FullBtn: React.FC<FullBtnProps> = ({
   isDone = true,
   onClick,
 }) => {
-  
-    const handleClick = (e) => {
-        if (!isDone) e.preventDefault();
-        // isDone이 false인 경우: 링크 이동 X
+  const handleClick = (e: React.MouseEvent) => {
+    if (!isDone) e.preventDefault();
+    // isDone이 false인 경우: 링크 이동 X
 
-        if (buttonLink === "" && onClick) { 
-            e.preventDefault();
-            onClick();
-        }
-    };
+    if (buttonLink === "" && onClick) { 
+        e.preventDefault();
+        onClick();
+    }
+};
 
     return (
       <div className={`max-w-full ${className}`}>

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type Placeholder = string;
 
 interface NewAccountInputProps {
@@ -5,12 +7,15 @@ interface NewAccountInputProps {
 }
 
 const NewAccountInput = ({ placeholder }: NewAccountInputProps) => {
+  const [inputText, setInputText] = useState("");
   return (
     <input
       type="text"
       size={20}
       placeholder={placeholder}
       className="w-full border-solid border-[3px] p-[10px] border-darkgray"
+      value={inputText}
+      onChange={(e) => setInputText(e.target.value)}
     />
   );
 };
