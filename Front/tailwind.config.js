@@ -14,6 +14,7 @@ export default {
         // 임시 추가
         yellow: "#F4D160",
         sky: "#75C2F6",
+        mediumgray: "#B2B2B2",
       },
       fontSize: {
         t: "1.2rem",

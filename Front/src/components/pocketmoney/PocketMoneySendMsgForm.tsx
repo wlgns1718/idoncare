@@ -1,13 +1,16 @@
-import React from 'react'
-import { Link } from "react-router-dom";
-import Header from "../components/common/Header";
-import FullBtn from '../components/common/FullBtn';
+// SendPocketMoneyMsgForm.tsx
+import React, { FC } from 'react';
+import Header from "../common/Header";
+import FullBtn from '../common/FullBtn';
 
-function SendPocketMoneyMsg() {
+interface Props {
+  onNext: () => void;
+}
+
+const SendPocketMoneyMsgForm: FC<Props> = ({ onNext }) => {
   return (
     <div className="flex flex-col h-screen pb-60">
         <Header pageTitle="용돈 보내기" headerType="normal" headerLink="/" />
-
         <div className="flex-grow">
             <div>
                 <div className="text-m mt-20 mb-32 text-center">
@@ -26,9 +29,9 @@ function SendPocketMoneyMsg() {
             </div>
 
             </div>
-            <FullBtn buttonText="확인" buttonLink="/MoneySendDone" />
-        </div>
-  )
+        <FullBtn buttonText="확인" onClick={onNext} />
+    </div>
+  );
 }
 
-export default SendPocketMoneyMsg
+export default SendPocketMoneyMsgForm;

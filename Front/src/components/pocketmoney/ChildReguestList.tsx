@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
-type ChildReguestMoneyProps = {
+type ChildReguestMoneyListProps = {
   name: string;
   amount: string;
 };
 
-const ChildReguestMoney: React.FC<ChildReguestMoneyProps> = ({ name, amount }) => {
+const ChildReguestMoneyList: React.FC<ChildReguestMoneyListProps> = ({ name, amount }) => {
   return (
     <div className="flex justify-between items-center text-s mb-8">
       <div className="flex items-center">
@@ -19,4 +19,4 @@ const ChildReguestMoney: React.FC<ChildReguestMoneyProps> = ({ name, amount }) =
   );
 };
 
-export default ChildReguestMoney;
+export default ChildReguestMoneyList;
