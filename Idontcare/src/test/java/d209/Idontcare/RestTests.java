@@ -75,7 +75,12 @@ public class RestTests {
     System.out.println(result.getBody());
     result = apiService.post(URL, null, body);
     System.out.println(result.getBody());
-    
+    System.out.println(result.getStatus());
+  }
+  
+  @Test
+  @DisplayName("Fail Test")
+  void failTest(){
     class RequestBody{
       String name;
       Integer age;
@@ -101,10 +106,41 @@ public class RestTests {
         this.age = age;
       }
     }
+    class RequestHeader{
+      String test1;
+      Integer test2;
+      
+      public RequestHeader(String test1, Integer test2) {
+        this.test1 = test1;
+        this.test2 = test2;
+      }
+      
+      public String getTest1() {
+        return test1;
+      }
+      
+      public void setTest1(String test1) {
+        this.test1 = test1;
+      }
+      
+      public Integer getTest2() {
+        return test2;
+      }
+      
+      public void setTest2(Integer test2) {
+        this.test2 = test2;
+      }
+    }
     
     RequestBody reqBody = new RequestBody("이우철", 22);
+    RequestHeader reqHeader = new RequestHeader("헤더1", 1);
     
-    APIResultDto<Map<String, String>, Map<String, Object>> res = apiService.post(URL, null, reqBody);
-    System.out.printf("%s\n", res.getBody());
+    APIResultDto<Map<String, String>, Map<String, Object>> result = apiService.post(URL, reqHeader, reqBody);
+    System.out.println(result.getStatus());
+    
+    result = apiService.put(URL, null, reqBody);
+    System.out.println(result.getBody());
+    result = apiService.delete(URL, null, reqBody);
+    System.out.println(result.getBody());
   }
 }

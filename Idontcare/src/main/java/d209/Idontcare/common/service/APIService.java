@@ -30,5 +30,25 @@ public interface APIService {
   APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers, Map<String, Object> body);
   /* POST 요청 메서드 종료 */
   
-
+  /* PUT 요청 */
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path);
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Map<String, Object> headers);
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Object headers);
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Object headers, Object body);
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Object headers, Map<String, Object> body);
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Map<String, Object> headers, Object body);
+  APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Map<String, Object> headers, Map<String, Object> body);
+  /* PUT 요청 메서드 종료 */
+  
+  
+  /* PUT 요청 */
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path);
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Map<String, Object> headers);
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Object headers);
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Object headers, Object body);
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Object headers, Map<String, Object> body);
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Map<String, Object> headers, Object body);
+  APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Map<String, Object> headers, Map<String, Object> body);
+  /* PUT 요청 메서드 종료 */
+  
 }
