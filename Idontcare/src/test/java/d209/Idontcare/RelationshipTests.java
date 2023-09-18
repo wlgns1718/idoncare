@@ -7,6 +7,9 @@ import d209.Idontcare.relationship.dto.res.ReceivedRequestResDto;
 import d209.Idontcare.relationship.dto.res.RelationshipResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import d209.Idontcare.relationship.service.RelationshipService;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +25,9 @@ public class RelationshipTests {
   private RelationshipService relationshipService;
   
   @Autowired
-  private UserRepository userRepository;
+  private TUserRepository TUserRepository;
   
-  void connectParentChild(User parent, User child){
+  void connectParentChild(TUser parent, TUser child){
     /* 관계 맺기 */
     String phoneNumber = child.getPhoneNumber();
     RequestRelationshipReqDto req = RequestRelationshipReqDto.builder()
@@ -43,8 +46,8 @@ public class RelationshipTests {
   @Test
   @DisplayName("부모 -> 아이 관계 리퀘스트 테스트")
   void requestRelationship(){
-    User parent = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.PARENT).toList().get(0);
-    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
     
     String phoneNumber = child.getPhoneNumber();
     
@@ -72,18 +75,18 @@ public class RelationshipTests {
   @Test
   @DisplayName("아이가 요청받은 목록 조회 테스트")
   void requestListTest(){
-    User parent = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.PARENT).toList().get(0);
-    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
 
     /* 새로운 부모 생성 */
-    User newParent = User.builder()
+    TUser newParent = TUser.builder()
         .phoneNumber("01011112222")
         .name("아빠지훈")
-        .type(User.Type.PARENT)
+        .type(TUser.Type.PARENT)
         .build();
     newParent.setUUID();
 
-    userRepository.save(newParent);
+    TUserRepository.save(newParent);
 
 //    /* 관계 맺기 */
     String phoneNumber = child.getPhoneNumber();
@@ -107,8 +110,8 @@ public class RelationshipTests {
   @Test
   @DisplayName("아이가 요청받은 목록 조회 테스트")
   void processRequestTest(){
-    User parent = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.PARENT).toList().get(0);
-    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
     
     /* 관계 맺기 */
     String phoneNumber = child.getPhoneNumber();
@@ -140,14 +143,14 @@ public class RelationshipTests {
     System.out.println(listByChild);
     System.out.println(listByParent);
     
-    User newParent = User.builder()
+    TUser newParent = TUser.builder()
         .name("아빠지훈")
-        .type(User.Type.PARENT)
+        .type(TUser.Type.PARENT)
         .phoneNumber("01015932475")
         .build();
     newParent.setUUID();
     
-    userRepository.save(newParent);
+    TUserRepository.save(newParent);
     
     /* 새롭게 관계를 맺고 확인 */
     connectParentChild(newParent, child);

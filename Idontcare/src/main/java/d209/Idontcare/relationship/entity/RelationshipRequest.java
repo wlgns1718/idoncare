@@ -1,5 +1,6 @@
 package d209.Idontcare.relationship.entity;
 
+import d209.Idontcare.TUser;
 import d209.Idontcare.common.entity.BaseEntity;
 import lombok.*;
 
@@ -15,8 +16,8 @@ public class RelationshipRequest extends BaseEntity {
   private Long relationshipRequestId;
   
   @ManyToOne(fetch = FetchType.LAZY)
-  private User parent;
+  private TUser parent;
   
   @ManyToOne(fetch = FetchType.LAZY)
-  private User child;
+  private TUser child;
 }
