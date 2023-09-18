@@ -15,7 +15,7 @@ const NewAccountToggleButton = ({
   onChange,
 }: NewAccountToggleButtonProps) => {
   return (
-    <div className="flex w-[220px] h-[50px] ml-[10px]">
+    <div className="flex w-[220px] h-[50px] ml-[10px] mb-[10px]">
       <p
         className={`${
           isLeft ? "bg-main text-white border-main" : "border-main border-solid text-darkgray"
