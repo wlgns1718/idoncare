@@ -33,7 +33,7 @@ const NewAccountCreateStep2 = ({ onChangeStep, step }: NewAccountCreate) => {
         isCheck={privateFinDataAgree}
         onToggle={handlePrivateFinDataAgree}
       />
-      <div onClick={() => onChangeStep(2)}>
+      <div onClick={() => onChangeStep(3)}>
         <FullBtn buttonText="다음" buttonLink="/newAccount" />
       </div>
     </div>

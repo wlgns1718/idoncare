@@ -1,51 +1,44 @@
-import { useState } from "react";
 import FullBtn from "../common/FullBtn";
-import NewAccountCheckBox from "./NewAccountCheckBox";
 import NewAccountHeader from "./NewAccountHeader";
 import NewAccountInput from "./NewAccountInput";
-import NewAccountSelectBox from "./NewAccountSelectBox";
-import NewAccountToggleButton from "./NewAccountToggleButton";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 
 const NewAccountCreateStep3 = ({ onChangeStep, step }: NewAccountCreate) => {
-  const [serviceAgree, setServiceAgree] = useState(false);
-  const [privateAgree, setPrivateAgree] = useState(false);
-  const [local, setLocal] = useState(true);
-  const [gender, setGender] = useState(true);
-  const handleServiceAgree = () => setServiceAgree(!serviceAgree);
-  const handlePrivateAgree = () => setPrivateAgree(!privateAgree);
-  const handleLocal = (data: boolean) => setLocal(data);
-  const handleGender = (data: boolean) => setGender(data);
   return (
     <div className="flex flex-col text-m">
-      <NewAccountHeader step={1} />
-      <p className="text-s mb-[10px]">제공되는 정보 : 성명, 연계정보(CI)값</p>
-      <div className="flex items-center text-m">
-        <NewAccountInput placeholder="성명" />
-        <NewAccountToggleButton
-          first="내국인"
-          second="외국인"
-          isLeft={local}
-          onChange={handleLocal}
-        />
+      <NewAccountHeader step={step} />
+      <div className="w-full p-[10px] bg-gray mb-[10px] text-l">
+        <p className="text-darkgray">0123456789 (국민)</p>
       </div>
-      <div className="flex items-center text-m">
-        <NewAccountInput placeholder="생년월일(8자리)" />
-        <NewAccountToggleButton first="남" second="여" isLeft={gender} onChange={handleGender} />
+      <div className="w-full p-[10px] bg-light mb-[10px]">
+        <p className="text-black">
+          <span className="font-bold text-red-400 text-l">1원</span>을 보냈습니다.
+        </p>
+        <p className="text-darkgray text-s">
+          본인의 계좌인지 확인하기 위해, 입력하신 계좌로 1원을 입금하였습니다.
+        </p>
+        <hr className="my-[5px] opacity-30" />
+        <p className="text-black text-s">
+          1. 계좌의 거래내역에서 입금된 1원의 입금자명을 확인해주세요.
+        </p>
+        <div className="border-darkgray border-[1px] border-solid bg-gray">
+          <p className="text-center text-darkgray text-s">계좌 거래내역</p>
+        </div>
+        <div className="bg-white border-[1px] border-darkgray border-solid p-[10px] mb-[10px]">
+          <div className="flex justify-between">
+            <p className="text-darkgray text-s">입금자명</p>
+            <p className="text-darkgray text-s">입금</p>
+          </div>
+          <div className="flex justify-between font-bold">
+            <p className="text-black text-s">오픈****</p>
+            <p className="text-black text-s">1원</p>
+          </div>
+        </div>
+        <p className="text-black text-s">2. 확인한 입금자명의 숫자 4자리를 입력해 주세요.</p>
+        <p className="text-darkgray">4글자 입력</p>
       </div>
-      <NewAccountInput placeholder="휴대폰번호(숫자만)" />
-      <NewAccountSelectBox />
-      <NewAccountCheckBox
-        text="서비스 이용 및 개인정보처리 동의"
-        isCheck={serviceAgree}
-        onToggle={handleServiceAgree}
-      />
-      <NewAccountCheckBox
-        text="개인정보 제3자 제공 동의"
-        isCheck={privateAgree}
-        onToggle={handlePrivateAgree}
-      />
-      <div onClick={() => onChangeStep(2)}>
+      <NewAccountInput placeholder="입금자명(숫자4자리)" />
+      <div onClick={() => onChangeStep(4)}>
         <FullBtn buttonText="다음" buttonLink="/newAccount" />
       </div>
     </div>
