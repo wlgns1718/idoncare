@@ -1,0 +1,24 @@
+
+®
+java:S1192)"‹Define a constant instead of duplicating this literal "ìš”ì²­ í•˜ì‹  í•€í…Œí¬ ì´ìš© ë²ˆí˜¸ëŠ” ë“±ë¡ë˜ì–´ ìˆì§€ ì•ŠìŠµë‹ˆë‹¤." 3 times.(ÚÀèúÿÿÿÿ8 ”Ü¡©1
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÿ»¤ï8¢”Ü¡©1
+s
+java:S3655Š"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(ó–ÍÍûÿÿÿÿ8²”Ü¡©1
+s
+java:S3655š"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(—ó«’úÿÿÿÿ8²”Ü¡©1
+f
+java:S2583q"DChange this condition so that it does not always evaluate to "false"(‡‘Ë»üÿÿÿÿ8²”Ü¡©1
+j
+java:S1854H"HRemove this useless assignment to local variable "transactionHistories".(·œæêøÿÿÿÿ8Óò¥¢©1
+W
+java:S1854F":Remove this useless assignment to local variable "bankId".(„ª²æ8¶”Ü¡©1
+G	java:S106@"+Replace this use of System.out by a logger.(ËİÊ÷8ˆı¢©1
+H
+java:S1481F"+Remove this unused "bankId" local variable.(„ª²æ8·”Ü¡©1
+[
+java:S1155V">Use isEmpty() to check whether the collection is empty or not.(”“ø‹8¹”Ü¡©1
+œ
+java:S2159q"zRemove this call to "equals"; comparisons against null always return false; consider using '== null' to check for nullity.(‡‘Ë»üÿÿÿÿ8»”Ü¡©1
+Y	java:S125"<This block of commented-out lines of code should be removed.(ÿâ£¤8¼”Ü¡©1
+Q
+java:S1128"/Remove this unused import 'java.util.Optional'.(¨˜ëİüÿÿÿÿ8æÿ£¢©1

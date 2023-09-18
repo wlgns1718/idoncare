@@ -1,0 +1,14 @@
+
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(•²†î8õÂºš©1
+p	java:S116"URename this field "Withdrawer" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ş}8÷Âºš©1
+w	java:S116"[Rename this field "WithdrawerBankId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÈŸßÑ8÷Âºš©1
+y	java:S116"]Rename this field "WithdrawerBankName" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(úÿËÑ8÷Âºš©1
+}	java:S116"\Rename this field "WithdrawerContent" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğïâŸøÿÿÿÿ8÷Âºš©1
+z	java:S116"_Rename this field "WithdrawerAccountNum" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( À¤`8÷Âºš©1
+p	java:S116"TRename this field "Depositor" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(À¢éÂ8œğºš©1
+v	java:S116"ZRename this field "DepositorBankId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚Ô»Ç8÷Âºš©1
+x	java:S116"\Rename this field "DepositorBankName" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“öÚ¸8÷Âºš©1
+w	java:S116"[Rename this field "DepositorContent" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(îğ¿›8÷Âºš©1
+z	java:S116"^Rename this field "DepositorAccountNum" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¨Å§Õ8÷Âºš©1
+q	java:S116 "PRename this field "Money" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ò¾ØÉüÿÿÿÿ8÷Âºš©1
+^	java:S107""BConstructor has 11 parameters, which is greater than 7 authorized.(‹Ê×8¿Ô¾š©1

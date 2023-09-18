@@ -24,7 +24,6 @@ public class UserController {
     public ResponseDto<?> login(@RequestBody KakaoDto kakao){
         try {
             oauthService.getOauthAccessToken(kakao.getCode());
-
         }catch (Exception e){
             e.getMessage();
         }
