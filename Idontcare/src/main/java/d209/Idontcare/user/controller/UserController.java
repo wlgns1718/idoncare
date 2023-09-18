@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Null;
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -20,10 +21,12 @@ public class UserController {
 
     private final OauthService oauthService;
 
-    @PostMapping(value = "/login/kakao")
+    @PostMapping(value = "/login")
     public ResponseDto<?> login(@RequestBody KakaoDto kakao){
         try {
-            oauthService.getOauthAccessToken(kakao.getCode());
+            String accessToken = oauthService.getOauthAccessToken(kakao.getCode());
+            Map<String,Object> userInfo = oauthService.getUserInfo(accessToken);
+
 
         }catch (Exception e){
             e.getMessage();

@@ -3,6 +3,7 @@ package d209.Idontcare.user.service;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.swagger.v3.core.util.Json;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -26,9 +27,8 @@ public class OauthServiceImpl implements OauthService{
 
     @Override
 //    public String getOauthAccessToken(String code)throws IOException, NullPointerException, Exception{
-    public void getOauthAccessToken(String code)throws Exception{
+    public String getOauthAccessToken(String code)throws Exception{
         //인가 코드를 통해 Oauth에서 AccessToken 얻기
-        System.out.println(code);
         String accessToken = "";
         String refreshToken = "";
         HttpURLConnection conn = null;
@@ -83,25 +83,45 @@ public class OauthServiceImpl implements OauthService{
        bw.close();
        br.close();
 
-       getUserInfo(accessToken);
+       return accessToken;
 
     }
 
     @Override
-    public Map<String, String> getUserInfo(String accessToken) throws Exception {
-        Map<String,String> userInfo = new HashMap<>();
+    public Map<String, Object> getUserInfo(String accessToken) throws Exception {
+        Map<String,Object> userInfo = new HashMap<>();
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
 
         URL url = new URL(reqUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + accessToken);
-        conn.setRequestProperty("Content-type","application/x-www-form-urlencoded");
-        System.out.println(conn.toString());
-        System.out.println(conn.getContentType());
         int responseCode = conn.getResponseCode();
         System.out.println("responseCode : " + responseCode);
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
+        String line = "";
+        StringBuilder result = new StringBuilder();
+        while((line = br.readLine())!= null){
+            result.append(line);
+        }
+        System.out.println("response body : " + result.toString());
+
+        JsonObject json = (JsonObject) JsonParser.parseString(result.toString());
+        Long id = Long.parseLong(json.get("id").getAsString());
+        JsonObject kakaoAccount = (JsonObject) JsonParser.parseString(json.get("kakao_account").toString());
+        String email = "";
+        String nickname = "";
+        if(kakaoAccount.has("profile")){
+            //닉네임 사용에 허용한 경우
+            nickname = ((JsonObject) kakaoAccount.get("profile")).get("nickname").toString();
+            System.out.println("nickname = " + nickname);
+        }
+
+        if(kakaoAccount.has("email")){
+            //이메일 사용에 허용한 경우
+            email = kakaoAccount.get("email").getAsString();
+        }
 
         return null;
     }

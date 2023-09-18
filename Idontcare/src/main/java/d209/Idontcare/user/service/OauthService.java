@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Service
 public interface OauthService {
-    public void getOauthAccessToken(String code) throws IOException, NullPointerException, Exception;
+    public String getOauthAccessToken(String code) throws IOException, NullPointerException, Exception;
 
-    public Map<String, String> getUserInfo(String accessToken) throws Exception;
+    public Map<String, Object> getUserInfo(String accessToken) throws Exception;
 }
