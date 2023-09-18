@@ -1,5 +1,6 @@
 package d209.Idontcare.pocketmoney.entity;
 
+import d209.Idontcare.TUser;
 import d209.Idontcare.common.entity.BaseEntity;
 import lombok.*;
 
@@ -13,13 +14,13 @@ public class RegularPocketMoney extends BaseEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long regularPocketMoneyId;
   
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn
-//  private User parent;
-//
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn
-//  private User child;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn
+  private TUser parent;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn
+  private TUser child;
   
   @Enumerated(EnumType.STRING)
   private Type type;

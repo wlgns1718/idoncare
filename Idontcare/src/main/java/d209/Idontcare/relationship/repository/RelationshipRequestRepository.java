@@ -1,5 +1,6 @@
 package d209.Idontcare.relationship.repository;
 
+import d209.Idontcare.TUser;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,5 @@ public interface RelationshipRequestRepository extends JpaRepository<Relationshi
   
   @Query("select r.relationshipRequestId as relationshipRequestId, r.createdAt as createdAt, r.parent.name as parentName" +
       " from RelationshipRequest r where r.child = :child")
-  List<Tuple> findAllByChild(@Param("child") User child);
+  List<Tuple> findAllByChild(@Param("child") TUser child);
 }
