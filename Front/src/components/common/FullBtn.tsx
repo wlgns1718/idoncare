@@ -16,14 +16,14 @@ const FullBtn: React.FC<FullBtnProps> = ({
   className = "",
   isDone = true,
 }) => {
-  const handleClick = (e) => {
+  const handleClick = (e: React.MouseEvent) => {
     if (!isDone) e.preventDefault(); // isDone이 false인 경우: 링크 이동 X
   };
 
   return (
     <div className={`max-w-full ${className}`}>
       <Link to={buttonLink} onClick={handleClick}>
-        <div className="bg-main p-3 rounded-xl text-center text-m mt-auto mb-6">
+        <div className="p-3 mt-auto mb-6 text-center bg-main rounded-xl text-m">
           <span className="text-white">{buttonText}</span>
         </div>
       </Link>
