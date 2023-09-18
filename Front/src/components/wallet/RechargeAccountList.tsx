@@ -1,7 +1,10 @@
 import React from "react";
 import FullBtn from "../common/FullBtn";
+import { useNavigate } from "react-router-dom";
 
 function RechargeAccountList() {
+  const navigate = useNavigate();
+  
   return (
     <div>
       <div>출금 계좌</div>
@@ -18,7 +21,7 @@ function RechargeAccountList() {
         </div>
         <div className="w-full h-[80px] bg-gray rounded-xl flex-col flex items-center justify-center my-4">
           <div>충전 계좌 변경</div>
-          <div>아이콘</div>
+          <div onClick={()=>{navigate("regist");}}>아이콘</div>
         </div>
       </div>
       <FullBtn buttonText="충전" buttonLink="password" />

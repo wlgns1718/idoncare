@@ -94,7 +94,7 @@ function MyPage() {
               key={index}
               className="bg-gray w-[25%] rounded-xl text-center p-2"
             >
-                <Icon name={item.icon} />
+                <Icon name={item.icon} className="mx-auto"/>
                 <span>{item.title}</span>
             </Link>
           );
