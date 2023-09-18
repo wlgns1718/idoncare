@@ -1,13 +1,10 @@
 package d209.Idontcare.pocketmoney.entity;
 
-import d209.Idontcare.User;
+import d209.Idontcare.TUser;
 import d209.Idontcare.common.entity.BaseEntity;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Data @Builder
@@ -19,11 +16,11 @@ public class RegularPocketMoney extends BaseEntity {
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn
-  private User parent;
+  private TUser parent;
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn
-  private User child;
+  private TUser child;
   
   @Enumerated(EnumType.STRING)
   private Type type;

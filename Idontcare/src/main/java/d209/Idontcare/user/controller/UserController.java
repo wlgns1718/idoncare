@@ -24,10 +24,14 @@ public class UserController {
     @PostMapping(value = "/login")
     public ResponseDto<?> login(@RequestBody KakaoDto kakao){
         try {
+<<<<<<< HEAD
             String accessToken = oauthService.getOauthAccessToken(kakao.getCode());
             Map<String,Object> userInfo = oauthService.getUserInfo(accessToken);
 
 
+=======
+            oauthService.getOauthAccessToken(kakao.getCode());
+>>>>>>> 9e6dbb2055c9b578f544f52991528b34de404334
         }catch (Exception e){
             e.getMessage();
         }

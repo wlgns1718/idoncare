@@ -1,7 +1,7 @@
 package d209.Idontcare.relationship.controller;
 
-import d209.Idontcare.User;
-import d209.Idontcare.UserRepository;
+import d209.Idontcare.TUser;
+import d209.Idontcare.TUserRepository;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.ProcessReceivedRequestReqDto;
@@ -30,7 +30,7 @@ import java.util.List;
 public class RelationshipController {
 
   private final RelationshipService relationshipService;
-  private final UserRepository userRepository;
+  private final TUserRepository TUserRepository;
   
   @GetMapping("")
   @Operation(summary="부모 자식 관계 리스트", description = "부모와 자식 간에 맺어져 있는 관계 리스트를 반환합니다")
@@ -41,7 +41,7 @@ public class RelationshipController {
   })
   public ResponseDto<?> getRelationshipList(){
     /* TODO : 로그인 된 유저 가져오기 필요 */
-    User parent = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.PARENT).toList().get(0);
+    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
     
     List<RelationshipResDto> list = relationshipService.getRelationshipList(parent);
     
@@ -62,7 +62,7 @@ public class RelationshipController {
   })
   public ResponseDto<?> requestRelationship(@Valid @RequestBody RequestRelationshipReqDto req){
     /* TODO : 요청한 사람에 대해 검증 코드 추가 필요 */
-    User parent = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.PARENT).toList().get(0);
+    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
     
     if(parent == null)  //로그인 되지 않은 경우
       return ResponseDto.fail(new AuthenticationException());
@@ -89,7 +89,7 @@ public class RelationshipController {
   public ResponseDto<?> getReceivedRequestList(){
   
     /* TODO : 로그인 된 사람 받아오기 필요 */
-    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
     
     try{
       List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
@@ -111,7 +111,7 @@ public class RelationshipController {
   public ResponseDto<?> processReceivedRequest(ProcessReceivedRequestReqDto req){
     
     /* TODO : 로그인 된 사람 받아오기 필요 */
-    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
     
     try{
       relationshipService.processReceivedRequest(child, req);

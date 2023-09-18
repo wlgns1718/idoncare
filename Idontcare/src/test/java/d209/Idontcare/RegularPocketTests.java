@@ -21,7 +21,7 @@ public class RegularPocketTests {
   private PocketMoneyServiceImpl pocketMoneyService;
   
   @Autowired
-  private UserRepository userRepository;
+  private TUserRepository TUserRepository;
   
   @Test
   @DisplayName("다음 지급일 계산 테스트")
@@ -94,8 +94,8 @@ public class RegularPocketTests {
   @Test
   @DisplayName("정기 용돈 등록 테스트")
   void registRegularPocketMoney(){
-    User parent = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.PARENT).toList().get(0);
-    User child = userRepository.findAll().stream().filter((u) -> u.getType() == User.Type.CHILD).toList().get(0);
+    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
     
     /* 정상 요청 처리 */
     RegistRegularPocketMoneyReqDto req = RegistRegularPocketMoneyReqDto.builder()

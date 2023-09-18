@@ -1,0 +1,4 @@
+
+v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(©Ëêæ8÷Êô¼¨1
+n	java:S116"RRename this field "LoginId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©º•…8Œ‚ˆ½¨1
+y	java:S116"XRename this field "LoginPassword" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿºœÂýÿÿÿÿ8ìçÇ½¨1

@@ -1,8 +1,8 @@
 package d209.Idontcare.pocketmoney.service;
 
-import d209.Idontcare.User;
-import d209.Idontcare.UserRepository;
-import d209.Idontcare.UserService;
+import d209.Idontcare.TUser;
+import d209.Idontcare.TUserRepository;
+import d209.Idontcare.TUserService;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
@@ -24,8 +24,8 @@ import java.time.temporal.TemporalAdjusters;
 @Service
 public class PocketMoneyServiceImpl implements PocketMoneyService {
   
-  private final UserService userService;
-  private final UserRepository userRepository;
+  private final TUserService TUserService;
+  private final TUserRepository TUserRepository;
   private final RegularPocketMoneyRepository regularPocketMoneyRepository;
   
   //다음 지급 예정일에 대해 계산
@@ -67,17 +67,17 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public RegularPocketMoney registryRegularPocketMoney(User parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
+  public RegularPocketMoney registryRegularPocketMoney(TUser parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
     
-    if(parent.getType() != User.Type.PARENT) throw new MustParentException("부모만 요청을 처리할 수 있습니다");
+    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException("부모만 요청을 처리할 수 있습니다");
     
-    User child = null;
+    TUser child = null;
     try{
-      child = userService.findByUserId(req.getChildUserId());
+      child = TUserService.findByUserId(req.getChildUserId());
     } catch(NoSuchUserException e){
       throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
     }
-    if(child.getType() != User.Type.CHILD) throw new MustChildException("대상이 아이가 아닙니다");
+    if(child.getType() != TUser.Type.CHILD) throw new MustChildException("대상이 아이가 아닙니다");
     
     /* TODO : 부모와 아이 간의 관계 확인 필요 */
     
@@ -89,7 +89,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     RegularPocketMoney regularPocketMoney = RegularPocketMoney.builder()
                                             .parent(parent)
-                                            .child(userRepository.getReferenceById(req.getChildUserId()))
+                                            .child(TUserRepository.getReferenceById(req.getChildUserId()))
                                             .type(req.getType())
                                             .cycle(req.getCycle())
                                             .dueDate(dueDate)
