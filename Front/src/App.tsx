@@ -3,13 +3,9 @@ import Login from "./pages/Login";
 import PocketMoney from "./pages/PocketMoney";
 import Wallet from "./pages/Wallet";
 import Home from "./pages/Home";
-import ChildReguestMoney from "./pages/ChildReguestMoney";
-import MoneySendDone from "./pages/MoneySendDone";
-import SendPocketMoney from "./pages/SendPocketMoney";
-import SendPocketMoneyMsg from "./pages/SendPocketMoneyMsg";
-import SendRegularMoney from "./pages/SendRegularMoney";
-import RegularMoneyDone from "./pages/RegularMoneyDone";
-import ReguestedMoney from "./pages/ReguestedMoney";
+import ChildReguestMoney from "./pages/DemandedMoney";
+import SendPocketMoney from "./pages/PocketMoneySend";
+import SendRegularMoney from "./pages/RegularMoneySend";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
@@ -30,12 +26,8 @@ function App() {
             <Route path="wallet/recharge" element={<WalletRecharge />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
             <Route path="childReguestMoney" element={<ChildReguestMoney />} />
-            <Route path="moneySendDone" element={<MoneySendDone />} />
             <Route path="sendPocketMoney" element={<SendPocketMoney />} />
-            <Route path="sendPocketMoneyMsg" element={<SendPocketMoneyMsg />} />
             <Route path="sendRegularMoney" element={<SendRegularMoney />} />
-            <Route path="regularMoneyDone" element={<RegularMoneyDone />} />
-            <Route path="reguestedMoney" element={<ReguestedMoney />} />
             <Route path="signup" element={<Signup />} />
             <Route path="newAccount" element={<NewAccount />} />
           </Routes>

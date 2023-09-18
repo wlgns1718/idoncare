@@ -9,33 +9,51 @@ interface YesNoBtnProps {
   yesLink?: ButtonLink;
   noLink?: ButtonLink;
   className?: string;
+  onYesClick?: () => void; 
+  onNoClick?: () => void; 
 }
 
 const YesNoBtn: React.FC<YesNoBtnProps> = ({
     yesText = "수락",
     noText = "거절",
     yesLink = "/",
-    noLink = "-1",
+    noLink = "/",
     className="",
-  }) => {
-      return (
+    onYesClick,
+    onNoClick,
+}) => {
+
+const handleYesClick = (e) => {
+    if (yesLink === "" && onYesClick) { 
+    e.preventDefault();
+    onYesClick();
+    }
+    };
+
+const handleNoClick = (e) => { 
+    if (noLink === "" && onNoClick) {
+    e.preventDefault();
+    onNoClick();
+    }
+    };
+
+    return (
         <div className={`flex mt-auto ${className}`}>
-        <div className="flex justify-between w-full mt-10">
-          <Link to={noLink} className="block">
-              {/* <div className="bg-gray text-black p-4 pl-16 pr-16 rounded-3xl inline-block mr-5 text-s"> */}
-              <div className="bg-gray text-black p-4 w-44 rounded-3xl inline-block mr-5 text-s">
-                  {noText}
+          <div className="flex justify-between w-full mt-10">
+            <Link to={noLink} onClick={handleNoClick} className={`block ${className}`}>
+              <div className="bg-mediumgray text-black p-4 rounded-3xl inline-block mr-5 text-s w-48">
+                {noText}
               </div>
-          </Link>
-          <Link to={yesLink} className="block">
-              <div className="bg-main text-white p-4 w-72 rounded-3xl inline-block text-s">
-                  {yesText}
+            </Link>
+            <Link to={yesLink} onClick={handleYesClick} className={`block ${className}`}>
+              <div className="bg-main text-white p-4 rounded-3xl inline-block text-s w-48">
+                {yesText}
               </div>
-          </Link>
+            </Link>
+          </div>
         </div>
-      </div>
-      
       )
-  }
-  
+      
+    }
+
 export default YesNoBtn;
