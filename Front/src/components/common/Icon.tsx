@@ -22,7 +22,7 @@ const iconSizeObject = {
     width: 10,
   },
 };
-const iconPathObject : {
+const iconPathObject: {
   [k in ICON_NAME]?: ReactElement;
 } = {
   home: (
@@ -54,19 +54,19 @@ const iconPathObject : {
     />
   ),
 };
-
-export const Icon = ({
-  size = "medium",
-  name = "home",
-}: {
+interface IconProps {
   size?: ICON_SIZE;
   name?: ICON_NAME;
+  className?: string;
+}
+
+export const Icon: React.FC<IconProps> = ({
+  size = "medium",
+  name = "home",
+  className = "",
 }) => {
-  
   return (
-    <div
-      className={`w-[${iconSizeObject[size].width}vw]`}
-    >
+    <div className={`w-[${iconSizeObject[size].width}vw] ${className}`}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
