@@ -9,9 +9,16 @@ import SendRegularMoney from "./pages/RegularMoneySend";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
-import BottomNav from "./components/common/BottomNav";
 import WalletRecharge from "./pages/WalletRecharge";
 import NewAccount from "./pages/NewAccount";
+import Purchase from "./pages/Purchase";
+import QRcodePurchase from "./pages/QRcodePurchase";
+import CameraPurchase from "./pages/CameraPurchase";
+import MyPage from "./pages/MyPage";
+import RegistAccount from "./pages/RegistAccount";
+import ARSPage from "./pages/ARSPage";
+import RegistAgreement from "./pages/RegistAgreement";
+import Report from "./pages/Report";
 
 function App() {
   return (
@@ -21,9 +28,23 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="login" element={<Login />} />
+            <Route path="mypage" element={<MyPage />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="wallet/search" element={<WalletSearch />} />
             <Route path="wallet/recharge" element={<WalletRecharge />} />
+            <Route path="wallet/recharge/regist" element={<RegistAccount />} />
+            <Route
+              path="wallet/recharge/regist/agreement"
+              element={<RegistAgreement />}
+            />
+            <Route
+              path="wallet/recharge/regist/agreement/ARS"
+              element={<ARSPage />}
+            />
+            <Route path="report" element={<Report/>} />
+            <Route path="purchase" element={<Purchase />} />
+            <Route path="purchase/qrcode" element={<QRcodePurchase />} />
+            <Route path="purchase/camera" element={<CameraPurchase />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
             <Route path="childReguestMoney" element={<ChildReguestMoney />} />
             <Route path="sendPocketMoney" element={<SendPocketMoney />} />
@@ -32,7 +53,6 @@ function App() {
             <Route path="newAccount" element={<NewAccount />} />
           </Routes>
         </BrowserRouter>
-        <BottomNav />
       </AppLayout>
     </>
   );

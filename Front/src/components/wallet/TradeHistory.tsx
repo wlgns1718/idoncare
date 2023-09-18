@@ -7,7 +7,7 @@ import { TradeCategory, TradeHistoryCategory } from "../../types/WalletTypes";
 
 function TradeHistory() {
   const navigate = useNavigate();
-  
+
   const [currentCategory, setCurrentCategory] = useState<TradeCategory>("ALL");
 
   const handleCategory = (categoryValue: TradeCategory) => {
@@ -31,19 +31,21 @@ function TradeHistory() {
 
   return (
     <div>
-      <div className="flex py-6 justify-between">
-        <div className="flex gap-5">
+      <div className="flex py-6 justify-between pr-5">
+        <div className="flex gap-5 overflow-x-auto no-scrollbar">
           {categorys.map((category) => (
-            <Chip
-              key={category.type}
-              isSelected={currentCategory === category.type}
-              category={category}
-              handler={handleCategory}
-            />
+            <div className="flex-none">
+              <Chip
+                key={category.type}
+                isSelected={currentCategory === category.type}
+                category={category}
+                handler={handleCategory}
+              />
+            </div>
           ))}
         </div>
         <button className="w-[20px]" onClick={() => navigate("search")}>
-          <Icon name="search"/>
+          <Icon name="search" size="small" />
         </button>
       </div>
       <div className="bg-gray h-16 rounded-xl flex justify-between p-4 items-center">

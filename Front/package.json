@@ -16,6 +16,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
     "react-select": "^5.7.4"
+    "react-qr-code": "^2.0.12",
+    "react-web-qr-reader": "^1.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
