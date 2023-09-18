@@ -134,21 +134,16 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "출금 또는 입금 중 오류가 발생.")
         })
     @PostMapping("/transfer/withdraw/fin_num")
-    public ResponseEntity<?> withdraw(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
+    public ResponseEntity<?> withdraw(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request) {
         withdrawRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
-        try{
+        try {
             WithdrawReponseDto withdraw = accountService.withdrawLogic(withdrawRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 완료", withdraw));
-        } catch (AccountException e){
+        } catch (AccountException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
-        }catch (BackAccountException e){
+        } catch (BackAccountException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
-
-
-
-
-
 }
