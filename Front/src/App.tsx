@@ -18,6 +18,7 @@ import MyPage from "./pages/MyPage";
 import RegistAccount from "./pages/RegistAccount";
 import ARSPage from "./pages/ARSPage";
 import RegistAgreement from "./pages/RegistAgreement";
+import Report from "./pages/Report";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               path="wallet/recharge/regist/agreement/ARS"
               element={<ARSPage />}
             />
+            <Route path="report" element={<Report/>} />
             <Route path="purchase" element={<Purchase />} />
             <Route path="purchase/qrcode" element={<QRcodePurchase />} />
             <Route path="purchase/camera" element={<CameraPurchase />} />
