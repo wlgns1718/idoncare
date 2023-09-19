@@ -2,12 +2,11 @@ package d209.Idontcare.user.dto;
 
 
 import d209.Idontcare.user.entity.Role;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class UserDto {
+public class JoinUserDto {
 
     private Long userId;
 
@@ -15,10 +14,15 @@ public class UserDto {
 
     private String name;
 
+    private String nickName;
+
+    private String birth;
+
+    private String email;
+
+    private AddressDto addressDto;
+
     private Role role;
 
-    private String refreshToken;
-
-    private String nickName;
 
 }

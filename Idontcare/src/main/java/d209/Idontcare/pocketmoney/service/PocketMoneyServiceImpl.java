@@ -8,16 +8,23 @@ import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
 import d209.Idontcare.common.exception.NoSuchUserException;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
+import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
+import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
+import d209.Idontcare.pocketmoney.dto.res.GetPocketMoneyRequestResDto;
+import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
+import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
 import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +34,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   private final TUserService TUserService;
   private final TUserRepository TUserRepository;
   private final RegularPocketMoneyRepository regularPocketMoneyRepository;
+  private final PocketMoneyRequestRepository pocketMoneyRequestRepository;
   
   //다음 지급 예정일에 대해 계산
   public Integer getNextDueDate(LocalDateTime now, RegularPocketMoney.Type type, Integer cycle){
@@ -98,5 +106,52 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     RegularPocketMoney saved = regularPocketMoneyRepository.save(regularPocketMoney);
     
     return saved;
+  }
+  
+  @Override
+  public void sendPocketMoney(TUser parent, SendPocketMoneyReqDto req){
+    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException("부모만 요청할 수 있습니다");
+    
+    TUser child = null;
+    try{
+      child = TUserService.findByUserId(req.getChildUserId());
+    } catch(NoSuchUserException e){
+      throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
+    }
+    
+    /* TODO : 용돈 지급 필요 */
+  }
+  
+  @Override
+  public void requestPocketMoney(TUser child, RequestPocketMoneyReqDto req) throws MustParentException, MustChildException {
+    if(child.getType() != TUser.Type.CHILD) throw new MustChildException("아이만 요청할 수 있습니다");
+    
+    TUser parent = null;
+    try{
+      parent = TUserService.findByUserId(req.getParentUserId());
+    } catch(NoSuchUserException e){
+      throw new NoSuchUserException("해당 부모를 찾을 수 없습니다");
+    }
+    
+    PocketMoneyRequest request = PocketMoneyRequest.builder()
+        .parent(parent)
+        .child(child)
+        .amount(req.getAmount())
+        .content(req.getContent())
+        .type(PocketMoneyRequest.Type.REQUEST)
+        .build();
+    
+    pocketMoneyRequestRepository.save(request);
+    
+  }
+  
+  @Override
+  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(TUser parent) throws MustParentException {
+    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException();
+    
+    List<Tuple> requests = pocketMoneyRequestRepository.findAllByParent(parent);
+    System.out.println(requests);
+    
+    return null;
   }
 }

@@ -6,4 +6,5 @@ import lombok.Getter;
 public class CommonException extends RuntimeException{
   public int code;
   public String message;
+
 }
