@@ -12,7 +12,6 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +23,8 @@ public class APIBuilder{
   private String url;
   
   private MediaType mediaType;
+  
+  private Class returnType;
   
   private Map<String, Object> header;
   private Map<String, Object> query;
@@ -38,11 +39,15 @@ public class APIBuilder{
     
     builder.method = null;
     builder.url = null;
-    builder.mediaType = MediaType.APPLICATION_JSON;
+    builder.mediaType = null;
     
     builder.header = new HashMap<>();
     builder.query = new HashMap<>();
     builder.body = new HashMap<>();
+    
+    builder.returnType = new HashMap<String, Object>().getClass();
+    
+    System.out.println(builder.returnType);
     
     return builder;
   }
@@ -88,6 +93,11 @@ public class APIBuilder{
     return this;
   }
   
+  public APIBuilder returnType(Class returnType){
+    this.returnType = returnType;
+    return this;
+  }
+  
   public APIResultDto execute(){
     if(method == null) throw new RuntimeException("method 설정이 필요합니다");
     if(url == null) throw new RuntimeException("url 설정이 필요합니다");
@@ -102,6 +112,9 @@ public class APIBuilder{
     
     /* 헤더 정의 */
     HttpHeaders requestHeader = new HttpHeaders();
+    if(mediaType == null && !body.isEmpty()){
+      requestHeader.setContentType(MediaType.APPLICATION_JSON);
+    }
     requestHeader.setContentType(mediaType);
     for(Map.Entry<String, Object> h: header.entrySet()) requestHeader.set(h.getKey(), h.getValue().toString());
     
@@ -120,11 +133,11 @@ public class APIBuilder{
     }
     
     RestTemplate restTemplate = new RestTemplate();
-    ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+    ResponseEntity response = restTemplate.exchange(
         uri,
         method,
         entity,
-        new ParameterizedTypeReference<Map<String, Object>>() {}
+        returnType
     );
     
     APIResultDto apiResult = new APIResultDto();

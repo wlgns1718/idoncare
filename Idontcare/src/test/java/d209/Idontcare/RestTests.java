@@ -16,6 +16,7 @@ import d209.Idontcare.common.service.APIService;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,37 +34,16 @@ public class RestTests {
   @DisplayName("GET 테스트")
   void getTest() {
     APIResultDto result = APIBuilder.build()
-        .url("http://localhost:3000")
+        .url("https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/openbanking/oauth/2.0/token")
         .method(HttpMethod.POST)
-        .mediaType(MediaType.APPLICATION_FORM_URLENCODED)
-        .header(Map.of("header1", "headerValue1", "header2", 2))
-        .query(Map.of("query1", 1, "query2", "q_value2"))
-        .body(Map.of("name", "이우철", "age", 25))
+        .body(Map.of(  "phoneNumber", "01012345678",
+                  "birth", "1990101",
+                  "mobileSort", "SK",
+                  "name", "김엄마"))
         .execute();
     
     System.out.println(result.getStatus());
     System.out.println(result.getHeader());
     System.out.println(result.getBody());
-    ResponseBody body = result.getBody(ResponseBody.class);
-    System.out.println(body);
-  }
-}
-
-class ResponseBody{
-  String result;
-  
-  public String getResult() {
-    return result;
-  }
-  
-  public void setResult(String result) {
-    this.result = result;
-  }
-  
-  @Override
-  public String toString() {
-    return "ResponseBody{" +
-        "result='" + result + '\'' +
-        '}';
   }
 }

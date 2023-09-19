@@ -11,7 +11,7 @@ import java.util.Map;
 public class APIResultDto {
   HttpStatus status;
   Map<String, String> header;
-  Map<String, Object> body;
+  Object body;
   
   public <T> T getHeader(Class<T> clazz){
     Gson gson = new Gson();
