@@ -1,5 +1,5 @@
-import accept from "../../assets/imgs/newAccount/accept.png";
-import circle from "../../assets/imgs/newAccount/circle.png";
+import accept from "../../../assets/imgs/newAccount/accept.png";
+import circle from "../../../assets/imgs/newAccount/circle.png";
 
 type Text = string;
 type IsCheck = boolean;

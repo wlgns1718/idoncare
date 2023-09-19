@@ -1,13 +1,13 @@
 import { useState } from "react";
 import FullBtn from "../common/FullBtn";
-import NewAccountCheckBox from "./NewAccountCheckBox";
-import NewAccountHeader from "./NewAccountHeader";
-import NewAccountInput from "./NewAccountInput";
-import NewAccountSelectBox from "./NewAccountSelectBox";
-import NewAccountToggleButton from "./NewAccountToggleButton";
+import NewAccountCheckBox from "./common/NewAccountCheckBox";
+import NewAccountHeader from "./common/NewAccountHeader";
+import NewAccountInput from "./common/NewAccountInput";
+import NewAccountSelectBox from "./common/NewAccountSelectBox";
+import NewAccountToggleButton from "./common/NewAccountToggleButton";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 
-const NewAccountCreateStep1 = ({ onChangeStep, step }: NewAccountCreate) => {
+const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const [serviceAgree, setServiceAgree] = useState(false);
   const [privateAgree, setPrivateAgree] = useState(false);
   const [local, setLocal] = useState(true);
@@ -52,4 +52,4 @@ const NewAccountCreateStep1 = ({ onChangeStep, step }: NewAccountCreate) => {
   );
 };
 
-export default NewAccountCreateStep1;
+export default NewAccountUserInfo;

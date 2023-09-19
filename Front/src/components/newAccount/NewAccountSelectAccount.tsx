@@ -1,12 +1,12 @@
 import { useState } from "react";
 import FullBtn from "../common/FullBtn";
-import NewAccountCheckBox from "./NewAccountCheckBox";
-import NewAccountHeader from "./NewAccountHeader";
-import NewAccountInput from "./NewAccountInput";
-import NewAccountSelectBox from "./NewAccountSelectBox";
+import NewAccountCheckBox from "./common/NewAccountCheckBox";
+import NewAccountHeader from "./common/NewAccountHeader";
+import NewAccountInput from "./common/NewAccountInput";
+import NewAccountSelectBox from "./common/NewAccountSelectBox";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 
-const NewAccountCreateStep2 = ({ onChangeStep, step }: NewAccountCreate) => {
+const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const [withdrawServiceAgree, setWithdrawServiceAgree] = useState(false);
   const [finDataAgree, setFinDataAgree] = useState(false);
   const [privateFinDataAgree, setPrivateFinDataAgree] = useState(false);
@@ -40,4 +40,4 @@ const NewAccountCreateStep2 = ({ onChangeStep, step }: NewAccountCreate) => {
   );
 };
 
-export default NewAccountCreateStep2;
+export default NewAccountSelectAccount;
