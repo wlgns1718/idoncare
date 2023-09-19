@@ -4,19 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
+        // color
         soft: "#EFF6FF",
         light: "#E1E8FA",
         main: "#2479E0",
         thick: "#1C51AD",
         dark: "#133879",
+
+        // gray
         white: "#FFFFFF",
         gray: "#F0F0F0",
         darkgray: "#666666",
+        mediumgray: "#B2B2B2",
         black: "#000000",
+
         // 임시 추가
         yellow: "#F4D160",
         sky: "#75C2F6",
-        mediumgray: "#B2B2B2",
       },
       fontSize: {
         t: "1.2rem",

@@ -9,53 +9,49 @@ interface YesNoBtnProps {
   yesLink?: ButtonLink;
   noLink?: ButtonLink;
   className?: string;
-  onYesClick?: () => void; 
-  onNoClick?: () => void; 
+  onYesClick?: () => void;
+  onNoClick?: () => void;
 }
 
 const YesNoBtn: React.FC<YesNoBtnProps> = ({
-    yesText = "수락",
-    noText = "거절",
-    yesLink = "/",
-    noLink = "/",
-    className="",
-    onYesClick,
-    onNoClick,
+  yesText = "수락",
+  noText = "거절",
+  yesLink = "/",
+  noLink = "/",
+  className = "",
+  onYesClick,
+  onNoClick,
 }) => {
-
   const handleYesClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault(); // Always prevent default action
-    if (onYesClick) { 
+    if (onYesClick) {
       onYesClick();
     }
   };
-  
-  
-  const handleNoClick = (e: React.MouseEvent<HTMLAnchorElement>) => { 
+
+  const handleNoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (noLink === "" && onNoClick) {
       e.preventDefault();
       onNoClick();
     }
   };
-  
 
-    return (
-        <div className={`flex mt-auto ${className}`}>
-          <div className="flex justify-between w-full mt-10">
-            <Link to={noLink} onClick={handleNoClick} className={`block ${className}`}>
-              <div className="bg-mediumgray text-black p-4 rounded-3xl inline-block mr-5 text-s w-48">
-                {noText}
-              </div>
-            </Link>
-            <Link to={yesLink} onClick={handleYesClick} className={`block ${className}`}>
-              <div className="bg-main text-white p-4 rounded-3xl inline-block text-s w-48">
-                {yesText}
-              </div>
-            </Link>
+  return (
+    <div className={`flex mt-auto ${className}`}>
+      <div className="flex justify-between w-full mt-10">
+        <Link to={noLink} onClick={handleNoClick} className={`block ${className}`}>
+          <div className="inline-block w-48 p-4 mr-5 text-black bg-mediumgray rounded-3xl text-s">
+            {noText}
           </div>
-        </div>
-      )
-      
-    }
+        </Link>
+        <Link to={yesLink} onClick={handleYesClick} className={`block ${className}`}>
+          <div className="inline-block w-48 p-4 text-white bg-main rounded-3xl text-s">
+            {yesText}
+          </div>
+        </Link>
+      </div>
+    </div>
+  );
+};
 
 export default YesNoBtn;
