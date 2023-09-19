@@ -2,18 +2,20 @@ import FullBtn from "../common/FullBtn";
 import Profile from "../common/Profile";
 
 type Type = string;
+type Step = number;
 interface SignupTypeSelectProps {
   onNextStep: () => void;
-  onSetType: (type: Type) => void;
+  onSetInfo: (setType: number, value: string) => void;
   userType?: Type | undefined;
+  step: Step;
 }
 
-const SignupTypeSelect = ({ onNextStep, onSetType, userType }: SignupTypeSelectProps) => {
+const SignupTypeSelect = ({ onNextStep, onSetInfo, userType, step }: SignupTypeSelectProps) => {
   return (
     <>
       <div
         onClick={() => {
-          onSetType("CHILDREN");
+          onSetInfo(step, "CHILDREN");
         }}
         className={`${
           userType === "CHILDREN" ? "scale-105" : "scale-95 grayscale"
@@ -27,7 +29,7 @@ const SignupTypeSelect = ({ onNextStep, onSetType, userType }: SignupTypeSelectP
       </div>
       <div
         onClick={() => {
-          onSetType("PARENT");
+          onSetInfo(step, "PARENT");
         }}
         className={`${
           userType === "PARENT" ? "scale-105" : "scale-95 grayscale"
