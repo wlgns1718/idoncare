@@ -1,12 +1,0 @@
-
-{	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ÈÚ¡ùÿÿÿÿ8¸ûÜœ©1
-X	java:S125""<This block of commented-out lines of code should be removed.(àô¢¢8»ûÜœ©1
-f
-java:S1128"IRemove this unused import 'KFTC.openBank.exception.BackAccountException'.(ò‡ÀË8»ûÜœ©1
-e
-java:S1128"HRemove this unused import 'io.netty.handler.codec.string.StringEncoder'.(ÃªÛ…8»ûÜœ©1
-V
-java:S1128
-"4Remove this unused import 'javax.persistence.Tuple'.(­ÆÔüÿÿÿÿ8»ûÜœ©1
-Q
-java:S1128"/Remove this unused import 'java.util.Optional'.(¨˜ëİüÿÿÿÿ8»ûÜœ©1

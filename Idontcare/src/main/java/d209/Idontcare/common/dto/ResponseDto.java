@@ -16,7 +16,6 @@ public class ResponseDto<T> {
     ResponseDto<D> result = new ResponseDto<D>();
     result.code = 200;
     result.data = data;
-    
     return result;
   }
 
@@ -24,7 +23,6 @@ public class ResponseDto<T> {
     ResponseDto<Void> result = new ResponseDto<>();
     result.code = e.getCode();
     result.error = e.getMessage();
-    
     return result;
   }
 }
