@@ -5,11 +5,13 @@ import com.google.gson.JsonElement;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
 @Data
-public class APIResultDto<Header, Body> {
+public class APIResultDto {
   HttpStatus status;
-  Header header;
-  Body body;
+  Map<String, String> header;
+  Map<String, Object> body;
   
   public <T> T getHeader(Class<T> clazz){
     Gson gson = new Gson();

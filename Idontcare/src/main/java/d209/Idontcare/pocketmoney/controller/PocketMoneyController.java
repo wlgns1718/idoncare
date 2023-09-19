@@ -11,6 +11,7 @@ import d209.Idontcare.common.exception.MustParentException;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
+import d209.Idontcare.pocketmoney.dto.res.GetPocketMoneyRequestResDto;
 import d209.Idontcare.pocketmoney.dto.res.RegistRegularPocketMoneyResDto;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.service.PocketMoneyService;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Tag(name="용돈관리 API")
 @RestController
@@ -105,6 +107,22 @@ public class PocketMoneyController {
         try{
             pocketMoneyService.requestPocketMoney(child, req);
             return ResponseDto.success(null);
+        } catch(CommonException e){
+            return ResponseDto.fail(e);
+        }
+    }
+    
+    //부모가 용돈 조르기 목록을 볼 수 있다
+    @GetMapping("/request")
+    @Operation(summary="조르기 목록 조회", description="부모가 아이의 조르기 목록을 볼 수 있다")
+    public ResponseDto getPocketMoneyRequest(){
+        /* TODO : 요청한 사람에 대해 검증 코드 추가 필요 */
+        
+        TUser parent = tUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+        
+        try{
+            List<GetPocketMoneyRequestResDto> list =  pocketMoneyService.getPocketMoneyRequest(parent);
+            return ResponseDto.success(new GetPocketMoneyRequestResDto.Result(list));
         } catch(CommonException e){
             return ResponseDto.fail(e);
         }

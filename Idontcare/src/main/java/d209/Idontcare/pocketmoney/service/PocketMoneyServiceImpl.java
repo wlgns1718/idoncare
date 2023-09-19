@@ -10,6 +10,7 @@ import d209.Idontcare.common.exception.NoSuchUserException;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
+import d209.Idontcare.pocketmoney.dto.res.GetPocketMoneyRequestResDto;
 import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
@@ -17,11 +18,13 @@ import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -140,5 +143,15 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     pocketMoneyRequestRepository.save(request);
     
+  }
+  
+  @Override
+  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(TUser parent) throws MustParentException {
+    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException();
+    
+    List<Tuple> requests = pocketMoneyRequestRepository.findAllByParent(parent);
+    System.out.println(requests);
+    
+    return null;
   }
 }

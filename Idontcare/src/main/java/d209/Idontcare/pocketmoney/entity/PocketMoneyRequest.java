@@ -2,22 +2,19 @@ package d209.Idontcare.pocketmoney.entity;
 
 import d209.Idontcare.TUser;
 import d209.Idontcare.common.entity.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Data @EqualsAndHashCode(callSuper=false)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PocketMoneyRequest extends BaseEntity {
   
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long regularPocketMoneyId;
+  private Long pocketMoneyRequestId;
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn
