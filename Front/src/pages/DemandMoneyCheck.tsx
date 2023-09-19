@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Header from "../components/common/Header";
 import YesNoBtn from '../components/common/YesNoBtn';
 import SmallBtn from "../components/pocketmoney/SmallBtn";
-import ChildReguestMoneyDetail from "../components/pocketmoney/ChildReguestDetail";
+import ChildReguestMoneyDetail from "../components/pocketmoney/KidDemandedDetail";
 import MoneyDone from '../components/pocketmoney/Done';
 
 const ChildReguestMoney: React.FC = () => {

@@ -23,19 +23,21 @@ const YesNoBtn: React.FC<YesNoBtnProps> = ({
     onNoClick,
 }) => {
 
-const handleYesClick = (e) => {
-    if (yesLink === "" && onYesClick) { 
-    e.preventDefault();
-    onYesClick();
+  const handleYesClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault(); // Always prevent default action
+    if (onYesClick) { 
+      onYesClick();
     }
-    };
-
-const handleNoClick = (e) => { 
+  };
+  
+  
+  const handleNoClick = (e: React.MouseEvent<HTMLAnchorElement>) => { 
     if (noLink === "" && onNoClick) {
-    e.preventDefault();
-    onNoClick();
+      e.preventDefault();
+      onNoClick();
     }
-    };
+  };
+  
 
     return (
         <div className={`flex mt-auto ${className}`}>

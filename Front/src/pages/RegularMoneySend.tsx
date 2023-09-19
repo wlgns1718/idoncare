@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import RegularMoneySendForm from '../components/pocketmoney/RegularMoneySendForm'
+import RegularMoneySendForm from '../components/pocketmoney/RegularSendForm'
 import MoneyDone from '../components/pocketmoney/Done';
 
 const SendRegularMoney: React.FC = () => {

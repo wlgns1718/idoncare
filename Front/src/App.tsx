@@ -3,9 +3,11 @@ import Login from "./pages/Login";
 import PocketMoney from "./pages/PocketMoney";
 import Wallet from "./pages/Wallet";
 import Home from "./pages/Home";
-import ChildReguestMoney from "./pages/DemandedMoney";
+import DemandMoneyCheck from "./pages/DemandMoneyCheck";
 import SendPocketMoney from "./pages/PocketMoneySend";
 import SendRegularMoney from "./pages/RegularMoneySend";
+import KidDemandMoney from "./pages/KidDemandMoney";
+import KidDemandMoneyList from "./pages/KidDemandMoneyList";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
@@ -46,9 +48,11 @@ function App() {
             <Route path="purchase/qrcode" element={<QRcodePurchase />} />
             <Route path="purchase/camera" element={<CameraPurchase />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
-            <Route path="childReguestMoney" element={<ChildReguestMoney />} />
+            <Route path="childReguestMoney" element={<DemandMoneyCheck />} />
             <Route path="sendPocketMoney" element={<SendPocketMoney />} />
             <Route path="sendRegularMoney" element={<SendRegularMoney />} />
+            <Route path="kidDemandMoney" element={<KidDemandMoney />} />
+            <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
             <Route path="signup" element={<Signup />} />
             <Route path="newAccount" element={<NewAccount />} />
           </Routes>
