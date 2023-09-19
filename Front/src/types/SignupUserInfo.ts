@@ -1,25 +1,21 @@
-type Nickname = string;
-type Password = string;
+type Type = string;
 type Name = string;
-type Phone = string;
+type Nickname = string;
 type Birth = string;
 type Email = string;
-type Type = string;
-type PayPassword = string;
-type BankCode = string;
-type Account = string;
-type SeqNo = string;
+type Address = string;
+type Phone = string;
+type Code = string;
+type HasAccount = string;
 
 export interface SignupUserInfo {
-  nickname?: Nickname;
+  type?: Type;
   name?: Name;
-  password?: Password;
-  phone?: Phone;
+  nickname?: Nickname;
   birth?: Birth;
   email?: Email;
-  type?: Type;
-  payPassword?: PayPassword;
-  bankCode?: BankCode;
-  account?: Account;
-  seqNo?: SeqNo;
+  address?: Address;
+  phone?: Phone;
+  code?: Code;
+  hasAccount?: HasAccount;
 }

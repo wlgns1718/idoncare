@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import Login from "./pages/Login";
 import PocketMoney from "./pages/PocketMoney";
 import Wallet from "./pages/Wallet";
@@ -21,38 +22,35 @@ import RegistAgreement from "./pages/RegistAgreement";
 import Report from "./pages/Report";
 
 function App() {
+  const queryClient = new QueryClient();
   return (
     <>
       <AppLayout>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="mypage" element={<MyPage />} />
-            <Route path="wallet" element={<Wallet />} />
-            <Route path="wallet/search" element={<WalletSearch />} />
-            <Route path="wallet/recharge" element={<WalletRecharge />} />
-            <Route path="wallet/recharge/regist" element={<RegistAccount />} />
-            <Route
-              path="wallet/recharge/regist/agreement"
-              element={<RegistAgreement />}
-            />
-            <Route
-              path="wallet/recharge/regist/agreement/ARS"
-              element={<ARSPage />}
-            />
-            <Route path="report" element={<Report/>} />
-            <Route path="purchase" element={<Purchase />} />
-            <Route path="purchase/qrcode" element={<QRcodePurchase />} />
-            <Route path="purchase/camera" element={<CameraPurchase />} />
-            <Route path="pocketMoney" element={<PocketMoney />} />
-            <Route path="childReguestMoney" element={<ChildReguestMoney />} />
-            <Route path="sendPocketMoney" element={<SendPocketMoney />} />
-            <Route path="sendRegularMoney" element={<SendRegularMoney />} />
-            <Route path="signup" element={<Signup />} />
-            <Route path="newAccount" element={<NewAccount />} />
-          </Routes>
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="login" element={<Login />} />
+              <Route path="mypage" element={<MyPage />} />
+              <Route path="wallet" element={<Wallet />} />
+              <Route path="wallet/search" element={<WalletSearch />} />
+              <Route path="wallet/recharge" element={<WalletRecharge />} />
+              <Route path="wallet/recharge/regist" element={<RegistAccount />} />
+              <Route path="wallet/recharge/regist/agreement" element={<RegistAgreement />} />
+              <Route path="wallet/recharge/regist/agreement/ARS" element={<ARSPage />} />
+              <Route path="report" element={<Report />} />
+              <Route path="purchase" element={<Purchase />} />
+              <Route path="purchase/qrcode" element={<QRcodePurchase />} />
+              <Route path="purchase/camera" element={<CameraPurchase />} />
+              <Route path="pocketMoney" element={<PocketMoney />} />
+              <Route path="childReguestMoney" element={<ChildReguestMoney />} />
+              <Route path="sendPocketMoney" element={<SendPocketMoney />} />
+              <Route path="sendRegularMoney" element={<SendRegularMoney />} />
+              <Route path="signup" element={<Signup />} />
+              <Route path="newAccount" element={<NewAccount />} />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
       </AppLayout>
     </>
   );
