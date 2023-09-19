@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data @Builder
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor @AllArgsConstructor
 public class RegularPocketMoney extends BaseEntity {
 

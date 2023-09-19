@@ -1,8 +1,5 @@
-package d209.Idontcare.utils;
+package d209.Idontcare.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
 

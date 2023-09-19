@@ -63,11 +63,11 @@ public class UserController {
     }
 
     @PostMapping(value = "/regist")
-    public ResponseDto<?> regist(@RequestBody JoinUserDto joinUserDto){
+    public ResponseDto<?> regist(@RequestBody JoinUserReqDto req){
 
         try{
            //유저 테이블과 유저 디테일에 들어갈 데이터 분리
-           userService.joinUser(joinUserDto);
+           userService.joinUser(req);
 
            return ResponseDto.success(null);
         }

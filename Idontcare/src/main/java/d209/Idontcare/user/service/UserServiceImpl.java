@@ -2,27 +2,17 @@ package d209.Idontcare.user.service;
 
 
 
-import d209.Idontcare.common.exception.CommonException;
-import d209.Idontcare.common.exception.RegistFailException;
-import d209.Idontcare.user.dto.AddressDto;
-import d209.Idontcare.user.dto.JoinUserDto;
-import d209.Idontcare.user.dto.UserDetailDto;
-import d209.Idontcare.user.dto.UserDto;
-import d209.Idontcare.user.entity.Address;
+import d209.Idontcare.common.exception.*;
+import d209.Idontcare.user.dto.JoinUserReqDto;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.entity.UserDetail;
-import d209.Idontcare.user.repository.AddressRepository;
-import d209.Idontcare.user.repository.UserDetailRepository;
-import d209.Idontcare.user.repository.UserRepository;
+import d209.Idontcare.user.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Transactional
 @RequiredArgsConstructor
@@ -41,53 +31,33 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<User> findByUserId(Long userId){
         return userRepository.findById(userId);
     }
 
     @Override
-    public Long joinUser(JoinUserDto joinUserDto) throws RegistFailException {
+    public void joinUser(JoinUserReqDto req) throws RegistFailException {
+        userRepository.findById(req.getUserId()).ifPresent((u) -> {throw new BadRequestException("가입된 회원입니다");});
+        userRepository.findByPhoneNumber(req.getPhoneNumber()).ifPresent((u) -> {throw new DuplicatedException("사용중인 휴대폰번호입니다");});
+        
+        User user = User.builder()
+            .userId(req.getUserId())
+            .phoneNumber(req.getPhoneNumber())
+            .name(req.getName())
+            .role(req.getRole())
+            .nickName(req.getNickName())
+            .build();
 
-        UserDto userDto = new UserDto();
-        UserDetailDto userDetailDto = new UserDetailDto();
-        AddressDto addressDto = new AddressDto();
-
-        //user 생성
-        userDto.setUserId(joinUserDto.getUserId());
-        userDto.setNickName(joinUserDto.getNickName());
-        userDto.setPhoneNumber(joinUserDto.getPhoneNumber());
-        userDto.setRole(joinUserDto.getRole());
-        userDto.setName(joinUserDto.getName());
-
-        User user = User.toEntity(userDto);
-
-        System.out.println(user);
-        System.out.println("save 해보겠습니다");
-
-
-        User saveUser = userRepository.save(user);
-        System.out.println("save 완료");
-        System.out.println(saveUser);
-
-
-        //userDetail 생성
-        userDetailDto.setUserId(joinUserDto.getUserId());
-        userDetailDto.setBirth(joinUserDto.getBirth());
-        userDetailDto.setEmail(joinUserDto.getEmail());
-
-        UserDetail userDetail = new UserDetail();
-        userDetail.toEntity(userDetailDto, saveUser);
-
-        //userAddress 생성
-        addressDto = joinUserDto.getAddressDto();
-
-        Address address = new Address();
-        address.toEntity(addressDto,saveUser);
+        User savedUser = userRepository.save(user);
+        
+        UserDetail userDetail = UserDetail.builder()
+            .userDetailId(req.getUserId())
+            .user(savedUser)
+            .email(req.getEmail())
+            .build();
 
         userDetailRepository.save(userDetail);
-        addressRepository.save(address);
-
-        return user.getUserId();
     }
 
 
@@ -97,9 +67,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public Map<String, Object> login(Long userId, String password) throws Exception {
         Optional<User> user = userRepository.findById(userId);
-        if(user == null){
-            log.info("등록되지 않은 사용자 입니다.");
-            throw new Exception();
+        if(user.isEmpty()){
+            throw new AuthenticationException();
         }
         Map<String,Object> res = new HashMap<>();
         return res;

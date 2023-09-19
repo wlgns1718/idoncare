@@ -1,10 +1,7 @@
-package d209.Idontcare.config;
+package d209.Idontcare.jwt;
 
 
 import d209.Idontcare.user.service.UserService;
-import d209.Idontcare.utils.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

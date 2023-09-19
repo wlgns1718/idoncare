@@ -32,9 +32,12 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class OauthServiceImpl implements OauthService{
     private final UserService userService;
+    
+    private final static long HOUR = 1000 * 60 * 60;
+    private final static long DAY = 1000 * 60 * 60 * 24;
 
-    private static final Long ACCESS_EXPIRED = 2000 * 60 * 60L; //2시간
-    private static final Long REFRESH_EXPIRED = 1000 * 60 * 60 * 24 * 7L; //7일
+    private static final Long ACCESS_EXPIRED = 2 * HOUR; //2시간
+    private static final Long REFRESH_EXPIRED = 7 * DAY; //7일
 
     //properties분리해서 숨겨줄 값들
     private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
