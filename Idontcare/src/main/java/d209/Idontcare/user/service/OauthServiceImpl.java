@@ -31,7 +31,6 @@ public class OauthServiceImpl implements OauthService{
     private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
     private static final String REDIRECT_URL = "http://127.0.0.1:8000";
     private static final String CLIENT_SECRET = "Srvk6ZfqwnWw6bDf2tZVA4I9VP731p3D";
-    private static final String SECRET_KEY = "i.don.care";
 
     @Override
 //    public String getOauthAccessToken(String code)throws IOException, NullPointerException, Exception{
@@ -152,19 +151,14 @@ public class OauthServiceImpl implements OauthService{
         else{
 
             System.out.println("이우철 싸패");
-            try{
-                String jwtAccessToken = JwtUtil.createToken(String.valueOf(id),SECRET_KEY,ACCESS_EXPIRED);
-                userInfo.put("accessToken",jwtAccessToken);
-            }catch (Exception e){
-                System.out.println(e.toString());
-            }
 
-
-            String jwtRefreshToken = JwtUtil.createToken(String.valueOf(id),SECRET_KEY, REFRESH_EXPIRED);
+            String jwtAccessToken = JwtUtil.createToken(String.valueOf(id),ACCESS_EXPIRED);
+            String jwtRefreshToken = JwtUtil.createToken(String.valueOf(id),REFRESH_EXPIRED);
 
             userInfo.put("id",id);
 
             userInfo.put("refreshToken",jwtRefreshToken);
+            userInfo.put("accessToken",jwtAccessToken);
             user.get().setRefreshToken(jwtRefreshToken);
             userInfo.put("msg","등록된 회원입니다.");
             userInfo.put("boolean", true);

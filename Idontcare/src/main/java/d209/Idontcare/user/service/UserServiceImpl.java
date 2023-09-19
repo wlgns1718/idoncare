@@ -109,24 +109,5 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id);
     }
 
-    // 비밀번호 해싱
-    private String hashing(String password, String salt) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");// SHA-256 해시함수를 이용
-        for (int i = 0; i < 10000; i++) {// salt를 합쳐 새로운 해시비밀번호를 생성해 디코딩를 방지
-            String temp = password + salt;// 패스워드와 Salt를 합쳐 새로운 문자열 생성
-            md.update(temp.getBytes());// temp의 문자열을 해싱하여 md에 저장
-            password = byteToString(md.digest());// md객체의 다이제스트를 얻어 password를 갱신
-        }
-        return password;
-    }
-
-    private String byteToString(byte[] temp) {// 바이트 값을 16진수로 변경
-        StringBuilder sb = new StringBuilder();
-        for (byte a : temp) {
-            sb.append(String.format("%02x", a));
-        }
-        return sb.toString();
-    }
-
 
 }
