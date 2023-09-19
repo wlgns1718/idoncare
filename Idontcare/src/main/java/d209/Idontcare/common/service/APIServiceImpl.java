@@ -34,7 +34,7 @@ public class APIServiceImpl implements APIService {
     Map<String, Object> map = mapper.convertValue(obj, Map.class);
     return map;
   }
-  private APIResultDto<Map<String, String>, Map<String, Object>> request(HttpMethod method, String path, Map<String, Object> headers, Map<String, Object> body){
+  private APIResultDto request(HttpMethod method, String path, Map<String, Object> headers, Map<String, Object> body){
     //요청 헤더 정의
     HttpHeaders requestHeader = new HttpHeaders();
     if(headers != null){
@@ -51,7 +51,7 @@ public class APIServiceImpl implements APIService {
         new ParameterizedTypeReference<Map<String, Object>>(){}
     );
     
-    APIResultDto<Map<String, String>, Map<String, Object>> apiResult = new APIResultDto<>();
+    APIResultDto apiResult = new APIResultDto();
     
     // 결과 status 저장
     apiResult.setStatus(response.getStatusCode());
@@ -68,27 +68,27 @@ public class APIServiceImpl implements APIService {
   
   /* GET 요청 */
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path) {
+  public APIResultDto get(String path) {
     return get(path, (Map<String, Object>) null, (Map<String, Object>) null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Map<String, Object> headers) {
+  public APIResultDto get(String path, Map<String, Object> headers) {
     return get(path, headers, (Map<String, Object>) null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Object headers) {
+  public APIResultDto get(String path, Object headers) {
     Map<String, Object> map = toMap(headers);
     return get(path, map);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Object headers, Object queries) {
+  public APIResultDto get(String path, Object headers, Object queries) {
     Map<String, Object> headersMap = toMap(headers);
     Map<String, Object> queriesMap = toMap(queries);
     
     return get(path, headersMap, queriesMap);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Map<String, Object> headers, Map<String, Object> queries){
+  public APIResultDto get(String path, Map<String, Object> headers, Map<String, Object> queries){
     //path에 파라미터 같이 붙이기
     URI uri = uriBuild(path, queries);
    
@@ -108,7 +108,7 @@ public class APIServiceImpl implements APIService {
     
     System.out.println(response.getBody());
     
-    APIResultDto<Map<String, String>, Map<String, Object>> apiResult = new APIResultDto<>();
+    APIResultDto apiResult = new APIResultDto();
     
     // 결과 status 저장
     apiResult.setStatus(response.getStatusCode());
@@ -122,12 +122,12 @@ public class APIServiceImpl implements APIService {
     return apiResult;
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Object headers, Map<String, Object> queries) {
+  public APIResultDto get(String path, Object headers, Map<String, Object> queries) {
     Map<String, Object> map = toMap(headers);
     return get(path, map, queries);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> get(String path, Map<String, Object> headers, Object queries) {
+  public APIResultDto get(String path, Map<String, Object> headers, Object queries) {
     Map<String, Object> map = toMap(queries);
     
     return get(path, headers, map);
@@ -135,104 +135,104 @@ public class APIServiceImpl implements APIService {
   
   /* POST요청 */
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path) {
+  public APIResultDto post(String path) {
     return post(path, (Map<String, Object>) null, (Map<String, Object>)null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers) {
+  public APIResultDto post(String path, Map<String, Object> headers) {
     return post(path, headers, (Map<String, Object>)null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Object headers) {
+  public APIResultDto post(String path, Object headers) {
     Map<String, Object> map = toMap(headers);
     return post(path, map, null);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Object headers, Object body){
+  public APIResultDto post(String path, Object headers, Object body){
     Map<String, Object> headersMap = toMap(headers);
     Map<String, Object> bodyMap = toMap(body);
     
     return post(path, headersMap, bodyMap);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Object headers, Map<String, Object> body){
+  public APIResultDto post(String path, Object headers, Map<String, Object> body){
     Map<String, Object> map = toMap(headers);
     return post(path, map, body);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers, Object body){
+  public APIResultDto post(String path, Map<String, Object> headers, Object body){
     Map<String, Object> map = toMap(body);
     
     return post(path, headers, map);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> post(String path, Map<String, Object> headers, Map<String, Object> body){
+  public APIResultDto post(String path, Map<String, Object> headers, Map<String, Object> body){
     return request(HttpMethod.POST, path, headers, body);
   }
   
   /* PUT요청 */
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path) {
+  public APIResultDto put(String path) {
     return put(path, (Map<String, Object>) null, (Map<String, Object>)null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Map<String, Object> headers) {
+  public APIResultDto put(String path, Map<String, Object> headers) {
     return put(path, headers, (Map<String, Object>)null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Object headers) {
+  public APIResultDto put(String path, Object headers) {
     Map<String, Object> map = toMap(headers);
     return put(path, map, null);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Object headers, Object body){
+  public APIResultDto put(String path, Object headers, Object body){
     Map<String, Object> headersMap = toMap(headers);
     Map<String, Object> bodyMap = toMap(body);
     
     return put(path, headersMap, bodyMap);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Object headers, Map<String, Object> body){
+  public APIResultDto put(String path, Object headers, Map<String, Object> body){
     Map<String, Object> map = toMap(headers);
     return put(path, map, body);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Map<String, Object> headers, Object body){
+  public APIResultDto put(String path, Map<String, Object> headers, Object body){
     Map<String, Object> map = toMap(body);
     
     return put(path, headers, map);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> put(String path, Map<String, Object> headers, Map<String, Object> body){
+  public APIResultDto put(String path, Map<String, Object> headers, Map<String, Object> body){
     return request(HttpMethod.PUT, path, headers, body);
   }
   
   
   /* DELETE요청 */
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path) {
+  public APIResultDto delete(String path) {
     return delete(path, (Map<String, Object>) null, (Map<String, Object>)null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Map<String, Object> headers) {
+  public APIResultDto delete(String path, Map<String, Object> headers) {
     return delete(path, headers, (Map<String, Object>)null);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Object headers) {
+  public APIResultDto delete(String path, Object headers) {
     Map<String, Object> map = toMap(headers);
     return delete(path, map, null);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Object headers, Object body){
+  public APIResultDto delete(String path, Object headers, Object body){
     Map<String, Object> headersMap = toMap(headers);
     Map<String, Object> bodyMap = toMap(body);
     
     return delete(path, headersMap, bodyMap);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Object headers, Map<String, Object> body){
+  public APIResultDto delete(String path, Object headers, Map<String, Object> body){
     Map<String, Object> map = toMap(headers);
     return delete(path, map, body);
   }
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Map<String, Object> headers, Object body){
+  public APIResultDto delete(String path, Map<String, Object> headers, Object body){
     Map<String, Object> map = toMap(body);
     
     return delete(path, headers, map);
   }
   @Override
-  public APIResultDto<Map<String, String>, Map<String, Object>> delete(String path, Map<String, Object> headers, Map<String, Object> body){
+  public APIResultDto delete(String path, Map<String, Object> headers, Map<String, Object> body){
     return request(HttpMethod.DELETE, path, headers, body);
   }
   
