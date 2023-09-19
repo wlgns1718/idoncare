@@ -1,10 +1,8 @@
 package d209.Idontcare.pocketmoney.service;
 
 import d209.Idontcare.TUser;
-import d209.Idontcare.common.exception.AuthenticationException;
-import d209.Idontcare.common.exception.DuplicatedException;
-import d209.Idontcare.common.exception.MustChildException;
-import d209.Idontcare.common.exception.MustParentException;
+import d209.Idontcare.common.exception.*;
+import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
@@ -28,4 +26,7 @@ public interface PocketMoneyService {
   
   List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(TUser parent)
       throws MustParentException;
+  
+  void processPocketMoneyRequest(TUser parent, ProcessPocketMoneyRequestReqDto req)
+      throws AuthorizationException, MustParentException, NoSuchContentException;
 }
