@@ -36,7 +36,7 @@ public class RelationshipController {
   @Operation(summary="부모 자식 관계 리스트", description = "부모와 자식 간에 맺어져 있는 관계 리스트를 반환합니다")
   @ApiResponses(value = {
       @ApiResponse(responseCode="200", description = "성공",
-        content=@Content(schema = @Schema(implementation = RelationshipResDto.Result.class))),
+        content=@Content(schema = @Schema(implementation = RelationshipResDto.RelationshipResDtoResult.class))),
       @ApiResponse(responseCode=AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
   })
   public ResponseDto<?> getRelationshipList(){
@@ -45,7 +45,7 @@ public class RelationshipController {
     
     List<RelationshipResDto> list = relationshipService.getRelationshipList(parent);
     
-    return ResponseDto.success(new RelationshipResDto.Result(list));
+    return ResponseDto.success(new RelationshipResDto.RelationshipResDtoResult(list));
   }
   
   
@@ -83,7 +83,7 @@ public class RelationshipController {
   @Operation(summary="관계 요청 받은 리스트", description="아이가 부모로부터 받은 요청을 볼 수 있습니다")
   @ApiResponses(value = {
       @ApiResponse(responseCode="200", description = "성공",
-          content=@Content(schema = @Schema(implementation= ReceivedRequestResDto.Result.class))),
+          content=@Content(schema = @Schema(implementation= ReceivedRequestResDto.ReceivedRequestResDtoResult.class))),
       @ApiResponse(responseCode=MustChildException.CODE, description = MustChildException.DESCRIPTION),
   })
   public ResponseDto<?> getReceivedRequestList(){
@@ -93,13 +93,13 @@ public class RelationshipController {
     
     try{
       List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
-      return ResponseDto.success(new ReceivedRequestResDto.Result(requests));
+      return ResponseDto.success(new ReceivedRequestResDto.ReceivedRequestResDtoResult(requests));
     }catch(CommonException e){
      return ResponseDto.fail(e);
     }
   }
   
-  @PostMapping("/child/request")
+  @PutMapping("/child/request")
   @Operation(summary="요청에 대해 수락 처리", description="아이가 부모로부터 받은 요청에 대해 처리")
   @ApiResponses(value = {
       @ApiResponse(responseCode="200", description = "성공",

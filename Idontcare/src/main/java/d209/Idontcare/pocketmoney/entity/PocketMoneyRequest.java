@@ -31,7 +31,9 @@ public class PocketMoneyRequest extends BaseEntity {
   
   private String content;
   
+  private Integer cancelDate;
+  
   public static enum Type{
-    REQUEST, CANCEL, ACCEPTED;
+    REQUEST, CANCEL, ACCEPTED, REJECT;
   }
 }

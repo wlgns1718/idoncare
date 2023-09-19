@@ -8,11 +8,8 @@ import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
-import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.res.GetPocketMoneyRequestResDto;
-import d209.Idontcare.pocketmoney.dto.res.RegistRegularPocketMoneyResDto;
+import d209.Idontcare.pocketmoney.dto.req.*;
+import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.service.PocketMoneyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -115,6 +112,12 @@ public class PocketMoneyController {
     //부모가 용돈 조르기 목록을 볼 수 있다
     @GetMapping("/request")
     @Operation(summary="조르기 목록 조회", description="부모가 아이의 조르기 목록을 볼 수 있다")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(schema = @Schema(implementation= GetPocketMoneyRequestResDto.GetPocketMoneyRequestResDtoResult.class))),
+        @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
+    })
     public ResponseDto getPocketMoneyRequest(){
         /* TODO : 요청한 사람에 대해 검증 코드 추가 필요 */
         
@@ -122,9 +125,32 @@ public class PocketMoneyController {
         
         try{
             List<GetPocketMoneyRequestResDto> list =  pocketMoneyService.getPocketMoneyRequest(parent);
-            return ResponseDto.success(new GetPocketMoneyRequestResDto.Result(list));
+            return ResponseDto.success(new GetPocketMoneyRequestResDto.GetPocketMoneyRequestResDtoResult(list));
         } catch(CommonException e){
             return ResponseDto.fail(e);
         }
     }
+    
+    //부모가 자녀의 용돈 조르기에 대해 처리할 수 있다
+    @PutMapping("/request")
+    @Operation(summary="조르기 처리", description="부모가 아이의 조르기에 대해 처리 할 수 있다")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(schema = @Schema(implementation= Void.class))),
+        @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
+    })
+    public ResponseDto processPocketMoneyRequest(@Valid @RequestBody ProcessPocketMoneyRequestReqDto req){
+        /* TODO : 요청한 사람에 대해 검증 코드 추가 필요 */
+        
+        TUser parent = tUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+        
+        try{
+            pocketMoneyService.processPocketMoneyRequest(parent, req);
+            return ResponseDto.success(null);
+        } catch(CommonException e){
+            return ResponseDto.fail(e);
+        }
+    }
+    
 }
