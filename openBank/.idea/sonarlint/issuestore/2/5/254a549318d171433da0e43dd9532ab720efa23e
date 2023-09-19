@@ -1,6 +1,0 @@
-
-v	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(•²†î8úÇßñ¨1
-G
-java:S1128"*Remove this unused import 'lombok.Setter'.(ó¸çµ8ÿÇßñ¨1
-K
-java:S1128".Remove this unused import 'javax.persistence'.(¬£þç8ÿÇßñ¨1

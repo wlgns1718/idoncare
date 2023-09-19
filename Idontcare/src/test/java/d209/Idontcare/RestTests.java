@@ -24,8 +24,8 @@ import java.util.Map;
 
 @SpringBootTest
 public class RestTests {
-  
-  private String URL = "http://localhost:3000";
+
+  private String URL = "http://localhost:8080";
 
   @Autowired
   private APIService apiService;

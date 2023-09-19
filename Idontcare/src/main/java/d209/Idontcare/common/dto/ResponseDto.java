@@ -4,6 +4,8 @@ import d209.Idontcare.common.exception.CommonException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
+import java.io.IOException;
+
 @Getter
 public class ResponseDto<T> {
   @Schema(description = "각 상태에 맞는 code", example="200")
@@ -16,7 +18,6 @@ public class ResponseDto<T> {
     ResponseDto<D> result = new ResponseDto<D>();
     result.code = 200;
     result.data = data;
-    
     return result;
   }
 
@@ -24,7 +25,14 @@ public class ResponseDto<T> {
     ResponseDto<Void> result = new ResponseDto<>();
     result.code = e.getCode();
     result.error = e.getMessage();
-    
     return result;
   }
+
+  public static ResponseDto<Void> fail(IOException e){
+    ResponseDto<Void> result = new ResponseDto<>();
+    result.code = 500;
+    result.error = "입출력 에러 발생";
+    return result;
+  }
+
 }

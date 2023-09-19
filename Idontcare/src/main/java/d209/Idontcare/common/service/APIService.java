@@ -47,5 +47,4 @@ public interface APIService {
   APIResultDto delete(String path, Map<String, Object> headers, Object body);
   APIResultDto delete(String path, Map<String, Object> headers, Map<String, Object> body);
   /* PUT 요청 메서드 종료 */
-  
 }
