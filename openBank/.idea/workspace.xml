@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eeb2521d-4b09-4b2f-8fc1-e2cc6b97de9e" name="Changes" comment="# git config --local commit.template .gitmessage nano&#10;# `타입: 제목` 형식으로 작성하며 제목은 최대 50글자 정도로만 입력&#10;# 제목을 아랫줄에 작성, 제목 끝에 마침표 금지, 무엇을 했는지 명확하게 작성&#10;&#10;################&#10;# 본문(추가 설명)을 아랫줄에 작성&#10;&#10;################&#10;# 꼬릿말(footer)을 아랫줄에 작성 (관련된 이슈 번호 등 추가)&#10;&#10;################&#10;# Feat&#9;새로운 기능 추가&#10;# Fix&#9;버그 수정&#10;# Docs&#9;문서 수정&#10;# Style&#9;코드 formatting, 세미콜론 누락, 코드 자체의 변경이 없는 경우&#10;# Refactor&#9;코드 리팩토링&#10;# Test&#9;테스트 코드, 리팩토링 테스트 코드 추가&#10;# Chore&#9;패키지 매니저 수정, 그 외 기타 수정 ex) .gitignore&#10;# Design&#9;CSS 등 사용자 UI 디자인 변경&#10;# Comment&#9;필요한 주석 추가 및 변경&#10;# Rename&#9;파일 또는 폴더 명을 수정하거나 옮기는 작업만인 경우&#10;# Remove&#9;파일을 삭제하는 작업만 수행한 경우&#10;# !BREAKING CHANGE&#9;커다란 API 변경의 경우&#10;# !HOTFIX&#9;급하게 치명적인 버그를 고쳐야 하는 경우&#10;################">
+      <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/controller/AccountController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/dto/req/TransactionRequestDto.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/entity/RealAccount.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/entity/TransactionHistory.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/entity/Type.java" afterDir="false" />
@@ -15,13 +17,29 @@
       <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/service/RealAccountService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/service/TransactionHistoryService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/account/service/VirtualAccountService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Idontcare/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Idontcare/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/common/dto/ResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/common/dto/ResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/common/service/APIService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Idontcare/src/main/java/d209/Idontcare/common/service/APIService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Idontcare/src/main/resources/application.properties.template" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Idontcare/src/test/java/d209/Idontcare/RestTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Idontcare/src/test/java/d209/Idontcare/RestTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.2.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.2.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.2.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.2.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/3/0374d61510ba23603faf1465323e41ca7c30516c" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/6/06f65155ec73600b9fc5c4dc2883d4bb84d8e284" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/f/0f6d91f181604d5c8a9690de893060586a9221bf" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/4/1400f9f0d1e75f55e9f0fbe828987720c85de001" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/5/15647af40d622638c731444722747e3b2b52b5e5" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/5/254a549318d171433da0e43dd9532ab720efa23e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/a/2a45a911a8f1836b0b6c5b758962572012d8f8c3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/e/2e7e0c93dd36df4610ca32fd10e432a11366049c" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/2/32cbc744c27971bd6edc4551e117547e5c36c9ce" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/4/340030fe5cb8ddf830e93f51786c2b7787e25b70" beforeDir="false" />
@@ -118,6 +136,18 @@
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/f/9/f9b282ae25a20e6be1fe57d7c2a33c5055e98ff0" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/OpenBankApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/OpenBankApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/controller/AccountController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/controller/AccountController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/domain/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/domain/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/exception/MobileException$NotCorrect.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/exception/MobileException$NotCorrect.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/exception/MobileException.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/KFTC/openBank/exception/MobileException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/Data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/Data.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/AccountController.class.uniqueId1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/AccountService.class.uniqueId2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/ResList.class.uniqueId3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/TransactionResponseDto.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,11 +204,11 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;BackDevelop&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/0924909/OurProject/S09P22D209/Idontcare/build.gradle&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/SSAFY/Desktop/0924909/OurProject/OpenBankApi/openBank/build.gradle&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -247,5 +277,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
