@@ -45,5 +45,15 @@ public class RestTests {
     System.out.println(result.getStatus());
     System.out.println(result.getHeader());
     System.out.println(result.getBody());
+    
+    result = APIBuilder.build()
+        .url("http://localhost:3000")
+        .method(HttpMethod.PUT)
+        .body(Map.of("age", 1, "name", "hello"))
+        .execute();
+    
+    System.out.println(result.getStatus());
+    System.out.println(result.getHeader());
+    System.out.println(result.getBody());
   }
 }

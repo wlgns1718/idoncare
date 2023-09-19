@@ -3,10 +3,8 @@ package d209.Idontcare.pocketmoney.service;
 import d209.Idontcare.TUser;
 import d209.Idontcare.TUserRepository;
 import d209.Idontcare.TUserService;
-import d209.Idontcare.common.exception.CommonException;
-import d209.Idontcare.common.exception.MustChildException;
-import d209.Idontcare.common.exception.MustParentException;
-import d209.Idontcare.common.exception.NoSuchUserException;
+import d209.Idontcare.common.exception.*;
+import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
 import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
@@ -133,12 +131,17 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
       throw new NoSuchUserException("해당 부모를 찾을 수 없습니다");
     }
     
+    LocalDateTime now = LocalDateTime.now();
+    now = now.plusDays(2);
+    Integer cancelDate = (now.getYear() % 100) * 10_000 + now.getMonthValue() * 100 + now.getDayOfMonth();
+    
     PocketMoneyRequest request = PocketMoneyRequest.builder()
         .parent(parent)
         .child(child)
         .amount(req.getAmount())
         .content(req.getContent())
         .type(PocketMoneyRequest.Type.REQUEST)
+        .cancelDate(cancelDate)
         .build();
     
     pocketMoneyRequestRepository.save(request);
@@ -150,8 +153,29 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     if(parent.getType() != TUser.Type.PARENT) throw new MustParentException();
     
     List<Tuple> requests = pocketMoneyRequestRepository.findAllByParent(parent);
-    System.out.println(requests);
+    return requests.stream().map(GetPocketMoneyRequestResDto::new).toList();
+  }
+  
+  @Override
+  public void processPocketMoneyRequest(TUser parent, ProcessPocketMoneyRequestReqDto req){
+    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException();
     
-    return null;
+    PocketMoneyRequest pocketMoneyRequest = pocketMoneyRequestRepository.findById(req.getPocketMoneyRequestId())
+        .orElseThrow(() -> new NoSuchContentException("해당하는 요청을 찾을 수 없습니다"));
+    
+    if(!parent.getUserId().equals(pocketMoneyRequest.getParent().getUserId())){
+      //만약 해당 요청에 대해 권한이 없으면
+      throw new AuthorizationException();
+    }
+    
+    if(req.getType() == ProcessPocketMoneyRequestReqDto.Type.ACCEPT){
+      //수락이면
+      /* TODO : 계좌간에 전송 필요 */
+      pocketMoneyRequest.setType(PocketMoneyRequest.Type.ACCEPTED);
+    }
+    else{
+      //거절이면
+      pocketMoneyRequest.setType(PocketMoneyRequest.Type.REJECT);
+    }
   }
 }
