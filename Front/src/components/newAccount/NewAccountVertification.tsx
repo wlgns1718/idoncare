@@ -13,7 +13,7 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
       <NewAccountVertificationHelp />
       <NewAccountInput placeholder="입금자명(숫자4자리)" />
       <div onClick={() => onChangeStep(4)}>
-        <FullBtn buttonText="다음" buttonLink="/newAccount" />
+        <FullBtn buttonText="인증완료" buttonLink="/newAccount" />
       </div>
     </div>
   );

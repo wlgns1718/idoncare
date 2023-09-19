@@ -6,12 +6,15 @@ import FullBtn from "../common/FullBtn";
 type Question = string;
 type Answer = string;
 type Caption = string;
+type Step = number;
 
 interface SignupQuestionProps {
   question: Question;
   answer?: Answer;
   caption?: Caption;
   onNextStep: () => void;
+  onSetInfo: (setType: number, value: string) => void;
+  step: Step;
 }
 
 const SignupQuestion = ({
@@ -19,9 +22,14 @@ const SignupQuestion = ({
   question,
   answer = "",
   caption = "",
+  onSetInfo,
+  step,
 }: SignupQuestionProps) => {
-  console.log(onNextStep);
   const [answerText, setAnswerText] = useState<string>(answer);
+  const handleSetInfo = () => {
+    onSetInfo(step, answerText);
+    onNextStep();
+  };
   return (
     <div className="flex flex-col w-full">
       <div className="relative rounded-[30px] bg-red-50 w-[220px] h-[80px] p-[20px] mb-[40px] flex items-center">
@@ -43,7 +51,7 @@ const SignupQuestion = ({
           <img className="w-[20px] h-[20px]" src={pencil} alt="편집 이미지" />
         </div>
       </div>
-      <div className="absolute bottom-0 w-[calc(100%-40px)] left-[20px]" onClick={onNextStep}>
+      <div className="absolute bottom-0 w-[calc(100%-40px)] left-[20px]" onClick={handleSetInfo}>
         <FullBtn buttonText="다음" buttonLink="/signup" className="w-full" />
       </div>
     </div>

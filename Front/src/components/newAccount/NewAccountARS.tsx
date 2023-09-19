@@ -1,12 +1,9 @@
 import FullBtn from "../common/FullBtn";
-import { NewAccountCreate } from "../../types/NewAccountCreateProps";
-
 import NewAccountInput from "./common/NewAccountInput";
 import NewAccountARSHelp from "./NewAccountARS/NewAccountARSHelp";
 import NewAccountText from "./NewAccountARS/NewAccountText";
 
-const NewAccountARS = ({ onChangeStep, step }: NewAccountCreate) => {
-  console.log(step);
+const NewAccountARS = () => {
   return (
     <div className="flex flex-col text-m">
       <NewAccountARSHelp />
@@ -15,9 +12,7 @@ const NewAccountARS = ({ onChangeStep, step }: NewAccountCreate) => {
         <NewAccountInput placeholder="example@idoncare.co.kr" />
         <NewAccountText arsTextIndex={1} />
       </div>
-      <div onClick={() => onChangeStep(5)}>
-        <FullBtn buttonText="다음" buttonLink="/newAccount" />
-      </div>
+      <FullBtn buttonText="ARS 출금 동의 완료" buttonLink="/main" />
     </div>
   );
 };
