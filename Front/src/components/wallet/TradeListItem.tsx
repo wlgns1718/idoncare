@@ -1,11 +1,11 @@
-import React from 'react'
-import Icon from '../common/Icon'
+import React from "react";
+import Icon from "../common/Icon";
 
 function TradeListItem() {
   return (
     <div className="flex m-5">
-      <div className="bg-gray w-[40px] h-[40px] rounded-[50%] flex items-center justify-center">
-        <Icon size='small' name='purchase'/>
+      <div className="flex-none bg-gray w-[40px] h-[40px] p-3 rounded-[50%]">
+        <Icon size="small" name="purchase" />
       </div>
       <div className="flex w-full justify-between">
         <div className="ml-10">
@@ -18,7 +18,7 @@ function TradeListItem() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default TradeListItem
+export default TradeListItem;
