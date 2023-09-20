@@ -94,13 +94,13 @@ public class OauthServiceImpl implements OauthService{
         
         if(user.isPresent()){
             jwtAccessToken = jwtTokenProvider.createAccessToken(user.get().getUserId());
-            jwtRefreshToken = jwtTokenProvider.createAccessToken(user.get().getUserId());
+            jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.get().getUserId());
         }
         
         GetUserInfoDto resultDto = GetUserInfoDto.builder()
             .userId(kakaoUserInfo.getId())
             .msg(user.isEmpty() ? "회원정보가 없습니다. 회원가입 페이지로 이동합니다." : "등록된 회원입니다.")
-            .isJoined(user.isPresent())
+            .joined(user.isPresent())
             .nickname(nickname)
             .email(email)
             .accessToken(jwtAccessToken)

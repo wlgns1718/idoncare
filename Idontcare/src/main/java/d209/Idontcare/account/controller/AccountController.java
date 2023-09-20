@@ -1,7 +1,5 @@
 package d209.Idontcare.account.controller;
 
-import d209.Idontcare.TUser;
-import d209.Idontcare.TUserRepository;
 import d209.Idontcare.account.dto.req.TransactionRequestDto;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;

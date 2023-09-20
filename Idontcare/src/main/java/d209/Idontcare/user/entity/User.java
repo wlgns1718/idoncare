@@ -25,9 +25,6 @@ public class User {
     @Column(name = "TYPE")
     private Role role;
 
-    @Column(name = "REFRESH_TOKEN", length = 500)
-    private String refreshToken;
-
     @Column(name = "NICK_NAME", length = 30)
     private String nickName;
     
