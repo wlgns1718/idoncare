@@ -3,15 +3,18 @@ import Header from "../common/Header";
 import NumberPlate from '../common/NumberPlate';
 import FullBtn from '../common/FullBtn';
 import Modal from '../common/Modal';
-import RegularMoneySendFormCycle from './RegularMoneySendFormCycle';
+import RegularMoneySendFormCycle from './RegularSendFormCycle';
 
 interface Props {
   onNext: () => void;
 }
 
-const SendPocketMoneyForm: FC<Props> = ({ onNext }) => {
+const RegularSendForm: FC<Props> = ({ onNext }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [moneyAmount, setMoneyAmount] = useState(0);
+  const [tempTransferCycle, setTempTransferCycle] = useState<string | null>(null); 
+
+
 
   const amounts = [
     { value: 500, label: "5백" },
@@ -29,16 +32,22 @@ const SendPocketMoneyForm: FC<Props> = ({ onNext }) => {
         </div>
 
         <div onClick={() => setIsModalOpen(true)} className="bg-gray p-4 rounded-lg text-sm mb-10">
-            이체주기를 선택해주세요 (내일부터 시작됩니다) ▼
+          {tempTransferCycle || "이체주기를 선택해주세요 (내일부터 시작됩니다) ▼"}
         </div>
+
         
         {isModalOpen && (
-          <Modal onClose={() => setIsModalOpen(false)}>
-            <div className='text-m font-strong mt-5'>이체주기</div>
-            <RegularMoneySendFormCycle />
-            
-          </Modal>
-        )}
+  <Modal 
+  >
+    <div className='text-m font-strong mt-5'>이체주기</div>
+    <RegularMoneySendFormCycle 
+  onSelected={setTempTransferCycle} 
+  onClose={() => setIsModalOpen(false)}
+/>
+
+   </Modal>
+)}
+
         
 
         <div className="text-l text-main font-strong">
@@ -48,7 +57,7 @@ const SendPocketMoneyForm: FC<Props> = ({ onNext }) => {
     </div>
    
       <div className='mt-auto text-center'>
-         <p className="flex justify-center gap-10">
+         <div className="flex justify-center gap-10">
          {
            amounts.map((item) => (
              <div 
@@ -60,7 +69,7 @@ const SendPocketMoneyForm: FC<Props> = ({ onNext }) => {
               </div>
           ))
          }
-         </p>
+         </div>
 
         <NumberPlate bottomLeftText="00"/>
         
@@ -71,4 +80,4 @@ const SendPocketMoneyForm: FC<Props> = ({ onNext }) => {
   );
 }
 
-export default SendPocketMoneyForm;
+export default RegularSendForm;

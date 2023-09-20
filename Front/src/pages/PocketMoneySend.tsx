@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import SendPocketMoneyForm from '../components/pocketmoney/PocketMoneySendForm';
-import SendPocketMoneyMsgForm from '../components/pocketmoney/PocketMoneySendMsgForm';
+import SendPocketMoneyForm from '../components/pocketmoney/PocketSendForm';
+import SendPocketMoneyMsgForm from '../components/pocketmoney/PocketSendMsgForm';
 import MoneyDone from '../components/pocketmoney/Done';
 
 const PocketMoneySend: React.FC = () => {

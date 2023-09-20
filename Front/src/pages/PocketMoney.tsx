@@ -1,18 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
-import ChildReguestMoneyList from "../components/pocketmoney/ChildReguestList";
+import ChildReguestMoneyList from "../components/pocketmoney/KidDemandedList";
 import SmallBtn from "../components/pocketmoney/SmallBtn";
-import RegularMoneyBox from "../components/pocketmoney/RegularMoneyBox";
-import RegularMoneyBoxEmpty from "../components/pocketmoney/RegularMoneyBoxEmpty";
+import RegularMoneyBox from "../components/pocketmoney/RegularBox";
+import RegularMoneyBoxEmpty from "../components/pocketmoney/RegularBoxEmpty";
 import SendMoneyBox from "../components/pocketmoney/MenuBox";
 
 const PocketMoney: React.FC = () => {
   return (
     <div className="pb-60">
 
-      <div className="bg-green-100">
-        <Link to="/reguestedMoney">ReguestedMoney</Link>
+      <div className="bg-green-100 text-m">
+        <Link to="/kidDemandMoney">KID) 용돈 조르기</Link><br/>
+        <Link to="/kidDemandMoneyList">KID) 용돈 요청 조회</Link>
       </div>
 
       <Header pageTitle="용돈" headerType="normal" headerLink="/" />
