@@ -19,6 +19,9 @@ import RegistAccount from "./pages/RegistAccount";
 import ARSPage from "./pages/ARSPage";
 import RegistAgreement from "./pages/RegistAgreement";
 import Report from "./pages/Report";
+import Transfer from "./pages/Transfer";
+import TransferSelect from "./pages/TransferSelect";
+import TransferConfirm from "./pages/TransferConfirm";
 
 function App() {
   return (
@@ -43,6 +46,9 @@ function App() {
             />
             <Route path="report" element={<Report/>} />
             <Route path="purchase" element={<Purchase />} />
+            <Route path="transfer" element={<Transfer />} />
+            <Route path="transfer/account" element={<TransferSelect />} />
+            <Route path="transfer/account/confirm" element={<TransferConfirm />} />
             <Route path="purchase/qrcode" element={<QRcodePurchase />} />
             <Route path="purchase/camera" element={<CameraPurchase />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
