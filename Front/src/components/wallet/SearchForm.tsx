@@ -2,16 +2,22 @@ import { ChangeEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SearchFormProps {
-  searchKeyword:string;
+  searchKeyword: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   resetKeyword: () => void;
+  className? : string;
 }
 
-function SearchForm({ searchKeyword, onChange, resetKeyword }: SearchFormProps) {
+function SearchForm({
+  searchKeyword,
+  onChange,
+  resetKeyword,
+  className,
+}: SearchFormProps) {
   const navigate = useNavigate();
 
   return (
-    <div>
+    <div className={`${className}`}>
       <div className="flex items-center">
         <form className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg">
           <svg
@@ -35,7 +41,7 @@ function SearchForm({ searchKeyword, onChange, resetKeyword }: SearchFormProps) 
             value={searchKeyword}
             onChange={onChange}
           />
-          { searchKeyword ? 
+          {searchKeyword ? (
             <div
               className="bg-darkgray w-6 h-6 rounded-[50%] text-white text-center"
               onClick={() => {
@@ -43,9 +49,8 @@ function SearchForm({ searchKeyword, onChange, resetKeyword }: SearchFormProps) 
               }}
             >
               X
-            </div> : 
-            null
-          }
+            </div>
+          ) : null}
         </form>
         <div
           className="p-4 h-[35px]"

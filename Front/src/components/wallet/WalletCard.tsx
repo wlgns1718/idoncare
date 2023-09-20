@@ -23,7 +23,7 @@ function WalletCard() {
           </div>
           <div>충전</div>
         </div>
-        <div>
+        <div onClick={() => navigate("/transfer")}>
           <div className="w-10 h-10 m-auto">
             <Icon />
           </div>
