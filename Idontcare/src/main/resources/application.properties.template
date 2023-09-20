@@ -1,0 +1,38 @@
+# Server Setting #
+server.port={포트번호: Number}
+
+# DB Setting #
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://{호스트: String}:{포트번호: Number}/{데이터베이스 이름: String}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+spring.datasource.username={DB 아이디: String}
+spring.datasource.password={DB 패스워드: String}
+
+# DB Logging #
+# Development Level #
+decorator.datasource.p6spy.enable-logging=true
+
+# JPQ Setting #
+# create -> create-drop -> update -> none
+spring.jpa.hibernate.ddl-auto=update
+spring.main.allow-bean-definition-overriding=true
+
+# Batch Loading #
+spring.jpa.properties.hibernate.default_batch_fetch_size=100
+
+# Swagger #
+springdoc.default-consumes-media-type=application/json;charset=UTF-8
+springdoc.default-produces-media-type=application/json;charset=UTF-8
+springdoc.swagger-ui.path=/
+springdoc.swagger-ui.disable-swagger-default-url=true
+springdoc.swagger-ui.display-request-duration=true
+springdoc.swagger-ui.operations-sorter=alpha
+
+# Redis Setting #
+redis.host={레디스 호스트: String}
+redis.port={레디스 포트: Number}
+
+# JWT Setting #
+
+jwt.secret={시크릿 키: String}
+jwt.access-expiration-time=43200000
+jwt.refresh-expiration-time=604800000

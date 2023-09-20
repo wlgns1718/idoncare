@@ -40,11 +40,7 @@ public class AccountController {
     //1. 계좌 확인
     @GetMapping("/transaction")
     public ResponseDto<?> findTransaction(@RequestBody TransactionRequestDto transactionRequestDto, HttpServletRequest request){
-        System.out.println(transactionRequestDto.toString());
         APIResultDto get = apiService.get("http://127.0.0.1:8080/openbanking/account/transaction_list/fin_num", null, transactionRequestDto);
-        System.out.println(get.getBody());
-        System.out.println(get.getStatus());
-        System.out.println(get.getHeader());
         return null;
     }
 

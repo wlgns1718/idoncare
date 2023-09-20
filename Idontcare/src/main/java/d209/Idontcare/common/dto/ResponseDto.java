@@ -3,6 +3,7 @@ package d209.Idontcare.common.dto;
 import d209.Idontcare.common.exception.CommonException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
+import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.io.IOException;
 
@@ -32,6 +33,13 @@ public class ResponseDto<T> {
     ResponseDto<Void> result = new ResponseDto<>();
     result.code = 500;
     result.error = "입출력 에러 발생";
+    return result;
+  }
+  
+  public static ResponseDto<Void> fail(Throwable e){
+    ResponseDto<Void> result = new ResponseDto<>();
+    result.code = 500;
+    result.error = "서버 내부 에러";
     return result;
   }
 
