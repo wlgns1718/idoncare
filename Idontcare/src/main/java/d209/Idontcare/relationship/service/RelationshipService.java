@@ -1,7 +1,5 @@
 package d209.Idontcare.relationship.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import d209.Idontcare.TUser;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;
@@ -37,4 +35,9 @@ public interface RelationshipService {
    */
   List<RelationshipResDto> getRelationshipList(User user)
       throws MustChildException;
+  
+  /**
+   * 해당 유저간에 관계가 존재하는지 확인
+   */
+  boolean relationExistsByParentAndChild(User parent, User child);
 }

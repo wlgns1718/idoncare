@@ -1,6 +1,5 @@
 package d209.Idontcare.pocketmoney.service;
 
-import d209.Idontcare.TUser;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
@@ -17,7 +16,7 @@ import java.util.List;
 @Service
 public interface PocketMoneyService {
   RegularPocketMoney registryRegularPocketMoney(User parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now)
-      throws AuthenticationException, MustParentException, MustChildException, DuplicatedException;
+      throws AuthenticationException, MustParentException, BadRequestException, NoSuchUserException, MustChildException, DuplicatedException;
   
   void sendPocketMoney(User parent, SendPocketMoneyReqDto req)
       throws MustParentException, MustChildException;

@@ -1,7 +1,5 @@
 package d209.Idontcare.relationship.service;
 
-import d209.Idontcare.TUser;
-import d209.Idontcare.TUserService;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.common.service.APIService;
@@ -12,6 +10,9 @@ import d209.Idontcare.relationship.repository.*;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.service.UserService;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,9 @@ public class RelationshipServiceImpl implements RelationshipService{
     
     if( !child.isChild() ) throw new MustChildException("자녀에게만 요청할 수 있습니다");
     
-    relationshipRepository.findOneByParentAndChild(parent.getUserId(), child.getUserId()).ifPresent((r) -> {throw new DuplicatedException("이미 자식입니다"); });
-    relationshipRequestRepository.findOneByParentAndChild(parent.getUserId(), child.getUserId()).ifPresent((r) -> {throw new DuplicatedException("이미 요청되었습니다"); });
+    if(relationExistsByParentAndChild(parent, child)) throw new DuplicatedException("이미 자식입니다");
+    
+    if(relationRequestExistsByParentAndChild(parent, child)) throw new DuplicatedException("이미 요청되었습니다");
     
     RelationshipRequest relationshipRequest = RelationshipRequest.builder()
                                   .parent(parent)
@@ -103,5 +105,17 @@ public class RelationshipServiceImpl implements RelationshipService{
     return list;
   }
   
-
+  @Override
+  public boolean relationExistsByParentAndChild(User parent, User child) {
+    PageRequest pageRequest = PageRequest.of(0, 1);
+    Page<Integer> page = relationshipRepository.existsByParentAndChild(parent, child, pageRequest);
+    return page.getTotalElements() != 0;
+  }
+  
+  private boolean relationRequestExistsByParentAndChild(User parent, User child){
+    PageRequest pageRequest = PageRequest.of(0, 1);
+    Page<Integer> page = relationshipRequestRepository.existsByParentAndChild(parent, child, pageRequest);
+    return page.getTotalElements() != 0;
+  }
+  
 }

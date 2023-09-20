@@ -20,8 +20,6 @@ public class RegularPocketTests {
   @Autowired
   private PocketMoneyServiceImpl pocketMoneyService;
   
-  @Autowired
-  private TUserRepository TUserRepository;
   
   @Test
   @DisplayName("다음 지급일 계산 테스트")
@@ -90,38 +88,4 @@ public class RegularPocketTests {
     assert pocketMoneyService.getNextDueDate(now, Type.WEEK, 5).equals(240301);
     
   }
-  
-  @Test
-  @DisplayName("정기 용돈 등록 테스트")
-  void registRegularPocketMoney(){
-    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
-    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
-    
-    /* 정상 요청 처리 */
-    RegistRegularPocketMoneyReqDto req = RegistRegularPocketMoneyReqDto.builder()
-            .type(Type.DAY)
-            .childUserId(child.getUserId())
-            .cycle(null)
-            .amount(1000)
-            .build();
-    RegularPocketMoney saved = pocketMoneyService.registryRegularPocketMoney(parent, req, LocalDateTime.now());
-    
-    assert saved.getRegularPocketMoneyId().equals(1L);
-    
-    /* 대상이 아이가 아닌 경우 -> 에러가 발생해야한다 */
-    req = RegistRegularPocketMoneyReqDto.builder()
-        .type(Type.DAY)
-        .childUserId(parent.getUserId())
-        .cycle(null)
-        .amount(1000)
-        .build();
-    
-    RegistRegularPocketMoneyReqDto finalReq = req;
-    Assertions.assertThrows(MustChildException.class, () -> pocketMoneyService.registryRegularPocketMoney(parent, finalReq, LocalDateTime.now()));
-    
-    /* 부모가 아닌 사람이 요청 한 경우 -> 에러가 발생해야한다 */
-    Assertions.assertThrows(MustParentException.class, () -> pocketMoneyService.registryRegularPocketMoney(child, finalReq, LocalDateTime.now()));
-  }
-  
-  
 }

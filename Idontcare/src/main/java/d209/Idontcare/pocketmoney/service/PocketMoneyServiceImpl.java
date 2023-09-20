@@ -1,8 +1,5 @@
 package d209.Idontcare.pocketmoney.service;
 
-import d209.Idontcare.TUser;
-import d209.Idontcare.TUserRepository;
-import d209.Idontcare.TUserService;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
@@ -13,6 +10,7 @@ import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
 import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
+import d209.Idontcare.relationship.service.RelationshipService;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
@@ -36,6 +34,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   private final UserRepository userRepository;
   private final RegularPocketMoneyRepository regularPocketMoneyRepository;
   private final PocketMoneyRequestRepository pocketMoneyRequestRepository;
+  private final RelationshipService relationshipService;
   
   //다음 지급 예정일에 대해 계산
   public Integer getNextDueDate(LocalDateTime now, RegularPocketMoney.Type type, Integer cycle){
@@ -81,9 +80,16 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당하는 자녀를 찾을 수 없습니다"));
     if( !child.isChild() ) throw new MustChildException("대상이 아이가 아닙니다");
     
-    /* TODO : 부모와 아이 간의 관계 확인 필요 */
+    if( !relationshipService.relationExistsByParentAndChild(parent, child) ) throw new BadRequestException("부모와 자식간의 관계가 아닙니다");
     
-    /* TODO : 정기용돈의 Type과 cycle 간의 유효성 검사 필요 */
+    Integer cycle = req.getCycle();
+    if(req.getType() == RegularPocketMoney.Type.DAY && cycle != null) throw new BadRequestException("DAY타입에는 주기를 정할 수 없습니다");
+    if(req.getType() == RegularPocketMoney.Type.WEEK){
+      if( !(cycle >= 1 && cycle <= 7) ) throw new BadRequestException("WEEK타입에는 1 ~ 7 사이의 주기만 정할 수 있습니다");
+    }
+    if(req.getType() == RegularPocketMoney.Type.MONTH) {
+      if( !(cycle >= 1 && cycle <= 31) ) throw new BadRequestException("MONTH타입에는 1 ~ 31 사이의 주기만 정할 수 있습니다");
+    }
     
     //지급되어야 할 날짜 계산
     Integer dueDate = getNextDueDate(now, req.getType(), req.getCycle());
@@ -137,13 +143,12 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public void processPocketMoneyRequest(TUser parent, ProcessPocketMoneyRequestReqDto req){
-    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException();
+  public void processPocketMoneyRequest(User parent, ProcessPocketMoneyRequestReqDto req){
     
     PocketMoneyRequest pocketMoneyRequest = pocketMoneyRequestRepository.findById(req.getPocketMoneyRequestId())
         .orElseThrow(() -> new NoSuchContentException("해당하는 요청을 찾을 수 없습니다"));
     
-    if(!parent.getUserId().equals(pocketMoneyRequest.getParent().getUserId())){
+    if( !parent.getUserId().equals(pocketMoneyRequest.getParent().getUserId()) ){
       //만약 해당 요청에 대해 권한이 없으면
       throw new AuthorizationException();
     }

@@ -1,6 +1,5 @@
 package d209.Idontcare.pocketmoney.entity;
 
-import d209.Idontcare.TUser;
 import d209.Idontcare.common.entity.BaseEntity;
 import d209.Idontcare.user.entity.User;
 import lombok.*;
