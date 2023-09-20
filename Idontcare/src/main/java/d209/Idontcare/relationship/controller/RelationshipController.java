@@ -2,6 +2,7 @@ package d209.Idontcare.relationship.controller;
 
 import d209.Idontcare.TUser;
 import d209.Idontcare.TUserRepository;
+import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.relationship.dto.req.ProcessReceivedRequestReqDto;
@@ -11,6 +12,7 @@ import d209.Idontcare.relationship.dto.res.RelationshipResDto;
 import d209.Idontcare.relationship.dto.res.RequestRelationshipResDto;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import d209.Idontcare.relationship.service.RelationshipService;
+import d209.Idontcare.user.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,6 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -39,11 +42,11 @@ public class RelationshipController {
         content=@Content(schema = @Schema(implementation = RelationshipResDto.RelationshipResDtoResult.class))),
       @ApiResponse(responseCode=AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
   })
-  public ResponseDto<?> getRelationshipList(){
-    /* TODO : 로그인 된 유저 가져오기 필요 */
-    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+  @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+  public ResponseDto<?> getRelationshipList(HttpServletRequest request){
+    User user = (User)request.getAttribute("user");
     
-    List<RelationshipResDto> list = relationshipService.getRelationshipList(parent);
+    List<RelationshipResDto> list = relationshipService.getRelationshipList(user);
     
     return ResponseDto.success(new RelationshipResDto.RelationshipResDtoResult(list));
   }
@@ -60,9 +63,9 @@ public class RelationshipController {
       @ApiResponse(responseCode=NoSuchUserException.CODE, description = NoSuchUserException.DESCRIPTION),
       @ApiResponse(responseCode=DuplicatedException.CODE, description = "이미 리퀘스트 한 경우"),
   })
-  public ResponseDto<?> requestRelationship(@Valid @RequestBody RequestRelationshipReqDto req){
-    /* TODO : 요청한 사람에 대해 검증 코드 추가 필요 */
-    TUser parent = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
+  @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+  public ResponseDto<?> requestRelationship(@Valid @RequestBody RequestRelationshipReqDto req, HttpServletRequest request){
+    User parent = (User)request.getAttribute("user");
     
     if(parent == null)  //로그인 되지 않은 경우
       return ResponseDto.fail(new AuthenticationException());
@@ -86,17 +89,12 @@ public class RelationshipController {
           content=@Content(schema = @Schema(implementation= ReceivedRequestResDto.ReceivedRequestResDtoResult.class))),
       @ApiResponse(responseCode=MustChildException.CODE, description = MustChildException.DESCRIPTION),
   })
-  public ResponseDto<?> getReceivedRequestList(){
-  
-    /* TODO : 로그인 된 사람 받아오기 필요 */
-    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
-    
-    try{
-      List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
-      return ResponseDto.success(new ReceivedRequestResDto.ReceivedRequestResDtoResult(requests));
-    }catch(CommonException e){
-     return ResponseDto.fail(e);
-    }
+  @LoginOnly(level = LoginOnly.Level.CHILD_ONLY)
+  public ResponseDto<?> getReceivedRequestList(HttpServletRequest request){
+    User child = (User)request.getAttribute("request");
+
+    List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
+    return ResponseDto.success(new ReceivedRequestResDto.ReceivedRequestResDtoResult(requests));
   }
   
   @PutMapping("/child/request")
@@ -108,17 +106,12 @@ public class RelationshipController {
       @ApiResponse(responseCode=NoSuchContentException.CODE, description = "해당하는 관계 요청이 없는 경우"),
       @ApiResponse(responseCode=AuthorizationException.CODE, description = AuthorizationException.DESCRIPTION),
   })
-  public ResponseDto<?> processReceivedRequest(ProcessReceivedRequestReqDto req){
+  @LoginOnly(level = LoginOnly.Level.CHILD_ONLY)
+  public ResponseDto<?> processReceivedRequest(@RequestBody ProcessReceivedRequestReqDto req, HttpServletRequest request){
     
-    /* TODO : 로그인 된 사람 받아오기 필요 */
-    TUser child = TUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.CHILD).toList().get(0);
+    User child = (User)request.getAttribute("user");
     
-    try{
-      relationshipService.processReceivedRequest(child, req);
-      return ResponseDto.success(null);
-    } catch(CommonException e){
-      return ResponseDto.fail(e);
-    }
+    relationshipService.processReceivedRequest(child, req);
+    return ResponseDto.success(null);
   }
-  
 }

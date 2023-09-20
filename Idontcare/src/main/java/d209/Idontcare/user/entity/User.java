@@ -30,4 +30,11 @@ public class User {
 
     @Column(name = "NICK_NAME", length = 30)
     private String nickName;
+    
+    public boolean isParent(){
+        return this.role == Role.PARENT;
+    }
+    public boolean isChild(){
+        return this.role == Role.CHILD;
+    }
 }

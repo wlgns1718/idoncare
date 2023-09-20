@@ -10,11 +10,12 @@ import java.util.Optional;
 @Service
 public interface UserService {
 
-    Map<String,Object> login(Long userId, String password) throws Exception;
+  Map<String,Object> login(Long userId, String password) throws Exception;
 
-    Optional<User> findByUserId(Long userId);
+  Optional<User> findByUserId(Long userId);
 
-    void joinUser(JoinUserReqDto joinUserDto)
-        throws BadRequestException, DuplicatedException;
-
+  void joinUser(JoinUserReqDto joinUserDto)
+      throws BadRequestException, DuplicatedException;
+  
+  Optional<User> findByPhoneNumber(String childPhoneNumber);
 }

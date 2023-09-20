@@ -22,13 +22,6 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
-    private final AddressRepository addressRepository;
-
-    private static final int SALT_SIZE = 16;
-    private String secretKey;
-    private final String JWT_KEY = "idoncare";
-
-
 
     @Override
     @Transactional(readOnly = true)
@@ -59,11 +52,13 @@ public class UserServiceImpl implements UserService{
 
         userDetailRepository.save(userDetail);
     }
-
-
-
-
-
+    
+    @Override
+    public Optional<User> findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber);
+    }
+    
+    
     @Override
     public Map<String, Object> login(Long userId, String password) throws Exception {
         Optional<User> user = userRepository.findById(userId);

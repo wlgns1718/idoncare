@@ -1,6 +1,6 @@
 package d209.Idontcare.common.exception;
 
-public class BadRequestException  extends CommonException {
+public class BadRequestException extends CommonException {
   
   public final static String CODE = "407";
   public final static String DESCRIPTION = "잘못 된 요청";

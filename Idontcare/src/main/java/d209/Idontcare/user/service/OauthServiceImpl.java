@@ -1,43 +1,32 @@
 package d209.Idontcare.user.service;
 
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import d209.Idontcare.TUser;
 import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.exception.BadRequestException;
-import d209.Idontcare.common.exception.NoSuchUserException;
+import d209.Idontcare.jwt.JwtTokenProvider;
 import d209.Idontcare.user.dto.GetUserInfoDto;
 import d209.Idontcare.user.dto.KakaoUserInfoDto;
 import d209.Idontcare.user.entity.User;
-import d209.Idontcare.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
 @RequiredArgsConstructor
 public class OauthServiceImpl implements OauthService{
+    
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
     
     private final static long HOUR = 1000 * 60 * 60;
     private final static long DAY = 1000 * 60 * 60 * 24;
-
-    private static final Long ACCESS_EXPIRED = 2 * HOUR; //2시간
-    private static final Long REFRESH_EXPIRED = 7 * DAY; //7일
 
     //properties분리해서 숨겨줄 값들
     private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
@@ -104,8 +93,8 @@ public class OauthServiceImpl implements OauthService{
         String jwtRefreshToken = null;
         
         if(user.isPresent()){
-            jwtAccessToken = JwtUtil.createToken(String.valueOf(kakaoUserInfo.getId()),ACCESS_EXPIRED);
-            jwtRefreshToken = JwtUtil.createToken(String.valueOf(kakaoUserInfo.getId()),REFRESH_EXPIRED);
+            jwtAccessToken = jwtTokenProvider.createAccessToken(user.get().getUserId());
+            jwtRefreshToken = jwtTokenProvider.createAccessToken(user.get().getUserId());
         }
         
         GetUserInfoDto resultDto = GetUserInfoDto.builder()

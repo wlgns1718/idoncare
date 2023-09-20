@@ -5,20 +5,21 @@ import d209.Idontcare.user.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class JoinUserReqDto {
 
     @Schema(description = "유저 ID", example = "123")
     @NotNull
     private Long userId;
 
-    @Schema(description = "유저 타입", example = "PARENT | CHILDREN", allowableValues = {"PARENT", "CHILDREN"})
+    @Schema(description = "유저 타입", example = "PARENT | CHILD", allowableValues = {"PARENT", "CHILD"})
     @NotNull
     private Role role;
     
