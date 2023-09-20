@@ -64,7 +64,6 @@ public class PocketMoneyRequestTests {
     pocketMoneyService.requestPocketMoney(child, req);
     
     List<GetPocketMoneyRequestResDto> list = pocketMoneyService.getPocketMoneyRequest(parent);
-    System.out.println(list);
     assert !list.isEmpty();
     
     GetPocketMoneyRequestResDto request1 = list.get(0);

@@ -91,7 +91,7 @@ public class RelationshipController {
   })
   @LoginOnly(level = LoginOnly.Level.CHILD_ONLY)
   public ResponseDto<?> getReceivedRequestList(HttpServletRequest request){
-    User child = (User)request.getAttribute("request");
+    User child = (User)request.getAttribute("user");
 
     List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
     return ResponseDto.success(new ReceivedRequestResDto.ReceivedRequestResDtoResult(requests));

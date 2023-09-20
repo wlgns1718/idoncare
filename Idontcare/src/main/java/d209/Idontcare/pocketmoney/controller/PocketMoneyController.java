@@ -3,6 +3,7 @@ package d209.Idontcare.pocketmoney.controller;
 import d209.Idontcare.TUser;
 import d209.Idontcare.TUserRepository;
 import d209.Idontcare.common.ErrorHandler;
+import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.CommonException;
@@ -12,6 +13,7 @@ import d209.Idontcare.pocketmoney.dto.req.*;
 import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.service.PocketMoneyService;
+import d209.Idontcare.user.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,26 +47,19 @@ public class PocketMoneyController {
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
     })
-    public ResponseDto registRegularPocketMoney(@Valid @RequestBody RegistRegularPocketMoneyReqDto req, BindingResult bindingResult){
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    public ResponseDto registRegularPocketMoney(@Valid @RequestBody RegistRegularPocketMoneyReqDto req,
+                                                HttpServletRequest request,
+                                                BindingResult bindingResult){
+        User parent = (User)request.getAttribute("user");
+
+        ErrorHandler.ErrorHandling(bindingResult);
         
-        /* TODO : 요청한 사람에 대해 검증 코드 추가 필요 */
-        TUser parent = tUserRepository.findAll().stream().filter((u) -> u.getType() == TUser.Type.PARENT).toList().get(0);
-        
-        if(parent == null)  //로그인 되지 않은 경우
-            return ResponseDto.fail(new AuthenticationException());
-        
-        try{
-            ErrorHandler.ErrorHandling(bindingResult);
-            
-            RegularPocketMoney saved = pocketMoneyService.registryRegularPocketMoney(parent, req, LocalDateTime.now());
-            RegistRegularPocketMoneyResDto result = RegistRegularPocketMoneyResDto.builder()
-                                                            .regularPocketMoneyId(saved.getRegularPocketMoneyId())
-                                                            .build();
-            return ResponseDto.success(result);
-        } catch(CommonException e){
-            return ResponseDto.fail(e);
-        }
-        
+        RegularPocketMoney saved = pocketMoneyService.registryRegularPocketMoney(parent, req, LocalDateTime.now());
+        RegistRegularPocketMoneyResDto result = RegistRegularPocketMoneyResDto.builder()
+                                                        .regularPocketMoneyId(saved.getRegularPocketMoneyId())
+                                                        .build();
+        return ResponseDto.success(result);
     }
 
     //부모가 아이에게 일회성 용돈 전송

@@ -3,9 +3,10 @@ package d209.Idontcare.user.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 @Builder
-@Data
+@Getter
 public class GetUserInfoDto {
   @Schema(description = "유저 ID", example = "1")
   private Long userId;
@@ -14,7 +15,7 @@ public class GetUserInfoDto {
   private String msg;
   
   @Schema(description = "아이돈케어 회원가입 유무", example = "true | false")
-  private boolean isJoined;
+  private boolean joined;
   
   @Schema(description = "닉네임", example = "신지훈 | null", nullable = true)
   private String nickname;

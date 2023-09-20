@@ -13,6 +13,9 @@ import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
 import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
+import d209.Idontcare.user.entity.User;
+import d209.Idontcare.user.repository.UserRepository;
+import d209.Idontcare.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +32,8 @@ import java.util.List;
 @Service
 public class PocketMoneyServiceImpl implements PocketMoneyService {
   
-  private final TUserService TUserService;
-  private final TUserRepository TUserRepository;
+  private final UserService userService;
+  private final UserRepository userRepository;
   private final RegularPocketMoneyRepository regularPocketMoneyRepository;
   private final PocketMoneyRequestRepository pocketMoneyRequestRepository;
   
@@ -73,17 +76,10 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public RegularPocketMoney registryRegularPocketMoney(TUser parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
+  public RegularPocketMoney registryRegularPocketMoney(User parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
     
-    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException("부모만 요청을 처리할 수 있습니다");
-    
-    TUser child = null;
-    try{
-      child = TUserService.findByUserId(req.getChildUserId());
-    } catch(NoSuchUserException e){
-      throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
-    }
-    if(child.getType() != TUser.Type.CHILD) throw new MustChildException("대상이 아이가 아닙니다");
+    User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당하는 자녀를 찾을 수 없습니다"));
+    if( !child.isChild() ) throw new MustChildException("대상이 아이가 아닙니다");
     
     /* TODO : 부모와 아이 간의 관계 확인 필요 */
     
@@ -95,41 +91,27 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     RegularPocketMoney regularPocketMoney = RegularPocketMoney.builder()
                                             .parent(parent)
-                                            .child(TUserRepository.getReferenceById(req.getChildUserId()))
+                                            .child(userRepository.getReferenceById(req.getChildUserId()))
                                             .type(req.getType())
                                             .cycle(req.getCycle())
                                             .dueDate(dueDate)
                                             .amount(req.getAmount())
                                             .build();
-    RegularPocketMoney saved = regularPocketMoneyRepository.save(regularPocketMoney);
     
-    return saved;
+    return regularPocketMoneyRepository.save(regularPocketMoney);
   }
   
   @Override
-  public void sendPocketMoney(TUser parent, SendPocketMoneyReqDto req){
-    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException("부모만 요청할 수 있습니다");
+  public void sendPocketMoney(User parent, SendPocketMoneyReqDto req){
     
-    TUser child = null;
-    try{
-      child = TUserService.findByUserId(req.getChildUserId());
-    } catch(NoSuchUserException e){
-      throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
-    }
+    User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당 자녀를 찾을 수 없습니다"));
     
     /* TODO : 용돈 지급 필요 */
   }
   
   @Override
-  public void requestPocketMoney(TUser child, RequestPocketMoneyReqDto req) throws MustParentException, MustChildException {
-    if(child.getType() != TUser.Type.CHILD) throw new MustChildException("아이만 요청할 수 있습니다");
-    
-    TUser parent = null;
-    try{
-      parent = TUserService.findByUserId(req.getParentUserId());
-    } catch(NoSuchUserException e){
-      throw new NoSuchUserException("해당 부모를 찾을 수 없습니다");
-    }
+  public void requestPocketMoney(User child, RequestPocketMoneyReqDto req) throws MustParentException, MustChildException {
+    User parent = userService.findByUserId(req.getParentUserId()).orElseThrow(() -> new NoSuchUserException("해당 부모를 찾을 수 없습니다"));
     
     LocalDateTime now = LocalDateTime.now();
     now = now.plusDays(2);
@@ -149,9 +131,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(TUser parent) throws MustParentException {
-    if(parent.getType() != TUser.Type.PARENT) throw new MustParentException();
-    
+  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User parent) throws MustParentException {
     List<Tuple> requests = pocketMoneyRequestRepository.findAllByParent(parent);
     return requests.stream().map(GetPocketMoneyRequestResDto::new).toList();
   }

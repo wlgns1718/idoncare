@@ -49,14 +49,9 @@ public class UserController {
             content=@Content(schema = @Schema(implementation = GetUserInfoDto.class))),
         @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
-    public ResponseDto login(@RequestBody KakaoDto kakao, HttpServletResponse response){
+    public ResponseDto login(@RequestBody KakaoDto kakao){
         String accessToken = oauthService.getOauthAccessToken(kakao.getCode());
         GetUserInfoDto userInfo = oauthService.getUserInfo(accessToken);
-        
-        Cookie cookie = new Cookie("refreshToken",userInfo.getRefreshToken());
-        int refreshExpired = DAY * 7;
-        cookie.setMaxAge(refreshExpired);
-        response.addCookie(cookie);
         
         return ResponseDto.success(userInfo);
     }
