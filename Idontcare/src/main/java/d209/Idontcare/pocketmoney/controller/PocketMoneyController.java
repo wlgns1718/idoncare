@@ -103,11 +103,11 @@ public class PocketMoneyController {
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
     })
-    @LoginOnly(level = Level.PARENT_ONLY)
+    @LoginOnly(level = Level.PARENT_OR_CHILD)
     public ResponseDto getPocketMoneyRequest(HttpServletRequest request){
-        User parent = (User)request.getAttribute("user");
+        User user = (User)request.getAttribute("user");
         
-        List<GetPocketMoneyRequestResDto> list =  pocketMoneyService.getPocketMoneyRequest(parent);
+        List<GetPocketMoneyRequestResDto> list =  pocketMoneyService.getPocketMoneyRequest(user);
         return ResponseDto.success(new GetPocketMoneyRequestResDto.GetPocketMoneyRequestResDtoResult(list));
     }
     

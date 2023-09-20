@@ -137,9 +137,10 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User parent) throws MustParentException {
-    List<Tuple> requests = pocketMoneyRequestRepository.findAllByParent(parent);
-    return requests.stream().map(GetPocketMoneyRequestResDto::new).toList();
+  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User user) throws MustParentException {
+    
+    if(user.isParent()) return pocketMoneyRequestRepository.findAllByParent(user).stream().map(GetPocketMoneyRequestResDto::new).toList();
+    else return pocketMoneyRequestRepository.findAllByChild(user).stream().map(GetPocketMoneyRequestResDto::new).toList();
   }
   
   @Override

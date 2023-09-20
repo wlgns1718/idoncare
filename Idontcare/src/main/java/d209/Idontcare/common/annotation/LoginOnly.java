@@ -16,3 +16,4 @@ public @interface LoginOnly {
     PARENT_OR_CHILD
   }
 }
+

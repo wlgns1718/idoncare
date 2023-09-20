@@ -2,14 +2,10 @@ package d209.Idontcare.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import d209.Idontcare.common.dto.ResponseDto;
-import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.CommonException;
-import d209.Idontcare.common.exception.ExpiredTokenException;
 import d209.Idontcare.common.exception.InternalServerException;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -18,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 public class JwtFilter extends OncePerRequestFilter {
