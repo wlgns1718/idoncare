@@ -16,8 +16,8 @@ interface YesNoBtnProps {
 const YesNoBtn: React.FC<YesNoBtnProps> = ({
   yesText = "수락",
   noText = "거절",
-  yesLink = "/",
-  noLink = "/",
+  yesLink = "",
+  noLink = "",
   className = "",
   onYesClick,
   onNoClick,

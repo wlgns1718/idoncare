@@ -9,6 +9,7 @@ import SendPocketMoney from "./pages/PocketMoneySend";
 import SendRegularMoney from "./pages/RegularMoneySend";
 import KidDemandMoney from "./pages/KidDemandMoney";
 import KidDemandMoneyList from "./pages/KidDemandMoneyList";
+import KidDemanedMoneyList from "./pages/KidDemanedMoneyList";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
@@ -22,6 +23,8 @@ import RegistAccount from "./pages/RegistAccount";
 import ARSPage from "./pages/ARSPage";
 import RegistAgreement from "./pages/RegistAgreement";
 import Report from "./pages/Report";
+import ParentSetting from "./pages/ParentSetting";
+import KidSetting from "./pages/KidSetting";
 
 function App() {
   const queryClient = new QueryClient();
@@ -50,8 +53,11 @@ function App() {
               <Route path="sendRegularMoney" element={<SendRegularMoney />} />
               <Route path="kidDemandMoney" element={<KidDemandMoney />} />
               <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
               <Route path="signup" element={<Signup />} />
               <Route path="newAccount" element={<NewAccount />} />
+              <Route path="parentSetting" element={<ParentSetting />} />
+              <Route path="kidSetting" element={<KidSetting />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
