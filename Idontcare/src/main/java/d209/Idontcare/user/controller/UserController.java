@@ -2,12 +2,8 @@ package d209.Idontcare.user.controller;
 
 
 import d209.Idontcare.common.annotation.LoginOnly;
-import d209.Idontcare.common.annotation.LoginUser;
 import d209.Idontcare.common.dto.ResponseDto;
-import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.BadRequestException;
-import d209.Idontcare.common.exception.CommonException;
-import d209.Idontcare.relationship.dto.res.RelationshipResDto;
 import d209.Idontcare.user.dto.*;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.service.OauthService;
@@ -19,15 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Tag(name="유저 API")
 @RestController
@@ -49,14 +39,9 @@ public class UserController {
             content=@Content(schema = @Schema(implementation = GetUserInfoDto.class))),
         @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
-    public ResponseDto login(@RequestBody KakaoDto kakao, HttpServletResponse response){
+    public ResponseDto login(@RequestBody KakaoDto kakao){
         String accessToken = oauthService.getOauthAccessToken(kakao.getCode());
         GetUserInfoDto userInfo = oauthService.getUserInfo(accessToken);
-        
-        Cookie cookie = new Cookie("refreshToken",userInfo.getRefreshToken());
-        int refreshExpired = DAY * 7;
-        cookie.setMaxAge(refreshExpired);
-        response.addCookie(cookie);
         
         return ResponseDto.success(userInfo);
     }

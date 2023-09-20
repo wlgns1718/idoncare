@@ -16,8 +16,8 @@ public class GetPocketMoneyRequestResDto {
   @Schema(description = "요청한 ID", example = "1")
   private Long pocketMoneyRequestId;
   
-  private User parent;
-  private User child;
+  private InnerUser parent;
+  private InnerUser child;
 
   @Schema(description = "요청한 돈", example = "10000")
   private Integer amount;
@@ -32,8 +32,8 @@ public class GetPocketMoneyRequestResDto {
   
   public GetPocketMoneyRequestResDto(Tuple tuple){
       this.pocketMoneyRequestId = (Long)tuple.get("pocketMoneyRequestId");
-      this.parent = new User((Long)tuple.get("parentId"), (String)tuple.get("parentName"));
-      this.child = new User((Long)tuple.get("childId"), (String)tuple.get("childName"));
+      this.parent = new InnerUser((Long)tuple.get("parentId"), (String)tuple.get("parentName"));
+      this.child = new InnerUser((Long)tuple.get("childId"), (String)tuple.get("childName"));
       this.amount = (Integer)tuple.get("amount");
       this.type = (PocketMoneyRequest.Type)tuple.get("type");
       this.createdAt = (LocalDateTime)tuple.get("createdAt");
@@ -52,13 +52,13 @@ public class GetPocketMoneyRequestResDto {
 }
 
 @Getter
-class User{
+class InnerUser{
   @Schema(description = "유저 ID", example = "1")
   private Long id;
   @Schema(description = "유저 이름", example = "이제성")
   private String name;
   
-  public User(Long id, String name){
+  public InnerUser(Long id, String name){
     this.id = id;
     this.name = name;
   }
