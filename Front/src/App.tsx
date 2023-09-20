@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import Login from "./pages/Login";
 import PocketMoney from "./pages/PocketMoney";
 import Wallet from "./pages/Wallet";
@@ -25,7 +26,7 @@ import TransferConfirm from "./pages/TransferConfirm";
 
 function App() {
   return (
-    <>
+    <RecoilRoot>
       <AppLayout>
         <BrowserRouter>
           <Routes>
@@ -46,9 +47,9 @@ function App() {
             />
             <Route path="report" element={<Report/>} />
             <Route path="purchase" element={<Purchase />} />
-            <Route path="transfer" element={<Transfer />} />
             <Route path="transfer/account" element={<TransferSelect />} />
-            <Route path="transfer/account/confirm" element={<TransferConfirm />} />
+            <Route path="transfer/input" element={<Transfer />} />
+            <Route path="transfer/confirm" element={<TransferConfirm />} />
             <Route path="purchase/qrcode" element={<QRcodePurchase />} />
             <Route path="purchase/camera" element={<CameraPurchase />} />
             <Route path="pocketMoney" element={<PocketMoney />} />
@@ -60,7 +61,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AppLayout>
-    </>
+    </RecoilRoot>
   );
 }
 

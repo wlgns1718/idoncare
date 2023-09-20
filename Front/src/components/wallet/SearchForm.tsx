@@ -1,11 +1,11 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, MouseEventHandler, SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SearchFormProps {
   searchKeyword: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   resetKeyword: () => void;
-  className? : string;
+  className?: string;
 }
 
 function SearchForm({
@@ -16,10 +16,22 @@ function SearchForm({
 }: SearchFormProps) {
   const navigate = useNavigate();
 
+  const handleSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    console.log("search keyword: ", searchKeyword);
+  }
+
+  const handleClick = () => {  
+    console.log("search keyword: ", searchKeyword);
+  }
+  
   return (
     <div className={`${className}`}>
       <div className="flex items-center">
-        <form className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg">
+        <form
+          className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg"
+          onSubmit={handleSubmit}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -41,7 +53,7 @@ function SearchForm({
             value={searchKeyword}
             onChange={onChange}
           />
-          {searchKeyword ? (
+          {searchKeyword && (
             <div
               className="bg-darkgray w-6 h-6 rounded-[50%] text-white text-center"
               onClick={() => {
@@ -50,14 +62,9 @@ function SearchForm({
             >
               X
             </div>
-          ) : null}
+          )}
         </form>
-        <div
-          className="p-4 h-[35px]"
-          onClick={() => {
-            navigate("/wallet");
-          }}
-        >
+        <div className="p-4 h-[35px]" onClick={handleClick}>
           검색
         </div>
       </div>
