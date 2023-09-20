@@ -1,10 +1,12 @@
 package d209.Idontcare.user.entity;
 
 
+import d209.Idontcare.common.entity.BaseEntity;
 import d209.Idontcare.user.dto.UserDetailDto;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,11 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class UserDetail {
+public class UserDetail extends BaseEntity {
 
     @Id
     @Column(name = "USER_DETAIL_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userDetailId;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -33,11 +34,9 @@ public class UserDetail {
     @Column(name = "EMAIL", length = 30)
     private String email;
 
-    @Column(name = "CREATED_AT")
-    private LocalDateTime createdTime;
-
-    @Column(name = "UPDATED_AT")
-    private LocalDateTime updatedTime;
+    @Column(name = "UPDATED_AT", updatable = false)
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
 
     public UserDetail toEntity(UserDetailDto userDetailDto,User user){

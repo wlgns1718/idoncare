@@ -47,8 +47,6 @@ public class APIBuilder{
     
     builder.returnType = new HashMap<String, Object>().getClass();
     
-    System.out.println(builder.returnType);
-    
     return builder;
   }
   
