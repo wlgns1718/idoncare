@@ -1,5 +1,3 @@
-import React from 'react'
-
 function TransferMsg() {
   return (
     <div className="flex flex-col h-[80vh]">

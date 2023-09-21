@@ -2,9 +2,9 @@ import React from "react";
 import BankItem, { BankDataType } from "./BankItem";
 
 interface BankListInterface {
-  setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentSelect?: React.Dispatch<React.SetStateAction<string>>;
   banks: BankDataType[];
-  onChange: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (bank: BankDataType) => void;
 }
 
 const BankGridList: React.FC<BankListInterface> = ({

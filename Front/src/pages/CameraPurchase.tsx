@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Header from "../components/common/Header";
 import QrScanner from "qr-scanner";
 
 function CameraPurchase() {
   const handleScan = (result: QrScanner.ScanResult) => {
     console.log(result);
-    const parsedData = JSON.parse(result.data);
   };
 
   const videoRef = useRef(null);

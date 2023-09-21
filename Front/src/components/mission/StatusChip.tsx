@@ -11,7 +11,7 @@ export enum ChipStyle {
   미지급=""
 }
 
-function StatusChip(status :) {
+function StatusChip(status) {
   return (
     <div>
       {status}

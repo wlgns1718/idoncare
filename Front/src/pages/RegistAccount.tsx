@@ -40,8 +40,10 @@ const banks = [
 ];
 
 const InputAccountNumber = ({
+  selectedBank,
   setCurrentSelect,
 }: {
+  selectedBank: BankDataType | null;
   setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
 }) => {
 
@@ -53,7 +55,7 @@ const InputAccountNumber = ({
           className="flex p-6 items-center"
         >
           <div className="w-[10vw] h-[10vw]">아이콘</div>
-          <div className="text-l">은행 이름</div>
+          <div className="text-l">{selectedBank?.name}</div>
         </div>
         <input
           type="number"
@@ -81,9 +83,16 @@ function RegistAccount() {
     <div>
       <Header pageTitle="충전 계좌 등록" />
       {currentSelect == "bank" ? (
-        <BankGridList banks={banks} onChange={handleSelectBank} />
+        <BankGridList
+          banks={banks}
+          onChange={handleSelectBank}
+          setCurrentSelect={setCurrentSelect}
+        />
       ) : (
-        <InputAccountNumber bank={selectedBank}/>
+        <InputAccountNumber
+          selectedBank={selectedBank}
+          setCurrentSelect={setCurrentSelect}
+        />
       )}
     </div>
   );

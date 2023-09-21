@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BottomSheet from "../common/BottomSheet";
+import {BottomSheet} from "../common/BottomSheet";
 
 function TransferSelectForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,7 +31,7 @@ function TransferSelectForm() {
 
       <div >
         <div className="" onClick={openModal}>은행선택</div>
-        {isModalOpen && <BottomSheet/>}
+        {isModalOpen && <BottomSheet children={<div onClick={closeModal}>닫기</div>}/>}
         <form action="">
           <input type="number" placeholder="계좌번호 입력" />
         </form>

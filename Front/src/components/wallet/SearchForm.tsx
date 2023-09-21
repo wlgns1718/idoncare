@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEventHandler, SyntheticEvent } from "react";
+import { ChangeEventHandler, SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SearchFormProps {
@@ -14,8 +14,7 @@ function SearchForm({
   resetKeyword,
   className,
 }: SearchFormProps) {
-  const navigate = useNavigate();
-
+  
   const handleSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
     event.preventDefault();
     console.log("search keyword: ", searchKeyword);
@@ -30,7 +29,7 @@ function SearchForm({
       <div className="flex items-center">
         <form
           className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg"
-          onSubmit={handleSubmit}
+          onSubmit={()=>handleSubmit}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

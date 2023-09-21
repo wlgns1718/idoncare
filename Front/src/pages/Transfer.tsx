@@ -1,6 +1,4 @@
-import React from "react";
 import Header from "../components/common/Header";
-import NumberPlate from "../components/common/NumberPlate";
 import FullBtn from "../components/common/FullBtn";
 import MoneyInputForm from "../components/common/MoneyInputForm";
 import { useNavigate } from 'react-router-dom';

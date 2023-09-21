@@ -15,7 +15,7 @@ const BankItem: React.FC<BankItemProps> = ({ item, onClick }) => {
   return (
     <div
       className="border-zinc-500/20 border p-2 rounded-lg shadow-sm flex-col flex items-center"
-      onClick={onClick}
+      onClick={()=>onClick}
     >
       <img
         className="w-[10vw]"

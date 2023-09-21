@@ -1,4 +1,3 @@
-import React from 'react'
 import TradeListItem from './TradeListItem';
 
 function DailyTradeList() {

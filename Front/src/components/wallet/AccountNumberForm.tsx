@@ -3,8 +3,8 @@ import FullBtn from "../common/FullBtn";
 import { BankDataType } from "./BankItem";
 
 function AccountNumberForm({
-  bank
-  setCurrentSelect,
+  bank,
+  setCurrentSelect
 }: {
   bank : BankDataType;
   setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
@@ -16,8 +16,8 @@ function AccountNumberForm({
           onClick={() => setCurrentSelect("bank")}
           className="flex p-6 items-center"
         >
-          <img src="" className="w-[10vw] h-[10vw]">아이콘</img>
-          <div className="text-l">은행 이름</div>
+          <img src={bank.icon} className="w-[10vw] h-[10vw]"/>
+          <div className="text-l">{bank.name}</div>
         </div>
         <input
           type="number"
