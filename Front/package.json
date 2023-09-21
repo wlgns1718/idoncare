@@ -17,7 +17,8 @@
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.12",
     "react-router-dom": "^6.15.0",
-    "react-select": "^5.7.4"
+    "react-select": "^5.7.4",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
