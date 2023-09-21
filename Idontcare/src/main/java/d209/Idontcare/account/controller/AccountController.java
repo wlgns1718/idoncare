@@ -3,6 +3,7 @@ package d209.Idontcare.account.controller;
 import d209.Idontcare.TUser;
 import d209.Idontcare.TUserRepository;
 import d209.Idontcare.account.dto.req.TransactionRequestDto;
+import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.AuthenticationException;
@@ -20,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +43,14 @@ public class AccountController {
     @GetMapping("/transaction")
     public ResponseDto<?> findTransaction(@RequestBody TransactionRequestDto transactionRequestDto, HttpServletRequest request){
         System.out.println(transactionRequestDto.toString());
-        APIResultDto get = apiService.get("http://127.0.0.1:8080/openbanking/account/transaction_list/fin_num", null, transactionRequestDto);
-        System.out.println(get.getBody());
-        System.out.println(get.getStatus());
-        System.out.println(get.getHeader());
+        APIResultDto result = APIBuilder.build()
+                .url("https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/openbanking/oauth/2.0/token")
+                .method(HttpMethod.POST)
+                .body(transactionRequestDto)
+                .execute();
+        System.out.println(result.getStatus());
+        System.out.println(result.getHeader());
+        System.out.println(result.getBody());
         return null;
     }
 

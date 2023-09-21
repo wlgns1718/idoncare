@@ -15,7 +15,7 @@ public class AccountException extends RuntimeException{
         }
     }
 
-    //입금 계좌가 없는 계좌일 경우
+    //계좌가 없는 계좌일 경우
     public static class AccoutNotFoundException extends AccountException{
         public AccoutNotFoundException(String message) {
             super(message);
@@ -23,7 +23,7 @@ public class AccountException extends RuntimeException{
     }
 
 
-    //출금 계좌 잔액이 부족할 경우
+    //계좌 잔액이 부족할 경우
     public static class AccoutInsufficientException extends AccountException{
         public AccoutInsufficientException(String message) {
             super(message);

@@ -22,7 +22,7 @@ public class TransactionHistory {
     @JoinColumn(name = "ACCOUNT_NUMBER")
     BankAccount bankAccount;
 
-    @Column(length = 20)
+    @Column(length = 100)
     String content;
 
     @Column

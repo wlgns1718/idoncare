@@ -29,7 +29,4 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, String
     @Query("SELECT a FROM BankAccount a WHERE a.id = :accountNumber AND a.bank.id = :bankId AND a.name = :name")
     BankAccount findByNameAndBankIdAndId(@Param("name") String name, @Param("bankId") String bankId, @Param("accountNumber") String accountNumber);
 
-//    //계좌 번호와 은행 코드로 A에서 B로 돈 출금
-//    @Query("SELECT a.bank.id, a.accountNumber FROM Account a WHERE a.id = :accountId")
-//    Tuple findBankAndAccountNumberById(@Param("accountId") String accountId);
 }

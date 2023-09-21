@@ -1,4 +1,5 @@
 package KFTC.openBank.domain;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,4 +22,9 @@ public class Bank {
 
     @Column(name = "FILE_PATH")
     String filePath;
+
+    public Bank(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

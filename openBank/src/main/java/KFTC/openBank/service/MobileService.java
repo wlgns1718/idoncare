@@ -22,7 +22,7 @@ public class MobileService {
             throw new MobileException.NotCorrect("해당하는 휴대폰 번호는 없습니다.");
         }
         Mobile mobile = temp.get();
-        if(!mobile.getName().equals(authRequestDto.getName()) || !mobile.getBirth().equals(authRequestDto.getBirth()) || !mobile.getMobileSort().equals(authRequestDto.getMobileSort())){
+        if(!mobile.getName().equals(authRequestDto.getName()) || !mobile.getBirth().equals(authRequestDto.getBirth()) || !(mobile.getMobileSort() == authRequestDto.getMobileSort())){
             throw new MobileException.NotCorrect("정보가 일치하지 않습니다.");
         }
         return true;

@@ -29,7 +29,6 @@ public class RestTests {
 
   @Autowired
   private APIService apiService;
-<<<<<<< HEAD
 
 //  @Test
 //  @DisplayName("GET 테스트")

@@ -21,7 +21,7 @@ public class AuthRequestDto {
 
     @Schema(description = "휴대폰 번호", example = "01012345678")
     private String phoneNumber;
-    @Schema(description = "생일", example = "1990101")
+    @Schema(description = "생일", example = "19900101")
     private String birth;
     @Schema(description = "통신사", example = "SK")
     private MobileSort mobileSort;
