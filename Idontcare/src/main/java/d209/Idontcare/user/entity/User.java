@@ -1,10 +1,8 @@
 package d209.Idontcare.user.entity;
 
-
-import d209.Idontcare.user.dto.UserDto;
 import lombok.*;
-
 import javax.persistence.*;
+import java.util.UUID;
 
 @Table(name="USER")
 @Entity
@@ -14,18 +12,21 @@ public class User {
     @Id
     @Column(name = "USER_ID")
     private Long userId;
+    
+    @Column(name = "KAKAO_ID")
+    private Long kakaoId;
 
-    @Column(name = "PHONE_NUMBER", length = 20)
+    @Column(name = "PHONE_NUMBER", length = 20, nullable = true)
     private String phoneNumber;
 
-    @Column(name = "NAME", length = 20)
+    @Column(name = "NAME", length = 20, nullable = true)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TYPE")
+    @Column(name = "TYPE", nullable = true)
     private Role role;
 
-    @Column(name = "NICK_NAME", length = 30)
+    @Column(name = "NICK_NAME", length = 30, nullable = true)
     private String nickName;
     
     public boolean isParent(){
@@ -33,5 +34,9 @@ public class User {
     }
     public boolean isChild(){
         return this.role == Role.CHILD;
+    }
+    
+    public void setUUID(){
+        this.userId = (UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE) / 10_000 * 10_000;
     }
 }

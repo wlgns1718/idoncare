@@ -13,6 +13,8 @@ public interface UserService {
   Map<String,Object> login(Long userId, String password) throws Exception;
 
   Optional<User> findByUserId(Long userId);
+  
+  Optional<User> findByKakaoId(Long kakaoId);
 
   void joinUser(JoinUserReqDto joinUserDto)
       throws BadRequestException, DuplicatedException;

@@ -75,12 +75,13 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public RegularPocketMoney registryRegularPocketMoney(User parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
+  public RegularPocketMoney registryRegularPocketMoney(Long parentUserId, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
     
     User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당하는 자녀를 찾을 수 없습니다"));
+    
     if( !child.isChild() ) throw new MustChildException("대상이 아이가 아닙니다");
     
-    if( !relationshipService.relationExistsByParentAndChild(parent, child) ) throw new BadRequestException("부모와 자식간의 관계가 아닙니다");
+    if( !relationshipService.relationExistsByParentAndChild(parentUserId, child.getUserId()) ) throw new BadRequestException("부모와 자식간의 관계가 아닙니다");
     
     Integer cycle = req.getCycle();
     if(req.getType() == RegularPocketMoney.Type.DAY && cycle != null) throw new BadRequestException("DAY타입에는 주기를 정할 수 없습니다");
@@ -93,6 +94,8 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     //지급되어야 할 날짜 계산
     Integer dueDate = getNextDueDate(now, req.getType(), req.getCycle());
+    
+    User parent = userRepository.getReferenceById(parentUserId);
     
     
     RegularPocketMoney regularPocketMoney = RegularPocketMoney.builder()
@@ -108,7 +111,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public void sendPocketMoney(User parent, SendPocketMoneyReqDto req){
+  public void sendPocketMoney(Long parentUserId, SendPocketMoneyReqDto req){
     
     User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당 자녀를 찾을 수 없습니다"));
     
@@ -116,12 +119,14 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public void requestPocketMoney(User child, RequestPocketMoneyReqDto req) throws MustParentException, MustChildException {
+  public void requestPocketMoney(Long childUserId, RequestPocketMoneyReqDto req) throws MustParentException, MustChildException {
     User parent = userService.findByUserId(req.getParentUserId()).orElseThrow(() -> new NoSuchUserException("해당 부모를 찾을 수 없습니다"));
     
     LocalDateTime now = LocalDateTime.now();
     now = now.plusDays(2);
     Integer cancelDate = (now.getYear() % 100) * 10_000 + now.getMonthValue() * 100 + now.getDayOfMonth();
+    
+    User child = userRepository.getReferenceById(childUserId);
     
     PocketMoneyRequest request = PocketMoneyRequest.builder()
         .parent(parent)
@@ -133,18 +138,19 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
         .build();
     
     pocketMoneyRequestRepository.save(request);
-    
   }
   
   @Override
-  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User user) throws MustParentException {
+  public List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(Long userId) throws MustParentException {
+    User user = userRepository.getReferenceById(userId);
     
     if(user.isParent()) return pocketMoneyRequestRepository.findAllByParent(user).stream().map(GetPocketMoneyRequestResDto::new).toList();
     else return pocketMoneyRequestRepository.findAllByChild(user).stream().map(GetPocketMoneyRequestResDto::new).toList();
   }
   
   @Override
-  public void processPocketMoneyRequest(User parent, ProcessPocketMoneyRequestReqDto req){
+  public void processPocketMoneyRequest(Long parentUserId, ProcessPocketMoneyRequestReqDto req){
+    User parent = userRepository.getReferenceById(parentUserId);
     
     PocketMoneyRequest pocketMoneyRequest = pocketMoneyRequestRepository.findById(req.getPocketMoneyRequestId())
         .orElseThrow(() -> new NoSuchContentException("해당하는 요청을 찾을 수 없습니다"));

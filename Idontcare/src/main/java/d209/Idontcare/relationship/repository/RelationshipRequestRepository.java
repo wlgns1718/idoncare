@@ -14,10 +14,10 @@ import java.util.Optional;
 
 public interface RelationshipRequestRepository extends JpaRepository<RelationshipRequest, Long> {
   
-  @Query("select count(r.relationshipRequestId) > 0 from RelationshipRequest r where r.parent = :parent and r.child = :child")
-  Page<Integer> existsByParentAndChild(@Param("parent") User parent, @Param("child") User child, Pageable pageable);
+  @Query("select count(r.relationshipRequestId) > 0 from RelationshipRequest r where r.parent.userId = :parentUserId and r.child.userId = :childUserId")
+  Page<Integer> existsByParentAndChild(@Param("parentUserId") Long parentUserId, @Param("childUserId") Long childUserId, Pageable pageable);
   
   @Query("select r.relationshipRequestId as relationshipRequestId, r.createdAt as createdAt, r.parent.name as parentName" +
-      " from RelationshipRequest r where r.child = :child")
-  List<Tuple> findAllByChild(@Param("child") User child);
+      " from RelationshipRequest r where r.child.userId = :childUserId")
+  List<Tuple> findAllByChild(@Param("childUserId") Long childUserId);
 }
