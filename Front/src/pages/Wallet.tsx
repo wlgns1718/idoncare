@@ -12,7 +12,7 @@ const Wallet = () => {
       <div className="bg-yellow-100">
         <Link to="/">Login</Link>
       </div>
-      <Header pageTitle="내 지갑" headerType="normal" headerLink="/home" />
+      <Header pageTitle="내 지갑" headerType="normal" headerLink="/" />
       <div className="m-8">
         <WalletCard />
         <TradeHistory />
