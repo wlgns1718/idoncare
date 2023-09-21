@@ -28,11 +28,11 @@ public class ReceivedRequestResDto{
   }
   
   @Data
-  public static class Result{
+  public static class ReceivedRequestResDtoResult{
     @Schema(description = "요청 결과")
     List<ReceivedRequestResDto> requests = new LinkedList<>();
     
-    public Result(List<ReceivedRequestResDto> requests){
+    public ReceivedRequestResDtoResult(List<ReceivedRequestResDto> requests){
       this.requests = requests;
     }
   }

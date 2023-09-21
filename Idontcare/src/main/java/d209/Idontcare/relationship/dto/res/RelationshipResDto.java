@@ -29,11 +29,11 @@ public class RelationshipResDto {
   }
   
   @Getter
-  public static class Result{
+  public static class RelationshipResDtoResult{
     @Schema(description = "관계 리스트")
     List<RelationshipResDto> relationList = new LinkedList<>();
     
-    public Result(List<RelationshipResDto> relationList){
+    public RelationshipResDtoResult(List<RelationshipResDto> relationList){
       this.relationList = relationList;
     }
   }

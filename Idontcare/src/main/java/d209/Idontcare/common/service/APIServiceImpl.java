@@ -106,8 +106,6 @@ public class APIServiceImpl implements APIService {
                                                                           new ParameterizedTypeReference<Map<String, Object>>(){}
                                                                         );
     
-    System.out.println(response.getBody());
-    
     APIResultDto apiResult = new APIResultDto();
     
     // 결과 status 저장
