@@ -7,10 +7,14 @@ const DemandingBox: React.FC = () => {
       <div>엄마</div>
       <div className="text-main font-strong">2,500원</div>
       <Link to="/">
-        <img src="/icons/icon-emoji-1.png" alt="Icon" className="mt-2 w-24 h-30"/>
+        <img
+          src="/icons/icon-emoji-1.png"
+          alt="Icon"
+          className="mt-2 w-24 h-30"
+        />
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default DemandingBox
+export default DemandingBox;

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import Header from '../components/common/Header';
-import YesNoBtn from '../components/common/YesNoBtn';
-import SmallBtn from '../components/pocketmoney/SmallBtn';
-import ChildReguestMoneyDetail from '../components/pocketmoney/KidDemandedDetail';
-import MoneyDone from '../components/pocketmoney/Done';
-import DemandCheckModal from '../components/pocketmoney/DemandCheckModal';
+import React, { useState } from "react";
+import Header from "../components/common/Header";
+import YesNoBtn from "../components/common/YesNoBtn";
+import SmallBtn from "../components/pocketmoney/SmallBtn";
+import ChildReguestMoneyDetail from "../components/pocketmoney/KidDemandedDetail";
+import MoneyDone from "../components/pocketmoney/Done";
+import DemandCheckModal from "../components/pocketmoney/DemandCheckModal";
 
 const ChildReguestMoney: React.FC = () => {
   const [isAccepted, setIsAccepted] = useState(false);
@@ -52,13 +52,13 @@ const ChildReguestMoney: React.FC = () => {
           cancelDate="2023.09.12"
         />
 
-        <YesNoBtn yesLink="" onYesClick={handleAccept} onNoClick={handleOpenModal} />
+        <YesNoBtn
+          yesLink=""
+          onYesClick={handleAccept}
+          onNoClick={handleOpenModal}
+        />
 
-        {isModalOpen && (
-          // <DemandCheckModal onClose={handleCloseModal} />
-          <DemandCheckModal onClose={handleCloseModal}/>
-          
-        )}
+        {isModalOpen && <DemandCheckModal onClose={handleCloseModal} />}
       </div>
     </div>
   );

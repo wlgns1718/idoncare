@@ -23,7 +23,7 @@ const YesNoBtn: React.FC<YesNoBtnProps> = ({
   onNoClick,
 }) => {
   const handleYesClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault(); // Always prevent default action
+    e.preventDefault();
     if (onYesClick) {
       onYesClick();
     }
@@ -39,12 +39,20 @@ const YesNoBtn: React.FC<YesNoBtnProps> = ({
   return (
     <div className={`flex mt-auto ${className}`}>
       <div className="flex justify-between w-full mt-10">
-        <Link to={noLink} onClick={handleNoClick} className={`block ${className}`}>
+        <Link
+          to={noLink}
+          onClick={handleNoClick}
+          className={`block ${className}`}
+        >
           <div className="inline-block w-48 p-4 mr-5 text-black bg-mediumgray rounded-3xl text-s">
             {noText}
           </div>
         </Link>
-        <Link to={yesLink} onClick={handleYesClick} className={`block ${className}`}>
+        <Link
+          to={yesLink}
+          onClick={handleYesClick}
+          className={`block ${className}`}
+        >
           <div className="inline-block w-48 p-4 text-white bg-main rounded-3xl text-s">
             {yesText}
           </div>

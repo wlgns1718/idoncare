@@ -10,6 +10,7 @@ import SendRegularMoney from "./pages/RegularMoneySend";
 import KidDemandMoney from "./pages/KidDemandMoney";
 import KidDemandMoneyList from "./pages/KidDemandMoneyList";
 import KidDemanedMoneyList from "./pages/KidDemanedMoneyList";
+import KidRegister from "./pages/KidRegist";
 import Signup from "./pages/Signup";
 import WalletSearch from "./pages/WalletSearch";
 import { AppLayout } from "./layouts/AppLayout";
@@ -54,6 +55,7 @@ function App() {
               <Route path="kidDemandMoney" element={<KidDemandMoney />} />
               <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
               <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
+              <Route path="kidRegister" element={<KidRegister />} />
               <Route path="signup" element={<Signup />} />
               <Route path="newAccount" element={<NewAccount />} />
               <Route path="parentSetting" element={<ParentSetting />} />
