@@ -2,6 +2,7 @@ package d209.Idontcare.jwt;
 
 import d209.Idontcare.common.exception.AuthenticationException;
 import d209.Idontcare.common.exception.ExpiredTokenException;
+import d209.Idontcare.user.entity.Role;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,27 +29,27 @@ public class JwtTokenProvider {
   private Long refreshExpirationTime;
   
   /* Access 토큰 생생 */
-  public String createAccessToken(Long userId){
+  public String createAccessToken(Long userId, Role role){
     Claims claims = Jwts.claims();
     claims.put("userId", userId);
+    claims.put("role", role);
     
     Date now = new Date();
     Date expireTime = new Date(now.getTime() + accessExpirationTime);
     
-    String accessToken = Jwts.builder()
+    return Jwts.builder()
         .setClaims(claims)
         .setIssuedAt(now)
         .setExpiration(expireTime)
         .signWith(SignatureAlgorithm.HS256, secret)
         .compact();
-    
-    return accessToken;
   }
   
   /* Refresh 토큰 생성 */
-  public String createRefreshToken(Long userId){
+  public String createRefreshToken(Long userId, Role role){
     Claims claims = Jwts.claims();
     claims.put("userId", userId);
+    claims.put("role", role);
     
     Date now = new Date();
     Date expireTime = new Date(now.getTime() + refreshExpirationTime);
@@ -72,14 +73,20 @@ public class JwtTokenProvider {
     return refreshToken;
   }
   
-  public Long getUserId(String token){
-    Long userId = (Long)Jwts.parser()
+  public AuthInfo getAuthInfo(String token){
+    Claims claims = Jwts.parser()
         .setSigningKey(secret)
         .parseClaimsJws(token)
-        .getBody()
-        .get("userId");
+        .getBody();
+
+    Role role =  Role.valueOf((String)claims.get("role"));
     
-    return userId;
+    
+    AuthInfo authInfo = new AuthInfo();
+    authInfo.setUserId((Long)claims.get("userId"));
+    authInfo.setRole(role);
+
+    return authInfo;
   }
   
   /* Header에서 Bearer 토큰을 가져온다 */

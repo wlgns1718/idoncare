@@ -8,6 +8,7 @@ import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;
 import d209.Idontcare.relationship.entity.RelationshipRequest;
 import d209.Idontcare.relationship.service.RelationshipService;
+import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,9 +41,10 @@ public class RelationshipController {
   })
   @LoginOnly(level = Level.PARENT_OR_CHILD)
   public ResponseDto<?> getRelationshipList(HttpServletRequest request){
-    User user = (User)request.getAttribute("user");
+    Long userId = (Long)request.getAttribute("userId");
+    Role role = (Role)request.getAttribute("role");
     
-    List<RelationshipResDto> list = relationshipService.getRelationshipList(user);
+    List<RelationshipResDto> list = relationshipService.getRelationshipList(userId, role);
     
     return ResponseDto.success(new RelationshipResDto.RelationshipResDtoResult(list));
   }
@@ -61,9 +63,10 @@ public class RelationshipController {
   })
   @LoginOnly(level = Level.PARENT_ONLY)
   public ResponseDto<?> requestRelationship(@Valid @RequestBody RequestRelationshipReqDto req, HttpServletRequest request){
-    User parent = (User)request.getAttribute("user");
+    Long parentUserId = (Long)request.getAttribute("userId");
+
     
-    RelationshipRequest saved = relationshipService.requestRelationship(parent, req);
+    RelationshipRequest saved = relationshipService.requestRelationship(parentUserId, req);
     RequestRelationshipResDto result = RequestRelationshipResDto.builder()
                                         .requestRelationshipId(saved.getRelationshipRequestId())
                                         .build();
@@ -80,9 +83,9 @@ public class RelationshipController {
   })
   @LoginOnly(level = Level.CHILD_ONLY)
   public ResponseDto<?> getReceivedRequestList(HttpServletRequest request){
-    User child = (User)request.getAttribute("user");
+    Long childUerId = (Long)request.getAttribute("userId");
 
-    List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(child);
+    List<ReceivedRequestResDto> requests = relationshipService.getReceivedRequestList(childUerId);
     return ResponseDto.success(new ReceivedRequestResDto.ReceivedRequestResDtoResult(requests));
   }
   
@@ -97,9 +100,9 @@ public class RelationshipController {
   })
   @LoginOnly(level = Level.CHILD_ONLY)
   public ResponseDto<?> processReceivedRequest(@RequestBody ProcessReceivedRequestReqDto req, HttpServletRequest request){
-    User child = (User)request.getAttribute("user");
+    Long childUserId = (Long)request.getAttribute("userId");
     
-    relationshipService.processReceivedRequest(child, req);
+    relationshipService.processReceivedRequest(childUserId, req);
     return ResponseDto.success(null);
   }
 }

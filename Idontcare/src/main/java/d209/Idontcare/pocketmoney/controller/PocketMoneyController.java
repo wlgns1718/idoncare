@@ -47,11 +47,11 @@ public class PocketMoneyController {
     public ResponseDto registRegularPocketMoney(@Valid @RequestBody RegistRegularPocketMoneyReqDto req,
                                                 HttpServletRequest request,
                                                 BindingResult bindingResult){
-        User parent = (User)request.getAttribute("user");
+        Long parentUserId = (Long)request.getAttribute("userId");
 
         ErrorHandler.ErrorHandling(bindingResult);
         
-        RegularPocketMoney saved = pocketMoneyService.registryRegularPocketMoney(parent, req, LocalDateTime.now());
+        RegularPocketMoney saved = pocketMoneyService.registryRegularPocketMoney(parentUserId, req, LocalDateTime.now());
         RegistRegularPocketMoneyResDto result = RegistRegularPocketMoneyResDto.builder()
                                                         .regularPocketMoneyId(saved.getRegularPocketMoneyId())
                                                         .build();
@@ -70,9 +70,9 @@ public class PocketMoneyController {
     })
     @LoginOnly(level = Level.PARENT_ONLY)
     public ResponseDto sendPocketMoney(@Valid @RequestBody SendPocketMoneyReqDto req, HttpServletRequest request){
-        User parent = (User)request.getAttribute("user");
+        Long parentUserId = (Long)request.getAttribute("userId");
         
-        pocketMoneyService.sendPocketMoney(parent, req);
+        pocketMoneyService.sendPocketMoney(parentUserId, req);
         return ResponseDto.success(null);
     }
     
@@ -88,9 +88,9 @@ public class PocketMoneyController {
     })
     @LoginOnly(level = Level.CHILD_ONLY)
     public ResponseDto requestPocketMoney(@Valid @RequestBody RequestPocketMoneyReqDto req, HttpServletRequest request){
-        User child = (User)request.getAttribute("user");
+        Long childUserId = (Long)request.getAttribute("userId");
         
-        pocketMoneyService.requestPocketMoney(child, req);
+        pocketMoneyService.requestPocketMoney(childUserId, req);
         return ResponseDto.success(null);
     }
     
@@ -105,9 +105,9 @@ public class PocketMoneyController {
     })
     @LoginOnly(level = Level.PARENT_OR_CHILD)
     public ResponseDto getPocketMoneyRequest(HttpServletRequest request){
-        User user = (User)request.getAttribute("user");
+        Long userId = (Long)request.getAttribute("userId");
         
-        List<GetPocketMoneyRequestResDto> list =  pocketMoneyService.getPocketMoneyRequest(user);
+        List<GetPocketMoneyRequestResDto> list =  pocketMoneyService.getPocketMoneyRequest(userId);
         return ResponseDto.success(new GetPocketMoneyRequestResDto.GetPocketMoneyRequestResDtoResult(list));
     }
     
@@ -122,9 +122,9 @@ public class PocketMoneyController {
     })
     @LoginOnly(level = Level.PARENT_ONLY)
     public ResponseDto processPocketMoneyRequest(@Valid @RequestBody ProcessPocketMoneyRequestReqDto req, HttpServletRequest request){
-        User parent = (User)request.getAttribute("user");
+        Long parentUserId = (Long)request.getAttribute("userId");
         
-        pocketMoneyService.processPocketMoneyRequest(parent, req);
+        pocketMoneyService.processPocketMoneyRequest(parentUserId, req);
         return ResponseDto.success(null);
     }
 }

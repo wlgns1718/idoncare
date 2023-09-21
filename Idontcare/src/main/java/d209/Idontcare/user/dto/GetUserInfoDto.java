@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 @Builder
 @Getter
+@ToString
 public class GetUserInfoDto {
   @Schema(description = "유저 ID", example = "1")
   private Long userId;
