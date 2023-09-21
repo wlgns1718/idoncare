@@ -1,6 +1,7 @@
 package d209.Idontcare.config;
 
 
+import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.service.UserService;
 import d209.Idontcare.utils.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -84,7 +85,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add(new SimpleGrantedAuthority(Role.MANAGER.toString()));
+        authorities.add(new SimpleGrantedAuthority(Role.PARENT.toString()));
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userId,null,authorities);
 
