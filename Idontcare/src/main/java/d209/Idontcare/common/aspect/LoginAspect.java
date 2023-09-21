@@ -4,6 +4,7 @@ import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.exception.AuthorizationException;
 import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.common.exception.MustParentException;
+import d209.Idontcare.jwt.AuthInfo;
 import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.entity.User;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,23 +27,23 @@ public class LoginAspect {
     HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
         .getRequest();
     
-    User user;
+    Role role;
     try{
-      user = (User)request.getAttribute("user");
-      if(user == null) throw new AuthenticationException();
+      role = (Role)request.getAttribute("role");
+      if(role == null) throw new AuthenticationException();
     } catch(Exception e){
       throw new AuthenticationException();
     }
     
     switch(loginOnly.level()){
       case PARENT_ONLY:
-        if(user.getRole() != Role.PARENT) throw new MustParentException();
+        if(role != Role.PARENT) throw new MustParentException();
         break;
       case CHILD_ONLY:
-        if(user.getRole() != Role.CHILD) throw new MustChildException();
+        if(role != Role.CHILD) throw new MustChildException();
         break;
       case PARENT_OR_CHILD:
-        if(user.getRole() != Role.PARENT && user.getRole() != Role.CHILD) throw new AuthorizationException();
+        if(role != Role.PARENT && role != Role.CHILD) throw new AuthorizationException();
         break;
     }
   }

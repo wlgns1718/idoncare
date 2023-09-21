@@ -7,9 +7,12 @@ import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;
 import d209.Idontcare.relationship.entity.*;
 import d209.Idontcare.relationship.repository.*;
+import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.entity.User;
+import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
 import lombok.*;
+import org.hibernate.annotations.Parent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,19 +30,22 @@ public class RelationshipServiceImpl implements RelationshipService{
 
   private final UserService userService;
   
+  private final UserRepository userRepository;
   private final RelationshipRepository relationshipRepository;
   private final RelationshipRequestRepository relationshipRequestRepository;
   
   @Override
-  public RelationshipRequest requestRelationship(User parent, RequestRelationshipReqDto req){
+  public RelationshipRequest requestRelationship(Long parentUserId, RequestRelationshipReqDto req){
     
     User child = userService.findByPhoneNumber(req.getChildPhoneNumber()).orElseThrow(NoSuchUserException::new);
     
     if( !child.isChild() ) throw new MustChildException("자녀에게만 요청할 수 있습니다");
     
-    if(relationExistsByParentAndChild(parent, child)) throw new DuplicatedException("이미 자식입니다");
+    if(relationExistsByParentAndChild(parentUserId, child.getUserId())) throw new DuplicatedException("이미 자식입니다");
     
-    if(relationRequestExistsByParentAndChild(parent, child)) throw new DuplicatedException("이미 요청되었습니다");
+    if(relationRequestExistsByParentAndChild(parentUserId, child.getUserId())) throw new DuplicatedException("이미 요청되었습니다");
+    
+    User parent = userRepository.getReferenceById(parentUserId);
     
     RelationshipRequest relationshipRequest = RelationshipRequest.builder()
                                   .parent(parent)
@@ -53,14 +59,14 @@ public class RelationshipServiceImpl implements RelationshipService{
   
   @Override
   @Transactional(readOnly=true)
-  public List<ReceivedRequestResDto> getReceivedRequestList(User child) {
-    List<Tuple> requests = relationshipRequestRepository.findAllByChild(child);
+  public List<ReceivedRequestResDto> getReceivedRequestList(Long childUserId) {
+    List<Tuple> requests = relationshipRequestRepository.findAllByChild(childUserId);
     
     return requests.stream().map(ReceivedRequestResDto::new).toList();
   }
   
   @Override
-  public void processReceivedRequest(User child, ProcessReceivedRequestReqDto req){
+  public void processReceivedRequest(Long childUserId, ProcessReceivedRequestReqDto req){
     Long relationRequestId = req.getRelationRequestId();
     ProcessReceivedRequestReqDto.Type type = req.getProcess();
     
@@ -68,7 +74,7 @@ public class RelationshipServiceImpl implements RelationshipService{
     User parent = request.getParent();
     User savedChild = request.getChild();
     
-    if( !savedChild.equals(child) ) throw new AuthorizationException();
+    if( !savedChild.getUserId().equals(childUserId) ) throw new AuthorizationException();
     
     relationshipRequestRepository.delete(request);
   
@@ -76,7 +82,7 @@ public class RelationshipServiceImpl implements RelationshipService{
       //승낙이면
       Relationship relationship = Relationship.builder()
                                   .parent(parent)
-                                  .child(child)
+                                  .child(savedChild)
                                   .build();
           
       relationshipRepository.save(relationship);
@@ -91,31 +97,30 @@ public class RelationshipServiceImpl implements RelationshipService{
   
   @Transactional(readOnly = true)
   @Override
-  public List<RelationshipResDto> getRelationshipList(User user) throws MustChildException {
+  public List<RelationshipResDto> getRelationshipList(Long userId, Role role) throws MustChildException {
     List<RelationshipResDto> list = new LinkedList<>();
-    if(user.isParent()){
+    if(role == Role.PARENT){
       //부모 이면
-      list = relationshipRepository.findAllByParent(user).stream().map(RelationshipResDto::new).toList();
+      list = relationshipRepository.findAllByParent(userId).stream().map(RelationshipResDto::new).toList();
     }
-    else if(user.isChild()){
+    else if(role == Role.CHILD){
       //자식 이면
-      list = relationshipRepository.findAllByChild(user).stream().map(RelationshipResDto::new).toList();
+      list = relationshipRepository.findAllByChild(userId).stream().map(RelationshipResDto::new).toList();
     }
     
     return list;
   }
   
   @Override
-  public boolean relationExistsByParentAndChild(User parent, User child) {
+  public boolean relationExistsByParentAndChild(Long parentUserId, Long childUserId) {
     PageRequest pageRequest = PageRequest.of(0, 1);
-    Page<Integer> page = relationshipRepository.existsByParentAndChild(parent, child, pageRequest);
+    Page<Integer> page = relationshipRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
     return page.getTotalElements() != 0;
   }
   
-  private boolean relationRequestExistsByParentAndChild(User parent, User child){
+  private boolean relationRequestExistsByParentAndChild(Long parentUserId, Long childUserId){
     PageRequest pageRequest = PageRequest.of(0, 1);
-    Page<Integer> page = relationshipRequestRepository.existsByParentAndChild(parent, child, pageRequest);
+    Page<Integer> page = relationshipRequestRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
     return page.getTotalElements() != 0;
   }
-  
 }

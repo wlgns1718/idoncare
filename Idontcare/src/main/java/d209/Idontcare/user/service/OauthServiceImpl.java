@@ -8,6 +8,7 @@ import d209.Idontcare.jwt.JwtTokenProvider;
 import d209.Idontcare.user.dto.GetUserInfoDto;
 import d209.Idontcare.user.dto.KakaoUserInfoDto;
 import d209.Idontcare.user.entity.User;
+import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ import java.util.Optional;
 public class OauthServiceImpl implements OauthService{
     
     private final UserService userService;
+    private final UserRepository userRepository;
+    
     private final JwtTokenProvider jwtTokenProvider;
     
     private final static long HOUR = 1000 * 60 * 60;
@@ -87,25 +90,49 @@ public class OauthServiceImpl implements OauthService{
         String email = null;
         if(kakaoUserInfo.getKakaoAccount().getHasEmail()) email = kakaoUserInfo.getKakaoAccount().getEmail(); //이메일 사용에 허용한 경우
         
-        Optional<User> user = userService.findByUserId(kakaoUserInfo.getId());
+        //지급된 kakao id를 통해 우리의 DB에서 찾자
+        Optional<User> userOptional = userService.findByKakaoId(kakaoUserInfo.getId());
         
+        User user = null;
+        boolean isJoined = false;
         String jwtAccessToken = null;
         String jwtRefreshToken = null;
         
-        if(user.isPresent()){
-            jwtAccessToken = jwtTokenProvider.createAccessToken(user.get().getUserId());
-            jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.get().getUserId());
+        if(userOptional.isEmpty()){
+            //만약 카카오 로그인 자체를 한적이 없으면
+            // -> 새롭게 유저를 만들어서 넣어주자
+            User newUser = User.builder()
+                .kakaoId(kakaoUserInfo.getId())
+                .build();
+            newUser.setUUID();
+            user = userRepository.save(newUser);
+        }
+        else{
+            //만약 카카오 로그인을 한 적이 있으면
+            user = userOptional.get();
+            
+            if(user.getRole() != null){
+                //회원가입까지 되어 있으면
+                // -> 토큰 발급
+                jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
+                System.out.printf("User : %s\n", jwtTokenProvider.getAuthInfo(jwtAccessToken));
+                jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(), user.getRole());
+                isJoined = true;
+            }
         }
         
+        
+
         GetUserInfoDto resultDto = GetUserInfoDto.builder()
-            .userId(kakaoUserInfo.getId())
-            .msg(user.isEmpty() ? "회원정보가 없습니다. 회원가입 페이지로 이동합니다." : "등록된 회원입니다.")
-            .joined(user.isPresent())
+            .userId(user.getUserId())
+            .msg(isJoined ? "등록된 회원입니다." : "회원정보가 없습니다. 회원가입 페이지로 이동합니다.")
+            .joined(isJoined)
             .nickname(nickname)
             .email(email)
             .accessToken(jwtAccessToken)
             .refreshToken(jwtRefreshToken)
             .build();
+        
         
         return resultDto;
     }

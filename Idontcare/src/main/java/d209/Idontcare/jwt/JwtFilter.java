@@ -52,9 +52,10 @@ public class JwtFilter extends OncePerRequestFilter {
     try{
       if(accessToken != null && jwtTokenProvider.validateToken(accessToken)){
         //Access Token이 제대로 있으면
-        Long userId = jwtTokenProvider.getUserId(accessToken);
-        User user = userRepository.findById(userId).orElseThrow(InternalServerException::new);
-        request.setAttribute("user", user); //정보 담아서 보내기
+        AuthInfo authInfo = jwtTokenProvider.getAuthInfo(accessToken);
+        request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
+        request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
+        System.out.println(authInfo);
       }
     } catch(CommonException e){
       ResponseDto<Void> result = ResponseDto.fail(e);

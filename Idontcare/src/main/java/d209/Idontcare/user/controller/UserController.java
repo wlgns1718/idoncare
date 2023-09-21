@@ -1,7 +1,9 @@
 package d209.Idontcare.user.controller;
 
 
+import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.annotation.LoginOnly;
+import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.BadRequestException;
 import d209.Idontcare.user.dto.*;
@@ -14,10 +16,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Tag(name="유저 API")
 @RestController
@@ -57,8 +62,41 @@ public class UserController {
     @Operation(summary = "내정보", description = "내 정보 보기")
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto myInfo(HttpServletRequest request){
-        User user = (User)request.getAttribute("user");
+        Long userId = (Long)request.getAttribute("userId");
+        User user = userService.findByUserId(userId).get();
+        
         
         return ResponseDto.success(user);
     }
+    
+//    @GetMapping("/test")
+//    @Operation(summary = "테스트")
+//    public ResponseDto test(){
+//
+//        RequestDTO requestDto = new RequestDTO();
+//
+//        APIResultDto result = APIBuilder.build()
+//            .url("http://localhost:8081" + "/openbanking/oauth/2.0/token")
+//            .method(HttpMethod.POST)
+//            .body(requestDto)
+//            .execute();
+//
+//        return ResponseDto.success(result.getBody());
+//    }
+//
+//
+//    @Data
+//    class RequestDTO {
+//        private String phoneNumber;
+//        private String birth;
+//        private String mobileSort;
+//        private String name;
+//
+//        public RequestDTO(){
+//            this.phoneNumber = "01012345678";
+//            this.birth = "19900101";
+//            this.mobileSort = "SK";
+//            this.name = "김엄마";
+//        }
+//    }
 }

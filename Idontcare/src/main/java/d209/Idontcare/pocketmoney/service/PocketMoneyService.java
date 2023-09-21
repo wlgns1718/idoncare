@@ -15,18 +15,18 @@ import java.util.List;
 
 @Service
 public interface PocketMoneyService {
-  RegularPocketMoney registryRegularPocketMoney(User parent, RegistRegularPocketMoneyReqDto req, LocalDateTime now)
+  RegularPocketMoney registryRegularPocketMoney(Long parentUserId, RegistRegularPocketMoneyReqDto req, LocalDateTime now)
       throws AuthenticationException, MustParentException, BadRequestException, NoSuchUserException, MustChildException, DuplicatedException;
   
-  void sendPocketMoney(User parent, SendPocketMoneyReqDto req)
+  void sendPocketMoney(Long parentUserId, SendPocketMoneyReqDto req)
       throws MustParentException, MustChildException;
   
-  void requestPocketMoney(User child, RequestPocketMoneyReqDto req)
+  void requestPocketMoney(Long childUserId, RequestPocketMoneyReqDto req)
       throws MustParentException, MustChildException;
   
-  List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User user)
+  List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(Long userId)
       throws MustParentException;
   
-  void processPocketMoneyRequest(User parent, ProcessPocketMoneyRequestReqDto req)
+  void processPocketMoneyRequest(Long parentUserId, ProcessPocketMoneyRequestReqDto req)
       throws AuthorizationException, MustParentException, NoSuchContentException;
 }

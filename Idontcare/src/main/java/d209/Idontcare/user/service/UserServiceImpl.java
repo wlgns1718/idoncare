@@ -28,29 +28,21 @@ public class UserServiceImpl implements UserService{
     public Optional<User> findByUserId(Long userId){
         return userRepository.findById(userId);
     }
-
+    
+    @Override
+    public Optional<User> findByKakaoId(Long kakaoId) { return userRepository.findByKakaoId(kakaoId); }
+    
     @Override
     public void joinUser(JoinUserReqDto req) throws RegistFailException {
-        userRepository.findById(req.getUserId()).ifPresent((u) -> {throw new BadRequestException("가입된 회원입니다");});
+        User user = userRepository.findById(req.getUserId()).orElseThrow(() -> new BadRequestException("잘못 된 요청입니다"));
+        
         userRepository.findByPhoneNumber(req.getPhoneNumber()).ifPresent((u) -> {throw new DuplicatedException("사용중인 휴대폰번호입니다");});
         
-        User user = User.builder()
-            .userId(req.getUserId())
-            .phoneNumber(req.getPhoneNumber())
-            .name(req.getName())
-            .role(req.getRole())
-            .nickName(req.getNickName())
-            .build();
-
-        User savedUser = userRepository.save(user);
-        
-        UserDetail userDetail = UserDetail.builder()
-            .userDetailId(req.getUserId())
-            .user(savedUser)
-            .email(req.getEmail())
-            .build();
-
-        userDetailRepository.save(userDetail);
+        //회원가입은 사실상 유저정보 수정에 가깝다
+        user.setPhoneNumber(req.getPhoneNumber());
+        user.setName(req.getName());
+        user.setRole(req.getRole());
+        user.setNickName(req.getNickName());
     }
     
     @Override
