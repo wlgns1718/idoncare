@@ -24,7 +24,7 @@ public interface PocketMoneyService {
   void requestPocketMoney(User child, RequestPocketMoneyReqDto req)
       throws MustParentException, MustChildException;
   
-  List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User parent)
+  List<GetPocketMoneyRequestResDto> getPocketMoneyRequest(User user)
       throws MustParentException;
   
   void processPocketMoneyRequest(User parent, ProcessPocketMoneyRequestReqDto req)
