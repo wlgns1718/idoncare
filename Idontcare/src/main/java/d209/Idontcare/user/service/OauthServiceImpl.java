@@ -88,11 +88,13 @@ public class OauthServiceImpl implements OauthService{
         if(kakaoUserInfo.getKakaoAccount().getHasEmail()) email = kakaoUserInfo.getKakaoAccount().getEmail(); //이메일 사용에 허용한 경우
         
         Optional<User> user = userService.findByUserId(kakaoUserInfo.getId());
-        
+
+
         String jwtAccessToken = null;
         String jwtRefreshToken = null;
         
         if(user.isPresent()){
+
             jwtAccessToken = jwtTokenProvider.createAccessToken(user.get().getUserId());
             jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.get().getUserId());
         }

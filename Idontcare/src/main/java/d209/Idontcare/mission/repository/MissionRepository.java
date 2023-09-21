@@ -1,11 +1,13 @@
 package d209.Idontcare.mission.repository;
 
 
+import d209.Idontcare.mission.dto.MissionSimpleDto;
 import d209.Idontcare.mission.entity.Mission;
 import d209.Idontcare.mission.entity.Type;
 import d209.Idontcare.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Tuple;
@@ -32,9 +34,11 @@ public interface MissionRepository extends JpaRepository<Mission,Long> {
     List<Tuple> findByChild_UserIdAndType(Long child_userId, Type type);
 
 
+    @Query("select m.missionId as missionId, m.title as title, m.amount as amount, m.type as type from Mission m where m.parent.userId = :userId" )
+    List<Tuple> findAllByParent_UserId(@Param("userId") Long userId);
 
-
-
+    @Query("select m.missionId as missionId, m.title as title, m.amount as amount, m.type as type from Mission m where m.child.userId = :userId" )
+    List<Tuple> findAllByChild_UserId(@Param("userId") Long userId);
 
 
 }

@@ -26,4 +26,16 @@ public class MissionDto {
 
     private String afterMessage;
 
+    @Override
+    public String toString() {
+        return "MissionDto{" +
+                "parentId=" + parentId +
+                ", childId=" + childId +
+                ", title='" + title + '\'' +
+                ", amount=" + amount +
+                ", type=" + type +
+                ", beforeMessage='" + beforeMessage + '\'' +
+                ", afterMessage='" + afterMessage + '\'' +
+                '}';
+    }
 }

@@ -57,6 +57,7 @@ public class Mission extends BaseEntity {
                 .afterMessage(missionDto.getAfterMessage())
                 .amount(missionDto.getAmount())
                 .title(missionDto.getTitle())
+                .type(missionDto.getType())
                 .completeAt(null)
                 .build();
     }
