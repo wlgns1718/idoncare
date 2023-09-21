@@ -1,7 +1,5 @@
 package d209.Idontcare.account.controller;
 
-import d209.Idontcare.TUser;
-import d209.Idontcare.TUserRepository;
 import d209.Idontcare.account.dto.req.TransactionRequestDto;
 import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.dto.APIResultDto;
@@ -42,6 +40,7 @@ public class AccountController {
     //1. 계좌 확인
     @GetMapping("/transaction")
     public ResponseDto<?> findTransaction(@RequestBody TransactionRequestDto transactionRequestDto, HttpServletRequest request){
+<<<<<<< HEAD
         System.out.println(transactionRequestDto.toString());
         APIResultDto result = APIBuilder.build()
                 .url("https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/openbanking/oauth/2.0/token")
@@ -51,6 +50,9 @@ public class AccountController {
         System.out.println(result.getStatus());
         System.out.println(result.getHeader());
         System.out.println(result.getBody());
+=======
+        APIResultDto get = apiService.get("http://127.0.0.1:8080/openbanking/account/transaction_list/fin_num", null, transactionRequestDto);
+>>>>>>> 4c23d5709ac78f8deda69271168cf21e4ffc96af
         return null;
     }
 

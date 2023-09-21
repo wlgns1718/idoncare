@@ -29,6 +29,7 @@ public class RestTests {
 
   @Autowired
   private APIService apiService;
+<<<<<<< HEAD
 
 //  @Test
 //  @DisplayName("GET 테스트")
@@ -169,3 +170,33 @@ public class RestTests {
     }
 }
 
+=======
+  
+  @Test
+  @DisplayName("GET 테스트")
+  void getTest() {
+    APIResultDto result = APIBuilder.build()
+        .url("https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/openbanking/oauth/2.0/token")
+        .method(HttpMethod.POST)
+        .body(Map.of(  "phoneNumber", "01012345678",
+                  "birth", "1990101",
+                  "mobileSort", "SK",
+                  "name", "김엄마"))
+        .execute();
+    
+    System.out.println(result.getStatus());
+    System.out.println(result.getHeader());
+    System.out.println(result.getBody());
+    
+    result = APIBuilder.build()
+        .url("http://localhost:3000")
+        .method(HttpMethod.PUT)
+        .body(Map.of("age", 1, "name", "hello"))
+        .execute();
+    
+    System.out.println(result.getStatus());
+    System.out.println(result.getHeader());
+    System.out.println(result.getBody());
+  }
+}
+>>>>>>> 4c23d5709ac78f8deda69271168cf21e4ffc96af

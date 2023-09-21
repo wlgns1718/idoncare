@@ -6,12 +6,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
-@NoArgsConstructor
-@Builder
-@AllArgsConstructor
-@Getter @Setter
 @Table(name="USER")
+@Entity
+@Builder @Data @NoArgsConstructor @AllArgsConstructor
 public class User {
 
     @Id
@@ -28,33 +25,13 @@ public class User {
     @Column(name = "TYPE")
     private Role role;
 
-    @Column(name = "REFRESH_TOKEN", length = 500)
-    private String refreshToken;
-
     @Column(name = "NICK_NAME", length = 30)
     private String nickName;
-
-
-
-    public  static User toEntity(UserDto userDto){
-        return User.builder()
-                .userId(userDto.getUserId())
-                .phoneNumber(userDto.getPhoneNumber())
-                .name(userDto.getName())
-                .nickName(userDto.getNickName())
-                .role(userDto.getRole())
-                .build();
+    
+    public boolean isParent(){
+        return this.role == Role.PARENT;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", name='" + name + '\'' +
-                ", role=" + role +
-                ", refreshToken='" + refreshToken + '\'' +
-                ", nickName='" + nickName + '\'' +
-                '}';
+    public boolean isChild(){
+        return this.role == Role.CHILD;
     }
 }
