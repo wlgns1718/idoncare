@@ -30,7 +30,6 @@ import TransferSelect from "./pages/TransferSelect";
 import TransferConfirm from "./pages/TransferConfirm";
 import ParentSetting from "./pages/ParentSetting";
 import KidSetting from "./pages/KidSetting";
-import PasswordConfirm from "./components/common/PasswordConfirm";
 
 function App() {
   const queryClient = new QueryClient();
@@ -91,7 +90,6 @@ function App() {
               <Route path="newAccount" element={<NewAccount />} />
               <Route path="parentSetting" element={<ParentSetting />} />
               <Route path="kidSetting" element={<KidSetting />} />
-              <Route path="password" element={<PasswordConfirm />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
