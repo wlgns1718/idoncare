@@ -7,7 +7,7 @@ type ParentProps = {
 };
 
 const Parent: React.FC<ParentProps> = ({
-  imgSrc = "/bg/circle-blue.png",
+  imgSrc = "/icons/circle-blue.png",
   is_connect = false,
   pname,
 }) => {
