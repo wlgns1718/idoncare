@@ -1,6 +1,7 @@
 package d209.Idontcare.user.service;
 
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.exception.BadRequestException;
@@ -10,6 +11,7 @@ import d209.Idontcare.user.dto.KakaoUserInfoDto;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +38,7 @@ public class OauthServiceImpl implements OauthService{
     private static final String REDIRECT_URL = "http://127.0.0.1:8000";
     private static final String CLIENT_SECRET = "Srvk6ZfqwnWw6bDf2tZVA4I9VP731p3D";
 
+    @SuppressWarnings("unchecked")
     @Override
     public String getOauthAccessToken(String code){
         final String URL = "https://kauth.kakao.com/oauth/token";
@@ -60,11 +63,13 @@ public class OauthServiceImpl implements OauthService{
         
         if(result.getStatus() != HttpStatus.OK) {throw new BadRequestException("코드에 대한 요청이 처리되지 못 하였습니다");}
         
-        Map<String, Object> responseBody = (Map<String, Object>)result.getBody();
+        Map<String, Object> responseBody = result.getBody(Map.class);
+
         
         return (String)responseBody.get("access_token");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public GetUserInfoDto getUserInfo(String accessToken){
         final String URL = "https://kapi.kakao.com/v2/user/me";
