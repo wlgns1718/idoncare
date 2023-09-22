@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public interface MissionService {
 
-    Long registMission(MissionDto missionDto) throws CommonException;
+    Long[] registMission(MissionDto missionDto) throws CommonException;
 
     List<MissionSimpleDto> findRequestMissionParent(Long parent_userId) throws CommonException;
 
@@ -36,7 +36,7 @@ public interface MissionService {
 
      List<MissionSimpleDto> findAllMission(Long userId, Role role);
 
-    Long updateStatus(MissionStatusDto missionStatusDto);
+    Long updateStatus(MissionStatusDto missionStatusDto, Role role);
 
     void deleteMission(Long missionId);
 }

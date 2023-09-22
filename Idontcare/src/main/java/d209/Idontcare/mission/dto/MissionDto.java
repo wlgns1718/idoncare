@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Arrays;
+
 @Getter @Setter
 @Builder
 @AllArgsConstructor
@@ -14,7 +16,7 @@ public class MissionDto {
 
     private Long parentId;
 
-    private Long childId;
+    private Long[] childId;
 
     private String title;
 
@@ -30,7 +32,7 @@ public class MissionDto {
     public String toString() {
         return "MissionDto{" +
                 "parentId=" + parentId +
-                ", childId=" + childId +
+                ", childId=" + Arrays.toString(childId) +
                 ", title='" + title + '\'' +
                 ", amount=" + amount +
                 ", type=" + type +

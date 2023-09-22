@@ -45,12 +45,11 @@ public class MissionController {
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> regist(@RequestBody MissionDto missionDto,HttpServletRequest request){
-        User user = (User) request.getAttribute("user");
-        missionDto.setParentId(user.getUserId());
+
         try{
             System.out.println(missionDto);
-            Long missionId = missionService.registMission(missionDto);
-            return ResponseDto.success(missionId);
+            Long[] missionIds = missionService.registMission(missionDto);
+            return ResponseDto.success(missionIds);
         }
         catch (CommonException e){
             return ResponseDto.fail(e);
@@ -65,11 +64,10 @@ public class MissionController {
             @ApiResponse(responseCode = BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
     public ResponseDto<?> getMission(HttpServletRequest request){
-        User user = (User) request.getAttribute("user");
-        try{
 
-            Long userId = user.getUserId();
-            Role role = user.getRole();
+        try{
+            Long userId = (Long) request.getAttribute("userId");
+            Role role = (Role) request.getAttribute("role");
             List<MissionSimpleDto> missions = missionService.findAllMission(userId, role);
             return ResponseDto.success(missions);
         }catch(NoSuchContentException e){
@@ -86,6 +84,8 @@ public class MissionController {
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> changeStatus(@RequestBody MissionStatusDto missionStatusDto,HttpServletRequest request){
         try{
+            Long userId = (Long) request.getAttribute("userId");
+            Role role = (Role) request.getAttribute("role");
             missionService.updateStatus(missionStatusDto);
             return ResponseDto.success(null);
         }catch (UpdateFailException | NoSuchContentException e){

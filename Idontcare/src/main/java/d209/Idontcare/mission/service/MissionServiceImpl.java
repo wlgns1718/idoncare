@@ -31,15 +31,22 @@ public class MissionServiceImpl implements MissionService {
 
 
     @Override
-    public Long registMission(MissionDto missionDto) throws CommonException {
+    public Long[] registMission(MissionDto missionDto) throws CommonException {
 
-        User child = userRepository.getReferenceById(missionDto.getChildId());
+        int len = missionDto.getChildId().length;
+        Long[] answer = new Long[len];
         User parents = userRepository.getReferenceById(missionDto.getParentId());
 
-        Mission mission = Mission.toEntity(missionDto,child,parents);
+        for(int i = 0; i < len; i++){
 
-        missionRepository.save(mission);
-        return mission.getMissionId();
+            User child = userRepository.getReferenceById(missionDto.getChildId()[i]);
+            Mission mission = Mission.toEntity(missionDto,child,parents);
+            missionRepository.save(mission);
+            answer[i] = mission.getMissionId();
+
+        }
+
+        return answer;
     }
 
     @Override
@@ -116,23 +123,22 @@ public class MissionServiceImpl implements MissionService {
         else {
             missions =missionRepository.findAllByChild_UserId(userId);
         }
-        System.out.println(missions.toString());
         return missions.stream().map(MissionSimpleDto::new).toList();
     }
 
     @Override
-    public Long updateStatus(MissionStatusDto missionStatusDto) {
+    public Long updateStatus(MissionStatusDto missionStatusDto, Role role) {
         Long missionId = missionStatusDto.getMissionId();
-
         Mission mission = missionRepository.findById(missionId).orElseThrow(NoSuchContentException::new);
 
-        if(mission.getType() == Type.PROCESS && missionStatusDto.getUser().getRole() == Role.CHILD){
+        if(mission.getType() == Type.PROCESS && role == Role.CHILD){
             mission.setType(Type.UNPAID);
         }
-        else if(mission.getType() == Type.UNPAID && missionStatusDto.getUser().getRole() == Role.PARENT){
+        else if(mission.getType() == Type.UNPAID && role == Role.PARENT){
             mission.setType(Type.COMPLETE);
         }
-        else if (mission.getType() == Type.REQUEST && missionStatusDto.getUser().getRole() == Role.PARENT) {
+        else if (mission.getType() == Type.REQUEST && role == Role.PARENT) {
+            mission.setAmount(missionStatusDto.getAmount());
             mission.setType(Type.PROCESS);
         }
         return mission.getMissionId();
