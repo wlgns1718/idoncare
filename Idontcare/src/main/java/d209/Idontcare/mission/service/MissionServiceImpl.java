@@ -116,12 +116,10 @@ public class MissionServiceImpl implements MissionService {
     public List<MissionSimpleDto> findAllMission(Long userId, Role role) {
         List<Tuple> missions;
         if(role == Role.PARENT){
-
             missions = missionRepository.findAllByParent_UserId(userId);
-
         }
         else {
-            missions =missionRepository.findAllByChild_UserId(userId);
+            missions = missionRepository.findAllByChild_UserId(userId);
         }
         return missions.stream().map(MissionSimpleDto::new).toList();
     }
