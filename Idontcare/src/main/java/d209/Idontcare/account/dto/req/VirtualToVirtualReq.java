@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class VirtualToVirtualReq {
 
-    @Schema(description = "유저의 정보")
+    @Schema(description = "받을 유저의 ID")
     private Long userId;
 
     @Schema(description = "최종 수취 입금 계좌에 남길 내역")
