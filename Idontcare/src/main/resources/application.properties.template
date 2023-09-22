@@ -37,7 +37,12 @@ jwt.secret={시크릿 키: String}
 jwt.access-expiration-time=43200000
 jwt.refresh-expiration-time=604800000
 
+<<<<<<< HEAD
 # externnal
 openbank.url=https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app
 springsecurity.secret.key={시크릿 키 : String}
 springsecurity.secret.salt={salt 값 : String}
+=======
+# Open Banking Setting #
+openbank.url={호스트 : String}:{포트 : Number}
+>>>>>>> 2957678881bdf06e6784227c5e4e50a394c73f8f

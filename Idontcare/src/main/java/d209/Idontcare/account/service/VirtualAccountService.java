@@ -30,9 +30,8 @@ public class VirtualAccountService {
         return virtualAccountRepository.findAccount(userId);
     }
 
-
     //가상 계좌끼리 거래
-    public void VirtualPayment(VirtualToVirtualReq request, Long startAccount) throws VirtualAccountException{
+    public void virtualPayment(VirtualToVirtualReq request, Long startAccount) throws VirtualAccountException{
         LocalDateTime now = LocalDateTime.now();
         withdrawal(startAccount, request.getMoney(), request.getContent(), now);
         deposit(virtualAccountRepository.findUser(request.getUserId()), request.getMoney(), request.getContent(), now);

@@ -2,6 +2,8 @@ package d209.Idontcare.user.service;
 
 
 
+import d209.Idontcare.account.entity.VirtualAccount;
+import d209.Idontcare.account.repository.VirtualAccountRepository;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.user.dto.JoinUserReqDto;
 import d209.Idontcare.user.entity.User;
@@ -22,6 +24,8 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final UserDetailRepository userDetailRepository;
+    
+    private final VirtualAccountRepository virtualAccountRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -43,6 +47,15 @@ public class UserServiceImpl implements UserService{
         user.setName(req.getName());
         user.setRole(req.getRole());
         user.setNickName(req.getNickName());
+        
+        /* TODO : 패스워드 암호화 필요 */
+        VirtualAccount virtualAccount = VirtualAccount.builder()
+                .user(user)
+                .balance(0L)
+                .password(String.valueOf(req.getPassword()))
+                .build();
+        
+        virtualAccountRepository.save(virtualAccount);
     }
     
     @Override

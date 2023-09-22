@@ -45,5 +45,8 @@ public class JoinUserReqDto {
 
     @Schema(description = "유저 ID", example = "123")
     private AddressDto addressDto;
+    
+    @Schema(description = "가상 계좌 비밀번호", example = "123456")
+    private Integer password;
 
 }
