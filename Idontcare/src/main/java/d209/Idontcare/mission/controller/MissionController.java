@@ -86,7 +86,7 @@ public class MissionController {
         try{
             Long userId = (Long) request.getAttribute("userId");
             Role role = (Role) request.getAttribute("role");
-            missionService.updateStatus(missionStatusDto);
+            missionService.updateStatus(missionStatusDto, role);
             return ResponseDto.success(null);
         }catch (UpdateFailException | NoSuchContentException e){
             return ResponseDto.fail(e);

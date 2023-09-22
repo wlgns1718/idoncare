@@ -1,10 +1,13 @@
 package d209.Idontcare.common.dto;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import lombok.Data;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 @Data

@@ -34,8 +34,7 @@ public interface RelationshipService {
   /**
    * 유저가 맺고 있는 관계의 리스트를 반환
    */
-  List<RelationshipResDto> getRelationshipList(Long userId, Role role)
-      throws MustChildException;
+  List<RelationshipResDto> getRelationshipList(Long userId, Role role);
   
   /**
    * 해당 유저간에 관계가 존재하는지 확인

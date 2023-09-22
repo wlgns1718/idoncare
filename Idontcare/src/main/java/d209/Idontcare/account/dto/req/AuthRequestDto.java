@@ -1,6 +1,5 @@
 package d209.Idontcare.account.dto.req;
 
-import KFTC.openBank.domain.MobileSort;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;

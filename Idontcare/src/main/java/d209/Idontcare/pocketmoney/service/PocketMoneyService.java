@@ -19,7 +19,7 @@ public interface PocketMoneyService {
       throws AuthenticationException, MustParentException, BadRequestException, NoSuchUserException, MustChildException, DuplicatedException;
   
   void sendPocketMoney(Long parentUserId, SendPocketMoneyReqDto req)
-      throws MustParentException, MustChildException;
+      throws MustChildException;
   
   void requestPocketMoney(Long childUserId, RequestPocketMoneyReqDto req)
       throws MustParentException, MustChildException;
