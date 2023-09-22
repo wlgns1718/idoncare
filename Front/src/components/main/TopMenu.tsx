@@ -1,4 +1,3 @@
-import React from 'react'
 import TopMenuBox from '../main/TopMenuBox'
 import TopAccount from './TopAccount'
 

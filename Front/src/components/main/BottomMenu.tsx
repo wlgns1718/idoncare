@@ -1,4 +1,3 @@
-import React from 'react'
 import BottomMenuBox from './BottomMenuBox'
 
 function BottomMenu() {
