@@ -5,6 +5,7 @@ import d209.Idontcare.account.entity.TransactionHistory;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;
 import d209.Idontcare.user.entity.User;
+import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class TransactionHistoryService {
 
     private final TransactionHistoryRepository transactionHistoryRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     //년월별 가상 계좌의 연월별 거래내역 조회
     @Transactional(readOnly = true)
@@ -48,8 +50,8 @@ public class TransactionHistoryService {
 
     //가상 계좌 입출금 시 거래내역 추가
     public void recordTransactionHistory(TransactionHistoryRes trans){
-        User user = userService.findByUserId(trans.getUserId()).get();
-        TransactionHistory tran = new TransactionHistory().builder()
+        User user = userRepository.getReferenceById(trans.getUserId());
+        TransactionHistory tran = TransactionHistory.builder()
                                     .user(user)
                                     .content(trans.getContent())
                                     .localDateTime(trans.getLocalDateTime())

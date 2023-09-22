@@ -36,3 +36,6 @@ redis.port={레디스 포트: Number}
 jwt.secret={시크릿 키: String}
 jwt.access-expiration-time=43200000
 jwt.refresh-expiration-time=604800000
+
+# Open Banking Setting #
+openbank.url={호스트 : String}:{포트 : Number}

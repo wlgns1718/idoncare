@@ -132,7 +132,7 @@ public class VirtualAccount {
         Map<String, String> map = new HashMap<>();
         try{
             Long virtualAccount = virtualAccountService.userlAccount(userId);
-            virtualAccountService.VirtualPayment(payment, virtualAccount);
+            virtualAccountService.virtualPayment(payment, virtualAccount);
             return ResponseDto.success("가상 게좌에서 가상 계좌로 송금 완료");
         }catch (VirtualAccountException e){
             return ResponseDto.fail(e);
