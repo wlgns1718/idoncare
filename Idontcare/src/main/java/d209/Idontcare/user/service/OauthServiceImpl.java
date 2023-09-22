@@ -8,6 +8,7 @@ import d209.Idontcare.common.exception.BadRequestException;
 import d209.Idontcare.jwt.JwtTokenProvider;
 import d209.Idontcare.user.dto.GetUserInfoDto;
 import d209.Idontcare.user.dto.KakaoUserInfoDto;
+import d209.Idontcare.user.dto.req.LoginReqDto;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,20 +35,24 @@ public class OauthServiceImpl implements OauthService{
     private final static long DAY = 1000 * 60 * 60 * 24;
 
     //properties분리해서 숨겨줄 값들
-    private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
-    private static final String REDIRECT_URL = "http://127.0.0.1:8000";
-    private static final String CLIENT_SECRET = "Srvk6ZfqwnWw6bDf2tZVA4I9VP731p3D";
-
+//    private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
+    private static final String REDIRECT_URL = "http://localhost:5173/login";
+//    private static final String CLIENT_SECRET = "Srvk6ZfqwnWw6bDf2tZVA4I9VP731p3D";
+    
+    private static final String REST_API_KEY = "ac3bdd0a13805da6552ba025e4967855";
+    private static final String CLIENT_SECRET = "tMxbImuvzmdNytv1Cbz1UT0qIOC8pTV7";
+    
+    
     @SuppressWarnings("unchecked")
     @Override
-    public String getOauthAccessToken(String code){
+    public String getOauthAccessToken(LoginReqDto req){
         final String URL = "https://kauth.kakao.com/oauth/token";
 
         Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("grant_type", "authorization_code");
             requestBody.put("client_id", REST_API_KEY);
             requestBody.put("redirect_uri", REDIRECT_URL);
-            requestBody.put("code", code);
+            requestBody.put("code", req.getCode());
             requestBody.put("client_secret", CLIENT_SECRET);
         
         //인가 코드를 통해 Oauth에서 AccessToken 얻기
@@ -59,13 +64,15 @@ public class OauthServiceImpl implements OauthService{
                             .mediaType(MediaType.APPLICATION_FORM_URLENCODED)
                             .body(requestBody)
                             .execute();
-        } catch(Exception e) {throw new BadRequestException("코드에 대한 요청이 처리되지 못 하였습니다");}
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            throw new BadRequestException("코드에 대한 요청이 처리되지 못 하였습니다");
+        }
         
         if(result.getStatus() != HttpStatus.OK) {throw new BadRequestException("코드에 대한 요청이 처리되지 못 하였습니다");}
         
         Map<String, Object> responseBody = result.getBody(Map.class);
 
-        
         return (String)responseBody.get("access_token");
     }
 
@@ -80,7 +87,9 @@ public class OauthServiceImpl implements OauthService{
                             .method(HttpMethod.GET)
                             .header(Map.of("Authorization", "Bearer " + accessToken))
                             .execute();
-        } catch(Exception e) {throw new BadRequestException("요청에 오류가 발생하였습니다");}
+        } catch(Exception e) {
+            throw new BadRequestException("요청에 오류가 발생하였습니다");
+        }
 
         
         if(result.getStatus() != HttpStatus.OK) {throw new BadRequestException("요청에 오류가 발생하였습니다");}

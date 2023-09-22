@@ -1,12 +1,12 @@
 package d209.Idontcare.user.controller;
 
 
-import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.annotation.LoginOnly;
-import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
-import d209.Idontcare.common.exception.BadRequestException;
+import d209.Idontcare.common.exception.*;
 import d209.Idontcare.user.dto.*;
+import d209.Idontcare.user.dto.req.LoginReqDto;
+import d209.Idontcare.user.dto.res.UserInfoResDto;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.service.OauthService;
 import d209.Idontcare.user.service.UserService;
@@ -16,9 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +39,8 @@ public class UserController {
             content=@Content(schema = @Schema(implementation = GetUserInfoDto.class))),
         @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
-    public ResponseDto login(@RequestBody KakaoDto kakao){
-        String accessToken = oauthService.getOauthAccessToken(kakao.getCode());
+    public ResponseDto login(@RequestBody LoginReqDto req){
+        String accessToken = oauthService.getOauthAccessToken(req);
         GetUserInfoDto userInfo = oauthService.getUserInfo(accessToken);
         
         return ResponseDto.success(userInfo);
@@ -50,6 +48,12 @@ public class UserController {
 
     @PostMapping(value = "/regist")
     @Operation(summary="회원가입", description = "카카오 유저 ID와 입력된 값들을 통해 회원가입")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(schema = @Schema(implementation = Void.class))),
+        @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
+        @ApiResponse(responseCode= DuplicatedException.CODE, description = DuplicatedException.DESCRIPTION),
+    })
     public ResponseDto regist(@RequestBody JoinUserReqDto req){
        userService.joinUser(req);
        return ResponseDto.success(null);
@@ -58,42 +62,15 @@ public class UserController {
     @GetMapping("")
     @Operation(summary = "내정보", description = "내 정보 보기")
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(schema = @Schema(implementation = UserInfoResDto.class))),
+        @ApiResponse(responseCode= BadRequestException.CODE, description = AuthenticationException.DESCRIPTION),
+    })
     public ResponseDto myInfo(HttpServletRequest request){
         Long userId = (Long)request.getAttribute("userId");
         User user = userService.findByUserId(userId).get();
         
-        
-        return ResponseDto.success(user);
+        return ResponseDto.success(new UserInfoResDto(user));
     }
-    
-//    @GetMapping("/test")
-//    @Operation(summary = "테스트")
-//    public ResponseDto test(){
-//
-//        RequestDTO requestDto = new RequestDTO();
-//
-//        APIResultDto result = APIBuilder.build()
-//            .url("http://localhost:8081" + "/openbanking/oauth/2.0/token")
-//            .method(HttpMethod.POST)
-//            .body(requestDto)
-//            .execute();
-//
-//        return ResponseDto.success(result.getBody());
-//    }
-//
-//
-//    @Data
-//    class RequestDTO {
-//        private String phoneNumber;
-//        private String birth;
-//        private String mobileSort;
-//        private String name;
-//
-//        public RequestDTO(){
-//            this.phoneNumber = "01012345678";
-//            this.birth = "19900101";
-//            this.mobileSort = "SK";
-//            this.name = "김엄마";
-//        }
-//    }
 }
