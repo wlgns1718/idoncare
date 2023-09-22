@@ -1,19 +1,36 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface SearchFormProps {
-  searchKeyword:string;
+  searchKeyword: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   resetKeyword: () => void;
+  className?: string;
 }
 
-function SearchForm({ searchKeyword, onChange, resetKeyword }: SearchFormProps) {
-  const navigate = useNavigate();
+function SearchForm({
+  searchKeyword,
+  onChange,
+  resetKeyword,
+  className,
+}: SearchFormProps) {
+  
+  const handleSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    console.log("search keyword: ", searchKeyword);
+  }
 
+  const handleClick = () => {  
+    console.log("search keyword: ", searchKeyword);
+  }
+  
   return (
-    <div>
+    <div className={`${className}`}>
       <div className="flex items-center">
-        <form className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg">
+        <form
+          className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg"
+          onSubmit={()=>handleSubmit}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -35,7 +52,7 @@ function SearchForm({ searchKeyword, onChange, resetKeyword }: SearchFormProps) 
             value={searchKeyword}
             onChange={onChange}
           />
-          { searchKeyword ? 
+          {searchKeyword && (
             <div
               className="bg-darkgray w-6 h-6 rounded-[50%] text-white text-center"
               onClick={() => {
@@ -43,16 +60,10 @@ function SearchForm({ searchKeyword, onChange, resetKeyword }: SearchFormProps) 
               }}
             >
               X
-            </div> : 
-            null
-          }
+            </div>
+          )}
         </form>
-        <div
-          className="p-4 h-[35px]"
-          onClick={() => {
-            navigate("/wallet");
-          }}
-        >
+        <div className="p-4 h-[35px]" onClick={handleClick}>
           검색
         </div>
       </div>

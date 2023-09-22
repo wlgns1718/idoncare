@@ -13,19 +13,19 @@ function WalletCard() {
       <div className="flex justify-between px-6 py-5 text-center">
         <div>
           <div className="w-10 h-10 m-auto">
-            <Icon />
+            <Icon size="small" />
           </div>
           <div>용돈 관리</div>
         </div>
         <div onClick={() => navigate("recharge")}>
           <div className=" w-10 h-10 m-auto">
-            <Icon />
+            <Icon size="small" />
           </div>
           <div>충전</div>
         </div>
-        <div>
+        <div onClick={() => navigate("/transfer/account")}>
           <div className="w-10 h-10 m-auto">
-            <Icon />
+            <Icon size="small" />
           </div>
           <div>송금</div>
         </div>

@@ -2,107 +2,51 @@ import { useState } from "react";
 import Header from "../components/common/Header";
 import KBICON from "../assets/imgs/bank/PNG_KB.png";
 import FullBtn from "../components/common/FullBtn";
+import BankGridList from "../components/wallet/BankGridList";
+import { BankDataType } from "../components/wallet/BankItem";
 
 const banks = [
   {
     icon: KBICON,
+    code: 1,
     name: "KB국민",
   },
   {
     icon: KBICON,
-    name: "IBK기업",
+    code: 2,
+    name: "KB국민",
   },
   {
     icon: KBICON,
-    name: "NH농협",
+    code: 3,
+    name: "KB국민",
   },
   {
     icon: KBICON,
-    name: "신한",
+    code: 4,
+    name: "KB국민",
   },
   {
     icon: KBICON,
-    name: "씨티",
+    code: 5,
+    name: "KB국민",
   },
   {
     icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
-  {
-    icon: KBICON,
-    name: "토스",
-  },
+    code: 6,
+    name: "KB국민",
+  }
+  
 ];
 
-const BankItem = ({
-  icon,
-  name,
-  setCurrentSelect,
-}: {
-  icon: string;
-  name: string;
-  setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  return (
-    <div
-      className="border-zinc-500/20 border p-2 rounded-lg shadow-sm flex-col flex items-center"
-      onClick={() => setCurrentSelect("number")}
-    >
-      <img className="w-[10vw]" src={icon} alt="" />
-      <span className="text-s">{name}</span>
-    </div>
-  );
-};
-
 const InputAccountNumber = ({
+  selectedBank,
   setCurrentSelect,
 }: {
+  selectedBank: BankDataType | null;
   setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+
   return (
     <div>
       <div>
@@ -111,7 +55,7 @@ const InputAccountNumber = ({
           className="flex p-6 items-center"
         >
           <div className="w-[10vw] h-[10vw]">아이콘</div>
-          <div className="text-l">은행 이름</div>
+          <div className="text-l">{selectedBank?.name}</div>
         </div>
         <input
           type="number"
@@ -125,33 +69,30 @@ const InputAccountNumber = ({
     </div>
   );
 };
-const SelectBank = ({
-  setCurrentSelect,
-}: {
-  setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
-}) => {
-  return (
-    <div>
-      <div className="text-m text-center my-10">은행선택</div>
-      <div className="grid grid-cols-3 gap-4">
-        {banks.map((bank, index) => {
-          return (<BankItem key={index} icon={bank.icon} name={bank.name} setCurrentSelect={setCurrentSelect}/>);
-        })}
-      </div>
-    </div>
-  );
-};
 
 function RegistAccount() {
-
+  const [selectedBank, setSelectedBank] = useState<BankDataType | null>(null);
   const [currentSelect, setCurrentSelect] = useState("bank");
+
+  const handleSelectBank = (bank: BankDataType) => {
+    setSelectedBank(bank);
+    setCurrentSelect("account");
+  }
+
   return (
     <div>
       <Header pageTitle="충전 계좌 등록" />
       {currentSelect == "bank" ? (
-        <SelectBank setCurrentSelect={setCurrentSelect} />
+        <BankGridList
+          banks={banks}
+          onChange={handleSelectBank}
+          setCurrentSelect={setCurrentSelect}
+        />
       ) : (
-        <InputAccountNumber setCurrentSelect={setCurrentSelect} />
+        <InputAccountNumber
+          selectedBank={selectedBank}
+          setCurrentSelect={setCurrentSelect}
+        />
       )}
     </div>
   );

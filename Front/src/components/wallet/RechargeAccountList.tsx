@@ -1,4 +1,3 @@
-import React from "react";
 import FullBtn from "../common/FullBtn";
 import { useNavigate } from "react-router-dom";
 

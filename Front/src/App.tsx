@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Login from "./pages/Login";
 import PocketMoney from "./pages/PocketMoney";
@@ -24,13 +25,16 @@ import RegistAccount from "./pages/RegistAccount";
 import ARSPage from "./pages/ARSPage";
 import RegistAgreement from "./pages/RegistAgreement";
 import Report from "./pages/Report";
+import Transfer from "./pages/Transfer";
+import TransferSelect from "./pages/TransferSelect";
+import TransferConfirm from "./pages/TransferConfirm";
 import ParentSetting from "./pages/ParentSetting";
 import KidSetting from "./pages/KidSetting";
 
 function App() {
   const queryClient = new QueryClient();
   return (
-    <>
+    <RecoilRoot>
       <AppLayout>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
@@ -41,13 +45,25 @@ function App() {
               <Route path="wallet" element={<Wallet />} />
               <Route path="wallet/search" element={<WalletSearch />} />
               <Route path="wallet/recharge" element={<WalletRecharge />} />
-              <Route path="wallet/recharge/regist" element={<RegistAccount />} />
-              <Route path="wallet/recharge/regist/agreement" element={<RegistAgreement />} />
-              <Route path="wallet/recharge/regist/agreement/ARS" element={<ARSPage />} />
+              <Route
+                path="wallet/recharge/regist"
+                element={<RegistAccount />}
+              />
+              <Route
+                path="wallet/recharge/regist/agreement"
+                element={<RegistAgreement />}
+              />
+              <Route
+                path="wallet/recharge/regist/agreement/ARS"
+                element={<ARSPage />}
+              />
               <Route path="report" element={<Report />} />
               <Route path="purchase" element={<Purchase />} />
               <Route path="purchase/qrcode" element={<QRcodePurchase />} />
               <Route path="purchase/camera" element={<CameraPurchase />} />
+              <Route path="transfer/account" element={<TransferSelect />} />
+              <Route path="transfer/input" element={<Transfer />} />
+              <Route path="transfer/confirm" element={<TransferConfirm />} />
               <Route path="pocketMoney" element={<PocketMoney />} />
               <Route path="childReguestMoney" element={<DemandMoneyCheck />} />
               <Route path="sendPocketMoney" element={<SendPocketMoney />} />
@@ -56,6 +72,14 @@ function App() {
               <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
               <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
               <Route path="kidRegister" element={<KidRegister />} />
+              <Route
+                path="kidDemandMoneyList"
+                element={<KidDemandMoneyList />}
+              />
+              <Route
+                path="kidDemanedMoneyList"
+                element={<KidDemanedMoneyList />}
+              />
               <Route path="signup" element={<Signup />} />
               <Route path="newAccount" element={<NewAccount />} />
               <Route path="parentSetting" element={<ParentSetting />} />
@@ -64,7 +88,7 @@ function App() {
           </BrowserRouter>
         </QueryClientProvider>
       </AppLayout>
-    </>
+    </RecoilRoot>
   );
 }
 

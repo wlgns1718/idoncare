@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "../components/common/Header";
 import RechargeInput from "../components/wallet/RechargeInput";
 import RechargeAccountList from "../components/wallet/RechargeAccountList";
