@@ -31,9 +31,6 @@ import java.util.Map;
 @CrossOrigin("*")
 public class UserController {
     
-    private final int HOUR = 1000 * 60 * 60;
-    private final int DAY = 1000 * 60 * 60 * 24;
-
     private final OauthService oauthService;
     private final UserService userService;
     
