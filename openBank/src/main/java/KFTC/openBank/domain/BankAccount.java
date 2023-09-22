@@ -38,4 +38,15 @@ public class BankAccount {
         this.money += money;
         return this.money;
     }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "id='" + id + '\'' +
+                ", bank=" + bank +
+                ", money=" + money +
+                ", name='" + name + '\'' +
+                ", birth='" + birth + '\'' +
+                '}';
+    }
 }

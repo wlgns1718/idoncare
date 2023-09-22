@@ -1,10 +1,7 @@
 package KFTC.openBank.controller;
 
 import KFTC.openBank.dto.*;
-import KFTC.openBank.exception.AccountException;
-import KFTC.openBank.exception.BackAccountException;
-import KFTC.openBank.exception.MobileException;
-import KFTC.openBank.exception.TransactionHistoryException;
+import KFTC.openBank.exception.*;
 import KFTC.openBank.service.AccountService;
 import KFTC.openBank.service.MobileService;
 import KFTC.openBank.service.UserService;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/openbanking")
@@ -40,7 +38,9 @@ public class AccountController {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = String.class))
             ),
-            @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때")
+            @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때"),
+            @ApiResponse(responseCode = "409", description = "사용자가 이미 인증을 했을 때")
+            
     })
     @PostMapping("/oauth/2.0/token")
     public ResponseEntity<?> token(@RequestBody AuthRequestDto authRequestDto, HttpServletRequest httpServletRequest) {
@@ -50,10 +50,13 @@ public class AccountController {
             }
         } catch (MobileException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+        } catch (UserException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "토큰 발급 성공", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"));
+        //가상 토큰 발급
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseDto("200", "토큰 발급 성공", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"));
     }
 
     //2.잔액 조회
@@ -65,7 +68,7 @@ public class AccountController {
             ),
             @ApiResponse(responseCode = "404", description = "요청한 핀테크 이용번호는 등록 되어 있지 않을 때")
     })
-    @GetMapping("/account/balance/fin_num")
+    @PostMapping("/account/balance/fin_num")
     public ResponseEntity<?> balance(@RequestBody BalanceRequestDto balanceRequestDto, HttpServletRequest request){
         balanceRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
@@ -87,7 +90,7 @@ public class AccountController {
             ),
             @ApiResponse(responseCode = "404", description = "요청한 계좌 정보에 해당하는 실명이 없을 때.")
     })
-    @GetMapping("/inquiry/real_name")
+    @PostMapping("/inquiry/real_name")
     public ResponseEntity<?> realName(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest request){
         inquiryRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
@@ -108,7 +111,7 @@ public class AccountController {
             ),
             @ApiResponse(responseCode = "404", description = "거래 내역이 0일 때.")
     })
-    @GetMapping("/account/transaction_list/fin_num")
+    @PostMapping("/account/transaction_list/fin_num")
     public ResponseEntity<?> transactionList(@RequestBody TransactionRequestDto transactionRequestDto, HttpServletRequest request){
         transactionRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
@@ -120,26 +123,37 @@ public class AccountController {
         }
     }
 
-        //5.입금 이체
-//    @PostMapping("/transfer/deposit/fin_num")
-//    public ResponseEntity<?> deposit(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
-//        String token = request.getHeader("Authorization");
-//        try{
-//            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 실명 조회 완료", realName));
-//        } catch (AccountException e){
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("400", e.getMessage(), null));
-//        }
-//    }
+    //5.입금 이체
+    @Operation(operationId = "deposit", summary = "입금 이체", description = "핀테크에서 목적지에 입금 이체", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 입금 이체를 성공하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DepositResponseDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "핀테크 이용 번호가 등록 된 것이 아닐 때, 입금을 원하는 계좌가 없을 때"),
+            @ApiResponse(responseCode = "500", description = "출금 또는 입금 중 오류가 발생.")
+    })
+    @PostMapping("/transfer/deposit/fin_num")
+    public ResponseEntity<?> deposit(@RequestBody DepositRequestDto depositRequestDto, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        try{
+            DepositResponseDto depositResponseDto = accountService.depositLogic(depositRequestDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "입금 이체 완료", depositResponseDto));
+        } catch (AccountException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
+        }catch (BackAccountException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+        }
+    }
 
     //6.출금 이체
-    @Operation(operationId = "withdraw", summary = "출금 이체", description = "고객의 계좌에서 출금 이체", tags = {"AccountController"})
+    @Operation(operationId = "withdraw", summary = "출금 이체", description = "고객의 계좌에서 핀테크로 출금 이체", tags = {"AccountController"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 출금 이체를 성공하였습니다.",
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = WithdrawReponseDto.class))
             ),
-            @ApiResponse(responseCode = "404", description = "핀테크 이용 번호가 등록 된 것이 아닐 때, 잔액 부족, 입금을 원하는 계좌가 없을 때"),
+            @ApiResponse(responseCode = "404", description = "핀테크 이용 번호가 등록 된 것이 아닐 때, 잔액 부족, 입금을 원하는 계좌가 없을 때, 이용자가 일치 하지 않을 때"),
             @ApiResponse(responseCode = "500", description = "출금 또는 입금 중 오류가 발생.")
         })
     @PostMapping("/transfer/withdraw/fin_num")
@@ -148,11 +162,30 @@ public class AccountController {
         String token = request.getHeader("Authorization");
         try{
             WithdrawReponseDto withdraw = accountService.withdrawLogic(withdrawRequestDto);
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 완료", withdraw));
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 이체 완료", withdraw));
         } catch (AccountException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
         }catch (BackAccountException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
+
+    //7.은행 이미지 경로 전송
+    @Operation(operationId = "images", summary = "은행 이미지 출력", description = "각 은행의 원형 이미지 출력", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 출금 이체를 성공하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = BankRequestDto.class))
+            )
+    })
+    @GetMapping("/bank/image")
+    public ResponseEntity<?> allImages(){
+        try{
+            List<BankRequestDto> bankRequestDtos = accountService.selectImage();
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "이미지 경로 출력 완료", bankRequestDtos));
+        } catch (BackAccountException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+        }
+    }
 }
+

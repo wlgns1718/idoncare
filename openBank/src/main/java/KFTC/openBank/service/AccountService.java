@@ -1,6 +1,7 @@
 package KFTC.openBank.service;
 
 
+import KFTC.openBank.domain.Bank;
 import KFTC.openBank.domain.BankAccount;
 import KFTC.openBank.domain.TransactionHistory;
 import KFTC.openBank.domain.Type;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Tuple;
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -93,8 +95,38 @@ public class AccountService {
         }
         return  new TransactionResponseDto("A0000", resLists);
     }
-    //입금 이체
 
+
+    //입금 이체
+    @Transactional(rollbackFor = {AccountException.class, BackAccountException.class})
+    public DepositResponseDto depositLogic(DepositRequestDto depositRequestDto) throws AccountException, BackAccountException {
+        String depositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getCntrAccountNum(), depositRequestDto.getCntrAccountBankCodeStd());
+        if(depositName==null){
+            throw new AccountException.FintechNumNotFoundException("요청 하신 핀테크 기업의 계좌 번호는 없는 계좌 번호 입니다..");
+        }
+        //핀테크 기업의 은행 코드 및 계좌 번호
+        String bankId = depositRequestDto.getCntrAccountBankCodeStd();
+        String accountNumber = depositRequestDto.getCntrAccountNum();
+        String bankName = bankRepository.findNameById(bankId);
+        //최종 입금 하고자 하는 계좌의 소유자
+        String FinalDepositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getRecvClientBankCode());
+        if(FinalDepositName.equals(null)){
+            throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다.");
+        }
+        //출금 계좌와 은행 id로 잔액 조회.
+        Long money = bankAccountRepository.findMoneyByIdAndBankId(accountNumber, bankId);
+        if(depositRequestDto.getTran_amt() > money) {
+            throw new AccountException.AccoutInsufficientException("핀테크 계좌의 잔액이 부족합니다.");
+        }
+        if(depositRequestDto.getTran_amt() <= 0) {
+            throw new AccountException.AccoutInsufficientException("최소 1원 이상 이체가 가능합니다.");
+        }
+        String record = depositRequestDto.getReqClientName() + "님으로 부터 받은 돈을 " + depositRequestDto.getRecvClientName() +"에게 " + depositRequestDto.getRecvDpsPrintContent() + "을(를) 이유로 입금 이체";
+        PaymentDto payment = new PaymentDto(depositName, bankId, bankName, record, accountNumber, FinalDepositName, depositRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(depositRequestDto.getCntrAccountBankCodeStd()), depositRequestDto.getRecvDpsPrintContent(), depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getTran_amt());
+        withdraw(payment);
+        deposit(payment);
+        return new DepositResponseDto("A0000");
+    }
 
 
     //출금 이체
@@ -108,10 +140,20 @@ public class AccountService {
         String bankId = (String) result.get(0);
         String accountNumber = (String) result.get(1);
         String bankName = bankRepository.findNameById(bankId);
-        //입금 하고자 하는 계좌의 소유자
+        //핀테크 기업의 계좌가 유효한지.
         String depositName = bankAccountRepository.findNameByIdAndBankId(withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getCntrAccountBankCodeStd());
         if(depositName.equals(null)){
-            throw new AccountException.AccoutNotFoundException("입금을 원하는 계좌는 없는 계좌입니다.");
+            throw new AccountException.AccoutNotFoundException("핀테크 기업의 계좌가 일치하지 않습니다.");
+        }
+        //최종 입금 하고자 하는 계좌의 소유자
+        String finalDepositName = bankAccountRepository.findNameByIdAndBankId(withdrawRequestDto.getRecvClientAccountNum(), withdrawRequestDto.getRecvClientBankCode());
+        if(finalDepositName.equals(null)){
+            throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다.");
+        }
+        //최종 입금 하고자 하는 계좌의 유효성 체크
+        BankAccount byNameAndBankIdAndId = bankAccountRepository.findByNameAndBankIdAndId(finalDepositName, withdrawRequestDto.getRecvClientBankCode(), withdrawRequestDto.getRecvClientAccountNum());
+        if(!byNameAndBankIdAndId.getName().equals(withdrawRequestDto.getRecvClientName())){
+            throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌의 소유자와 계좌 번호가 일치하지 않습니다.");
         }
         //출금 계좌와 은행 id로 잔액 조회.
         Long money = bankAccountRepository.findMoneyByIdAndBankId(accountNumber, bankId);
@@ -121,15 +163,17 @@ public class AccountService {
         if(withdrawRequestDto.getTran_amt() <= 0) {
             throw new AccountException.AccoutInsufficientException("최소 1원 이상 이체가 가능합니다.");
         }
-        PaymentDto payment = new PaymentDto(withdrawRequestDto.getReqClientName(), bankId, bankName, withdrawRequestDto.getWdPrintContent(), accountNumber, depositName, withdrawRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(withdrawRequestDto.getCntrAccountBankCodeStd()), withdrawRequestDto.getDpsPrintContent(), withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getTran_amt());
+        String record = withdrawRequestDto.getReqClientName() + "님이 " + withdrawRequestDto.getRecvClientName() +"에게 " + withdrawRequestDto.getRecvDpsPrintContent() + "을 이유로 출금이체 요청";
+        PaymentDto payment = new PaymentDto(withdrawRequestDto.getReqClientName(), bankId, bankName, withdrawRequestDto.getWdPrintContent(), accountNumber, depositName, withdrawRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(withdrawRequestDto.getCntrAccountBankCodeStd()), record, withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getTran_amt());
+        System.out.println(payment.toString());
         withdraw(payment);
         deposit(payment);
-        return new WithdrawReponseDto("A0000");
+        return new WithdrawReponseDto("A0000", withdrawRequestDto.getReqClientName(), withdrawRequestDto.getRecvClientName(), withdrawRequestDto.getRecvClientBankCode(), withdrawRequestDto.getRecvClientAccountNum(), withdrawRequestDto.getRecvDpsPrintContent(), withdrawRequestDto.getTran_amt());
     }
-//    public TransactionHistory(BankAccount bankAccount, String content, LocalDateTime localDateTime, Long amount, Type type, Long balance) {
 
     //출금
     public void withdraw(PaymentDto paymentDto) throws BackAccountException{
+        System.out.println(paymentDto.toString());
         BankAccount account = bankAccountRepository.findByNameAndBankIdAndId(paymentDto.getWithdrawer(), paymentDto.getWithdrawerBankId(), paymentDto.getWithdrawerAccountNum());
         if(account == null){
             throw new BackAccountException.WithdrawException("출금하려는 계좌의 정보가 없습니다.");
@@ -146,6 +190,7 @@ public class AccountService {
 
     //입금
     public void deposit(PaymentDto paymentDto) throws BackAccountException {
+        System.out.println(paymentDto.toString());
         BankAccount account = bankAccountRepository.findByNameAndBankIdAndId(paymentDto.getDepositor(), paymentDto.getDepositorBankId(), paymentDto.getDepositorAccountNum());
         if(account == null){
             throw new BackAccountException.WithdrawException("입금하려는 계좌의 정보가 없습니다.");
@@ -158,5 +203,15 @@ public class AccountService {
         }catch (Exception e){
             throw new BackAccountException.WithdrawException("입금 중 문제가 발생했습니다!");
         }
+    }
+
+    // 이미지
+    public List<BankRequestDto> selectImage() {
+        List<Bank> bankList = bankRepository.findAll();
+        List<BankRequestDto> bankRequestDtos = new ArrayList<>();
+        for(Bank bank  : bankList){
+            bankRequestDtos.add(BankRequestDto.BankToBankRequestDto(bank));
+        }
+        return bankRequestDtos;
     }
 }

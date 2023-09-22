@@ -1,6 +1,7 @@
 package d209.Idontcare.account.controller;
 
 import d209.Idontcare.account.dto.req.TransactionRequestDto;
+import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.AuthenticationException;
@@ -18,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +40,7 @@ public class AccountController {
     //1. 계좌 확인
     @GetMapping("/transaction")
     public ResponseDto<?> findTransaction(@RequestBody TransactionRequestDto transactionRequestDto, HttpServletRequest request){
-        APIResultDto get = apiService.get("http://127.0.0.1:8080/openbanking/account/transaction_list/fin_num", null, transactionRequestDto);
+
         return null;
     }
 
