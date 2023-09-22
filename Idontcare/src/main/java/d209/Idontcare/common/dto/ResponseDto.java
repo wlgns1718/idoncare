@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.bytebuddy.implementation.bytecode.Throw;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Getter
 public class ResponseDto<T> {
@@ -19,6 +20,13 @@ public class ResponseDto<T> {
     ResponseDto<D> result = new ResponseDto<D>();
     result.code = 200;
     result.data = data;
+    return result;
+  }
+
+  public static ResponseDto<Void> fail(Map<String, String> map){
+    ResponseDto<Void> result = new ResponseDto<>();
+    result.code = Integer.parseInt(map.get("code"));
+    result.error = map.get("error");
     return result;
   }
 

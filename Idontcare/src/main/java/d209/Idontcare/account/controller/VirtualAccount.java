@@ -4,6 +4,8 @@ import d209.Idontcare.account.dto.req.TransactionHistoryRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.VirtualAccountException;
+import d209.Idontcare.account.service.TransactionHistoryService;
+import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.service.APIService;

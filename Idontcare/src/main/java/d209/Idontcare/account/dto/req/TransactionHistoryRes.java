@@ -1,5 +1,7 @@
 package d209.Idontcare.account.dto.req;
 
+import d209.Idontcare.account.entity.TransactionHistory;
+import d209.Idontcare.account.entity.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +30,7 @@ public class TransactionHistoryRes {
     private Long balance;
 
     public static TransactionHistoryRes TransactionHistoryToDto(TransactionHistory transactionHistory) {
-        return new TransactionHistoryRes().builder().
+        TransactionHistoryRes build = new TransactionHistoryRes().builder().
                 userId(transactionHistory.getUser().getUserId()).
                 content(transactionHistory.getContent()).
                 localDateTime(transactionHistory.getLocalDateTime()).
@@ -36,5 +38,6 @@ public class TransactionHistoryRes {
                 type(transactionHistory.getType()).
                 balance(transactionHistory.getBalance()).
                 build();
+        return build;
     }
 }
