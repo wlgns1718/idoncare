@@ -10,3 +10,9 @@ export type BankDataType = {
   name: string;
   code: number;
 } | null;
+
+export type AccountDataType = {
+  bankName: string;
+  bankCode: number;
+  accountNumber: number;
+};
