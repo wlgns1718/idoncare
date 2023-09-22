@@ -30,6 +30,7 @@ import TransferSelect from "./pages/TransferSelect";
 import TransferConfirm from "./pages/TransferConfirm";
 import ParentSetting from "./pages/ParentSetting";
 import KidSetting from "./pages/KidSetting";
+import PasswordConfirm from "./components/common/PasswordConfirm";
 
 function App() {
   const queryClient = new QueryClient();
@@ -69,8 +70,14 @@ function App() {
               <Route path="sendPocketMoney" element={<SendPocketMoney />} />
               <Route path="sendRegularMoney" element={<SendRegularMoney />} />
               <Route path="kidDemandMoney" element={<KidDemandMoney />} />
-              <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
-              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
+              <Route
+                path="kidDemandMoneyList"
+                element={<KidDemandMoneyList />}
+              />
+              <Route
+                path="kidDemanedMoneyList"
+                element={<KidDemanedMoneyList />}
+              />
               <Route path="kidRegister" element={<KidRegister />} />
               <Route
                 path="kidDemandMoneyList"
@@ -84,6 +91,7 @@ function App() {
               <Route path="newAccount" element={<NewAccount />} />
               <Route path="parentSetting" element={<ParentSetting />} />
               <Route path="kidSetting" element={<KidSetting />} />
+              <Route path="password" element={<PasswordConfirm />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

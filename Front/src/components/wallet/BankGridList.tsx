@@ -1,5 +1,5 @@
 import React from "react";
-import { bankData } from "../../store/atoms";
+import { bankData } from "../../store/wallet/atoms";
 import { useRecoilValue } from "recoil";
 import BankItem from "./BankItem";
 
