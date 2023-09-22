@@ -27,7 +27,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class VirtualAccount {
 
-    private final APIService apiService;
     private final VirtualAccountService virtualAccountService;
     private final TransactionHistoryService transactionHistoryService;
 
@@ -131,9 +130,9 @@ public class VirtualAccount {
         Long userId = 1L;
         Map<String, String> map = new HashMap<>();
         try{
-            Long virtualAccount = virtualAccountService.userlAccount(userId);
+            Long virtualAccount = virtualAccountService.userAccount(userId);
             virtualAccountService.VirtualPayment(payment, virtualAccount);
-            return ResponseDto.success("가상 게좌에서 가상 계좌로 송금 완료");
+            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
         }catch (VirtualAccountException e){
             return ResponseDto.fail(e);
         }

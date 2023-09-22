@@ -16,15 +16,12 @@ import javax.persistence.*;
 public class RealAccount {
 
     @Id @Column(name = "READ_ACCOUNT_ID")
-    Long realAccountId;
+    String realAccountId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "userId")
     User user;
 
     @Column(name = "PIN_NUMBER")
-    Long pinNumber;
-
-    @Column(name = "REAL_ACCOUNT_NUMBER")
-    String realAccountNumber;
+    String pinNumber;
 }

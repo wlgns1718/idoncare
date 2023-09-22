@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -34,29 +35,37 @@ public class SecurityConfig {
   
   private final JwtTokenProvider jwtTokenProvider;
   private final UserRepository userRepository;
-  
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    
+
+    @Value("${springsecurity.secret.key}")
+    private String secret;
+    @Value("${springsecurity.secret.salt}")
+    private String salt;
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
     http.csrf().disable()
         .formLogin(Customizer.withDefaults())
         .httpBasic(Customizer.withDefaults()) // 기본 인증 로그인 사용하지 않음. (rest api)
-        
+
         .sessionManagement((session) -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        
+
         .requestMatchers(matchers -> matchers
             .antMatchers("/**")
         )
-        
+
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(new AntPathRequestMatcher("**")).permitAll()
             .anyRequest().authenticated()
         );
-    
+
     http.apply(new JwtSecurityConfig(jwtTokenProvider, userRepository));
     return http.build();
-  }
-  
+    }
 
+    @Bean
+    public AesBytesEncryptor aesBytesEncryptor() {
+      return new AesBytesEncryptor(secret, "70726574657374");
+    }
 }

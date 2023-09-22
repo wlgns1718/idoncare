@@ -1,13 +1,11 @@
 package d209.Idontcare.account.controller;
 
-import d209.Idontcare.account.service.TransactionHistoryService;
-import d209.Idontcare.account.service.VirtualAccountService;
+import d209.Idontcare.account.service.EncryptService;
 import d209.Idontcare.common.APIBuilder;
 import d209.Idontcare.common.ObjectMapper;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
-import d209.Idontcare.common.service.APIService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,9 +25,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class Account {
 
-    private final APIService apiService;
-    private final VirtualAccountService virtualAccountService;
-    private final TransactionHistoryService transactionHistoryService;
+    public final EncryptService encryptService;
+
 
     @Value("${openbank.url}")
     private String url;
@@ -78,27 +75,25 @@ public class Account {
         }
     }
 
-//    //실 계좌 조회
-//    @GetMapping("")
-//    @Operation(summary = "등록 된 실계좌 조회", description = "등록 실계좌 조희")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "성공"),
-//    })
-////    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
-//    public ResponseDto<?> BankList(HttpServletRequest request) throws Exception {
-//        //토큰에 대한 사용자 userId
-//        Long userId = (Long) request.getAttribute("userId");
-//        Map<String, String> map = new HashMap<>();
+
+    //계좌 충전 창에서 실계좌가 있는지 조회
+    @GetMapping("")
+    @Operation(summary = "실계좌 조회", description = "실계좌 조희")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+    })
+//    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    public ResponseDto<?> findReadAccount(HttpServletRequest request) throws Exception {
+        //토큰에 대한 사용자 userId
+        Long userId = (Long) request.getAttribute("userId");
+        Map<String, String> map = new HashMap<>();
 //        try{
-//            APIResultDto result = APIBuilder.build()
-//                    .url(url + "/openbanking/bank/image")
-//                    .method(HttpMethod.GET)
-//                    .execute();
-//            System.out.println(result.getBody());
-//            return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
+//
+//
 //        } catch (Exception e){
 //            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
 //            return ResponseDto.fail(errorCode);
 //        }
-//    }
+        return null;
+    }
 }

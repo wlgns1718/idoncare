@@ -26,7 +26,7 @@ public class VirtualAccountService {
     }
     
     //해당 사용자의 가상 계좌 찾기
-    public Long userlAccount(Long userId){
+    public Long userAccount(Long userId){
         return virtualAccountRepository.findAccount(userId);
     }
 
@@ -45,7 +45,7 @@ public class VirtualAccountService {
         VirtualAccount account = virtualAccountRepository.findById(startAccount).get();
         //가상 계좌에 잔액 부족
         if(account.getBalance() < money){
-            throw new VirtualAccountException("가상 계좌의 잔액 부족");
+            throw new VirtualAccountException(402, "가상 계좌의 잔액 부족");
         }
         //가상 계좌에서 잔액 감소
         account.setBalance(account.getBalance() - money);
