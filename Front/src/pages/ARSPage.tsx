@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "../components/common/Header";
 import FullBtn from "../components/common/FullBtn";
 

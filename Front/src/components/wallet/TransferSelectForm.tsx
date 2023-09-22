@@ -1,10 +1,5 @@
 import { useState } from "react";
-import { BottomSheet } from "../common/BottomSheet";
-import BankGridList from "./BankGridList";
 import FullBtn from "../common/FullBtn";
-import { useRecoilValue } from "recoil";
-import { BankDataType } from "../../types/WalletTypes";
-import { sendAccountBank } from "../../store/atoms";
 import AccountSelectForm from './AccountSelectForm';
 
 type SendOption = "family" | "account";
@@ -18,7 +13,7 @@ function TransferSelectForm() {
 
   const [sendOption, setSendOption] = useState<SendOption>("family");
 
-  const selectedBank = useRecoilValue<BankDataType>(sendAccountBank);
+  // const selectedBank = useRecoilValue<BankDataType>(sendAccountBank);
 
   const options: SendOptionS[] = [
     { value: "family", label: "가족" },

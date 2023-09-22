@@ -1,6 +1,4 @@
-import React from 'react'
 import { MissionData } from '../../pages/Misson'
-import SmallBtn from './../pocketmoney/SmallBtn';
 
 function MissionHistoryCard({mission} : {mission :MissionData}) {
   return (

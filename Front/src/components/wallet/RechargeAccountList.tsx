@@ -44,10 +44,12 @@ interface RechargeAccountType {
 }
 
 function RechargeAccountList() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [rechargeAccount, setRechargeAccount] =
+  const [rechargeAccount, setRechargeAccount] = 
     useState<RechargeAccountType>(tempRechargeAccount);
+
+  console.log(setRechargeAccount.name)
   return (
     <div>
       <div className="flex justify-between">

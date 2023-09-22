@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { BankDataType } from "../../types/WalletTypes";
 import { sendAccountBank } from "../../store/atoms";
