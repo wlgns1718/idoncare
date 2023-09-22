@@ -47,7 +47,6 @@ dependencies {
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 	implementation 'com.google.code.gson:gson:2.10.1'
 //	testImplementation 'org.springframework.security:spring-security-test'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '1.2.4.release'
 }
 
 tasks.named('test') {
