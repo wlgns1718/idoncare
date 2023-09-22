@@ -13,7 +13,6 @@ import d209.Idontcare.mission.dto.MissionSimpleDto;
 import d209.Idontcare.mission.dto.MissionStatusDto;
 import d209.Idontcare.mission.service.MissionService;
 import d209.Idontcare.user.entity.Role;
-import d209.Idontcare.user.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,11 +20,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -85,7 +82,8 @@ public class MissionController {
     public ResponseDto<?> changeStatus(@RequestBody MissionStatusDto missionStatusDto,HttpServletRequest request){
         try{
             Role role = (Role) request.getAttribute("role");
-            missionService.updateStatus(missionStatusDto,role);
+
+            missionService.updateStatus(missionStatusDto, role);
             return ResponseDto.success(null);
         }catch (UpdateFailException | NoSuchContentException e){
             return ResponseDto.fail(e);

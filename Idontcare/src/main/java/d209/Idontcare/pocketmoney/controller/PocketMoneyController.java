@@ -118,7 +118,8 @@ public class PocketMoneyController {
         @ApiResponse(responseCode="200", description = "성공",
             content=@Content(schema = @Schema(implementation= Void.class))),
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
-        @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
+        @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION),
+        @ApiResponse(responseCode= NoSuchContentException.CODE, description = NoSuchContentException.DESCRIPTION)
     })
     @LoginOnly(level = Level.PARENT_ONLY)
     public ResponseDto processPocketMoneyRequest(@Valid @RequestBody ProcessPocketMoneyRequestReqDto req, HttpServletRequest request){
