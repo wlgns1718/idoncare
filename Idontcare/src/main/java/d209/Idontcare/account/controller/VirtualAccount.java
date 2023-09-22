@@ -130,15 +130,9 @@ public class VirtualAccount {
         Long userId = 1L;
         Map<String, String> map = new HashMap<>();
         try{
-<<<<<<< HEAD
             Long virtualAccount = virtualAccountService.userAccount(userId);
-            virtualAccountService.VirtualPayment(payment, virtualAccount);
-            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
-=======
-            Long virtualAccount = virtualAccountService.userlAccount(userId);
             virtualAccountService.virtualPayment(payment, virtualAccount);
             return ResponseDto.success("가상 게좌에서 가상 계좌로 송금 완료");
->>>>>>> 2957678881bdf06e6784227c5e4e50a394c73f8f
         }catch (VirtualAccountException e){
             return ResponseDto.fail(e);
         }

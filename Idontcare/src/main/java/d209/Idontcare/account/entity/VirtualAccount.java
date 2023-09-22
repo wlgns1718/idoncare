@@ -16,6 +16,7 @@ import javax.persistence.*;
 public class VirtualAccount {
 
     @Id @Column(name = "VIRTUAL_ACCOUNT_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long VirtualAccountId;
 
     @ManyToOne

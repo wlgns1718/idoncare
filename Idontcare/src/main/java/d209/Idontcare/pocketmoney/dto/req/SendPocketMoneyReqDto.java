@@ -16,5 +16,5 @@ public class SendPocketMoneyReqDto {
   
   @Schema(description = "얼마", example = "1000")
   @NotNull(message = "용돈이 입력되어야합니다") @Positive(message = "용돈은 0보다 커야합니다")
-  private Integer amount;
+  private Long amount;
 }
