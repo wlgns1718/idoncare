@@ -30,6 +30,4 @@ public class TransactionResponseDto {
         RspCode = rspCode;
         this.resList = resList;
     }
-
-
 }

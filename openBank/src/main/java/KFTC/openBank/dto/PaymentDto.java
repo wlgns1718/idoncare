@@ -9,12 +9,10 @@ public class PaymentDto {
     /*
     Withdrawer : 출금자
     Depositor : 입금자
-
     BankId : 은행 id
     BankName : 은행 이름
     Content : 내용
     AccountNum : 계좌 번호
-
     Money : 돈
      */
     private String Withdrawer;

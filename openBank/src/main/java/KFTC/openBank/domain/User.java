@@ -26,4 +26,9 @@ public class User {
     @Column(name = "ROLE", length = 15)
     Role role;
 
+    public User(String name, String phoneNumber, Role role) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+    }
 }

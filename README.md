@@ -47,15 +47,14 @@ account_holder_name : 예금주 성명
 ---
 AccessToken과 사용자의 핀테크번호(계좌 번호 내장)로 거래내역 조회.
 Headder : accessToken
-    fintech_use_num : 출금계좌핀테크이용번호
-    bank_tran_id : 은행거래고유번호
-    wd_print_content : 출금 계좌에 남길 내역(내 계좌에 남길 내역)
-    cntr_account_num : 입금하고자 하는 계좌 번호
-    cntr_account_bank_code_std : 입금하고자 하는 은행 코드
-    dps_print_content : 입금 계좌에 남길 내역(보낼 계좌에 남길 내역)
-    tran_amt : 요청 금액
-    tran_dtime : 요청 일시
-    req_client_name : 요청 고객 성명
+Headder : accessToken
+bank_tran_id : 은행거래고유번호
+fintech_use_num : 핀테크이용번호
+inquiry_type : 조회구분코드(A: ALL, I : 입금, O : 출금)
+from_date : 조회시작일자
+to_date : 조회종료일자
+tran_dtime : 요청 일시
+
 응답
 rsp_code : 응답코드(API)
 res_list : 조회된 거래내역
@@ -64,7 +63,7 @@ tran_time : 거래시간("113000")
 inout_type : 입금 출금 구분
 print_content : 통장 인자 내용
 tran_amt : 거래금액
-after_balance_amt : 거래 후 잔
+after_balance_amt : 거래 후 잔액
 
 
 ### 5.입금 이체
@@ -73,12 +72,15 @@ after_balance_amt : 거래 후 잔
 플랫폼의 지급 계좌 핀테크 이용번호 혹은 계좌번호를 이용해 원하는 곳으로 출금. 
 요청
 Headder : accessToken
+fintech_use_num : 출금계좌핀테크이용번호
 bank_tran_id : 은행거래고유번호
-fintech_use_num : 핀테크이용번호
-inquiry_type : 조회구분코드(A: ALL, I : 입금, O : 출금)
-from_date : 조회시작일자
-to_date : 조회종료일자
+wd_print_content : 출금 계좌에 남길 내역(내 계좌에 남길 내역)
+cntr_account_num : 입금하고자 하는 계좌 번호
+cntr_account_bank_code_std : 입금하고자 하는 은행 코드
+dps_print_content : 입금 계좌에 남길 내역(보낼 계좌에 남길 내역)
+tran_amt : 요청 금액
 tran_dtime : 요청 일시
+req_client_name : 요청 고객 성명
 응답
 rsp_code : 응답코드(API)
 

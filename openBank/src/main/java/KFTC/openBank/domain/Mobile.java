@@ -26,4 +26,5 @@ public class Mobile {
     @Enumerated(EnumType.STRING)
     @Column(name = "MOBILE_SORT", length = 10)
     MobileSort mobileSort;
+
 }

@@ -16,10 +16,13 @@ public class WithdrawRequestDto {
     wd_print_content : 출금 계좌에 남길 내역(내 계좌에 남길 내역)
     cntr_account_num : 입금하고자 하는 계좌 번호
     cntr_account_bank_code_std : 입금하고자 하는 은행 코드
-    dps_print_content : 입금 계좌에 남길 내역(보낼 계좌에 남길 내역)
     tran_amt : 금액
     tran_dtime : 요청 일시
     req_client_name : 요청 고객 성명
+    recvClientName : 최종 수취 고객 성명
+    recvClientBankCode : 최종 수취 고객 계좌 개설 기관. 표준 코드
+    recvClientAccountNum : 최종 수취 고객 계좌 번호
+    recvDpsPrintContent : 최종 수취 입금 계좌에 남길 내역
      */
 
     @Schema(description = "출금계좌핀테크이용번호")
@@ -31,14 +34,11 @@ public class WithdrawRequestDto {
     @Schema(description = "출금 계좌에 남길 내역(내 계좌에 남길 내역)")
     private String wdPrintContent;
 
-    @Schema(description = "입금하고자 하는 계좌 번호")
+    @Schema(description = "입금하고자 하는 계좌 번호 / 핀테크 계좌 번호")
     private String cntrAccountNum;
 
-    @Schema(description = "입금하고자 하는 은행 코드")
+    @Schema(description = "입금하고자 하는 은행 코드 / 핀테크 은행 코드")
     private String cntrAccountBankCodeStd;
-
-    @Schema(description = "입금 계좌에 남길 내역(보낼 계좌에 남길 내역)")
-    private String dpsPrintContent;
 
     @Schema(description = "금액")
     private Long tran_amt;
@@ -48,5 +48,17 @@ public class WithdrawRequestDto {
 
     @Schema(description = "요청 고객 성명")
     private String reqClientName;
+
+    @Schema(description = "최종 수취 고객 성명")
+    private String recvClientName;
+
+    @Schema(description = "최종 수취 고객 계좌 개설 기관. 표준 코드")
+    private String recvClientBankCode;
+
+    @Schema(description = "최종 수취 고객 계좌 번호")
+    private String recvClientAccountNum;
+
+    @Schema(description = "최종 수취 입금 계좌에 남길 내역")
+    private String recvDpsPrintContent;
 
 }
