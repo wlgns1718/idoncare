@@ -27,7 +27,7 @@ public class JoinUserReqDto {
     @NotBlank
     private String name;
 
-    @Schema(description = "유저 ID", example = "123")
+    @Schema(description = "유저 닉네임", example = "nickname")
     @NotBlank
     private String nickName;
     
@@ -39,11 +39,11 @@ public class JoinUserReqDto {
     @NotBlank
     private String phoneNumber;
 
-    @Schema(description = "유저  ID", example = "123")
+    @Schema(description = "유저 이메일", example = "test@naver.com")
     @Email
     private String email;
 
-    @Schema(description = "유저 ID", example = "123")
+    @Schema(description = "유저 ID", example = "null")
     private AddressDto addressDto;
     
     @Schema(description = "가상 계좌 비밀번호", example = "123456")

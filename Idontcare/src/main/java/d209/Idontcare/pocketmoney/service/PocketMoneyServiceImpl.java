@@ -1,5 +1,8 @@
 package d209.Idontcare.pocketmoney.service;
 
+import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
+import d209.Idontcare.account.exception.VirtualAccountException;
+import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
@@ -35,6 +38,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   private final RegularPocketMoneyRepository regularPocketMoneyRepository;
   private final PocketMoneyRequestRepository pocketMoneyRequestRepository;
   private final RelationshipService relationshipService;
+  private final VirtualAccountService virtualAccountService;
   
   //다음 지급 예정일에 대해 계산
   public Integer getNextDueDate(LocalDateTime now, RegularPocketMoney.Type type, Integer cycle){
@@ -113,9 +117,24 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   @Override
   public void sendPocketMoney(Long parentUserId, SendPocketMoneyReqDto req){
     
-    User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당 자녀를 찾을 수 없습니다"));
+    User parent = userRepository.findByUserId(parentUserId).get();
+    if( !userRepository.existsById(req.getChildUserId()) ){
+      throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
+    }
     
-    /* TODO : 용돈 지급 필요 */
+    VirtualToVirtualReq trnasReq = VirtualToVirtualReq
+        .builder()
+        .money(req.getAmount())
+        .userId(req.getChildUserId())
+        .content(String.format("%s님의 용돈 지급", parent.getName()))
+        .build();
+    
+    try{
+      virtualAccountService.virtualPayment(trnasReq, parentUserId);
+    } catch(VirtualAccountException e){
+      //돈 부족
+      throw new VirtualAccountException("돈 부족");
+    }
   }
   
   @Override

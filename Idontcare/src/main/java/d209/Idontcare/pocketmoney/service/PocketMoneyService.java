@@ -1,5 +1,6 @@
 package d209.Idontcare.pocketmoney.service;
 
+import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
 import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
@@ -28,5 +29,5 @@ public interface PocketMoneyService {
       throws MustParentException;
   
   void processPocketMoneyRequest(Long parentUserId, ProcessPocketMoneyRequestReqDto req)
-      throws AuthorizationException, MustParentException, NoSuchContentException;
+      throws AuthorizationException, MustParentException, NoSuchContentException, VirtualAccountException;
 }
