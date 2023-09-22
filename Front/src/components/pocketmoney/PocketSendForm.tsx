@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../common/Header";
 import FullBtn from "../common/FullBtn";
-import MoneyAmountSet from "../common/MoneyAmountSet";
+// import MoneyAmountSet from "../common/MoneyAmountSet";
 
 interface Props {
   onNext: () => void;
@@ -15,7 +15,7 @@ const SendPocketMoneyForm: React.FC<Props> = ({ onNext }) => {
       <div className="m-10 text-center flex-grow">
         <div className="text-l mt-24 mb-16">얼마를 보낼래요?</div>
 
-        <MoneyAmountSet />
+        {/* <MoneyAmountSet /> */}
       </div>
       <FullBtn buttonText="다음" onClick={onNext} />
     </div>

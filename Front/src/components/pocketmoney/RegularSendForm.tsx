@@ -4,7 +4,7 @@ import Header from "../common/Header";
 import FullBtn from "../common/FullBtn";
 import Modal from "../common/Modal";
 import RegularMoneySendFormCycle from "./RegularSendFormCycle";
-import MoneyAmountSet from "../common/MoneyAmountSet";
+// import MoneyAmountSet from "../common/MoneyAmountSet";
 
 interface Props {
   onNext: () => void;
@@ -77,7 +77,7 @@ const RegularSendForm: React.FC<Props> = ({ onNext }) => {
 
         <NumberPlate bottomLeftText="00" /> */}
 
-        <MoneyAmountSet />
+        {/* <MoneyAmountSet /> */}
 
         <FullBtn buttonText="다음" onClick={onNext} />
       </div>
