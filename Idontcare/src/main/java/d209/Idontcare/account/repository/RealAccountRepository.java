@@ -1,4 +1,9 @@
 package d209.Idontcare.account.repository;
 
-public interface RealAccountRepository {
+import d209.Idontcare.account.entity.RealAccount;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RealAccountRepository extends JpaRepository<RealAccount, Long> {
+
+
 }

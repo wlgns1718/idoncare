@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +17,7 @@ import java.time.LocalDateTime;
 public class TransactionHistory {
 
     @Id @Column(name = "TRANSACTION_HISTORY_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long transactionHistoryId;
 
     @ManyToOne
@@ -33,9 +33,10 @@ public class TransactionHistory {
     @Column(name = "AMOUNT")
     Long amount;
 
-    @Column(name = "TYPE")
+    @Column(name = "TYPE") @Enumerated(EnumType.STRING)
     Type type;
 
     @Column(name = "BALANCE")
     Long balance;
+
 }
