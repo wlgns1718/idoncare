@@ -1,43 +1,9 @@
 import { useState } from "react";
 import Header from "../components/common/Header";
-import KBICON from "../assets/imgs/bank/PNG_KB.png";
 import FullBtn from "../components/common/FullBtn";
 import BankGridList from "../components/wallet/BankGridList";
-import { BankDataType } from "../components/wallet/BankItem";
-
-const banks = [
-  {
-    icon: KBICON,
-    code: 1,
-    name: "KB국민",
-  },
-  {
-    icon: KBICON,
-    code: 2,
-    name: "KB국민",
-  },
-  {
-    icon: KBICON,
-    code: 3,
-    name: "KB국민",
-  },
-  {
-    icon: KBICON,
-    code: 4,
-    name: "KB국민",
-  },
-  {
-    icon: KBICON,
-    code: 5,
-    name: "KB국민",
-  },
-  {
-    icon: KBICON,
-    code: 6,
-    name: "KB국민",
-  }
-  
-];
+import { BankDataType } from "../types/WalletTypes";
+import AccountSelectForm from "../components/wallet/AccountSelectForm";
 
 const InputAccountNumber = ({
   selectedBank,
@@ -46,7 +12,6 @@ const InputAccountNumber = ({
   selectedBank: BankDataType | null;
   setCurrentSelect: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-
   return (
     <div>
       <div>
@@ -77,23 +42,12 @@ function RegistAccount() {
   const handleSelectBank = (bank: BankDataType) => {
     setSelectedBank(bank);
     setCurrentSelect("account");
-  }
+  };
 
   return (
     <div>
       <Header pageTitle="충전 계좌 등록" />
-      {currentSelect == "bank" ? (
-        <BankGridList
-          banks={banks}
-          onChange={handleSelectBank}
-          setCurrentSelect={setCurrentSelect}
-        />
-      ) : (
-        <InputAccountNumber
-          selectedBank={selectedBank}
-          setCurrentSelect={setCurrentSelect}
-        />
-      )}
+      <AccountSelectForm />
     </div>
   );
 }
