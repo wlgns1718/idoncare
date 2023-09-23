@@ -1,6 +1,6 @@
 package d209.Idontcare.account.controller;
 
-import d209.Idontcare.account.dto.req.TransactionHistoryRes;
+import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.VirtualAccountException;
@@ -8,7 +8,6 @@ import d209.Idontcare.account.service.TransactionHistoryService;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
-import d209.Idontcare.common.service.APIService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -50,6 +49,8 @@ public class VirtualAccount {
 //        }
 //    }
 
+
+
     //가상계좌 잔액 조회
     @GetMapping("/balance")
     @Operation(summary = "가상 계좌 잔액 조회", description = "본인 가상 계좌의 잔액을 조회")
@@ -72,6 +73,8 @@ public class VirtualAccount {
         }
     }
 
+
+
     //월별 가상계좌 거래내역 조회
     @GetMapping("/{Year}/{Month}")
     @Operation(summary = "월별 가상 계좌 거래내역 조회", description = "년월별 가상 계좌 거래내역 조회")
@@ -92,6 +95,8 @@ public class VirtualAccount {
             return ResponseDto.fail(e);
         }
     }
+
+
 
     //거래내역 키워드 검색
     @GetMapping("/content/{content}")
@@ -115,6 +120,7 @@ public class VirtualAccount {
         }
     }
 
+
     //계좌이체 (가상계좌 → 가상계좌)
     @PostMapping("")
     @Operation(summary = "가상 계좌에서 가상 계좌로 송금", description = "가상에서 가상으로 송금")
@@ -130,15 +136,9 @@ public class VirtualAccount {
         Long userId = 1L;
         Map<String, String> map = new HashMap<>();
         try{
-<<<<<<< HEAD
             Long virtualAccount = virtualAccountService.userAccount(userId);
-            virtualAccountService.VirtualPayment(payment, virtualAccount);
-            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
-=======
-            Long virtualAccount = virtualAccountService.userlAccount(userId);
             virtualAccountService.virtualPayment(payment, virtualAccount);
-            return ResponseDto.success("가상 게좌에서 가상 계좌로 송금 완료");
->>>>>>> 2957678881bdf06e6784227c5e4e50a394c73f8f
+            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
         }catch (VirtualAccountException e){
             return ResponseDto.fail(e);
         }

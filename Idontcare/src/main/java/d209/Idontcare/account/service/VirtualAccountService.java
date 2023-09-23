@@ -1,6 +1,6 @@
 package d209.Idontcare.account.service;
 
-import d209.Idontcare.account.dto.req.TransactionHistoryRes;
+import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.entity.Type;
 import d209.Idontcare.account.entity.VirtualAccount;

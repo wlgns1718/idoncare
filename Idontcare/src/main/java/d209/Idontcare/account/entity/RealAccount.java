@@ -15,13 +15,18 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class RealAccount {
 
-    @Id @Column(name = "READ_ACCOUNT_ID")
+    @Id @Column(name = "READ_ACCOUNT_ID", length = 100)
     String realAccountId;
 
     @OneToOne
     @JoinColumn(name = "userId")
     User user;
 
-    @Column(name = "PIN_NUMBER")
+    @Column(name = "PIN_NUMBER", length = 100)
     String pinNumber;
+
+    @Column(name = "BANK_NAME")
+    String bankName;
+
+
 }

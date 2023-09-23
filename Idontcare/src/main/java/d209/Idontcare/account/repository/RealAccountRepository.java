@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface RealAccountRepository extends JpaRepository<RealAccount, Long> {
 
-    @Query("SELECT a.realAccountId FROM RealAccount a WHERE a.user.userId = :userId")
-    String findAccount(@Param("userId") Long userId);
+    @Query("SELECT a FROM RealAccount a WHERE a.user.userId = :userId")
+    RealAccount findAccount(@Param("userId") Long userId);
 }

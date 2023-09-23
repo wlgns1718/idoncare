@@ -1,6 +1,6 @@
 package d209.Idontcare.account.service;
 
-import d209.Idontcare.account.dto.req.TransactionHistoryRes;
+import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.entity.TransactionHistory;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;

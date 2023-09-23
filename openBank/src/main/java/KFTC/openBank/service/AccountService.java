@@ -214,4 +214,18 @@ public class AccountService {
         }
         return bankRequestDtos;
     }
+
+    // 수취 조회
+    public ReceiveResponseDto findClient(ReceiveRequestDto receiveRequestDto) {
+        String clientName = bankAccountRepository.findNameByIdAndBankId(receiveRequestDto.getAccountNum(), receiveRequestDto.getBankCdoeStd());
+        if(clientName == null){
+            throw  new AccountException.AccoutNotFoundException("일치하는 고객이 없습니다.");
+        }
+        return ReceiveResponseDto.builder()
+                .accountNum(receiveRequestDto.getAccountNum())
+                .clientName(clientName)
+                .bankCdoeStd(receiveRequestDto.getBankCdoeStd())
+                .bankStd(bankRepository.findNameById(receiveRequestDto.getBankCdoeStd()))
+                .build();
+    }
 }

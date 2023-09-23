@@ -187,5 +187,25 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
+
+    //8.수취조회
+    @Operation(operationId = "receive", summary = "수취 조회", description = "핀테크에서 계좌와 은행 이름으로 수취 조회", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "해당 사용자 호출 완료",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ReceiveRequestDto.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "일치하는 고객이 없을 때 발생."),
+    })
+    @PostMapping("/inquiry/receive")
+    public ResponseEntity<?> inquirtReceive(@RequestBody ReceiveRequestDto receiveRequestDto, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        try{
+            ReceiveResponseDto client = accountService.findClient(receiveRequestDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "해당 사용자 호출 완료", client));
+        } catch (AccountException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
+        }
+    }
 }
 
