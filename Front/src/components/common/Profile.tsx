@@ -4,12 +4,24 @@ type ProfileImage = string;
 interface ProfileProps {
   profileName: ProfileName;
   profileImage?: ProfileImage;
+  size?: "xsmall"|"small" | "medium" | "large";
 }
 
-const Profile = ({ profileName, profileImage }: ProfileProps) => {
+const ProfileSize = {
+  xsmall: 50,
+  small : 60,
+  medium : 80,
+  large : 120
+}
+
+const Profile = ({ profileName, profileImage, size = "large" }: ProfileProps) => {
   return (
     <div className="flex flex-col items-center justify-around w-full">
-      <img className="w-[120px] h-[120px] rounded-full" src={profileImage} alt="프로필 이미지" />
+      <img
+        className={`w-[${ProfileSize[size]}px] h-[${ProfileSize[size]}px] rounded-full`}
+        src={profileImage}
+        alt="프로필 이미지"
+      />
       <p className="text-main font-strong text-m">{profileName}</p>
     </div>
   );
