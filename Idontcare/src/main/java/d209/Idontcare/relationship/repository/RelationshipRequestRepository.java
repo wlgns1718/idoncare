@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface RelationshipRequestRepository extends JpaRepository<RelationshipRequest, Long> {
   
   @Query("select count(r.relationshipRequestId) > 0 from RelationshipRequest r where r.parent.userId = :parentUserId and r.child.userId = :childUserId")
-  Page<Integer> existsByParentAndChild(@Param("parentUserId") Long parentUserId, @Param("childUserId") Long childUserId, Pageable pageable);
+  Page<Long> existsByParentAndChild(@Param("parentUserId") Long parentUserId, @Param("childUserId") Long childUserId, Pageable pageable);
   
   @Query("select r.relationshipRequestId as relationshipRequestId, r.createdAt as createdAt, r.parent.name as parentName" +
       " from RelationshipRequest r where r.child.userId = :childUserId")

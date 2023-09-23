@@ -1,5 +1,6 @@
 package d209.Idontcare.pocketmoney.controller;
 
+import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.common.ErrorHandler;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
@@ -8,7 +9,6 @@ import d209.Idontcare.pocketmoney.dto.req.*;
 import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.service.PocketMoneyService;
-import d209.Idontcare.user.entity.User;
 import d209.Idontcare.common.annotation.LoginOnly.Level;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -119,7 +119,8 @@ public class PocketMoneyController {
             content=@Content(schema = @Schema(implementation= Void.class))),
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION),
-        @ApiResponse(responseCode= NoSuchContentException.CODE, description = NoSuchContentException.DESCRIPTION)
+        @ApiResponse(responseCode= NoSuchContentException.CODE, description = NoSuchContentException.DESCRIPTION),
+        @ApiResponse(responseCode= VirtualAccountException.CODE, description = VirtualAccountException.DESCRIPTION)
     })
     @LoginOnly(level = Level.PARENT_ONLY)
     public ResponseDto processPocketMoneyRequest(@Valid @RequestBody ProcessPocketMoneyRequestReqDto req, HttpServletRequest request){

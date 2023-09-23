@@ -114,13 +114,13 @@ public class RelationshipServiceImpl implements RelationshipService{
   @Override
   public boolean relationExistsByParentAndChild(Long parentUserId, Long childUserId) {
     PageRequest pageRequest = PageRequest.of(0, 1);
-    Page<Integer> page = relationshipRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
+    Page<Long> page = relationshipRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
     return page.getTotalElements() != 0;
   }
   
   private boolean relationRequestExistsByParentAndChild(Long parentUserId, Long childUserId){
     PageRequest pageRequest = PageRequest.of(0, 1);
-    Page<Integer> page = relationshipRequestRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
+    Page<Long> page = relationshipRequestRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
     return page.getTotalElements() != 0;
   }
 }
