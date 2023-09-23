@@ -6,7 +6,7 @@ import FullBtn from "../components/common/FullBtn";
 function WalletRecharge() {
   return (
     <div>
-      <Header pageTitle="계좌 충전" headerLink="/wallet" headerType="normal" />
+      <Header pageTitle="계좌 충전" headerLink="back" headerType="normal" />
       <div>
         <RechargeInput />
         <RechargeAccountList />
