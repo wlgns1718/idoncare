@@ -69,9 +69,15 @@ function App() {
               <Route path="sendPocketMoney" element={<SendPocketMoney />} />
               <Route path="sendRegularMoney" element={<SendRegularMoney />} />
               <Route path="kidDemandMoney" element={<KidDemandMoney />} />
-              <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
-              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
-              <Route path="kidRegist" element={<KidRegist />} />
+              <Route
+                path="kidDemandMoneyList"
+                element={<KidDemandMoneyList />}
+              />
+              <Route
+                path="kidDemanedMoneyList"
+                element={<KidDemanedMoneyList />}
+              />
+              <Route path="kidRegister" element={<KidRegister />} />
               <Route
                 path="kidDemandMoneyList"
                 element={<KidDemandMoneyList />}

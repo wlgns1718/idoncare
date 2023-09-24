@@ -49,9 +49,24 @@ function TradeHistory() {
         </button>
       </div>
       <div className="bg-gray h-16 rounded-xl flex justify-between p-4 items-center">
-        {/* <Icon name="home" /> */}
-        <div>{"2023년 09월"}</div>
-        {/* <Icon name="home" /> */}
+        <button
+          onClick={() => {
+            console.log(1);
+          }}
+          className=""
+        >
+          <Icon name="chevron-left" />
+        </button>
+        <div className="text-s">{"2023년 09월"}</div>
+        <button
+          onClick={() => {
+            console.log(1);
+          }}
+          className="opacity-50"
+          disabled
+        >
+          <Icon name="chevron-right" />
+        </button>
       </div>
       <div>
         {/* 날짜별 */}

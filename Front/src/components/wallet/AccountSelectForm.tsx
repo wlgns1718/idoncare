@@ -1,28 +1,29 @@
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
+// import { useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { BankDataType } from "../../types/WalletTypes";
-import { sendAccountBank } from "../../store/atoms";
+import { sendAccountBank } from "../../store/wallet/atoms";
 import { BottomSheet } from "../common/BottomSheet";
 import BankGridList from "./BankGridList";
+import { BottomSheetOpen } from "../../store/common/atoms";
 
 function AccountSelectForm() {
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const selectedBank = useRecoilValue<BankDataType>(sendAccountBank);
-  const openSheet = () => {
-    setIsSheetOpen(true);
-  };
-  const closeSheet = () => {
-    setIsSheetOpen(false);
-  };
+
+  const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
+
+  const openSheet = () => setBottomSheetOpen(true);
+  const closeSheet = () => setBottomSheetOpen(false);
+
   return (
     <div>
       <div
         className="w-full bg-gray flex p-3 mt-10 rounded-lg text-m text-mediumgray "
         onClick={openSheet}
       >
-        은행선택 {selectedBank?.name}
+        {selectedBank?.name ? selectedBank?.name : "은행 선택"}
       </div>
-      {isSheetOpen && (
+
+      {bottomSheetOpen && (
         <BottomSheet size={75} closeSheet={closeSheet}>
           <BankGridList />
         </BottomSheet>
@@ -33,7 +34,7 @@ function AccountSelectForm() {
         name="account"
         id="account"
         autoComplete="account"
-        className="w-full flex-1 border-0 my-6 bg-gray p-3 rounded-lg text-m placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-1"
+        className="w-full flex-1 border-0 my-6 bg-gray p-3 rounded-lg text-m outline-0 outline outline-main outline-offset-0 focus:outline-2 placeholder:text-gray-400 focus:ring text-main"
         placeholder="계좌 번호를 입력해주세요"
       />
       <div className="flex justify-end">
