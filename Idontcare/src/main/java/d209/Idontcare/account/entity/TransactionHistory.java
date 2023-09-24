@@ -38,5 +38,12 @@ public class TransactionHistory {
 
     @Column(name = "BALANCE")
     Long balance;
-
+    
+    public TransactionHistory(User user, String content, Long amount, Type type, Long balance){
+        this.user = user;
+        this.content = content;
+        this.amount = amount;
+        this.type = type;
+        this.balance = balance;
+    }
 }
