@@ -60,11 +60,12 @@ public class InitService {
     
     Bank bank41 = bankRepository.getReferenceById("41");
     
-    bankAccountRepository.save(new BankAccount("000000000000", bank41, 100000000L, "아이돈케어", "202309011"));
+    bankAccountRepository.save(new BankAccount("000000000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
+    bankAccountRepository.save(new BankAccount("888888888888", bank41, 1000000000000L, "starbucks", "202309011"));
     bankAccountRepository.save(new BankAccount("111111111111", bank41, 1000000L, "김출금", "19900101"));
     bankAccountRepository.save(new BankAccount("999999999999", bank41, 1000000L, "김입금", "20000111"));
   }
-  
+
   public void userDataInit(){
     if(userRepository.count() > 0) return;
     

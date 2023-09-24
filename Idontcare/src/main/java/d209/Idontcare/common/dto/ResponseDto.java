@@ -41,12 +41,13 @@ public class ResponseDto<T> {
     ResponseDto<Void> result = new ResponseDto<>();
     result.code = 500;
     result.error = "서버 내부 에러";
+    System.out.println("fail1");
     return result;
   }
 
   public static ResponseDto<Void> fail(Map<String, String> map){
     ResponseDto<Void> result = new ResponseDto<>();
-    result.code = Integer.parseInt(map.get("code"));
+    result.code = Integer.parseInt(map.get("code").trim());
     result.error = map.get("error");
     return result;
   }

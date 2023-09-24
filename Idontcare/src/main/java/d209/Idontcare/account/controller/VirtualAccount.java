@@ -125,6 +125,4 @@ public class VirtualAccount {
             return ResponseDto.fail(e);
         }
     }
-
-
 }

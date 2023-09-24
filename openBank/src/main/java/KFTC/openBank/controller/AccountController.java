@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/openbanking")
@@ -59,31 +58,53 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "토큰 발급 성공", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"));
     }
 
-    //1-2 OAuth인증 계좌 등록
-    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 등록", description = "OAuth인증 핀번호 발급", tags = {"AccountController"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "핀번호를 발급하였습니다.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = String.class))
-            ),
-            @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때"),
-            @ApiResponse(responseCode = "409", description = "사용자가 이미 인증을 했을 때")
+//    //1-2 OAuth인증 계좌 등록
+//    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 등록", description = "OAuth인증 핀번호 발급", tags = {"AccountController"})
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "핀번호를 발급하였습니다.",
+//                    content = @Content(mediaType = "application/json",
+//                            schema = @Schema(implementation = String.class))
+//            ),
+//            @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때"),
+//            @ApiResponse(responseCode = "409", description = "사용자가 이미 인증을 했을 때")
+//    })
+//    @PostMapping("/oauth/2.0/pin")
+//    public ResponseEntity<?> pinNumber(@RequestBody AccountVerifiRequesDto accountVerifiReqDto, HttpServletRequest httpServletRequest) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
+//        } catch (MobileException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+//        } catch (UserException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+//        }
+//    }
 
-    })
-    @PostMapping("/oauth/2.0/pin")
-    public ResponseEntity<?> pinNumber(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest httpServletRequest) {
-        try {
-            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
-
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
-        } catch (MobileException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
-        } catch (UserException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
-        }
-    }
+//    //1-3 OAuth인증 계좌 삭제
+//    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 삭제", description = "OAuth인증 핀번호 삭제", tags = {"AccountController"})
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "핀번호를 삭제합니다.",
+//                    content = @Content(mediaType = "application/json",
+//                            schema = @Schema(implementation = String.class))
+//            ),
+//    })
+//    @DeleteMapping("/oauth/2.0/pin")
+//    public ResponseEntity<?> pinNumberDelete(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest httpServletRequest) {
+//        try {
+//            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
+//
+//
+//
+//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
+//        } catch (MobileException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+//        } catch (UserException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+//        }
+//    }
 
     //2.잔액 조회
     @Operation(operationId = "balance", summary = "잔액 조회", description = "미리 등록한 계좌의 잔액 조회", tags = {"AccountController"})
@@ -162,6 +183,7 @@ public class AccountController {
     @PostMapping("/transfer/deposit/fin_num")
     public ResponseEntity<?> deposit(@RequestBody DepositRequestDto depositRequestDto, HttpServletRequest request){
         String token = request.getHeader("Authorization");
+        System.out.println(depositRequestDto);
         try{
             DepositResponseDto depositResponseDto = accountService.depositLogic(depositRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "입금 이체 완료", depositResponseDto));

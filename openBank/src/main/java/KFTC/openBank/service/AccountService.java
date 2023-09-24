@@ -104,19 +104,17 @@ public class AccountService {
     //입금 이체
     @Transactional(rollbackFor = {AccountException.class, BackAccountException.class})
     public DepositResponseDto depositLogic(DepositRequestDto depositRequestDto) throws AccountException, BackAccountException {
-        String depositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getCntrAccountNum(), depositRequestDto.getCntrAccountBankCodeStd());
-        if(depositName==null){
-            throw new AccountException.FintechNumNotFoundException("요청 하신 핀테크 기업의 계좌 번호는 없는 계좌 번호 입니다..");
-        }
+        String depositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getCntrAccountNum(), depositRequestDto.getCntrAccountBankCodeStd())
+                .orElseThrow(() -> new AccountException.FintechNumNotFoundException("요청 하신 핀테크 기업의 계좌 번호는 없는 계좌 번호 입니다."));
         //핀테크 기업의 은행 코드 및 계좌 번호
         String bankId = depositRequestDto.getCntrAccountBankCodeStd();
         String accountNumber = depositRequestDto.getCntrAccountNum();
         String bankName = bankRepository.findNameById(bankId);
         //최종 입금 하고자 하는 계좌의 소유자
-        System.out.println(depositRequestDto.toString());
-        String FinalDepositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getRecvClientBankCode());
-        if(FinalDepositName.equals(null)){
-            throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다.");
+        String FinalDepositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getRecvClientBankCode())
+                .orElseThrow(() -> new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다."));
+        if(!FinalDepositName.equals(depositRequestDto.getRecvClientName())){
+            throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌의 유효성 체크를 해주세요.");
         }
         //출금 계좌와 은행 id로 잔액 조회.
         Long money = bankAccountRepository.findMoneyByIdAndBankId(accountNumber, bankId);
@@ -146,15 +144,11 @@ public class AccountService {
         String accountNumber = (String) result.get(1);
         String bankName = bankRepository.findNameById(bankId);
         //핀테크 기업의 계좌가 유효한지.
-        String depositName = bankAccountRepository.findNameByIdAndBankId(withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getCntrAccountBankCodeStd());
-        if(depositName.equals(null)){
-            throw new AccountException.AccoutNotFoundException("핀테크 기업의 계좌가 일치하지 않습니다.");
-        }
+        String depositName = bankAccountRepository.findNameByIdAndBankId(withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getCntrAccountBankCodeStd())
+                .orElseThrow(() -> new AccountException.AccoutNotFoundException("핀테크 기업의 계좌가 일치하지 않습니다."));
         //최종 입금 하고자 하는 계좌의 소유자
-        String finalDepositName = bankAccountRepository.findNameByIdAndBankId(withdrawRequestDto.getRecvClientAccountNum(), withdrawRequestDto.getRecvClientBankCode());
-        if(finalDepositName.equals(null)){
-            throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다.");
-        }
+        String finalDepositName = bankAccountRepository.findNameByIdAndBankId(withdrawRequestDto.getRecvClientAccountNum(), withdrawRequestDto.getRecvClientBankCode())
+                .orElseThrow(() -> new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다."));
         //최종 입금 하고자 하는 계좌의 유효성 체크
         BankAccount byNameAndBankIdAndId = bankAccountRepository.findByNameAndBankIdAndId(finalDepositName, withdrawRequestDto.getRecvClientBankCode(), withdrawRequestDto.getRecvClientAccountNum());
         if(!byNameAndBankIdAndId.getName().equals(withdrawRequestDto.getRecvClientName())){
@@ -221,10 +215,8 @@ public class AccountService {
 
     // 수취 조회
     public ReceiveResponseDto findClient(ReceiveRequestDto receiveRequestDto) {
-        String clientName = bankAccountRepository.findNameByIdAndBankId(receiveRequestDto.getAccountNum(), receiveRequestDto.getBankCdoeStd());
-        if(clientName == null){
-            throw  new AccountException.AccoutNotFoundException("일치하는 고객이 없습니다.");
-        }
+        String clientName = bankAccountRepository.findNameByIdAndBankId(receiveRequestDto.getAccountNum(), receiveRequestDto.getBankCdoeStd())
+                .orElseThrow(() -> new AccountException.AccoutNotFoundException("일치하는 고객이 없습니다."));
         return ReceiveResponseDto.builder()
                 .accountNum(receiveRequestDto.getAccountNum())
                 .clientName(clientName)

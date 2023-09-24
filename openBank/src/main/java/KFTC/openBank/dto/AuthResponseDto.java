@@ -20,8 +20,6 @@ public class AuthResponseDto {
     private String phoneNumber;
     @Schema(description = "생일", example = "1990101")
     private String birth;
-    @Schema(description = "통신사", example = "SK")
-    private Type mobileSort;
     @Schema(description = "이름", example = "김엄마")
     private String name;
 }
