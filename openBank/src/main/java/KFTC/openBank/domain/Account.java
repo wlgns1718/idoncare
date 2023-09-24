@@ -39,4 +39,16 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "FIN_TECH_SERVICE_ID")
     FinTechService finTechService;
+    
+    public Account(String fintechUseNum,
+                   Bank bank,
+                   User user,
+                   String accountNumber,
+                   FinTechService finTechService){
+        this.id = fintechUseNum;
+        this.bank = bank;
+        this.user = user;
+        this.accountNumber = accountNumber;
+        this.finTechService = finTechService;
+    }
 }

@@ -38,6 +38,14 @@ public class BankAccount {
         this.money += money;
         return this.money;
     }
+    
+    public BankAccount(String id, Bank bank, Long money, String name, String birth){
+        this.id = id;
+        this.bank = bank;
+        this.money = money;
+        this.name = name;
+        this.birth = birth;
+    }
 
     @Override
     public String toString() {

@@ -27,4 +27,10 @@ public class Bank {
         this.id = id;
         this.name = name;
     }
+    
+    public Bank(String id, String name, String filePath) {
+        this.id = id;
+        this.name = name;
+        this.filePath = filePath;
+    }
 }
