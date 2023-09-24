@@ -54,7 +54,6 @@ public class TransactionHistoryService {
         TransactionHistory tran = TransactionHistory.builder()
                                     .user(user)
                                     .content(trans.getContent())
-                                    .localDateTime(trans.getLocalDateTime())
                                     .amount(trans.getAmount())
                                     .type(trans.getType())
                                     .balance(trans.getBalance())

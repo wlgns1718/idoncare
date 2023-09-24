@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class RealAccount {
 
     @Id @Column(name = "READ_ACCOUNT_ID", length = 100)
@@ -31,6 +30,14 @@ public class RealAccount {
     @Column(name = "BANK_CODE")
     String bankCode;
 
-
-
+    public RealAccount(String realAccountId, User user,
+                       String pinNumber, String bankName,
+                       String bankCode){
+        this.realAccountId = realAccountId;
+        this.user = user;
+        this.pinNumber = pinNumber;
+        this.bankName = bankName;
+        this.bankCode = bankCode;
+    }
+    
 }
