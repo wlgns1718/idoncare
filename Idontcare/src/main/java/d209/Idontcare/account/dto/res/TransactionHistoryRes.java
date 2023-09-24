@@ -33,7 +33,6 @@ public class TransactionHistoryRes {
         TransactionHistoryRes build = new TransactionHistoryRes().builder().
                 userId(transactionHistory.getUser().getUserId()).
                 content(transactionHistory.getContent()).
-                localDateTime(transactionHistory.getLocalDateTime()).
                 amount(transactionHistory.getAmount()).
                 type(transactionHistory.getType()).
                 balance(transactionHistory.getBalance()).

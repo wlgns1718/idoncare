@@ -39,4 +39,13 @@ public class User {
     public void setUUID(){
         this.userId = (UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE) / 10_000 * 10_000;
     }
+    
+//    public User(Long userId, Long kakaoId, String phoneNumber, String name, Role role, String nickName){
+//        this.userId = userId;
+//        this.kakaoId = kakaoId;
+//        this.phoneNumber = phoneNumber;
+//        this.name = name;
+//        this.role = role;
+//        this.nickName = nickName;
+//    }
 }
