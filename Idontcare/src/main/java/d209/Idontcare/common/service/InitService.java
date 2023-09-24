@@ -44,10 +44,9 @@ public class InitService {
   
   private void virtualAccountDataInit(){
     if(virtualAccountRepository.existsById(111111111111L)) return;
-    
-    
-    virtualAccountRepository.save(new VirtualAccount(111111111111L, userRepository.getReferenceById(1L), 1_000_000L, "1234"));
-    virtualAccountRepository.save(new VirtualAccount(222222222222L, userRepository.getReferenceById(2L), 1000L, "1234"));
+    String pw = encryptService.encrypt("123456");
+    virtualAccountRepository.save(new VirtualAccount(111111111111L, userRepository.getReferenceById(1L), 1_000_000L, pw));
+    virtualAccountRepository.save(new VirtualAccount(222222222222L, userRepository.getReferenceById(2L), 1000L, pw));
   }
   
   private void transactionHistoryDataInit(){
@@ -63,7 +62,7 @@ public class InitService {
     
     User user1 = userRepository.getReferenceById(1L);
     
-    realAccountRepository.save(new RealAccount(encryptService.encrypt("1234"), user1, encryptService.encrypt("1234"),
+    realAccountRepository.save(new RealAccount(encryptService.encrypt("123456"), user1, encryptService.encrypt("123456"),
         "신한은행", "41"));
   }
 }
