@@ -77,7 +77,7 @@ function App() {
                 path="kidDemanedMoneyList"
                 element={<KidDemanedMoneyList />}
               />
-              <Route path="kidRegister" element={<KidRegister />} />
+              <Route path="kidRegister" element={<KidRegist />} />
               <Route
                 path="kidDemandMoneyList"
                 element={<KidDemandMoneyList />}
