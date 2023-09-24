@@ -12,6 +12,7 @@ import d209.Idontcare.user.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,5 +80,8 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(id);
     }
 
-
+    public String findNameByUserId(Long userId) throws Exception {
+        return userRepository.findNameByUserId(userId)
+                .orElseThrow(() -> new Exception("유저를 찾을 수 없습니다."));
+    }
 }

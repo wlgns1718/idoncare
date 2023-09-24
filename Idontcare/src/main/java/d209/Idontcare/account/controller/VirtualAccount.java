@@ -1,18 +1,24 @@
 package d209.Idontcare.account.controller;
 
+import d209.Idontcare.account.dto.req.ReceiveReq;
+import d209.Idontcare.account.dto.req.VirtualToRealReq;
 import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.TransactionHistoryService;
 import d209.Idontcare.account.service.VirtualAccountService;
+import d209.Idontcare.common.APIBuilder;
+import d209.Idontcare.common.ObjectMapper;
 import d209.Idontcare.common.annotation.LoginOnly;
+import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,28 +34,6 @@ public class VirtualAccount {
 
     private final VirtualAccountService virtualAccountService;
     private final TransactionHistoryService transactionHistoryService;
-
-    //0. 예시
-//    @GetMapping("/transaction")
-//    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-//    public ResponseDto findTransaction(@RequestBody AuthRequestDto authRequestDto, HttpServletRequest request) throws Exception{
-//    Long userId = (Long) request.getAttribute("userId");
-//    Role role = (Role) request.getAttribute("role");
-//        try{
-//            APIResultDto result = APIBuilder.build()
-//                    .url(url + "/openbanking/oauth/2.0/token")
-//                    .method(HttpMethod.POST)
-//                    .body(authRequestDto)
-//                    .execute();
-//            System.out.println(result.getBody());
-//            return ResponseDto.success(((Map<String, String>) result.getBody()).get("data"));
-//        } catch (Exception e){
-//            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
-//            return ResponseDto.fail(errorCode);
-//        }
-//    }
-
-
 
     //가상계좌 잔액 조회
     @GetMapping("/balance")
@@ -96,8 +80,6 @@ public class VirtualAccount {
         }
     }
 
-
-
     //거래내역 키워드 검색
     @GetMapping("/content/{content}")
     @Operation(summary = "거래 내역 키워드 검색", description = "거래 내역 키워드로 검색")
@@ -143,4 +125,6 @@ public class VirtualAccount {
             return ResponseDto.fail(e);
         }
     }
+
+
 }

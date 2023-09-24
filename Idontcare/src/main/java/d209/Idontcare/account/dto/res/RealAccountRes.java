@@ -19,8 +19,13 @@ public class RealAccountRes {
     @Schema(description = "핀번호", example = "123123123123")
     String pinNumber;
 
-    @Schema(description = "은행 이름", example = "신한")
+    @Schema(description = "은행 이름", example = "신한은행")
     String bankName;
+
+    @Schema(description = "은행 코드", example = "41")
+    String bankCode;
+
+
 
     public static RealAccountRes RealAccountToDto(RealAccount account, String decrypAccount, String decrypPinNumber){
         return RealAccountRes.builder()
@@ -28,6 +33,7 @@ public class RealAccountRes {
                 .userId(account.getUser().getUserId())
                 .pinNumber(decrypPinNumber)
                 .bankName(account.getBankName())
+                .bankCode(account.getBankCode())
                 .build();
     }
 }

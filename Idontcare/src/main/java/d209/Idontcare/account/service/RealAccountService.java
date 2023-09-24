@@ -18,13 +18,13 @@ public class RealAccountService {
     public final EncryptService encryptService;
 
     //실계좌 등록 했는지 확인하기
-    public RealAccountRes findRealAccount(Long userId){
-        RealAccount account = realAccountRepository.findAccount(userId);
-        if(account==null){
-            throw new VirtualAccountException(402, "충전 계좌가 등록 되지 않았습니다.");
-        }
-        String decrypAccount = encryptService.decryp(account.getRealAccountId());
-        String decrypPinNumber = encryptService.decryp(account.getPinNumber());
-        return RealAccountRes.RealAccountToDto(account, decrypAccount, decrypPinNumber);
+    public RealAccountRes findRealAccount(Long userId) {
+        return realAccountRepository.findAccount(userId)
+                .map(account -> {
+                    String decrypAccount = encryptService.decryp(account.getRealAccountId());
+                    String decrypPinNumber = encryptService.decryp(account.getPinNumber());
+                    return RealAccountRes.RealAccountToDto(account, decrypAccount, decrypPinNumber);
+                })
+                .orElseThrow(() -> new VirtualAccountException(402, "충전 계좌가 등록 되지 않았습니다."));
     }
 }

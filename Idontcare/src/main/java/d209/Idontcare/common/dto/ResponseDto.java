@@ -23,13 +23,6 @@ public class ResponseDto<T> {
     return result;
   }
 
-  public static ResponseDto<Void> fail(Map<String, String> map){
-    ResponseDto<Void> result = new ResponseDto<>();
-    result.code = Integer.parseInt(map.get("code"));
-    result.error = map.get("error");
-    return result;
-  }
-
   public static ResponseDto<Void> fail(CommonException e){
     ResponseDto<Void> result = new ResponseDto<>();
     result.code = e.getCode();
@@ -51,4 +44,10 @@ public class ResponseDto<T> {
     return result;
   }
 
+  public static ResponseDto<Void> fail(Map<String, String> map){
+    ResponseDto<Void> result = new ResponseDto<>();
+    result.code = Integer.parseInt(map.get("code"));
+    result.error = map.get("error");
+    return result;
+  }
 }

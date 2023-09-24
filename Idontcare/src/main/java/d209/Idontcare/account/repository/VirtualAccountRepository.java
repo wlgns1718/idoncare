@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface VirtualAccountRepository extends JpaRepository<VirtualAccount, Long> {
     
     //유저 정보로 계좌 잔액 찾기
@@ -14,8 +16,8 @@ public interface VirtualAccountRepository extends JpaRepository<VirtualAccount, 
     //유저 정보로 가상 계좌 찾기
     @Query("SELECT a.VirtualAccountId FROM VirtualAccount a WHERE a.user.userId = :userId")
     Long findUser(@Param("userId") Long userId);
-    
-    //가상 계좌로 유저 찾기
-    @Query("SELECT a.VirtualAccountId FROM VirtualAccount a WHERE a.user.userId = :userId")
-    Long findAccount(@Param("userId") Long userId);
+
+    //유저 정보로 가상 계좌 찾기
+    @Query("SELECT a FROM VirtualAccount a WHERE a.user.userId = :userId")
+    Optional<VirtualAccount> findByUserId(@Param("userId") Long userId);
 }

@@ -3,6 +3,7 @@ package d209.Idontcare.user.service;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.user.dto.*;
 import d209.Idontcare.user.entity.User;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Optional;
@@ -20,4 +21,7 @@ public interface UserService {
       throws BadRequestException, DuplicatedException;
   
   Optional<User> findByPhoneNumber(String childPhoneNumber);
+
+  public String findNameByUserId(Long userId) throws Exception;
+
 }

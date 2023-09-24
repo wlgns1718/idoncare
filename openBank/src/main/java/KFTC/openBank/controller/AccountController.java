@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/openbanking")
@@ -31,8 +32,8 @@ public class AccountController {
     public final MobileService mobileService;
     public final UserService userService;
 
-    //1. OAuth인증 accessToken 발급
-    @Operation(operationId = "Auth", summary = "OAuth인증", description = "OAuth인증 accessToken", tags = {"AccountController"})
+    //1-1 OAuth인증 accessToken 발급
+    @Operation(operationId = "Auth", summary = "OAuth인증 이용자 등록", description = "OAuth인증 accessToken", tags = {"AccountController"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "토큰을 발급하였습니다.",
                     content = @Content(mediaType = "application/json",
@@ -40,7 +41,6 @@ public class AccountController {
             ),
             @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때"),
             @ApiResponse(responseCode = "409", description = "사용자가 이미 인증을 했을 때")
-            
     })
     @PostMapping("/oauth/2.0/token")
     public ResponseEntity<?> token(@RequestBody AuthRequestDto authRequestDto, HttpServletRequest httpServletRequest) {
@@ -57,6 +57,32 @@ public class AccountController {
         }
         //가상 토큰 발급
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "토큰 발급 성공", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"));
+    }
+
+    //1-2 OAuth인증 계좌 등록
+    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 등록", description = "OAuth인증 핀번호 발급", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "핀번호를 발급하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때"),
+            @ApiResponse(responseCode = "409", description = "사용자가 이미 인증을 했을 때")
+
+    })
+    @PostMapping("/oauth/2.0/pin")
+    public ResponseEntity<?> pinNumber(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest httpServletRequest) {
+        try {
+            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
+
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
+        } catch (MobileException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+        } catch (UserException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+        }
     }
 
     //2.잔액 조회
@@ -158,8 +184,10 @@ public class AccountController {
         })
     @PostMapping("/transfer/withdraw/fin_num")
     public ResponseEntity<?> withdraw(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
-        withdrawRequestDto.setTranDtime(LocalDateTime.now());
         String token = request.getHeader("Authorization");
+        withdrawRequestDto.setTranDtime(LocalDateTime.now());
+        System.out.println(111111);
+        System.out.println(withdrawRequestDto.toString());
         try{
             WithdrawReponseDto withdraw = accountService.withdrawLogic(withdrawRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 이체 완료", withdraw));
@@ -204,7 +232,7 @@ public class AccountController {
             ReceiveResponseDto client = accountService.findClient(receiveRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "해당 사용자 호출 완료", client));
         } catch (AccountException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
         }
     }
 }

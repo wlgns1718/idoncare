@@ -1,14 +1,17 @@
-package KFTC.openBank.dto;
+package d209.Idontcare.account.dto.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
+@Data @Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class WithdrawRequestDto {
+public class WithdrawReq {
 
     /*
     fintech_use_num : 출금계좌핀테크이용번호
@@ -60,5 +63,4 @@ public class WithdrawRequestDto {
 
     @Schema(description = "최종 수취 입금 계좌에 남길 내역")
     private String recvDpsPrintContent;
-
 }

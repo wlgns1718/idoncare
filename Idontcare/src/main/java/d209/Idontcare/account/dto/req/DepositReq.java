@@ -1,12 +1,15 @@
-package KFTC.openBank.dto;
+package d209.Idontcare.account.dto.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data @Builder
+@AllArgsConstructor
 @NoArgsConstructor
-public class DepositRequestDto {
+public class DepositReq {
 
     @Schema(description = " 핀테크 기업의 계좌 번호")
     private String cntrAccountNum;

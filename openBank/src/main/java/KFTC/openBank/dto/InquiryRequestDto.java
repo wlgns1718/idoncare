@@ -24,7 +24,7 @@ public class InquiryRequestDto {
     private String accountNum;
     @Schema(description = "은행거래고유번호", example = "T9916764")
     private String bankTranId;
-    @Schema(description = "예금주 인증정보(주민등록번호 앞 7자리)", example = "1234567")
+    @Schema(description = "예금주 인증정보", example = "20000101")
     private String accountHolderInfo;
     @Schema(description = "요청일시", example = "2023-09-14T10:30:00")
     private LocalDateTime tranDtime;

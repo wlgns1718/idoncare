@@ -28,5 +28,9 @@ public class RealAccount {
     @Column(name = "BANK_NAME")
     String bankName;
 
+    @Column(name = "BANK_CODE")
+    String bankCode;
+
+
 
 }

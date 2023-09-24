@@ -21,5 +21,4 @@ public class VirtualToVirtualReq {
 
     @Schema(description = "금액")
     private Long money;
-
 }

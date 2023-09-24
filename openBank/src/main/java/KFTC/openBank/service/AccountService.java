@@ -35,6 +35,10 @@ public class AccountService {
     private final BankAccountRepository bankAccountRepository;
     private final TransactionHistoryRepository transactionHistoryRepository;
 
+    //플랫폼에 계좌 등록
+    public void registAccount(String pinNumber) throws AccountException {
+    }
+
     //플랫폼에 등록된 계좌에서 잔액 조회
     @Transactional(readOnly = true)
     public BalanceResponseDto findBalance(String pinNumber) throws AccountException {
@@ -109,20 +113,21 @@ public class AccountService {
         String accountNumber = depositRequestDto.getCntrAccountNum();
         String bankName = bankRepository.findNameById(bankId);
         //최종 입금 하고자 하는 계좌의 소유자
+        System.out.println(depositRequestDto.toString());
         String FinalDepositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getRecvClientBankCode());
         if(FinalDepositName.equals(null)){
             throw new AccountException.AccoutNotFoundException("최종 입금을 원하는 계좌는 없는 계좌입니다.");
         }
         //출금 계좌와 은행 id로 잔액 조회.
         Long money = bankAccountRepository.findMoneyByIdAndBankId(accountNumber, bankId);
-        if(depositRequestDto.getTran_amt() > money) {
+        if(depositRequestDto.getTranAmt() > money) {
             throw new AccountException.AccoutInsufficientException("핀테크 계좌의 잔액이 부족합니다.");
         }
-        if(depositRequestDto.getTran_amt() <= 0) {
+        if(depositRequestDto.getTranAmt() <= 0) {
             throw new AccountException.AccoutInsufficientException("최소 1원 이상 이체가 가능합니다.");
         }
         String record = depositRequestDto.getReqClientName() + "님으로 부터 받은 돈을 " + depositRequestDto.getRecvClientName() +"에게 " + depositRequestDto.getRecvDpsPrintContent() + "을(를) 이유로 입금 이체";
-        PaymentDto payment = new PaymentDto(depositName, bankId, bankName, record, accountNumber, FinalDepositName, depositRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(depositRequestDto.getCntrAccountBankCodeStd()), depositRequestDto.getRecvDpsPrintContent(), depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getTran_amt());
+        PaymentDto payment = new PaymentDto(depositName, bankId, bankName, record, accountNumber, FinalDepositName, depositRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(depositRequestDto.getCntrAccountBankCodeStd()), depositRequestDto.getRecvDpsPrintContent(), depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getTranAmt());
         withdraw(payment);
         deposit(payment);
         return new DepositResponseDto("A0000");
@@ -157,18 +162,17 @@ public class AccountService {
         }
         //출금 계좌와 은행 id로 잔액 조회.
         Long money = bankAccountRepository.findMoneyByIdAndBankId(accountNumber, bankId);
-        if(withdrawRequestDto.getTran_amt() > money) {
+        if(withdrawRequestDto.getTranAmt() > money) {
             throw new AccountException.AccoutInsufficientException("출금 계좌의 잔액이 부족합니다.");
         }
-        if(withdrawRequestDto.getTran_amt() <= 0) {
+        if(withdrawRequestDto.getTranAmt() <= 0) {
             throw new AccountException.AccoutInsufficientException("최소 1원 이상 이체가 가능합니다.");
         }
         String record = withdrawRequestDto.getReqClientName() + "님이 " + withdrawRequestDto.getRecvClientName() +"에게 " + withdrawRequestDto.getRecvDpsPrintContent() + "을 이유로 출금이체 요청";
-        PaymentDto payment = new PaymentDto(withdrawRequestDto.getReqClientName(), bankId, bankName, withdrawRequestDto.getWdPrintContent(), accountNumber, depositName, withdrawRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(withdrawRequestDto.getCntrAccountBankCodeStd()), record, withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getTran_amt());
-        System.out.println(payment.toString());
+        PaymentDto payment = new PaymentDto(withdrawRequestDto.getReqClientName(), bankId, bankName, withdrawRequestDto.getWdPrintContent(), accountNumber, depositName, withdrawRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(withdrawRequestDto.getCntrAccountBankCodeStd()), record, withdrawRequestDto.getCntrAccountNum(), withdrawRequestDto.getTranAmt());
         withdraw(payment);
         deposit(payment);
-        return new WithdrawReponseDto("A0000", withdrawRequestDto.getReqClientName(), withdrawRequestDto.getRecvClientName(), withdrawRequestDto.getRecvClientBankCode(), withdrawRequestDto.getRecvClientAccountNum(), withdrawRequestDto.getRecvDpsPrintContent(), withdrawRequestDto.getTran_amt());
+        return new WithdrawReponseDto("A0000", withdrawRequestDto.getReqClientName(), withdrawRequestDto.getRecvClientName(), withdrawRequestDto.getRecvClientBankCode(), withdrawRequestDto.getRecvClientAccountNum(), withdrawRequestDto.getRecvDpsPrintContent(), withdrawRequestDto.getTranAmt());
     }
 
     //출금
