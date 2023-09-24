@@ -41,3 +41,7 @@ jwt.refresh-expiration-time=604800000
 openbank.url=https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app
 springsecurity.secret.key={시크릿 키 : String}
 springsecurity.secret.salt={salt 값 : String}
+
+# Open Banking Request Setting
+idontcare.account=000000000000
+idontcare.bankcode=41
