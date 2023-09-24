@@ -27,4 +27,10 @@ public class Mobile {
     @Column(name = "MOBILE_SORT", length = 10)
     MobileSort mobileSort;
 
+    public Mobile(String phoneNumber, String name, String birth, MobileSort mobileSort){
+        this.id = phoneNumber;
+        this.name = name;
+        this.birth = birth;
+        this.mobileSort = mobileSort;
+    }
 }
