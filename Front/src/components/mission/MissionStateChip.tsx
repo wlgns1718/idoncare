@@ -13,7 +13,7 @@ enum StateChipStyle {
 }
 
 function MissionStateChip({ state }: MissionStateChipProps) {
-  return <div className={`w-auto text-center rounded-xl ${StateChipStyle[state]}`}>{MissionStateName[state]}</div>;
+  return <div className={`w-[16vw] mx-auto text-center rounded-xl ${StateChipStyle[state]}`}>{MissionStateName[state]}</div>;
 }
 
 export default MissionStateChip
