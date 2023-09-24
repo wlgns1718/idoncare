@@ -26,6 +26,6 @@ public class VirtualAccount {
     @Column(name = "BALANCE")
     Long balance;
 
-    @Column(name = "PASSWORD", length = 6)
+    @Column(name = "PASSWORD")
     String password;
 }
