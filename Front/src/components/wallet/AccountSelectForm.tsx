@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { BankDataType } from "../../types/WalletTypes";
 import { sendAccountBank } from "../../store/wallet/atoms";
 import { BottomSheet } from "../common/BottomSheet";
@@ -9,10 +9,9 @@ import { BottomSheetOpen } from "../../store/common/atoms";
 function AccountSelectForm() {
   const selectedBank = useRecoilValue<BankDataType>(sendAccountBank);
 
-  const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
+  const setBottomSheetOpen = useSetRecoilState(BottomSheetOpen);
 
   const openSheet = () => setBottomSheetOpen(true);
-  const closeSheet = () => setBottomSheetOpen(false);
 
   return (
     <div>
@@ -23,11 +22,9 @@ function AccountSelectForm() {
         {selectedBank?.name ? selectedBank?.name : "은행 선택"}
       </div>
 
-      {bottomSheetOpen && (
-        <BottomSheet size={75} closeSheet={closeSheet}>
-          <BankGridList />
-        </BottomSheet>
-      )}
+      <BottomSheet>
+        <BankGridList />
+      </BottomSheet>
 
       <input
         type="number"

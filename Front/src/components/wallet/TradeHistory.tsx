@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import DailyTradeList from "./DailyTradeList";
 import Chip from "../common/Chip";
 import Icon from "../common/Icon";
-import { TradeCategory, TradeHistoryCategory } from "../../types/WalletTypes";
+import { TradeHistoryCategory } from "../../types/WalletTypes";
 
 function TradeHistory() {
   const navigate = useNavigate();
 
-  const [currentCategory, setCurrentCategory] = useState<TradeCategory>("ALL");
+  const [currentCategory, setCurrentCategory] = useState<string>("ALL");
 
-  const handleCategory = (categoryValue: TradeCategory) => {
+  const handleCategory = (categoryValue: string) => {
     setCurrentCategory(categoryValue);
   };
 

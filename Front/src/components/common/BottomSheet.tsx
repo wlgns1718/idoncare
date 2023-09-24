@@ -1,27 +1,23 @@
 import React, { ReactNode } from "react";
 import { BottomSheetOpen } from './../../store/common/atoms';
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 interface BottomSheetProps {
   children: ReactNode;
-  closeSheet: () => void;
-  size: number;
 }
 
 export const BottomSheet: React.FC<BottomSheetProps> = ({
   children,
 }) => {
-  const setBottomSheetOpen =
-    useSetRecoilState(BottomSheetOpen);
+  const [bottomSheetOpen, setBottomSheetOpen] =
+    useRecoilState(BottomSheetOpen);
 
   const handleCloseSheet = () => {
     setBottomSheetOpen(false);
-    console.log(11);
-    
   }
   return (
     <div
-      className={`fixed inset-0 h-screen items-center justify-center z-50 flex overflow-y-auto`}
+      className={`fixed inset-0 h-screen items-center justify-center z-50 flex overflow-y-auto ${bottomSheetOpen? "" : 'hidden'}`}
     >
       <div
         className="bg-black opacity-50 absolute inset-0"

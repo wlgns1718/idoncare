@@ -1,7 +1,5 @@
-export type TradeCategory = "ALL" | "IN" | "OUT";
-
 export type TradeHistoryCategory = {
-  type: TradeCategory;
+  type: string;
   text: string;
 };
 
