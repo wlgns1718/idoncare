@@ -20,4 +20,9 @@ public class RelationshipRequest extends BaseEntity {
   
   @ManyToOne(fetch = FetchType.LAZY)
   private User child;
+  
+  public RelationshipRequest(User parent, User child){
+    this.parent = parent;
+    this.child = child;
+  }
 }
