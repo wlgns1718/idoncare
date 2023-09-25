@@ -56,7 +56,6 @@ function WalletCard() {
   const [balance, setBalance] = useRecoilState(userBalanace);
 
   useEffect(() => {
-    axios;
     axios
       .get(`http://j9d209.p.ssafy.io:8081/api/virtual/balance`, {
         headers: { Authorization: Token as string },
