@@ -13,17 +13,22 @@ import java.util.List;
 @Data
 public class ReceivedRequestResDto{
   @Schema(description = "요청받은 id", example="1")
-  Long relationshipRequestId;
+  private Long relationshipRequestId;
   
   @Schema(description = "요청한 부모", example="요청한 부모의 이름")
-  String parentName;
+  private String parentName;
+  
+  @Schema(description = "부모의 폰번호", example="요청한 부모의 폰번호")
+  private String parentPhoneNumber;
   
   @Schema(description = "요청받은 시간", example="시간형식입니다")
-  LocalDateTime createdAt;
+  private LocalDateTime createdAt;
+  
   
   public ReceivedRequestResDto(Tuple tuple){
     this.relationshipRequestId = (Long)tuple.get("relationshipRequestId");
     this.parentName = (String)tuple.get("parentName");
+    this.parentPhoneNumber = (String)tuple.get("parentPhoneNumber");
     this.createdAt = (LocalDateTime)tuple.get("createdAt");
   }
   
