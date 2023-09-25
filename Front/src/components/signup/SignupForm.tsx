@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SignupQuestion from "./SignupQuestion";
 import { SignupUserInfo } from "../../types/SignupUserInfo";
 import SignupTypeSelect from "./SignupTypeSelect";
+import { useRecoilValue } from "recoil";
+import { SignupCode } from "../../store/signup/atoms";
 
 const SignupForm = () => {
   const [step, setStep] = useState<number>(1);
   const [signupUserInfo, setSignupUserInfo] = useState<SignupUserInfo>();
+  const kakaoCode = useRecoilValue<string | null>(SignupCode);
+
+  useEffect(() => {
+    if (step === 9) {
+      console.log(kakaoCode);
+    }
+  }, [step]);
+
   const nextStep = () => {
     setStep((prev) => prev + 1);
   };
