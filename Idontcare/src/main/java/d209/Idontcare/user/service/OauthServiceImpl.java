@@ -125,7 +125,7 @@ public class OauthServiceImpl implements OauthService{
                 //회원가입까지 되어 있으면
                 // -> 토큰 발급
                 jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
-                jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(), user.getRole());
+                jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
                 isJoined = true;
             }
         }
@@ -151,7 +151,7 @@ public class OauthServiceImpl implements OauthService{
         User user = userRepository.findByKakaoId(kakaoId).get();
         
         String jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
-        String jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(), user.getRole());
+        String jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
         
         GetUserInfoDto resultDto = GetUserInfoDto.builder()
             .userId(user.getUserId())

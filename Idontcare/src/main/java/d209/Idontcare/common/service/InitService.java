@@ -40,7 +40,7 @@ public class InitService {
   }
   
   private void userDataInit(){
-    if(userRepository.existsById(1L)) return;
+    if(userRepository.count() > 0) return;
     for(long i = 1L; i <= 9; i++){
       User parent = new User(  i, i, "010" + "1234" + "000" + i, "김부모" + i, Role.PARENT, "김부모" + i + "_닉네임") ;
       parent.setUUID();
@@ -57,7 +57,7 @@ public class InitService {
   }
   
   private void virtualAccountDataInit(){
-    if(virtualAccountRepository.existsById(1L)) return;
+    if(virtualAccountRepository.count() > 0) return;
     String pw = encryptService.encrypt("123456");
     
     for(long i = 1L; i <= 9; i++){
@@ -70,7 +70,7 @@ public class InitService {
   }
   
   private void transactionHistoryDataInit(){
-    if(transactionHistoryRepository.existsById(1L)) return;
+    if(transactionHistoryRepository.count() > 0) return;
     
     for(long i = 1L; i <= 5; i++){
       TransactionHistory depository = new TransactionHistory(userRepository.findByKakaoId(i).get(), "스타벅스 결제1", 10_000L, Type.DEPOSITORY, 100_000L);
