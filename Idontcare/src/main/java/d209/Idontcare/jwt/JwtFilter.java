@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.InternalServerException;
-import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -29,6 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     acceptPath.add("/api/user/login");
     acceptPath.add("/api/user/login/test");
     acceptPath.add("/api/user/regist");
+    acceptPath.add("/api/user/refresh");
   }
 
   public JwtFilter(JwtTokenProvider jwtTokenProvider, UserRepository userRepository){

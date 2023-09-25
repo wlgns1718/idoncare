@@ -1,8 +1,11 @@
 package d209.Idontcare.jwt;
 
 import d209.Idontcare.common.exception.AuthenticationException;
+import d209.Idontcare.common.exception.BadRequestException;
 import d209.Idontcare.common.exception.ExpiredTokenException;
 import d209.Idontcare.user.entity.Role;
+import d209.Idontcare.user.entity.User;
+import d209.Idontcare.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class JwtTokenProvider {
   
   private final RedisTemplate<String, String> redisTemplate;
+  private final UserRepository userRepository;
 
   @Value("${jwt.secret}")
   private String secret;
@@ -46,10 +50,9 @@ public class JwtTokenProvider {
   }
   
   /* Refresh 토큰 생성 */
-  public String createRefreshToken(Long userId, Role role){
+  public String createRefreshToken(Long userId){
     Claims claims = Jwts.claims();
     claims.put("userId", userId);
-    claims.put("role", role);
     
     Date now = new Date();
     Date expireTime = new Date(now.getTime() + refreshExpirationTime);
@@ -88,6 +91,15 @@ public class JwtTokenProvider {
     return authInfo;
   }
   
+  public Long getUserId(String refreshToken){
+    Claims claims = Jwts.parser()
+        .setSigningKey(secret)
+        .parseClaimsJws(refreshToken)
+        .getBody();
+    
+    return (Long)claims.get("userId");
+  }
+  
   /* Header에서 Bearer 토큰을 가져온다 */
   public String getBearerToken(HttpServletRequest req){
     String bearerToken = req.getHeader("Authorization");
@@ -108,5 +120,31 @@ public class JwtTokenProvider {
     } catch(JwtException e){
       throw new AuthenticationException();
     }
+  }
+  
+  /* Refresh Token으로 AccessToken, RefreshToken 발급 */
+  public AccessRefreshTokenDto refresh(String refreshToken){
+    Long userId = getUserId(refreshToken);
+    String savedRefreshToken = redisTemplate.opsForValue().get(String.valueOf(userId));
+    
+    if(savedRefreshToken == null){
+      //저장되어 있던 적이 없으면
+      throw new BadRequestException("잘못 된 토큰입니다");
+    }
+    
+    if(!refreshToken.equals(savedRefreshToken)){
+      throw new BadRequestException("변조 된 토큰입니다");
+    }
+    
+    User user = userRepository.findById(userId).orElseThrow(BadRequestException::new);
+    
+    String newAccessToken = createAccessToken(userId, user.getRole());
+    String newRefreshToken = createRefreshToken(userId);
+    
+    AccessRefreshTokenDto result = new AccessRefreshTokenDto();
+      result.setAccessToken(newAccessToken);
+      result.setRefreshToken(newRefreshToken);
+
+    return result;
   }
 }
