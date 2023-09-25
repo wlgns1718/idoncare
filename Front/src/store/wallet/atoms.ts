@@ -1,9 +1,8 @@
 import { atom } from "recoil";
-import KBICON from "../assets/imgs/bank/PNG_KB.png";
-import { BankDataType } from "../types/WalletTypes";
+import KBICON from "../../assets/imgs/bank/PNG_KB.png";
+import { AccountDataType, BankDataType } from "../../types/WalletTypes";
 
-
-interface BankDataInterface { 
+interface BankDataInterface {
   bankList: BankDataType[];
 }
 
@@ -56,5 +55,14 @@ export const sendAccountBank = atom<BankDataType>({
     icon: KBICON,
     code: 1,
     name: "삼성",
+  },
+});
+
+export const rechargeAccount = atom<AccountDataType>({
+  key: "rechargeAccount",
+  default: {
+    bankCode: 22,
+    bankName: "NH농협",
+    accountNumber: 132992140129,
   },
 });

@@ -1,6 +1,7 @@
 import Header from "../components/common/Header";
 import RechargeInput from "../components/wallet/RechargeInput";
 import RechargeAccountList from "../components/wallet/RechargeAccountList";
+import FullBtn from "../components/common/FullBtn";
 
 function WalletRecharge() {
   return (
@@ -10,6 +11,7 @@ function WalletRecharge() {
         <RechargeInput />
         <RechargeAccountList />
       </div>
+      <FullBtn buttonText="충전" buttonLink="password" />
     </div>
   );
 }

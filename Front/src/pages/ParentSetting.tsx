@@ -13,7 +13,7 @@ const ParentSetting: React.FC = () => {
           <div className="text-l text-center">내 부모님</div>
           <div className="m-5 flex">
             <Parent is_connect={true} pname="엄마" />
-            <Parent is_connect={false} pname="아빠" />
+            <Parent is_connect={false} pname="닉네임" />
           </div>
         </div>
       </div>
