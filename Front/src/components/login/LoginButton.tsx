@@ -1,47 +1,71 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import kakaoLogo from "../../assets/imgs/login/kakaoLogo.png";
-import axios from "axios";
-import { baseUrl } from "../../apis/url/baseUrl";
 import { useMutation } from "react-query";
+import Loading from "../common/Loading";
+import { kakaoLoginUrl } from "../../apis/url/kakaoLoginUrl";
+import { PostLoginAxios } from "../../apis/axios/PostLoginAxios";
 const LoginButton = () => {
-  const REST_API_KEY = import.meta.env.VITE_REST_API_KEY;
-  const REDIRECT_URI = "http://localhost:5173/login"; //Redirect URIz
-  // oauth 요청 URL
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code&prompt=select_account`;
+  type AccessToken = string | null;
+  type Email = string;
+  type Joined = boolean;
+  type Msg = string;
+  type Nickname = string;
+  type RefreshToken = string | null;
+  type UserId = number;
+  type Data = null | PostLoginData;
+  type Error = string | null;
+  type Code = number;
+
+  interface PostLoginData {
+    accessToken: AccessToken;
+    email: Email;
+    joined: Joined;
+    msg: Msg;
+    nickname: Nickname;
+    refreshToken: RefreshToken;
+    userId: UserId;
+  }
+
+  interface PostLogin {
+    data: Data;
+    error: Error;
+    code: Code;
+  }
 
   const handleLogin = () => {
-    window.location.href = kakaoURL;
+    window.location.href = kakaoLoginUrl;
   };
 
   useEffect(() => {
+    if (window.location.search === "") {
+      return;
+    }
+    setRedirect(true);
     mutate();
   }, []);
 
-  const checkUserInfo = async () => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-    const path = "api/user/login";
-    const payload = { code };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { mutate } = useMutation<PostLogin>(PostLoginAxios, {
+    onSuccess: (res) => {
+      if (res.code === 200) {
+        if (res.data?.joined === false) {
+          window.location.href = "/signup";
+        } else {
+          window.location.href = "/";
+        }
+      } else {
+        alert("Error: " + res.code + " " + res.error);
+      }
 
-    if (code) {
-      axios
-        .post(baseUrl + path, payload)
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const { mutate, isLoading } = useMutation(checkUserInfo, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (err) => {
-      console.log(err);
+      console.log(res);
     },
   });
+
+  const [redirect, setRedirect] = useState(false);
+
   return (
     <>
-      {!isLoading && (
+      {!redirect ? (
         <button
           className="w-full bg-[#fae100] rounded-[10px] h-[60px] flex justify-center items-center mt-[100px]"
           onClick={handleLogin}
@@ -49,6 +73,10 @@ const LoginButton = () => {
           <img className="w-[20px] mx-[2px] mt-[4px]" src={kakaoLogo} />
           <p className="text-m mx-[2px]">카카오 로그인</p>
         </button>
+      ) : (
+        <div className="flex items-center justify-center font-strong">
+          <Loading />
+        </div>
       )}
     </>
   );

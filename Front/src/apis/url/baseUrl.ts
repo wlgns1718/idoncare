@@ -1,1 +1,2 @@
-export const baseUrl = "http://192.168.100.173:8080/";
+export const baseUrl = "http://j9d209.p.ssafy.io:8081/";
+export const localUrl = `${window.location.origin}`;

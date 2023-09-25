@@ -45,18 +45,9 @@ function App() {
               <Route path="wallet" element={<Wallet />} />
               <Route path="wallet/search" element={<WalletSearch />} />
               <Route path="wallet/recharge" element={<WalletRecharge />} />
-              <Route
-                path="wallet/recharge/regist"
-                element={<RegistAccount />}
-              />
-              <Route
-                path="wallet/recharge/regist/agreement"
-                element={<RegistAgreement />}
-              />
-              <Route
-                path="wallet/recharge/regist/agreement/ARS"
-                element={<ARSPage />}
-              />
+              <Route path="wallet/recharge/regist" element={<RegistAccount />} />
+              <Route path="wallet/recharge/regist/agreement" element={<RegistAgreement />} />
+              <Route path="wallet/recharge/regist/agreement/ARS" element={<ARSPage />} />
               <Route path="report" element={<Report />} />
               <Route path="purchase" element={<Purchase />} />
               <Route path="purchase/qrcode" element={<QRcodePurchase />} />
@@ -69,23 +60,11 @@ function App() {
               <Route path="sendPocketMoney" element={<SendPocketMoney />} />
               <Route path="sendRegularMoney" element={<SendRegularMoney />} />
               <Route path="kidDemandMoney" element={<KidDemandMoney />} />
-              <Route
-                path="kidDemandMoneyList"
-                element={<KidDemandMoneyList />}
-              />
-              <Route
-                path="kidDemanedMoneyList"
-                element={<KidDemanedMoneyList />}
-              />
+              <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
               <Route path="kidRegister" element={<KidRegist />} />
-              <Route
-                path="kidDemandMoneyList"
-                element={<KidDemandMoneyList />}
-              />
-              <Route
-                path="kidDemanedMoneyList"
-                element={<KidDemanedMoneyList />}
-              />
+              <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
               <Route path="signup" element={<Signup />} />
               <Route path="newAccount" element={<NewAccount />} />
               <Route path="parentSetting" element={<ParentSetting />} />
