@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // add useEffect
 import Number from '../pocketmoney/Number';
 
-const KidPhoneForm: React.FC = () => {
+type KidPhoneFormProps = {
+  onPhoneNumberChange: (phoneNumber: string) => void;
+};
+
+const KidPhoneForm: React.FC<KidPhoneFormProps> = ({ onPhoneNumberChange }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleNumberClick = (num: number | string) => {
     if (typeof num === 'number') {
-      setInputValue((prevState) => {
-        const numericValue = prevState.replace(/[^0-9]/g, '');
-
-        if (numericValue.length < 11) {
-          return numericValue + num.toString();
-        }
-
-        return prevState;
-      });
+      let numericValue = inputValue.replace(/[^0-9]/g, '');
+      if (numericValue.length < 11) {
+        numericValue += num.toString();
+        setInputValue(numericValue);
+      }
     }
   };
 
@@ -39,6 +39,10 @@ const KidPhoneForm: React.FC = () => {
     return numericValue;
   };
 
+  useEffect(() => {
+    onPhoneNumberChange(inputValue.replace(/[^0-9]/g,''));
+  }, [inputValue, onPhoneNumberChange]);
+
   return (
     <div>
       <div className="text-l text-center text-main font-strong mb-24">
@@ -54,6 +58,8 @@ const KidPhoneForm: React.FC = () => {
       />
     </div>
   );
+
+  
 };
 
 export default KidPhoneForm;

@@ -12,8 +12,8 @@ const ParentSetting: React.FC = () => {
         <div className="mt-56">
           <div className="text-l text-center">내 부모님</div>
           <div className="m-5 flex">
-            <Parent is_connect={true} pname="엄마" />
-            <Parent is_connect={false} pname="닉네임" />
+            <Parent is_connect={true} isSelected={true} pname="엄마" />
+            <Parent is_connect={false} isSelected={true} pname="닉네임" />
           </div>
         </div>
       </div>
