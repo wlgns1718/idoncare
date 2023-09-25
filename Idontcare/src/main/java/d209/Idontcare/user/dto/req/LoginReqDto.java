@@ -8,6 +8,6 @@ import lombok.ToString;
 public class LoginReqDto {
   @Schema(description = "카카오 로그인으로 얻은 코드", example = "code")
   private String code;
-//  @Schema(description = "리다이렉트 할 URL", example = "http://127.0.0.1:5173")
-//  private String redirectUrl;
+  @Schema(description = "리다이렉트 할 URL", example = "http://127.0.0.1:5173/login")
+  private String redirectUrl;
 }
