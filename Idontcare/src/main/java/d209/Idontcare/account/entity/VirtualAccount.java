@@ -11,13 +11,12 @@ import javax.persistence.*;
 @Entity
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class VirtualAccount {
 
     @Id @Column(name = "VIRTUAL_ACCOUNT_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long VirtualAccountId;
+    Long virtualAccountId;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -28,4 +27,10 @@ public class VirtualAccount {
 
     @Column(name = "PASSWORD")
     String password;
+    
+    public VirtualAccount(User user, Long balance, String password){
+        this.user = user;
+        this.balance = balance;
+        this.password = password;
+    }
 }

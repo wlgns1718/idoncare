@@ -13,4 +13,6 @@ public interface OauthService {
     
     GetUserInfoDto getUserInfo(String accessToken)
         throws BadRequestException;
+    
+    GetUserInfoDto getUserInfoTest(Long kakaoId);
 }

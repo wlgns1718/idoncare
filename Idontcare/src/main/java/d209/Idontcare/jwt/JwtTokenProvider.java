@@ -81,7 +81,6 @@ public class JwtTokenProvider {
 
     Role role =  Role.valueOf((String)claims.get("role"));
     
-    
     AuthInfo authInfo = new AuthInfo();
     authInfo.setUserId((Long)claims.get("userId"));
     authInfo.setRole(role);

@@ -1,5 +1,6 @@
 package d209.Idontcare.account.entity;
 
 public enum Type {
-    DEPOSITORY, WITHDRAWAL
+    DEPOSITORY, //입금
+    WITHDRAWAL  //인출
 }

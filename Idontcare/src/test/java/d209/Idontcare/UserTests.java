@@ -20,10 +20,5 @@ public class UserTests {
   @Test
   @DisplayName("카카오 로그인 해보기")
   void loginTest(){
-    String CODE = "-2L5v5qO8LZq_GxGbxZuoR85bxP8TVUB_qaS_bHpk_iFVP46_dUtqgHkG2Xw6elFZ487DQorDKYAAAGKrJ4dKQ";
-    
-    String accessToken = oauthService.getOauthAccessToken(CODE);
-    GetUserInfoDto userInfo = oauthService.getUserInfo(accessToken);
-    System.out.println(userInfo);
   }
 }
