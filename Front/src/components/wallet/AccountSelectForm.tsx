@@ -1,17 +1,22 @@
-// import { useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { BankDataType } from "../../types/WalletTypes";
-import { sendAccountBank } from "../../store/wallet/atoms";
+import { resistRechargeAccountInput, sendAccountBank } from "../../store/wallet/atoms";
 import { BottomSheet } from "../common/BottomSheet";
 import BankGridList from "./BankGridList";
 import { BottomSheetOpen } from "../../store/common/atoms";
 
 function AccountSelectForm() {
-  const selectedBank = useRecoilValue<BankDataType>(sendAccountBank);
-
+  const selectedBank = useRecoilValue<BankDataType|null>(sendAccountBank);
+  const [accountNumberInput, setAccountNumberInput] = useRecoilState(
+    resistRechargeAccountInput
+  );
   const setBottomSheetOpen = useSetRecoilState(BottomSheetOpen);
 
   const openSheet = () => setBottomSheetOpen(true);
+
+  const handleAccountNumberInput = (event:React.ChangeEvent<HTMLInputElement>) => {
+    setAccountNumberInput(Number(event.target.value));
+  };
 
   return (
     <div>
@@ -30,6 +35,8 @@ function AccountSelectForm() {
         type="number"
         name="account"
         id="account"
+        value={accountNumberInput}
+        onChange={handleAccountNumberInput}
         autoComplete="account"
         className="w-full flex-1 border-0 my-6 bg-gray p-3 rounded-lg text-m outline-0 outline outline-main outline-offset-0 focus:outline-2 placeholder:text-gray-400 focus:ring text-main"
         placeholder="계좌 번호를 입력해주세요"
