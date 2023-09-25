@@ -26,8 +26,6 @@ const SignupForm = () => {
       setSignupUserInfo((prev) => ({ ...prev, phone: value }));
     } else if (setType === 8) {
       setSignupUserInfo((prev) => ({ ...prev, code: value }));
-    } else if (setType === 9) {
-      setSignupUserInfo((prev) => ({ ...prev, hasAccount: value }));
     }
   };
 
