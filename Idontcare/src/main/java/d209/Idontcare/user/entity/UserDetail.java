@@ -46,4 +46,11 @@ public class UserDetail extends BaseEntity {
                 .user(user)
                 .build();
     }
+    
+    public UserDetail(Long userDetailId, User user, String birth, String email){
+        this.userDetailId = userDetailId;
+        this.user = user;
+        this.birth = birth;
+        this.email = email;
+    }
 }

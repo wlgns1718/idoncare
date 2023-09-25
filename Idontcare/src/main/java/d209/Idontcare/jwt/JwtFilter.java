@@ -27,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
   {
     acceptPath = new HashSet<>();
     acceptPath.add("/api/user/login");
+    acceptPath.add("/api/user/login/test");
     acceptPath.add("/api/user/regist");
   }
 
@@ -55,7 +56,6 @@ public class JwtFilter extends OncePerRequestFilter {
         AuthInfo authInfo = jwtTokenProvider.getAuthInfo(accessToken);
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
-        System.out.println(authInfo);
       }
     } catch(CommonException e){
       ResponseDto<Void> result = ResponseDto.fail(e);

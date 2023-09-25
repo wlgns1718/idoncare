@@ -41,7 +41,6 @@ public class ResponseDto<T> {
     ResponseDto<Void> result = new ResponseDto<>();
     result.code = 500;
     result.error = "서버 내부 에러";
-    System.out.println("fail1");
     return result;
   }
 

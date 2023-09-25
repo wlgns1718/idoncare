@@ -70,7 +70,18 @@ public class UserController {
     public ResponseDto myInfo(HttpServletRequest request){
         Long userId = (Long)request.getAttribute("userId");
         User user = userService.findByUserId(userId).get();
-        
         return ResponseDto.success(new UserInfoResDto(user));
+    }
+    
+    @PostMapping("/login/{kakaoId}")
+    @Operation(summary = "테스트 로그인", description = "코드를 통해 로그인, [1 ~ 9]: 부모, [11 ~ 19] : 자식")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(schema = @Schema(implementation = GetUserInfoDto.class)))
+    })
+    public ResponseDto loginTest(@PathVariable("kakaoId") Long kakaoId){
+        GetUserInfoDto userInfo = oauthService.getUserInfoTest(kakaoId);
+        
+        return ResponseDto.success(userInfo);
     }
 }

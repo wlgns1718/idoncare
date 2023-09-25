@@ -31,9 +31,6 @@ public class OauthServiceImpl implements OauthService{
     
     private final JwtTokenProvider jwtTokenProvider;
     
-    private final static long HOUR = 1000 * 60 * 60;
-    private final static long DAY = 1000 * 60 * 60 * 24;
-
     //properties분리해서 숨겨줄 값들
 //    private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
     private static final String REDIRECT_URL = "http://localhost:5173/login";
@@ -65,7 +62,6 @@ public class OauthServiceImpl implements OauthService{
                             .body(requestBody)
                             .execute();
         } catch(Exception e) {
-            System.out.println(e.getMessage());
             throw new BadRequestException("코드에 대한 요청이 처리되지 못 하였습니다");
         }
         
@@ -129,7 +125,6 @@ public class OauthServiceImpl implements OauthService{
                 //회원가입까지 되어 있으면
                 // -> 토큰 발급
                 jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
-                System.out.printf("User : %s\n", jwtTokenProvider.getAuthInfo(jwtAccessToken));
                 jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(), user.getRole());
                 isJoined = true;
             }
@@ -148,6 +143,26 @@ public class OauthServiceImpl implements OauthService{
             .build();
         
         
+        return resultDto;
+    }
+    
+    @Override
+    public GetUserInfoDto getUserInfoTest(Long kakaoId) {
+        User user = userRepository.findByKakaoId(kakaoId).get();
+        
+        String jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
+        String jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(), user.getRole());
+        
+        GetUserInfoDto resultDto = GetUserInfoDto.builder()
+            .userId(user.getUserId())
+            .msg("등록된 회원입니다.")
+            .joined(true)
+            .nickname(user.getNickName())
+            .email("")
+            .accessToken(jwtAccessToken)
+            .refreshToken(jwtRefreshToken)
+            .build();
+            
         return resultDto;
     }
 }
