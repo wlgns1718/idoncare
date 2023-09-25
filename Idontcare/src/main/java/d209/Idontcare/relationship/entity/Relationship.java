@@ -18,4 +18,9 @@ public class Relationship extends BaseEntity {
   
   @ManyToOne(fetch = FetchType.LAZY)
   private User child;
+  
+  public Relationship(User parent, User child){
+    this.parent = parent;
+    this.child = child;
+  }
 }
