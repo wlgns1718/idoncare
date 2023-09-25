@@ -48,7 +48,7 @@ public class OauthServiceImpl implements OauthService{
         Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("grant_type", "authorization_code");
             requestBody.put("client_id", REST_API_KEY);
-            requestBody.put("redirect_uri", REDIRECT_URL);
+            requestBody.put("redirect_uri", req.getRedirectUrl());
             requestBody.put("code", req.getCode());
             requestBody.put("client_secret", CLIENT_SECRET);
         
