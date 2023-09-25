@@ -1,9 +1,6 @@
 package d209.Idontcare.common.service;
 
-import d209.Idontcare.account.entity.RealAccount;
-import d209.Idontcare.account.entity.TransactionHistory;
-import d209.Idontcare.account.entity.Type;
-import d209.Idontcare.account.entity.VirtualAccount;
+import d209.Idontcare.account.entity.*;
 import d209.Idontcare.account.repository.RealAccountRepository;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;
 import d209.Idontcare.account.repository.VirtualAccountRepository;
@@ -15,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +51,10 @@ public class InitService {
     if(transactionHistoryRepository.count() > 0 ) return;
     
     User user1 = userRepository.getReferenceById(1L);
-    transactionHistoryRepository.save(new TransactionHistory(user1, "스타벅스 결제1", 10_000L, Type.DEPOSITORY, 100_000L));
-    transactionHistoryRepository.save(new TransactionHistory(user1, "스타벅스 결제2", 10_000L, Type.WITHDRAWAL, 100_000L));
+    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now(), "스타벅스 결제1", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
+    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now(), "스타벅스 결제2", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
+    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now().minusDays(8), "스타벅스 결제3", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
+    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now().minusDays(8), "스타벅스 결제4", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
   }
   
   private void realAccountDataInit(){

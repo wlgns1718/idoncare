@@ -22,6 +22,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +59,6 @@ public class VirtualAccount {
     }
 
 
-
     //월별 가상계좌 거래내역 조회
     @GetMapping("/{Year}/{Month}")
     @Operation(summary = "월별 가상 계좌 거래내역 조회", description = "년월별 가상 계좌 거래내역 조회")
@@ -66,12 +66,11 @@ public class VirtualAccount {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
-//    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> accountYearMonth(@PathVariable("Year") String year, @PathVariable("Month") String month, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
-//        Long userId = (Long) request.getAttribute("userId");
+        Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
-        Long userId = 1L;
         try{
             List<TransactionHistoryRes> transactionHistoryRes = transactionHistoryService.userTransactionHistoryByDate(userId, Integer.parseInt(year), Integer.parseInt(month));
             return ResponseDto.success(transactionHistoryRes);
@@ -80,6 +79,7 @@ public class VirtualAccount {
         }
     }
 
+
     //거래내역 키워드 검색
     @GetMapping("/content/{content}")
     @Operation(summary = "거래 내역 키워드 검색", description = "거래 내역 키워드로 검색")
@@ -87,12 +87,10 @@ public class VirtualAccount {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
-//    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> accountContent(@PathVariable("content") String content, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
-//        Long userId = (Long) request.getAttribute("userId");
-//        Map<String, String> map = new HashMap<>();
-        Long userId = 1L;
+        Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try{
         List<TransactionHistoryRes> transactionHistoryRes = transactionHistoryService.userTransactionHistoryByContent(userId, content);
@@ -110,12 +108,10 @@ public class VirtualAccount {
             @ApiResponse(responseCode = "200", description = "가상 게좌에서 가상 계좌로 송금 완료"),
             @ApiResponse(responseCode = "402", description = "가상 계좌의 잔액 부족")
     })
-//    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> virtualToVirtual(@RequestBody VirtualToVirtualReq payment, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
-//        Long userId = (Long) request.getAttribute("userId");
-//        Map<String, String> map = new HashMap<>();
-        Long userId = 1L;
+        Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try{
             Long virtualAccount = virtualAccountService.userAccount(userId);
@@ -125,4 +121,34 @@ public class VirtualAccount {
             return ResponseDto.fail(e);
         }
     }
+
+
+//    //자녀의 활동 보고서(월)
+//    //현재 월의 최근 5개월
+//    @GetMapping("/active")
+//    @Operation(summary = "실계좌 조회", description = "실계좌 조희")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
+//    })
+////    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+//    public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {
+//        //토큰에 대한 사용자 userId
+//        Long userId = (Long) request.getAttribute("userId");
+//        Map<String, String> map = new HashMap<>();
+//        int year = LocalDate.now().getYear();
+//        int month = LocalDate.now().getMonth().getValue();
+//        int day = LocalDate.now().getDayOfMonth();
+//        System.out.println(year);
+//        System.out.println(month);
+//        System.out.println(day);
+//        Map<String, String> map = new HashMap<>();
+//        try{
+//            Long virtualAccount = virtualAccountService.userAccount(userId);
+////            virtualAccountService.virtualPayment(payment, virtualAccount);
+//            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
+//        }catch (VirtualAccountException e){
+//            return ResponseDto.fail(e);
+//        }
+//    }
 }

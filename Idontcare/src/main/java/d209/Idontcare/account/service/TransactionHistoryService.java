@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,8 +55,10 @@ public class TransactionHistoryService {
         TransactionHistory tran = TransactionHistory.builder()
                                     .user(user)
                                     .content(trans.getContent())
+                                    .localDateTime(LocalDateTime.now())
                                     .amount(trans.getAmount())
                                     .type(trans.getType())
+                                    .cashFlow(trans.getCashFlow())
                                     .balance(trans.getBalance())
                                     .build();
         transactionHistoryRepository.save(tran);

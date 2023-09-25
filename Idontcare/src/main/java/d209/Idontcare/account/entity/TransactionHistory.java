@@ -36,14 +36,19 @@ public class TransactionHistory {
     @Column(name = "TYPE") @Enumerated(EnumType.STRING)
     Type type;
 
+    @Column(name = "CASHFLOW") @Enumerated(EnumType.STRING)
+    CashFlow cashFlow;
+
     @Column(name = "BALANCE")
     Long balance;
-    
-    public TransactionHistory(User user, String content, Long amount, Type type, Long balance){
+
+    public TransactionHistory(User user, LocalDateTime localDateTime, String content, Long amount, Type type, CashFlow cashFlow, Long balance){
         this.user = user;
+        this.localDateTime = localDateTime;
         this.content = content;
         this.amount = amount;
         this.type = type;
+        this.cashFlow = cashFlow;
         this.balance = balance;
     }
 }
