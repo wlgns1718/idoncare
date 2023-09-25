@@ -7,6 +7,8 @@ import d209.Idontcare.account.repository.VirtualAccountRepository;
 import d209.Idontcare.account.service.EncryptService;
 import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.entity.User;
+import d209.Idontcare.user.entity.UserDetail;
+import d209.Idontcare.user.repository.UserDetailRepository;
 import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 public class InitService {
   
   private final UserRepository userRepository;
+  private final UserDetailRepository userDetailRepository;
   private final VirtualAccountRepository virtualAccountRepository;
   private final TransactionHistoryRepository transactionHistoryRepository;
   private final RealAccountRepository realAccountRepository;
@@ -35,34 +38,58 @@ public class InitService {
   }
   
   private void userDataInit(){
-    if(userRepository.existsById(1L)) return;
-    userRepository.save(new User(1L, 1111L, "01011111111", "김출금", Role.PARENT, "김출금닉네임"));
-    userRepository.save(new User(2L, 2222L, "01022222222", "김입금", Role.CHILD, "김입금닉네임"));
+    if(userRepository.count() > 0) return;
+    for(long i = 1L; i <= 9; i++){
+      User parent = new User(  i, i, "010" + "1234" + "000" + i, "김부모" + i, Role.PARENT, "김부모" + i + "_닉네임") ;
+      parent.setUUID();
+      User savedParent = userRepository.save(parent);
+      UserDetail parentDetail = new UserDetail(savedParent.getUserId(), savedParent, "199101" + i, "mail" + i + "@naver.com");
+      userDetailRepository.save(parentDetail);
+      
+      User child = new User(10L + i, 10L + i, "010" + "4321" + "001" + i, "김자식" + i, Role.CHILD, "김자식" + i + "_닉네임");
+      child.setUUID();
+      User savedChild = userRepository.save(child);
+      UserDetail childDetail = new UserDetail(savedChild.getUserId(), savedChild, "200101" + i, "mail" + i + "@gmail.com");
+      userDetailRepository.save(childDetail);
+    }
   }
   
   private void virtualAccountDataInit(){
-    if(virtualAccountRepository.existsById(111111111111L)) return;
+    if(virtualAccountRepository.count() > 0) return;
     String pw = encryptService.encrypt("123456");
-    virtualAccountRepository.save(new VirtualAccount(111111111111L, userRepository.getReferenceById(1L), 1_000_000L, pw));
-    virtualAccountRepository.save(new VirtualAccount(222222222222L, userRepository.getReferenceById(2L), 1000L, pw));
+    
+    for(long i = 1L; i <= 9; i++){
+      VirtualAccount parent = new VirtualAccount(userRepository.findByKakaoId(i).get(), 1_000_000L * i, pw);
+      virtualAccountRepository.save(parent);
+      
+      VirtualAccount child = new VirtualAccount(userRepository.findByKakaoId(10L + i).get(), 1_000_000L * i, pw);
+      virtualAccountRepository.save(child);
+    }
   }
   
   private void transactionHistoryDataInit(){
-    if(transactionHistoryRepository.count() > 0 ) return;
+    if(transactionHistoryRepository.count() > 0) return;
     
-    User user1 = userRepository.getReferenceById(1L);
-    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now(), "스타벅스 결제1", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
-    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now(), "스타벅스 결제2", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
-    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now().minusDays(8), "스타벅스 결제3", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
-    transactionHistoryRepository.save(new TransactionHistory(user1, LocalDateTime.now().minusDays(8), "스타벅스 결제4", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L));
+    for(long i = 1L; i <= 5; i++){
+      TransactionHistory depository = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now(), "스타벅스 결제1", 10_000L, Type.PAYMENT,CashFlow.WITHDRAWAL, 100_000L);
+      TransactionHistory withdrawal = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now(), "스타벅스 결제2", 10_000L, Type.PAYMENT,CashFlow.DEPOSIT, 100_000L);
+      transactionHistoryRepository.save(depository);
+      transactionHistoryRepository.save(withdrawal);
+      
+      depository = new TransactionHistory(userRepository.findByKakaoId(10L + i).get(), LocalDateTime.now().minusDays(8), "스타벅스 결제1", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L);
+      withdrawal = new TransactionHistory(userRepository.findByKakaoId(10L + i).get(), LocalDateTime.now().minusDays(8), "스타벅스 결제2", 10_000L, Type.TRANSFER, CashFlow.WITHDRAWAL, 100_000L);
+      transactionHistoryRepository.save(depository);
+      transactionHistoryRepository.save(withdrawal);
+    }
   }
   
   private void realAccountDataInit(){
     if(realAccountRepository.count() > 0) return;
+    String pw = encryptService.encrypt("123456");
     
-    User user1 = userRepository.getReferenceById(1L);
-    
-    realAccountRepository.save(new RealAccount(encryptService.encrypt("123456"), user1, encryptService.encrypt("123456"),
-        "신한은행", "41"));
+    for(long i = 1L; i <= 5; i++){
+      RealAccount account = new RealAccount(encryptService.encrypt(String.valueOf(i)), userRepository.findByKakaoId(i).get(), pw, "신한은행", "41");
+      realAccountRepository.save(account);
+    }
   }
 }

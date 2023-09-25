@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.InternalServerException;
-import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,7 +26,9 @@ public class JwtFilter extends OncePerRequestFilter {
   {
     acceptPath = new HashSet<>();
     acceptPath.add("/api/user/login");
+    acceptPath.add("/api/user/login/test");
     acceptPath.add("/api/user/regist");
+    acceptPath.add("/api/user/refresh");
   }
 
   public JwtFilter(JwtTokenProvider jwtTokenProvider, UserRepository userRepository){
@@ -55,7 +56,6 @@ public class JwtFilter extends OncePerRequestFilter {
         AuthInfo authInfo = jwtTokenProvider.getAuthInfo(accessToken);
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
-        System.out.println(authInfo);
       }
     } catch(CommonException e){
       ResponseDto<Void> result = ResponseDto.fail(e);

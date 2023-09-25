@@ -37,6 +37,12 @@ jwt.secret={시크릿 키: String}
 jwt.access-expiration-time=43200000
 jwt.refresh-expiration-time=604800000
 
+
+# Kakao Login Setting #
+kakao.rest-api-key={카카오 Rest Api Key : String}
+kakao.client-secret={카카오 로그인 Secret key : String}
+
+
 # externnal
 openbank.url=https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app
 springsecurity.secret.key={시크릿 키 : String}
