@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import SendPocketMoneyForm from "../components/pocketmoney/PocketSendForm";
 import SendPocketMoneyMsgForm from "../components/pocketmoney/PocketSendMsgForm";
 import MoneyDone from "../components/pocketmoney/Done";
-// import KidSelectForm from "../components/common/KidSelectForm";
 import PasswordInputForm from "../components/common/Password";
+// import KidSelectForm from "../components/common/KidSelectForm";
 import ParentSelectForm from "../components/common/ParentSelectForm";
 
 const PocketMoneySend: React.FC = () => {
@@ -17,6 +17,7 @@ const PocketMoneySend: React.FC = () => {
   switch (step) {
     case 1:
       form = <ParentSelectForm onNext={nextStep} />;
+      // form = <KidSelectForm onNext={nextStep} />;
       break;
     case 2:
       form = <SendPocketMoneyForm onNext={nextStep} />;
