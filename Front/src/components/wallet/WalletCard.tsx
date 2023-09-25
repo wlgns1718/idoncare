@@ -1,5 +1,11 @@
 import Icon, { ICON_NAME } from "../common/Icon";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useEffect } from "react";
+import axios from "axios";
+import { userToken } from "../../store/common/atoms";
+import useComma from './../../hooks/useComma';
+import { userBalanace } from "../../store/wallet/atoms";
 
 type CardButtonType = {
   text: string;
@@ -26,10 +32,10 @@ const cardButton: CardButtonType[] = [
 ];
 
 interface CardButtonProps {
-  item : CardButtonType;
+  item: CardButtonType;
 }
 
-const CardButton: React.FC<CardButtonProps> = ({item}) => {
+const CardButton: React.FC<CardButtonProps> = ({ item }) => {
   const navigate = useNavigate();
 
   return (
@@ -44,6 +50,23 @@ const CardButton: React.FC<CardButtonProps> = ({item}) => {
 
 function WalletCard() {
   const navigate = useNavigate();
+
+  const Token = useRecoilValue(userToken);
+
+  const [balance, setBalance] = useRecoilState(userBalanace);
+
+  useEffect(() => {
+    axios;
+    axios
+      .get(`http://j9d209.p.ssafy.io:8081/api/virtual/balance`, {
+        headers: { Authorization: Token as string },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setBalance(res.data.data.balance);
+      });
+  }, []);
+
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
       <div className="p-10 text-white h-[140px] [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
@@ -54,7 +77,7 @@ function WalletCard() {
           }}
         >
           <div>잔액</div>
-          <div className="text-m">99,000 원</div>
+          <div className="text-m">{useComma(balance)} 원</div>
         </div>
         <div className="flex justify-between px-6 py-5 text-center">
           {cardButton.map((item, index) => {

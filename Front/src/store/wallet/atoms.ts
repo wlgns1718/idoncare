@@ -49,6 +49,11 @@ export const bankData = atom<BankDataInterface>({
   },
 });
 
+export const userBalanace = atom<number>({
+  key: "userBalanace",
+  default: 0,
+});
+
 export const sendAccountBank = atom<BankDataType>({
   key: "sendAccountBank",
   default: {

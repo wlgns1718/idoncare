@@ -33,10 +33,10 @@ function TradeHistory() {
     <div>
       <div className="flex py-6 justify-between pr-5">
         <div className="flex gap-5 overflow-x-auto no-scrollbar">
-          {categorys.map((category) => (
+          {categorys.map((category, index) => (
             <div className="flex-none">
               <Chip
-                key={category.type}
+                key={index}
                 isSelected={currentCategory === category.type}
                 category={category}
                 handler={handleCategory}
@@ -70,7 +70,6 @@ function TradeHistory() {
       </div>
       <div>
         {/* 날짜별 */}
-        <DailyTradeList />
         <DailyTradeList />
       </div>
     </div>

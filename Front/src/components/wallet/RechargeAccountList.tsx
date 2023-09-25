@@ -40,8 +40,9 @@ export const RechargeAccountComponent = () => {
 function RechargeAccountList() {
   // const navigate = useNavigate();
 
-  const isRechargeAccount =
-    useRecoilValue(isExistRechargeAccount);
+  //http://j9d209.p.ssafy.io:8081/api/account/my
+
+  const isRechargeAccount = useRecoilValue(isExistRechargeAccount);
   return (
     <div>
       <div className="flex justify-between">
