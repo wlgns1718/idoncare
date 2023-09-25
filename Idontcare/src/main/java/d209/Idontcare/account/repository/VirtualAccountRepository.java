@@ -14,7 +14,7 @@ public interface VirtualAccountRepository extends JpaRepository<VirtualAccount, 
     Long findBalance(@Param("userId") Long userId);
 
     //유저 정보로 가상 계좌 찾기
-    @Query("SELECT a.VirtualAccountId FROM VirtualAccount a WHERE a.user.userId = :userId")
+    @Query("SELECT a.virtualAccountId FROM VirtualAccount a WHERE a.user.userId = :userId")
     Long findUser(@Param("userId") Long userId);
 
     //유저 정보로 가상 계좌 찾기
