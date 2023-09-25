@@ -12,6 +12,7 @@ import d209.Idontcare.user.dto.req.LoginReqDto;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,11 @@ public class OauthServiceImpl implements OauthService{
     
     private final JwtTokenProvider jwtTokenProvider;
     
-    //properties분리해서 숨겨줄 값들
-//    private static final String REST_API_KEY = "57207a98af7edacf30bb14f2b4effbc4";
-    private static final String REDIRECT_URL = "http://localhost:5173/login";
-//    private static final String CLIENT_SECRET = "Srvk6ZfqwnWw6bDf2tZVA4I9VP731p3D";
+    @Value("${kakao.rest-api-key}")
+    private String REST_API_KEY;
     
-    private static final String REST_API_KEY = "ac3bdd0a13805da6552ba025e4967855";
-    private static final String CLIENT_SECRET = "tMxbImuvzmdNytv1Cbz1UT0qIOC8pTV7";
+    @Value("${kakao.client-secret}")
+    private String CLIENT_SECRET;
     
     
     @SuppressWarnings("unchecked")
