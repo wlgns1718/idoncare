@@ -2,10 +2,13 @@ package d209.Idontcare.account.dto.req;
 
 import d209.Idontcare.account.entity.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class VirtualToRealReq {
 

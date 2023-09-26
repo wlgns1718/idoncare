@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -63,4 +64,12 @@ public class TransactionHistoryService {
                                     .build();
         transactionHistoryRepository.save(tran);
     }
+
+//    //최근 5개월의 월별 보고서
+//    public void reportPerMonth(Long userId){
+//        transactionHistoryRepository.ThisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+//                .orElseThrow(
+//                        () -> new TransactionHistoryException(204, "이번 달 지출 내역이 없습니다.")
+//                )
+//    }
 }

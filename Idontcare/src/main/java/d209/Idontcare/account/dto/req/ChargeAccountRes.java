@@ -3,15 +3,11 @@ package d209.Idontcare.account.dto.req;
 import d209.Idontcare.account.entity.RealAccount;
 import d209.Idontcare.account.entity.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Data
+@Data @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class ChargeAccountRes {
 
     @Schema(description = "핀번호", example = "123123123123")

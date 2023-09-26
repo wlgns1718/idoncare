@@ -93,9 +93,6 @@ public class AccountController {
 //    public ResponseEntity<?> pinNumberDelete(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest httpServletRequest) {
 //        try {
 //            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
-//
-//
-//
 //            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
 //        } catch (MobileException e) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));

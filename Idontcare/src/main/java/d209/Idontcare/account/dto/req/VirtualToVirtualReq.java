@@ -7,10 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
+@Data @Builder
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 public class VirtualToVirtualReq {
 
     @Schema(description = "받을 유저의 ID")

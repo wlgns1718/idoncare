@@ -21,13 +21,13 @@
 --
 --
 --INSERT INTO bank_account(account_number, bank_id, money, name, birth)
---VALUES("000000000000", "41", 100000000, "아이돈케어", "202309011");
+--VALUES("000000000000", "51", 100000000, "아이돈케어", "202309011");
 --
 --INSERT INTO bank_account(account_number, bank_id, money, name, birth)
---VALUES("111111111111", "41", 1000000, "김출금", "19900101");
+--VALUES("111111111111", "51", 1000000, "김출금", "200001011");
 --
 --INSERT INTO bank_account(account_number, bank_id, money, name, birth)
---VALUES("999999999999", "41", 1000000, "김입금", "200001011");
+--VALUES("999999999999", "51", 1000000, "김입금", "200001011");
 --
 --INSERT INTO user(name, phone_number, role)
 --VALUES("아이돈케어", "01012345678", "CORPORATION");
@@ -42,11 +42,10 @@
 --VALUES("1234512345", "아이돈케어", "idontcare", "1234", "12u4hi1b245hj124", "123ijn4u123h5bkjn", "http://127.0.0.1/test");
 --
 --INSERT INTO account(fintech_use_num, bank_id, user_id, account_number, fin_tech_service_id)
---values("1234512345", "41", "1", "000000000000", "1234512345");
+--values("00000000001", "51", "1", "000000000000", "1234512345");
 --
 --INSERT INTO account(fintech_use_num, bank_id, user_id, account_number, fin_tech_service_id)
---values("123123123123", "41", "1", "111111111111", "1234512345");
---
+--values("00000000002", "51", "2", "111111111111", "1234512345");
 --
 --INSERT INTO mobile(phone_number, name, birth, mobile_sort)
 --VALUES("01012345678", "김엄마", 19900101, "SK");

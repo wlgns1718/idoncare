@@ -110,7 +110,7 @@ public class VirtualAccount {
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> virtualToVirtual(@RequestBody VirtualToVirtualReq payment, HttpServletRequest request) throws Exception {
-        //토큰에 대한 사용자 userId
+            //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try{
@@ -122,33 +122,29 @@ public class VirtualAccount {
         }
     }
 
-
-//    //자녀의 활동 보고서(월)
-//    //현재 월의 최근 5개월
-//    @GetMapping("/active")
-//    @Operation(summary = "실계좌 조회", description = "실계좌 조희")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "성공"),
-//            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
-//    })
-////    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
-//    public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {
-//        //토큰에 대한 사용자 userId
-//        Long userId = (Long) request.getAttribute("userId");
-//        Map<String, String> map = new HashMap<>();
+    //자녀의 활동 보고서(월)
+    //현재 월의 최근 5개월
+    @GetMapping("/active")
+    @Operation(summary = "실계좌 조회", description = "실계좌 조희")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
+    })
+//    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {
+        //토큰에 대한 사용자 userId
+        Long userId = (Long) request.getAttribute("userId");
+        Map<String, String> map = new HashMap<>();
 //        int year = LocalDate.now().getYear();
 //        int month = LocalDate.now().getMonth().getValue();
 //        int day = LocalDate.now().getDayOfMonth();
 //        System.out.println(year);
 //        System.out.println(month);
 //        System.out.println(day);
-//        Map<String, String> map = new HashMap<>();
-//        try{
-//            Long virtualAccount = virtualAccountService.userAccount(userId);
-////            virtualAccountService.virtualPayment(payment, virtualAccount);
-//            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
-//        }catch (VirtualAccountException e){
-//            return ResponseDto.fail(e);
-//        }
-//    }
+        try{
+            return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
+        }catch (VirtualAccountException e){
+            return ResponseDto.fail(e);
+        }
+    }
 }
