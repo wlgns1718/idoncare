@@ -1,5 +1,8 @@
-import { ChangeEventHandler, SyntheticEvent } from "react";
-
+import axios from "axios";
+import { ChangeEventHandler } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userToken } from "../../store/common/atoms";
+import { searchResultTradeList } from "../../store/wallet/atoms";
 
 interface SearchFormProps {
   searchKeyword: string;
@@ -14,22 +17,42 @@ function SearchForm({
   resetKeyword,
   className,
 }: SearchFormProps) {
-  
-  const handleSubmit = (event: SyntheticEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    console.log("search keyword: ", searchKeyword);
-  }
+  const Token = useRecoilValue(userToken);
 
-  const handleClick = () => {  
+  const setSearchResultTradeList = useSetRecoilState(searchResultTradeList)
+
+  const searchTrasition = () => {
+    axios
+      .get(
+        `http://j9d209.p.ssafy.io:8081/api/virtual/content/${searchKeyword}`,
+        {
+          headers: { Authorization: Token as string },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        setSearchResultTradeList(res.data.data)
+      });
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    
     console.log("search keyword: ", searchKeyword);
-  }
-  
+    searchTrasition();
+  };
+
+  const handleClick = () => {
+    console.log("search keyword: ", searchKeyword);
+    searchTrasition();
+  };
+
   return (
     <div className={`${className}`}>
       <div className="flex items-center">
         <form
           className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg"
-          onSubmit={()=>handleSubmit}
+          onSubmit={handleSubmit}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

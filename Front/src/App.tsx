@@ -30,6 +30,9 @@ import TransferSelect from "./pages/TransferSelect";
 import TransferConfirm from "./pages/TransferConfirm";
 import ParentSetting from "./pages/ParentSetting";
 import KidSetting from "./pages/KidSetting";
+import MissonPage from "./pages/MissonPage";
+import MissionDetailPage from "./pages/MissionDetailPage";
+import MissionCreatPage from "./pages/MissionCreatPage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -69,6 +72,10 @@ function App() {
               <Route path="newAccount" element={<NewAccount />} />
               <Route path="parentSetting" element={<ParentSetting />} />
               <Route path="kidSetting" element={<KidSetting />} />
+              <Route path="kidSetting" element={<KidSetting />} />
+              <Route path="mission" element={<MissonPage />} />
+              <Route path="mission/detail/:missionId" element={<MissionDetailPage />} />
+              <Route path="mission/create" element={<MissionCreatPage />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

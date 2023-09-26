@@ -15,7 +15,6 @@ const BankItem: React.FC<BankItemProps> = ({ item }) => {
 
   const handleCloseSheet = () => {
     setBottomSheetOpen(false);
-    console.log(11);
   };
 
   return (

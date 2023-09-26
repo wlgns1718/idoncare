@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import QRCode from "react-qr-code";
 
+
+
 function QRcodePurchase() {
   const [expiryTime, setExpiryTime] = useState(Date.now() + 3 * 60 * 1000); // 현재 시간 + 3분
   const [timeLeft, setTimeLeft] = useState(expiryTime - Date.now());
@@ -23,11 +25,26 @@ function QRcodePurchase() {
   const increaseTime = () => { 
     setExpiryTime(Date.now() + 3 * 60 * 1000);
   }
+
+  const tempQRData = {
+    name: "starbux",
+    bankCode: "41",
+    accountNum: 8888888,
+    printContent: "",
+    tranAmt: 10000,
+  };
+
+  const jsonStr = JSON.stringify(tempQRData);
+
   return (
     <div>
-      <Header pageTitle="QR 코드 결제" headerLink="/purchase" headerType="normal" />
+      <Header
+        pageTitle="QR 코드 결제"
+        headerLink="/purchase"
+        headerType="normal"
+      />
       <div className="flex justify-center bg-darkgray rounded-2xl py-20">
-        <QRCode value="as;dfj;adsf" size={200} />
+        <QRCode value={jsonStr} size={200} />
       </div>
       <div>
         <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">
@@ -39,7 +56,7 @@ function QRcodePurchase() {
             남은시간 {Math.floor(timeLeft / 60000)}:
             {((timeLeft % 60000) / 1000).toFixed(0).padEnd(2, "0")}
           </div>
-          <div onClick={()=>increaseTime()}>연장</div>
+          <div onClick={() => increaseTime()}>연장</div>
         </div>
       </div>
     </div>

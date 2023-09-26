@@ -15,7 +15,7 @@ export const isExistRechargeAccount = selector({
   get: ({ get }) => {
     const accountData = get(rechargeAccount);
 
-    if (accountData.bankName) {
+    if (accountData != null) {
       return true;
     } else {
       return false;
