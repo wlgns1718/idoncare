@@ -1,6 +1,7 @@
 package d209.Idontcare.pocketmoney.service;
 
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
+import d209.Idontcare.account.entity.Type;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.*;
@@ -122,15 +123,17 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
       throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
     }
     
+    Long parentVirtualAccountId = virtualAccountService.userAccount(parentUserId);  //부모　가상계좌　아이디　받기
     VirtualToVirtualReq trnasReq = VirtualToVirtualReq
         .builder()
         .money(req.getAmount())
         .userId(req.getChildUserId())
         .content(String.format("%s님의 용돈 지급", parent.getName()))
+        .type(Type.POCKET)
         .build();
     
     try{
-      virtualAccountService.virtualPayment(trnasReq, parentUserId);
+      virtualAccountService.virtualPayment(trnasReq, parentVirtualAccountId);
     } catch(VirtualAccountException e){
       //돈 부족
       throw new VirtualAccountException("돈 부족");
@@ -181,7 +184,19 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     if(req.getType() == ProcessPocketMoneyRequestReqDto.Type.ACCEPT){
       //수락이면
-      /* TODO : 계좌간에 전송 필요 */
+      Long parentVirtualAccountId = virtualAccountService.userAccount(parentUserId);  //부모　가상계좌　아이디　받기
+      VirtualToVirtualReq trnasReq = VirtualToVirtualReq
+          .builder()
+          .money(Long.valueOf(pocketMoneyRequest.getAmount()))
+          .userId(pocketMoneyRequest.getChild().getUserId())
+          .content(String.format("%s님의 용돈 지급", parent.getName()))
+          .type(Type.POCKET)
+          .build();
+      try{
+        virtualAccountService.virtualPayment(trnasReq, parentVirtualAccountId);
+      } catch(VirtualAccountException e){
+        throw new VirtualAccountException("돈 부족");
+      }
       pocketMoneyRequest.setType(PocketMoneyRequest.Type.ACCEPTED);
     }
     else{

@@ -1,30 +1,22 @@
 package d209.Idontcare.account.controller;
 
-import d209.Idontcare.account.dto.req.ReceiveReq;
-import d209.Idontcare.account.dto.req.VirtualToRealReq;
 import d209.Idontcare.account.dto.res.ActiveReq;
 import d209.Idontcare.account.dto.res.MonthTransactionHistory;
-import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.TransactionHistoryService;
 import d209.Idontcare.account.service.VirtualAccountService;
-import d209.Idontcare.common.APIBuilder;
-import d209.Idontcare.common.ObjectMapper;
 import d209.Idontcare.common.annotation.LoginOnly;
-import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/virtual")
 @RequiredArgsConstructor
-public class VirtualAccount {
+public class VirtualAccountController {
 
     private final VirtualAccountService virtualAccountService;
     private final TransactionHistoryService transactionHistoryService;
@@ -68,7 +60,7 @@ public class VirtualAccount {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> accountYearMonth(@PathVariable("Year") String year, @PathVariable("Month") String month, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -128,10 +120,9 @@ public class VirtualAccount {
     //자녀의 활동 보고서(월)
     //현재 월의 최근 5개월
     @GetMapping("/active")
-    @Operation(summary = "실계좌 조회", description = "실계좌 조희")
+    @Operation(summary = "활동보고서", description = "가상계좌 월별 입출금 내역")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {
