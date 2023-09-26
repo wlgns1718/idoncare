@@ -37,22 +37,30 @@ public class RelationshipServiceImpl implements RelationshipService{
   @Override
   public RelationshipRequest requestRelationship(Long parentUserId, RequestRelationshipReqDto req){
     
+    System.out.println(1);
     User child = userService.findByPhoneNumber(req.getChildPhoneNumber()).orElseThrow(NoSuchUserException::new);
+    System.out.println(2);
     
     if( !child.isChild() ) throw new MustChildException("자녀에게만 요청할 수 있습니다");
+    System.out.println(3);
     
     if(relationExistsByParentAndChild(parentUserId, child.getUserId())) throw new DuplicatedException("이미 자식입니다");
+    System.out.println(4);
     
     if(relationRequestExistsByParentAndChild(parentUserId, child.getUserId())) throw new DuplicatedException("이미 요청되었습니다");
+    System.out.println(5);
     
     User parent = userRepository.getReferenceById(parentUserId);
+    System.out.println(6);
     
     RelationshipRequest relationshipRequest = RelationshipRequest.builder()
                                   .parent(parent)
                                   .child(child)
                                   .build();
+    System.out.println(7);
     
     RelationshipRequest saved = relationshipRequestRepository.save(relationshipRequest);
+    System.out.println(8);
     
     return saved;
   }
