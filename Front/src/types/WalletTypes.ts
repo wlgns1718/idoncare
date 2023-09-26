@@ -25,7 +25,7 @@ export type RechargeAccountResponse = {
   userId: number;
 };
 
-export type CashFlow = "WITHDRAWAL" | "DEPOSIT";
+export type CashFlow = "WITHDRAWAL" | "DEPOSIT" | "ALL";
 
 export type TradeType =
   | "CHARGE"

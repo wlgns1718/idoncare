@@ -1,26 +1,42 @@
-import { TradeItem } from '../../types/WalletTypes';
-import TradeListItem from './TradeListItem';
+import { CashFlow } from "../../types/WalletTypes";
+import { MonthlyTradeListResponse } from "./TradeHistory";
+import TradeListItem from "./TradeListItem";
 
 interface DailyTradeListProps {
-  tradeList: Array<TradeItem>;
+  list: MonthlyTradeListResponse;
+  showCategoty?: CashFlow;
 }
 
+function DailyTradeList({ list, showCategoty = "ALL" }: DailyTradeListProps) {
+  const dateString = list.historyList[0].localDate;
+  const dateParts = dateString.split("-");
 
-function DailyTradeList({ tradeList }: DailyTradeListProps) {
-  if(tradeList.length === 0) {
-    return (
-      <div className='p-10 text-m text-center text-main'>거래 내역이 없습니다..</div>
-    )
+  const month = parseInt(dateParts[1]);
+  const day = parseInt(dateParts[2]);
+
+  const filteringList = () => {
+    if (showCategoty === "ALL") {
+      return list.historyList;
+    } else {
+      return list.historyList.filter((item) => item.cashFlow === showCategoty);
+    }
+  };
+
+  const filteredList = filteringList();
+  if (filteredList.length === 0) {
+    return null;
   }
   return (
     <div className="">
       <div className="px-4 my-4">
-        <div>9월 7일</div>
+        <div>
+          {month}월{day}일
+        </div>
         <hr />
       </div>
       {/* 항목 */}
       <div className="">
-        {tradeList?.map((item, index) => (
+        {filteredList?.map((item, index) => (
           <TradeListItem key={index} item={item} />
         ))}
       </div>
@@ -28,4 +44,4 @@ function DailyTradeList({ tradeList }: DailyTradeListProps) {
   );
 }
 
-export default DailyTradeList
+export default DailyTradeList;

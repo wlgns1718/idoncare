@@ -21,13 +21,15 @@ const WalletSearch = () => {
   return (
     <div>
       <Header pageTitle="거래내역 검색" />
-      <SearchForm
-        searchKeyword={searchKeyword}
-        onChange={handdleSearchKeyword}
-        resetKeyword={resetSearchKeyword}
-        className={"m-5"}
-      />
-      <TotalTradeList tradeList={tradeResultList} />
+      <div className="mx-8">
+        <SearchForm
+          searchKeyword={searchKeyword}
+          onChange={handdleSearchKeyword}
+          resetKeyword={resetSearchKeyword}
+          className={"m-5"}
+        />
+        <TotalTradeList tradeList={tradeResultList} />
+      </div>
     </div>
   );
 };
