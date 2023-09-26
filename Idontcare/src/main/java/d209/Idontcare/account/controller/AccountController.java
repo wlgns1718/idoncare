@@ -60,7 +60,6 @@ public class AccountController {
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto findTransaction(@RequestBody AuthReq authReq, HttpServletRequest request) throws Exception {
         Map<String, String> map = new HashMap<>();
-        Long userId = 1L;
         try {
             APIResultDto result = APIBuilder.build()
                     .url(url + "/openbanking/oauth/2.0/token")
@@ -72,6 +71,7 @@ public class AccountController {
             map.put("data", ((Map<String, String>) result.getBody()).get("data"));
             return ResponseDto.success(map);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
             return ResponseDto.fail(errorCode);
         }
