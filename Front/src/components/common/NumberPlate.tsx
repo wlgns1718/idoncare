@@ -1,7 +1,7 @@
 import React from "react";
 
 type ButtonText = string;
-0
+0;
 interface NumberPlateProps {
   value: number;
   changeNumber: (number: number) => void;
@@ -37,7 +37,7 @@ const NumberPlate: React.FC<NumberPlateProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-6 mb-10 mt-5">
+    <div className="grid grid-cols-3 gap-20 mt-5 mb-10">
       {numbers.map((row, i) =>
         row.map((num, j) => (
           <div

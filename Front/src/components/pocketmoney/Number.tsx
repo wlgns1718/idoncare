@@ -25,22 +25,22 @@ const Number: React.FC<NumberProps> = ({
   ];
 
   return (
-    <div className="grid grid-cols-3 gap-6 mb-10 mt-5">
+    <div className="grid grid-cols-3 gap-6 mt-5 mb-10">
       {numbers.map((row, i) =>
         row.map((num, j) => (
           <button
             key={i * 3 + j}
             className="p-2 text-l"
             onClick={() => {
-                if (typeof num === "number" && onNumberClick) {
+              if (typeof num === "number" && onNumberClick) {
                 onNumberClick(num);
-                } else if (num === bottomLeftText && onLeft) {
+              } else if (num === bottomLeftText && onLeft) {
                 onLeft();
-                } else if (num === bottomRightText && onRight) {
+              } else if (num === bottomRightText && onRight) {
                 onRight();
-                }
+              }
             }}
-            >
+          >
             {num}
           </button>
         ))
