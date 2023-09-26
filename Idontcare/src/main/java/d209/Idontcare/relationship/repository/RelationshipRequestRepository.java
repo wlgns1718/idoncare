@@ -17,7 +17,7 @@ public interface RelationshipRequestRepository extends JpaRepository<Relationshi
   @Query("select count(r.relationshipRequestId) > 0 from RelationshipRequest r where r.parent.userId = :parentUserId and r.child.userId = :childUserId")
   Page<Long> existsByParentAndChild(@Param("parentUserId") Long parentUserId, @Param("childUserId") Long childUserId, Pageable pageable);
   
-  @Query("select r.relationshipRequestId as relationshipRequestId, r.createdAt as createdAt, r.parent.name as parentName" +
+  @Query("select r.relationshipRequestId as relationshipRequestId, r.createdAt as createdAt, r.parent.name as parentName, r.parent.phoneNumber as parentPhoneNumber" +
       " from RelationshipRequest r where r.child.userId = :childUserId")
   List<Tuple> findAllByChild(@Param("childUserId") Long childUserId);
 }
