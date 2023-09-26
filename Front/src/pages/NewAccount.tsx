@@ -11,10 +11,18 @@ const NewAccount = () => {
   return (
     <>
       <Header pageTitle="오픈뱅킹" headerType="normal" headerLink="/" />
-      {step === 1 && <NewAccountCreateUserInfo onChangeStep={handleStep} step={step} />}
-      {step === 2 && <NewAccountSelectAccount onChangeStep={handleStep} step={step} />}
-      {step === 3 && <NewAccountVertification onChangeStep={handleStep} step={step} />}
-      {/* {step === 4 && <NewAccountARS onChangeStep={handleStep} step={step} />} */}
+      <div className="mx-8">
+        {step === 1 && (
+          <NewAccountCreateUserInfo onChangeStep={handleStep} step={step} />
+        )}
+        {step === 2 && (
+          <NewAccountSelectAccount onChangeStep={handleStep} step={step} />
+        )}
+        {step === 3 && (
+          <NewAccountVertification onChangeStep={handleStep} step={step} />
+        )}
+        {/* {step === 4 && <NewAccountARS onChangeStep={handleStep} step={step} />} */}
+      </div>
     </>
   );
 };

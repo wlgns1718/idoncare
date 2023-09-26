@@ -6,6 +6,9 @@ import NewAccountInput from "./common/NewAccountInput";
 import NewAccountSelectBox from "./common/NewAccountSelectBox";
 import NewAccountToggleButton from "./common/NewAccountToggleButton";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
+import axios from "axios";
+import { userToken } from "../../store/common/atoms";
+import { useRecoilValue } from "recoil";
 
 const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const [serviceAgree, setServiceAgree] = useState(false);
@@ -16,6 +19,29 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const handlePrivateAgree = () => setPrivateAgree(!privateAgree);
   const handleLocal = (data: boolean) => setLocal(data);
   const handleGender = (data: boolean) => setGender(data);
+
+  const token = useRecoilValue(userToken);
+
+  const userAuthentication = () => {
+    axios
+      .post(
+        `http://j9d209.p.ssafy.io:8081/api/account/auth`,
+        {
+          phoneNumber: "01012345678",
+          birth: "19900101",
+          mobileSort: "SK",
+          sex: "female",
+          name: "김엄마",
+        },
+        {
+          headers: { Authorization: token as string },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
   return (
     <div className="flex flex-col text-m">
       <NewAccountHeader step={step} />
@@ -31,7 +57,12 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
       </div>
       <div className="flex items-center text-m">
         <NewAccountInput placeholder="생년월일(8자리)" />
-        <NewAccountToggleButton first="남" second="여" isLeft={gender} onChange={handleGender} />
+        <NewAccountToggleButton
+          first="남"
+          second="여"
+          isLeft={gender}
+          onChange={handleGender}
+        />
       </div>
       <NewAccountInput placeholder="휴대폰번호(숫자만)" />
       <NewAccountSelectBox step={step} />
@@ -45,7 +76,12 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
         isCheck={privateAgree}
         onToggle={handlePrivateAgree}
       />
-      <div onClick={() => onChangeStep(2)}>
+      <div
+        onClick={() => {
+          onChangeStep(2);
+          userAuthentication();
+        }}
+      >
         <FullBtn buttonText="다음" buttonLink="/newAccount" />
       </div>
     </div>
