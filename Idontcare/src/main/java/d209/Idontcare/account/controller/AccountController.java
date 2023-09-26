@@ -30,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
-public class Account {
+public class AccountController {
 
 
     public final EncryptService encryptService;

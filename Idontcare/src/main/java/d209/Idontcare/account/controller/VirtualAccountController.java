@@ -25,7 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/virtual")
 @RequiredArgsConstructor
-public class VirtualAccount {
+public class VirtualAccountController {
 
     private final VirtualAccountService virtualAccountService;
     private final TransactionHistoryService transactionHistoryService;
@@ -60,7 +60,7 @@ public class VirtualAccount {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> accountYearMonth(@PathVariable("Year") String year, @PathVariable("Month") String month, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -119,10 +119,9 @@ public class VirtualAccount {
     //자녀의 활동 보고서(월)
     //현재 월의 최근 5개월
     @GetMapping("/active")
-    @Operation(summary = "실계좌 조회", description = "실계좌 조희")
+    @Operation(summary = "활동보고서", description = "가상계좌 월별 입출금 내역")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {

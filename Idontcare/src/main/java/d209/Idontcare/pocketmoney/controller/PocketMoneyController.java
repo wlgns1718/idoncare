@@ -69,8 +69,10 @@ public class PocketMoneyController {
         @ApiResponse(responseCode= MustChildException.CODE, description = MustChildException.DESCRIPTION)
     })
     @LoginOnly(level = Level.PARENT_ONLY)
-    public ResponseDto sendPocketMoney(@Valid @RequestBody SendPocketMoneyReqDto req, HttpServletRequest request){
+    public ResponseDto sendPocketMoney(@Valid @RequestBody SendPocketMoneyReqDto req, HttpServletRequest request, BindingResult bindingResult){
         Long parentUserId = (Long)request.getAttribute("userId");
+        
+        ErrorHandler.ErrorHandling(bindingResult);
         
         pocketMoneyService.sendPocketMoney(parentUserId, req);
         return ResponseDto.success(null);
@@ -87,8 +89,9 @@ public class PocketMoneyController {
         @ApiResponse(responseCode= MustChildException.CODE, description = MustChildException.DESCRIPTION)
     })
     @LoginOnly(level = Level.CHILD_ONLY)
-    public ResponseDto requestPocketMoney(@Valid @RequestBody RequestPocketMoneyReqDto req, HttpServletRequest request){
+    public ResponseDto requestPocketMoney(@Valid @RequestBody RequestPocketMoneyReqDto req, HttpServletRequest request, BindingResult bindingResult){
         Long childUserId = (Long)request.getAttribute("userId");
+        ErrorHandler.ErrorHandling(bindingResult);
         
         pocketMoneyService.requestPocketMoney(childUserId, req);
         return ResponseDto.success(null);
@@ -123,8 +126,10 @@ public class PocketMoneyController {
         @ApiResponse(responseCode= VirtualAccountException.CODE, description = VirtualAccountException.DESCRIPTION)
     })
     @LoginOnly(level = Level.PARENT_ONLY)
-    public ResponseDto processPocketMoneyRequest(@Valid @RequestBody ProcessPocketMoneyRequestReqDto req, HttpServletRequest request){
+    public ResponseDto processPocketMoneyRequest(@Valid @RequestBody ProcessPocketMoneyRequestReqDto req, HttpServletRequest request, BindingResult bindingResult){
         Long parentUserId = (Long)request.getAttribute("userId");
+        
+        ErrorHandler.ErrorHandling(bindingResult);
         
         pocketMoneyService.processPocketMoneyRequest(parentUserId, req);
         return ResponseDto.success(null);
