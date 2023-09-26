@@ -4,6 +4,10 @@ import { useMutation } from "react-query";
 import Loading from "../common/Loading";
 import { kakaoLoginUrl } from "../../apis/url/kakaoLoginUrl";
 import { PostLoginAxios } from "../../apis/axios/PostLoginAxios";
+import { useSetRecoilState } from "recoil";
+import { SignupCode } from "../../store/signup/atoms";
+import { useNavigate } from "react-router-dom";
+
 const LoginButton = () => {
   type AccessToken = string | null;
   type Email = string;
@@ -32,9 +36,11 @@ const LoginButton = () => {
     code: Code;
   }
 
+  const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = kakaoLoginUrl;
   };
+  const setKakaoCode = useSetRecoilState(SignupCode);
 
   useEffect(() => {
     if (window.location.search === "") {
@@ -44,14 +50,14 @@ const LoginButton = () => {
     mutate();
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { mutate } = useMutation<PostLogin>(PostLoginAxios, {
     onSuccess: (res) => {
       if (res.code === 200) {
+        setKakaoCode(res.data!.userId.toString());
         if (res.data?.joined === false) {
-          window.location.href = "/signup";
+          navigate("/signup");
         } else {
-          window.location.href = "/";
+          navigate("/");
         }
       } else {
         alert("Error: " + res.code + " " + res.error);

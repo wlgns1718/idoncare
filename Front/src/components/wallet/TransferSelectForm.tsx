@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FullBtn from "../common/FullBtn";
 import AccountSelectForm from "./AccountSelectForm";
-import { RechargeAccountComponent } from "./RechargeAccountList";
+import RechargeAccountList from "./RechargeAccountList";
 
 type SendOption = "family" | "account";
 
@@ -33,7 +33,7 @@ function TransferSelectForm() {
   };
 
   return (
-    <div>
+    <div className="mx-8">
       <div>
         <div className="text-l text-center">누구에게 보낼래요?</div>
         <div className="p-2 my-6 w-[50vw] mx-auto rounded-lg bg-gray flex">
@@ -59,12 +59,7 @@ function TransferSelectForm() {
       {sendOption === "account" && (
         <div>
           <AccountSelectForm />
-          <div className="mt-6">
-            <div className="text-m">출금 계좌</div>
-            <div className="">
-              <RechargeAccountComponent />
-            </div>
-          </div>
+          <RechargeAccountList />
         </div>
       )}
       <FullBtn />

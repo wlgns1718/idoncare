@@ -7,6 +7,7 @@ export type ICON_NAME =
   | "purchase"
   | "settings"
   | "logout"
+  | "menu"
   | "user"
   | "arrow-left"
   | "arrow-right"
@@ -78,6 +79,13 @@ const iconPathObject: {
       d="M8.25 4.5l7.5 7.5-7.5 7.5"
     />
   ),
+  "menu": (
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+    />
+  ),
 };
 interface IconProps {
   size?: ICON_SIZE;
@@ -91,7 +99,9 @@ export const Icon: React.FC<IconProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`w-[${iconSizeObject[size].width}vw] ${className}`}>
+    <div
+      className={`w-[${iconSizeObject[size].width}vw] h-[${iconSizeObject[size].width}vw] ${className}`}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

@@ -1,42 +1,36 @@
 import React, { ReactNode } from "react";
 import { BottomSheetOpen } from './../../store/common/atoms';
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 interface BottomSheetProps {
   children: ReactNode;
-  closeSheet: () => void;
-  size: number;
+  size?: number;
 }
 
-export const BottomSheet: React.FC<BottomSheetProps> = ({
-  children,
-}) => {
-  const setBottomSheetOpen =
-    useSetRecoilState(BottomSheetOpen);
+export const BottomSheet: React.FC<BottomSheetProps> = ({ children, size = 75 }) => {
+  const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
 
   const handleCloseSheet = () => {
     setBottomSheetOpen(false);
-    console.log(11);
-    
-  }
+  };
+  const height = `h-[${size}vh]`;
   return (
     <div
-      className={`fixed inset-0 h-screen items-center justify-center z-50 flex overflow-y-auto`}
+      className={`fixed inset-0 h-screen items-center justify-center z-50 flex overflow-y-auto ${
+        bottomSheetOpen ? "" : "hidden"
+      }`}
     >
       <div
         className="bg-black opacity-50 absolute inset-0"
         onClick={handleCloseSheet}
       ></div>
-      <div className="flex justify-center">
-        <div className="w-[30vw] rounded-full bg-gray h-4"></div>
-      </div>
       <div
-        className={`fixed bottom-0 h-[75vh] w-full mx-auto py-1 px-6 bg-white rounded-t-3xl shadow-lg z-10 `}
+        className={`fixed bottom-0 ${height} w-full mx-auto py-1 px-6 bg-white rounded-t-3xl shadow-lg z-10 `}
       >
         <div className="flex w-full justify-center bg-white h-14 items-center">
           <div className="fixed w-[30vw] rounded-full bg-gray h-4"></div>
         </div>
-        <div className={"h-[75vh] overflow-y-auto p-2"}>{children}</div>
+        <div className={`${height} overflow-y-auto p-2`}>{children}</div>
       </div>
     </div>
   );

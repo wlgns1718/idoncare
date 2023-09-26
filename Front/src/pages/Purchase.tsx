@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/imgs/login/logo.png";
 import Header from "../components/common/Header";
 
 const menus = [
@@ -22,11 +23,11 @@ function Purchase() {
     <div>
       <Header pageTitle="결제" headerLink="/" headerType="normal" />
       <div className="mt-20">
-        <div className="w-[190px] h-[110px] mx-auto p-4 rounded-lg [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
-          <div className="mb-10">아이콘</div>
+        <div className="w-[190px] h-[110px] mx-auto p-4 pb-6 rounded-2xl flex-col flex justify-between [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
+          <img className="w-[20vw]" src={logo} />
           <div className="text-end items-end">
-            <div className="text-white">부족금액은 자동충전됨</div>
-            <div className="text-white">900 원</div>
+            <div className="text-sm text-mediumgray">부족금액은 자동충전됨</div>
+            <div className="text-white text-m">900 원</div>
           </div>
         </div>
         <div className="mt-20">

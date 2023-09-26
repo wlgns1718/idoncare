@@ -11,14 +11,21 @@ interface SignupTypeSelectProps {
 }
 
 const SignupTypeSelect = ({ onNextStep, onSetInfo, userType, step }: SignupTypeSelectProps) => {
+  const handleCheckValid = () => {
+    if (userType === undefined) {
+      return;
+    }
+    onNextStep();
+  };
+
   return (
     <>
       <div
         onClick={() => {
-          onSetInfo(step, "CHILDREN");
+          onSetInfo(step, "CHILD");
         }}
         className={`${
-          userType === "CHILDREN" ? "scale-105" : "scale-95 grayscale"
+          userType === "CHILD" ? "scale-105" : "scale-95 grayscale"
         } transition duration-300 border-[5px]}`}
       >
         <Profile
@@ -41,8 +48,13 @@ const SignupTypeSelect = ({ onNextStep, onSetInfo, userType, step }: SignupTypeS
         />
         <p>용돈을 줄래요!</p>
       </div>
-      <div className="absolute bottom-0 w-[calc(100%-40px)] left-[20px]" onClick={onNextStep}>
-        <FullBtn buttonText="다음" buttonLink="/signup" className="w-full" />
+      <div className="absolute bottom-0 w-[calc(100%-40px)] left-[20px]" onClick={handleCheckValid}>
+        <FullBtn
+          buttonText="다음"
+          buttonLink="/signup"
+          className="w-full"
+          isDone={userType !== undefined}
+        />
       </div>
     </>
   );

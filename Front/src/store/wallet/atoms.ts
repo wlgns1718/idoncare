@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import KBICON from "../../assets/imgs/bank/PNG_KB.png";
-import { AccountDataType, BankDataType } from "../../types/WalletTypes";
+import { AccountDataType, BankDataType, TradeItem } from "../../types/WalletTypes";
+import { MonthlyTradeListResponse } from "../../components/wallet/TradeHistory";
 
 interface BankDataInterface {
   bankList: BankDataType[];
@@ -49,20 +50,33 @@ export const bankData = atom<BankDataInterface>({
   },
 });
 
-export const sendAccountBank = atom<BankDataType>({
-  key: "sendAccountBank",
-  default: {
-    icon: KBICON,
-    code: 1,
-    name: "삼성",
-  },
+export const userBalanace = atom<number>({
+  key: "userBalanace",
+  default: 0,
 });
 
-export const rechargeAccount = atom<AccountDataType>({
+export const resistRechargeAccountInput = atom<number | undefined>({
+  key: "ResistRechargeAccountInput",
+  default: undefined,
+});
+
+export const sendAccountBank = atom<BankDataType | null>({
+  key: "sendAccountBank",
+  default: null,
+});
+
+export const rechargeAccount = atom<AccountDataType | null>({
   key: "rechargeAccount",
-  default: {
-    bankCode: 22,
-    bankName: "NH농협",
-    accountNumber: 132992140129,
-  },
+  default: null,
+});
+
+
+export const tradeList = atom<TradeItem[]>({
+  key: "tradeList",
+  default: [],
+});
+
+export const searchResultTradeList = atom<MonthlyTradeListResponse[]>({
+  key: "searchResultTradeList",
+  default: [],
 });

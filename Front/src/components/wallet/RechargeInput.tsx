@@ -20,7 +20,7 @@ function RechargeInput() {
   return (
     <div>
       <div className="text-center text-m my-10">
-        i don't care 머니로 충전할 금액
+        I Don Care 머니로 충전할 금액
       </div>
       <div className="text-l text-main fontFamily-strong text-center my-10">
         {rechargeAmount
