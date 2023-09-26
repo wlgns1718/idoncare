@@ -30,7 +30,6 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
           phoneNumber: "01012345678",
           birth: "19900101",
           mobileSort: "SK",
-          sex: "female",
           name: "김엄마",
         },
         {
