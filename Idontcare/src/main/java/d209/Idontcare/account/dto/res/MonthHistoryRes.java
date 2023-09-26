@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MonthHistory {
+public class MonthHistoryRes {
     
     /*
     month : 월

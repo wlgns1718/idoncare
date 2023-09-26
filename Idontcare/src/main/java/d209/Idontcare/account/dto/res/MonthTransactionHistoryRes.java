@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MonthTransactionHistory {
+public class MonthTransactionHistoryRes {
     /*
     date : 날짜
     historyList : 거래내역
@@ -21,7 +21,7 @@ public class MonthTransactionHistory {
     int date;
     List<TransactionHistoryRes> historyList;
 
-    public MonthTransactionHistory(int date) {
+    public MonthTransactionHistoryRes(int date) {
         this.date = date;
         this.historyList = new ArrayList<>();
     }

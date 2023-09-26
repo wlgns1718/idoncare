@@ -57,21 +57,18 @@ public class InitService {
 
   public void bankAccountDataInit(){
     if(bankAccountRepository.count() > 0) return;
-    
     Bank bank41 = bankRepository.getReferenceById("41");
-    
-    bankAccountRepository.save(new BankAccount("000000000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
-    bankAccountRepository.save(new BankAccount("888888888888", bank41, 1000000000000L, "starbucks", "202309011"));
-    bankAccountRepository.save(new BankAccount("111111111111", bank41, 1000000L, "김출금", "19900101"));
-    bankAccountRepository.save(new BankAccount("999999999999", bank41, 1000000L, "김입금", "20000111"));
+    bankAccountRepository.save(new BankAccount("0000000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
+    bankAccountRepository.save(new BankAccount("8888888888", bank41, 1000000000000L, "starbucks", "202309011"));
+    bankAccountRepository.save(new BankAccount("1111111111", bank41, 1000000L, "김부모", "19900101"));
+    bankAccountRepository.save(new BankAccount("9999999999", bank41, 1000000L, "김사람", "20000111"));
   }
 
   public void userDataInit(){
     if(userRepository.count() > 0) return;
-    
-    userRepository.save(new User("아이돈케어", "010123445678", Role.CORPORATION));
-    userRepository.save(new User("김출금", "01011111111", Role.INDIVIDUAL));
-    userRepository.save(new User("김입금", "01099999999", Role.INDIVIDUAL));
+    userRepository.save(new User("아이돈케어", "01000000000", Role.CORPORATION));
+    userRepository.save(new User("김부모", "01012345678", Role.INDIVIDUAL));
+    userRepository.save(new User("김사람", "01099999999", Role.INDIVIDUAL));
   }
   
   public void finTechServiceDataInit(){
@@ -85,29 +82,14 @@ public class InitService {
     accountRepository.save(new Account("1234512345",
         bankRepository.getReferenceById("41"),
         userRepository.getReferenceById(1L),
-        "000000000000",
+        "1111111111",
         finTechServiceRepository.getReferenceById("1234512345")));
-    
-    accountRepository.save(new Account("123123123123",
-        bankRepository.getReferenceById("41"),
-        userRepository.getReferenceById(1L),
-        "111111111111",
-        finTechServiceRepository.getReferenceById("1234512345")));
-    
-//    accountRepository.save(new Account("00000000002",
-//        bankRepository.getReferenceById("41"),
-//        userRepository.getReferenceById(2L),
-//        "111111111111",
-//        finTechServiceRepository.getReferenceById("1234512345")));
-
   }
   
   public void mobileDataInit(){
     if(mobileRepository.count() > 0) return;
-    
-    mobileRepository.save(new Mobile("01012345678", "김엄마", "19900101", MobileSort.SK));
-    mobileRepository.save(new Mobile("01023456789", "김자식", "20000101", MobileSort.KT));
-    mobileRepository.save(new Mobile("01011111111", "김출금", "19900101", MobileSort.SK));
-    mobileRepository.save(new Mobile("01099999999", "김입금", "20000101", MobileSort.KT));
+    mobileRepository.save(new Mobile("01012345678", "김부모", "19900101", MobileSort.SK));
+    mobileRepository.save(new Mobile("01045671234", "김아이", "20000101", MobileSort.KT));
+    mobileRepository.save(new Mobile("01099999999", "김사람", "19900101", MobileSort.LG));
   }
 }

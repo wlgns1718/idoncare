@@ -38,6 +38,9 @@ public class VirtualAccountService {
     //가상 계좌끼리 거래
     public void virtualPayment(VirtualToVirtualReq request, Long startAccount) throws VirtualAccountException{
         LocalDateTime now = LocalDateTime.now();
+        if(request.getMoney() < 0){
+            throw new VirtualAccountException(402, "출금은 0보다 큰 범위만 가능합니다.");
+        }
         withdrawal(startAccount, request.getMoney(), request.getContent(), now, request.getType());
         deposit(virtualAccountRepository.findUser(request.getUserId()), request.getMoney(), request.getContent(), now, request.getType());
     }

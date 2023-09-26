@@ -1,30 +1,22 @@
 package d209.Idontcare.account.controller;
 
-import d209.Idontcare.account.dto.req.ReceiveReq;
-import d209.Idontcare.account.dto.req.VirtualToRealReq;
-import d209.Idontcare.account.dto.res.ActiveReq;
-import d209.Idontcare.account.dto.res.MonthTransactionHistory;
-import d209.Idontcare.account.dto.res.TransactionHistoryRes;
+import d209.Idontcare.account.dto.req.ActiveReq;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
+import d209.Idontcare.account.dto.res.MonthTransactionHistoryRes;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.TransactionHistoryService;
 import d209.Idontcare.account.service.VirtualAccountService;
-import d209.Idontcare.common.APIBuilder;
-import d209.Idontcare.common.ObjectMapper;
 import d209.Idontcare.common.annotation.LoginOnly;
-import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +66,7 @@ public class VirtualAccount {
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try{
-            List<MonthTransactionHistory> result = transactionHistoryService.userTransactionHistoryByDate(userId, Integer.parseInt(year), Integer.parseInt(month));
+            List<MonthTransactionHistoryRes> result = transactionHistoryService.userTransactionHistoryByDate(userId, Integer.parseInt(year), Integer.parseInt(month));
             return ResponseDto.success(result);
         }catch(TransactionHistoryException e){
             return ResponseDto.fail(e);
@@ -95,7 +87,7 @@ public class VirtualAccount {
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try{
-            List<MonthTransactionHistory> result = transactionHistoryService.userTransactionHistoryByContent(userId, content);
+            List<MonthTransactionHistoryRes> result = transactionHistoryService.userTransactionHistoryByContent(userId, content);
             return ResponseDto.success(result);
         }catch(TransactionHistoryException e){
             return ResponseDto.fail(e);
@@ -123,7 +115,6 @@ public class VirtualAccount {
             return ResponseDto.fail(e);
         }
     }
-
 
     //자녀의 활동 보고서(월)
     //현재 월의 최근 5개월

@@ -1,9 +1,8 @@
 package d209.Idontcare.account.service;
 
-import d209.Idontcare.account.dto.req.ReportPerMonthRes;
-import d209.Idontcare.account.dto.res.ActiveReq;
-import d209.Idontcare.account.dto.res.MonthHistory;
-import d209.Idontcare.account.dto.res.MonthTransactionHistory;
+import d209.Idontcare.account.dto.req.ActiveReq;
+import d209.Idontcare.account.dto.res.MonthHistoryRes;
+import d209.Idontcare.account.dto.res.MonthTransactionHistoryRes;
 import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.entity.TransactionHistory;
 import d209.Idontcare.account.exception.TransactionHistoryException;
@@ -12,7 +11,6 @@ import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.matcher.FilterableList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +29,10 @@ public class TransactionHistoryService {
 
     //년월별 가상 계좌의 연월별 거래내역 조회
     @Transactional(readOnly = true)
-    public  List<MonthTransactionHistory> userTransactionHistoryByDate(Long userId, int year, int month){
-        List<MonthTransactionHistory> list = new ArrayList<>();
+    public  List<MonthTransactionHistoryRes> userTransactionHistoryByDate(Long userId, int year, int month){
+        List<MonthTransactionHistoryRes> list = new ArrayList<>();
         for(int i = 0; i < 32; i++){
-            list.add(new MonthTransactionHistory(i));
+            list.add(new MonthTransactionHistoryRes(i));
         }
         for(TransactionHistory trans : transactionHistoryRepository.findTransactionHistory(userId, year, month)){
             int day = trans.getLocalDateTime().getDayOfMonth();
@@ -52,10 +50,10 @@ public class TransactionHistoryService {
     }
     
     //내용별로 계좌의 거래 내역 조회
-    public List<MonthTransactionHistory>  userTransactionHistoryByContent(Long userId, String content){
-        List<MonthTransactionHistory> list = new ArrayList<>();
+    public List<MonthTransactionHistoryRes>  userTransactionHistoryByContent(Long userId, String content){
+        List<MonthTransactionHistoryRes> list = new ArrayList<>();
         for(int i = 0; i < 32; i++){
-            list.add(new MonthTransactionHistory(i));
+            list.add(new MonthTransactionHistoryRes(i));
         }
         for(TransactionHistory trans : transactionHistoryRepository.findTransactionHistoryByContent(userId, content)){
             int day = trans.getLocalDateTime().getDayOfMonth();
@@ -110,7 +108,7 @@ public class TransactionHistoryService {
                     .orElse(0L);
             Long earn = transactionHistoryRepository.ThisMonthEarn(userId, year, month)
                     .orElse(0L);
-            activeReq.getList().add(MonthHistory.builder()
+            activeReq.getList().add(MonthHistoryRes.builder()
                     .month(month)
                     .earn(earn)
                     .expend(expend)

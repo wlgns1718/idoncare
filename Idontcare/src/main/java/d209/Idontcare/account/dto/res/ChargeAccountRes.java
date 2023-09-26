@@ -1,4 +1,4 @@
-package d209.Idontcare.account.dto.req;
+package d209.Idontcare.account.dto.res;
 
 import d209.Idontcare.account.entity.RealAccount;
 import d209.Idontcare.account.entity.Type;
