@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Header from "../common/Header";
+// import Header from "../common/Header";
 import Number from '../pocketmoney/Number';
 import FullBtn from './FullBtn';
 
 interface Props {
-  onNext: () => void;
+  onNext?: () => void;
   content1?: string;
   content2?: string;
 }
@@ -46,7 +46,7 @@ const PasswordForm: React.FC<Props> = ({ onNext, content1 = '아이돈케어', c
 
    return (
     <div className="flex flex-col h-screen pb-60">
-      <Header pageTitle="" headerType="x" headerLink="/" />
+      {/* <Header pageTitle="" headerType="x" headerLink="/" /> */}
       <div className="flex-grow pt-60">
 
         <div className="text-center text-l mb-16">

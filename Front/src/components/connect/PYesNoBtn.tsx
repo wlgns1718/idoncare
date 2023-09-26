@@ -2,18 +2,37 @@ import React, { useState } from "react";
 import Modal from "../common/Modal";
 import FullBtn from "../common/FullBtn";
 
-const YesNoBtn: React.FC = () => {
+const PYesNoBtn: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
+  const sendRequest = (processType: string) => {
+    fetch("http://j9d209.p.ssafy.io:8081/api/relationship/child/request", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3MDIyNzUsImV4cCI6MTY5NTc0NTQ3NX0.K7BmrgBzUerJrm8kkFvRzHp0Wp0C5I_ervHCtLxQ2gw"
+      },
+      body: JSON.stringify({
+        relationRequestId: 1,
+        process: processType,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  };
+
   const handleYesClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    sendRequest("ACCEPT");
     setModalContent("수락");
     setModalIsOpen(true);
   };
 
   const handleNoClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    sendRequest("REJECT");
     setModalContent("거절");
     setModalIsOpen(true);
   };
@@ -52,4 +71,4 @@ const YesNoBtn: React.FC = () => {
   );
 };
 
-export default YesNoBtn;
+export default PYesNoBtn;

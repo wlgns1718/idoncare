@@ -19,7 +19,9 @@ const KidSelectForm: React.FC<Props> = ({ onNext }) => {
 
         <MyKidList onKidsSelected={setKidCount} />
       </div>
-      {kidCount > 0 && <FullBtn buttonText="다음" onClick={onNext} />}
+      {/* {kidCount > 0 && <FullBtn buttonText="다음" onClick={onNext} />} */}
+      <FullBtn buttonText="다음" onClick={onNext} isDone={kidCount > 0}/>
+
     </div>
   );
 };

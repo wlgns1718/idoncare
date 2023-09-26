@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // add useEffect
+import React, { useState, useEffect } from 'react';
 import Number from '../pocketmoney/Number';
 
 type KidPhoneFormProps = {

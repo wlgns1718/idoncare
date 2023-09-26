@@ -19,8 +19,8 @@ const ParentSelectForm: React.FC<Props> = ({ onNext }) => {
 
         <Parents onParentSelected={setIsParentSelected} />
       </div>
-      {/* {isParentSelected && <FullBtn buttonText="다음" onClick={onNext} />} */}
-      <FullBtn buttonText="다음" onClick={onNext} isDone={false}/>
+      <FullBtn buttonText="다음" onClick={onNext} isDone={!isParentSelected}/>
+      <FullBtn buttonText="다음" onClick={onNext} isDone={isParentSelected}/>
     </div>
   );
 };
