@@ -59,6 +59,8 @@ public class InitService {
       UserDetail childDetail = new UserDetail(savedChild.getUserId(), savedChild, "200101" + i, "mail" + i + "@gmail.com");
       userDetailRepository.save(childDetail);
     }
+
+
   }
 
   private void virtualAccountDataInit(){
