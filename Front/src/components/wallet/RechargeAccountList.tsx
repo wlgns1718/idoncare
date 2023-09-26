@@ -14,7 +14,7 @@ export const EmptyAccount = () => {
       <div>충전 계좌 추가</div>
       <div
         onClick={() => {
-          navigate("regist");
+          navigate("/wallet/recharge/regist");
         }}
       >
         +
@@ -27,15 +27,18 @@ export const RechargeAccountComponent = () => {
   const myRechargeAccount = useRecoilValue(rechargeAccount);
   return (
     <div className="w-full h-[80px] px-8 my-4 bg-gray rounded-xl flex items-center justify-between ">
-      <div className="flex items-center">
+      <div className="flex">
         <img
           className="w-[8vw] mx-4"
           src={`https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/images/${myRechargeAccount?.bankName}.png`}
         ></img>
-        <div className="flex-col justify-center flex">
+        <div className="flex flex-col justify-center">
           <div>{myRechargeAccount?.bankName}</div>
           <div>{myRechargeAccount?.realAccountId}</div>
         </div>
+      </div>
+      <div className="flex items-center rounded-md bg-red-50 px-4 p-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">
+        삭제
       </div>
     </div>
   );
@@ -66,14 +69,9 @@ function RechargeAccountList() {
   const isRechargeAccount = useRecoilValue(isExistRechargeAccount);
 
   return (
-    <div className="mx-8">
+    <div className="my-6">
       <div className="flex justify-between">
         <div>출금 계좌</div>
-        {isRechargeAccount && (
-          <div className="inline-flex items-center rounded-md bg-red-50 px-2 p-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-            계좌 삭제
-          </div>
-        )}
       </div>
       <div className="">
         {!isRechargeAccount ? <EmptyAccount /> : <RechargeAccountComponent />}

@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { UserData } from "../../types/UserData";
 
 export const BottomSheetOpen = atom<boolean>({
   key: "BottomSheetOpen",
@@ -8,31 +9,20 @@ export const BottomSheetOpen = atom<boolean>({
 export const userToken = atom<string>({
   key: "UserToken",
   default:
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2MTc0MDgsImV4cCI6MTY5NTY2MDYwOH0.qk-WbXkSahd2qDSuSo_P2em67rXDiLS8IiCFz2u2oKA",
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2ODg0OTcsImV4cCI6MTY5NTczMTY5N30.gDzzodoE7Ze64nEfnP72qpc84xeuj1U0qHrFscm5TH4",
 });
 
 
-
-export type UserData = {
-  nickname: string | null;
-  joined: boolean | null;
-  userId: number | null;
-  email: string | null;
-  refreshToken: string | null;
-  accessToken: string | null;
-  role: "CHILD" | "PARENT" | null;
-};
-
-export const userData = atom<UserData>({
+export const userData = atom<UserData | null>({
   key: "userData",
   default: {
-    nickname: null,
-    joined: null,
-    userId: null,
-    email: null,
-    refreshToken: null,
+    nickname: 'null',
+    joined: true,
+    userId: 12,
+    email: 'null',
+    refreshToken: 'null',
     accessToken:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2MTc0MDgsImV4cCI6MTY5NTY2MDYwOH0.qk-WbXkSahd2qDSuSo_P2em67rXDiLS8IiCFz2u2oKA",
-    role: null,
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2ODg0OTcsImV4cCI6MTY5NTczMTY5N30.gDzzodoE7Ze64nEfnP72qpc84xeuj1U0qHrFscm5TH4",
+    role: "PARENT",
   },
 });

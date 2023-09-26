@@ -32,11 +32,15 @@ function WalletRecharge() {
   return (
     <div>
       <Header pageTitle="계좌 충전" headerLink="back" headerType="normal" />
-      <div>
+      <div className="mx-8">
         <RechargeInput />
         <RechargeAccountList />
+        <FullBtn
+          buttonText="충전"
+          buttonLink="password"
+          onClick={rechageMoney}
+        />
       </div>
-      <FullBtn buttonText="충전" buttonLink="password" onClick={rechageMoney} />
     </div>
   );
 }

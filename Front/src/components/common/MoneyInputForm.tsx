@@ -1,5 +1,6 @@
 import React from "react";
 import NumberPlate from "./NumberPlate";
+import useComma from './../../hooks/useComma';
 
 type MoneyInputFormProps = {
   text: string;
@@ -43,13 +44,11 @@ function MoneyInputForm({ text, balance }: MoneyInputFormProps) {
         <div className="text-l mt-24 mb-20">{text}</div>
 
         <div className="text-l text-main font-strong mb-5">
-          {amount.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} 원
+          {useComma(amount)} 원
         </div>
 
         <div className="text-darkgray text-sm mb-10">
-          잔액{" "}
-          {balance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}{" "}
-          원
+          잔액 {useComma(balance)} 원
         </div>
       </div>
 
