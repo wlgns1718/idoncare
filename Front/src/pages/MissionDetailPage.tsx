@@ -7,7 +7,7 @@ function MissionDetailPage () {
   return (
     <div>
       <Header pageTitle="미션" />
-      <div className="mx-6">
+      <div className="mx-8">
         <MissionDetailContent />
         <FullBtn buttonText="확인" />
       </div>

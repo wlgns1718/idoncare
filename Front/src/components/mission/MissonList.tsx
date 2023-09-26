@@ -1,10 +1,15 @@
-import { useSetRecoilState } from "recoil";
-import { MissionDataType } from "../../types/MissionTypes";
+import { useRecoilState } from "recoil";
+import {
+  MissionDataType,
+  MissionStateName,
+  MissionStateType,
+} from "../../types/MissionTypes";
 import { BottomSheet } from "../common/BottomSheet";
-import Icon from "../common/Icon";
+import Icon, { ICON_NAME } from "../common/Icon";
 import MissionHistoryCard from "./MissionHistoryCard";
 import { BottomSheetOpen } from "../../store/common/atoms";
 import MissionHistoryPlusCard from "./MissionHistoryPlusCard";
+import { useState } from "react";
 
 const missions: MissionDataType[] = [
   {
@@ -33,15 +38,49 @@ const missions: MissionDataType[] = [
   },
 ];
 
+const missionStates: {
+  icon: ICON_NAME;
+  type: MissionStateType;
+  text: MissionStateName;
+}[] = [
+  {
+    icon: "home",
+    type: "ALL",
+    text: MissionStateName.ALL,
+  },
+  {
+    icon: "home",
+    type: "REQUEST",
+    text: MissionStateName.REQUEST,
+  },
+  {
+    icon: "home",
+    type: "COMPLETE",
+    text: MissionStateName.COMPLETE,
+  },
+  {
+    icon: "home",
+    type: "PROCESS",
+    text: MissionStateName.PROCESS,
+  },
+  {
+    icon: "home",
+    type: "UNPAID",
+    text: MissionStateName.UNPAID,
+  },
+];
+
 function MissonList() {
-    const setBottomSheetOpen =
-      useSetRecoilState(BottomSheetOpen);
+  const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
+  const [missionFilter, setMissionFilter] = useState<MissionStateType>("ALL");
 
   return (
-    <div>
+    <div className={`${bottomSheetOpen ? "scroll" : ""}`}>
       <div className="flex justify-between mx-4 ">
         <div className="flex text-m gap-2">
-          <div className="content-center flex">미션완료</div>
+          <div className="content-center flex">
+            {MissionStateName[missionFilter]}
+          </div>
           <div
             onClick={() => {
               setBottomSheetOpen(true);
@@ -58,16 +97,31 @@ function MissonList() {
       <div className="grid grid-cols-2 items-center px-4">
         {missions.map((mission) => {
           return (
-            <MissionHistoryCard key={mission.missionId} mission={mission} />
+            (missionFilter == "ALL" || missionFilter == mission.type) && (
+              <MissionHistoryCard key={mission.missionId} mission={mission} />
+            )
           );
         })}
         <MissionHistoryPlusCard />
       </div>
-      <BottomSheet>
-        <div>미션 요청 대기중</div>
-        <div>미션 진행중</div>
-        <div>리워드 미지급</div>
-        <div>완료한 미션</div>
+      <BottomSheet size={60}>
+        <div className="flex flex-col gap-6 justify-evenly text-s px-10">
+          {missionStates.map((state) => {
+            return (
+              <div
+                className="flex items-center gap-4"
+                key={state.icon}
+                onClick={() => {
+                  setMissionFilter(state.type);
+                  setBottomSheetOpen(false);
+                }}
+              >
+                <Icon name={state.icon}></Icon>
+                <div>{state.text}</div>
+              </div>
+            );
+          })}
+        </div>
       </BottomSheet>
     </div>
   );

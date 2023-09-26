@@ -7,7 +7,7 @@ function MissionCreatPage() {
   return (
     <div>
       <Header pageTitle="미션 생성" />
-      <div>
+      <div className='mx-10'>
         <MissionSetName />
         <FullBtn />
       </div>

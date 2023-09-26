@@ -1,6 +1,7 @@
-export type MissionStateType = "REQUEST" | "PROCESS" | "UNPAID" | "COMPLETE";
+export type MissionStateType = "ALL" | "REQUEST" | "PROCESS" | "UNPAID" | "COMPLETE";
 
 export enum MissionStateName {
+  ALL = "모든 미션",
   REQUEST = "요청중",
   PROCESS = "진행중",
   UNPAID = "미지급",
