@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import DailyTradeList from "./DailyTradeList";
 import Chip from "../common/Chip";
 import Icon from "../common/Icon";
-import { TradeCategory, TradeHistoryCategory } from "../../types/WalletTypes";
+import { TradeHistoryCategory } from "../../types/WalletTypes";
 
 function TradeHistory() {
   const navigate = useNavigate();
 
-  const [currentCategory, setCurrentCategory] = useState<TradeCategory>("ALL");
+  const [currentCategory, setCurrentCategory] = useState<string>("ALL");
 
-  const handleCategory = (categoryValue: TradeCategory) => {
+  const handleCategory = (categoryValue: string) => {
     setCurrentCategory(categoryValue);
   };
 
@@ -33,10 +33,9 @@ function TradeHistory() {
     <div>
       <div className="flex py-6 justify-between pr-5">
         <div className="flex gap-5 overflow-x-auto no-scrollbar">
-          {categorys.map((category) => (
-            <div className="flex-none">
+          {categorys.map((category, index) => (
+            <div className="flex-none" key={index}>
               <Chip
-                key={category.type}
                 isSelected={currentCategory === category.type}
                 category={category}
                 handler={handleCategory}
@@ -70,8 +69,7 @@ function TradeHistory() {
       </div>
       <div>
         {/* 날짜별 */}
-        <DailyTradeList />
-        <DailyTradeList />
+        <DailyTradeList tradeList={[]}/>
       </div>
     </div>
   );

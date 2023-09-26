@@ -23,7 +23,7 @@ function TopMenu() {
         </div>
         <div className="flex justify-between w-full gap-4 pb-4">
           <TopMenuBox link="/pocketMoney" bgColor="gray" text="용돈" />
-          <TopMenuBox link="/" bgColor="gray" text="미션" />
+          <TopMenuBox link="/mission" bgColor="gray" text="미션" />
         </div>
       </div>
     </div>

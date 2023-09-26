@@ -4,7 +4,11 @@ import QrScanner from "qr-scanner";
 
 function CameraPurchase() {
   const handleScan = (result: QrScanner.ScanResult) => {
+    console.log(typeof result.data);
+    console.log(result.data);
     console.log(result);
+    // const ob = JSON.parse(result.data);
+    // console.log(ob);
   };
 
   const videoRef = useRef(null);
@@ -13,12 +17,18 @@ function CameraPurchase() {
     // 핸드폰의 경우, 외부 카메라인지 셀프카메라인지
     preferredCamera: "environment",
     // 1초당 몇번의 스캔을 할 것인지? ex) 1초에 5번 QR 코드 감지한다.
-    maxScansPerSecond: 5,
+    maxScansPerSecond: 2,
     // QR 스캔이 일어나는 부분을 표시해줄 지 (노란색 네모 테두리가 생긴다.)
     highlightScanRegion: true,
   };
 
   useEffect(() => {
+    Notification.requestPermission().then((result) => {
+      console.log(result);
+    });
+    navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
     const videoElem = videoRef.current;
     if (videoElem) {
       const qrScanner = new QrScanner(
