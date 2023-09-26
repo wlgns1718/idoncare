@@ -42,9 +42,6 @@ public class JoinUserReqDto {
     @Schema(description = "유저 이메일", example = "test@naver.com")
     @Email
     private String email;
-
-    @Schema(description = "유저 ID", example = "null")
-    private AddressDto addressDto;
     
     @Schema(description = "가상 계좌 비밀번호", example = "123456")
     private Integer password;
