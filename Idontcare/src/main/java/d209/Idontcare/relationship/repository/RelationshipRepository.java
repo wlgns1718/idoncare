@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface RelationshipRepository extends JpaRepository<Relationship, Long> {
 
-  @Query("select count(r.relationshipId) > 0 from Relationship r where r.parent.userId = :parentUserId and r.child = :childUserId")
+  @Query("select r.relationshipId from Relationship r where r.parent.userId = :parentUserId and r.child.userId = :childUserId")
   Page<Long> existsByParentAndChild(@Param("parentUserId") Long parentUserId, @Param("childUserId") Long childUserId, Pageable pageable);
   
   @Query("select r.relationshipId as relationshipId, r.child.userId as userId, r.child.name as userName, r.createdAt as createdAt" +
