@@ -1,4 +1,3 @@
-import React from 'react'
 import { MissionStateName, MissionStateType } from '../../types/MissionTypes';
 
 interface MissionStateChipProps {
