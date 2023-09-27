@@ -32,6 +32,9 @@ public class JwtTokenProvider {
   @Value("${jwt.refresh-expiration-time}")
   private Long refreshExpirationTime;
   
+  private final String ACCESS_PREFIX = "access_";
+  private final String REFRESH_PREFIX = "refresh_";
+  
   /* Access 토큰 생생 */
   public String createAccessToken(Long userId, Role role){
     Claims claims = Jwts.claims();
@@ -67,7 +70,7 @@ public class JwtTokenProvider {
     // 리프레시 토큰을 Redis에 저장
     redisTemplate.opsForValue()
         .set(
-            String.valueOf(userId),
+            REFRESH_PREFIX + userId,
             refreshToken,
             refreshExpirationTime,
             TimeUnit.MICROSECONDS
@@ -76,6 +79,7 @@ public class JwtTokenProvider {
     return refreshToken;
   }
   
+  /* Access Token에서 정보를 받아옵니다 */
   public AuthInfo getAuthInfo(String token){
     Claims claims = Jwts.parser()
         .setSigningKey(secret)
@@ -112,6 +116,14 @@ public class JwtTokenProvider {
   
   /* Access Token 검증 */
   public boolean validateToken(String token){
+    Long userId = getAuthInfo(token).getUserId();
+    
+    // 못 쓰는 액세스 토큰 목록에서 보기
+    String prefixedUserId = ACCESS_PREFIX + userId;
+    if(Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(prefixedUserId, token))){
+      return false;
+    }
+    
     try{
       Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
       return true;
@@ -125,15 +137,11 @@ public class JwtTokenProvider {
   /* Refresh Token으로 AccessToken, RefreshToken 발급 */
   public AccessRefreshTokenDto refresh(String refreshToken){
     Long userId = getUserId(refreshToken);
-    String savedRefreshToken = redisTemplate.opsForValue().get(String.valueOf(userId));
+    String savedRefreshToken = redisTemplate.opsForValue().get(REFRESH_PREFIX + userId);
     
     if(savedRefreshToken == null){
       //저장되어 있던 적이 없으면
       throw new BadRequestException("잘못 된 토큰입니다");
-    }
-    
-    if(!refreshToken.equals(savedRefreshToken)){
-      throw new BadRequestException("변조 된 토큰입니다");
     }
     
     User user = userRepository.findById(userId).orElseThrow(BadRequestException::new);
@@ -146,5 +154,18 @@ public class JwtTokenProvider {
       result.setRefreshToken(newRefreshToken);
 
     return result;
+  }
+  
+  /* Acess Token을 통해 토큰들을 못 쓰도록 해버립니다 */
+  public void expireTokens(String accessToken){
+    if( !validateToken(accessToken) ) throw new BadRequestException("Access Token이 잘 못 되었습니다");
+    Long userId = getAuthInfo(accessToken).getUserId();
+    
+    // 못 쓰는 액세스 토큰으로 넣기
+    String prefixedUserId = ACCESS_PREFIX + userId;
+    redisTemplate.opsForSet().add(prefixedUserId, accessToken);
+    redisTemplate.expire(prefixedUserId, accessExpirationTime, TimeUnit.MICROSECONDS);
+  
+    redisTemplate.delete(REFRESH_PREFIX + userId);
   }
 }

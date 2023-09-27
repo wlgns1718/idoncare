@@ -75,10 +75,10 @@ public class RelationshipServiceImpl implements RelationshipService{
   
   @Override
   public void processReceivedRequest(Long childUserId, ProcessReceivedRequestReqDto req){
-    Long relationRequestId = req.getRelationRequestId();
+    Long relationshipRequestId = req.getRelationshipRequestId();
     ProcessReceivedRequestReqDto.Type type = req.getProcess();
     
-    RelationshipRequest request = relationshipRequestRepository.findById(relationRequestId).orElseThrow(() -> new NoSuchContentException("해당 관계 요청을 찾을 수 없습니다"));
+    RelationshipRequest request = relationshipRequestRepository.findById(relationshipRequestId).orElseThrow(() -> new NoSuchContentException("해당 관계 요청을 찾을 수 없습니다"));
     User parent = request.getParent();
     User savedChild = request.getChild();
     

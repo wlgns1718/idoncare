@@ -18,7 +18,6 @@ import java.util.Set;
 public class JwtFilter extends OncePerRequestFilter {
   
   private final JwtTokenProvider jwtTokenProvider;
-  private final UserRepository userRepository;
   private final ObjectMapper mapper =  new ObjectMapper();
   
   private Set<String> acceptPath;
@@ -31,9 +30,8 @@ public class JwtFilter extends OncePerRequestFilter {
     acceptPath.add("/api/user/refresh");
   }
 
-  public JwtFilter(JwtTokenProvider jwtTokenProvider, UserRepository userRepository){
+  public JwtFilter(JwtTokenProvider jwtTokenProvider){
     this.jwtTokenProvider = jwtTokenProvider;
-    this.userRepository = userRepository;
   }
   
   @Override

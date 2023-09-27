@@ -80,6 +80,7 @@ public class AccountController {
             map.put("data", ((Map<String, String>) result.getBody()).get("data"));
             return ResponseDto.success(map);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
             return ResponseDto.fail(errorCode);
         }

@@ -30,6 +30,9 @@ public class GetPocketMoneyRequestResDto {
   @Schema(description = "취소 예정 날짜", example = "2022.02.04")
   private LocalDateTime cancelDate;
   
+  @Schema(description = "요청하는 말", example = "나 돈 줘")
+  private String content;
+  
   public GetPocketMoneyRequestResDto(Tuple tuple){
       this.pocketMoneyRequestId = (Long)tuple.get("pocketMoneyRequestId");
       this.parent = new InnerUser((Long)tuple.get("parentId"), (String)tuple.get("parentName"));
@@ -39,6 +42,7 @@ public class GetPocketMoneyRequestResDto {
       this.createdAt = (LocalDateTime)tuple.get("createdAt");
       int cancelDate = (int)tuple.get("cancelDate");
       this.cancelDate = LocalDateTime.of(2000 + cancelDate / 10_000,cancelDate % 10_000 / 100, cancelDate % 100, 23, 59);
+      this.content = (String)tuple.get("content");
   }
   
   @Getter
