@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/openbanking")
@@ -58,30 +60,56 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "토큰 발급 성공", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"));
     }
 
-//    //1-2 OAuth인증 계좌 등록
-//    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 등록", description = "OAuth인증 핀번호 발급", tags = {"AccountController"})
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "핀번호를 발급하였습니다.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = String.class))
-//            ),
-//            @ApiResponse(responseCode = "404", description = "사용자 인증을 요청한 이용자의 정보가 올바르지 않을 때"),
-//            @ApiResponse(responseCode = "409", description = "사용자가 이미 인증을 했을 때")
-//    })
-//    @PostMapping("/oauth/2.0/pin")
-//    public ResponseEntity<?> pinNumber(@RequestBody AccountVerifiRequesDto accountVerifiReqDto, HttpServletRequest httpServletRequest) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
-//        } catch (MobileException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
-//        } catch (UserException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
-//        }
-//    }
+    //1-2 OAuth인증 계좌 유효성 체크
+    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 등록", description = "OAuth인증 핀번호 발급", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "핀번호를 발급하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "계좌 번호, 은행과 사용자가 일치하지 않을 때"),
+    })
+    @PostMapping("/oauth/2.0/valid")
+    public ResponseEntity<?> validAccount(@RequestBody AccountVerifiRequesDto accountVerifiReqDto, HttpServletRequest httpServletRequest) {
+        try {
+            accountService.validAccount(accountVerifiReqDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 유효성 체크 완료", null));
+        } catch (MobileException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+        } catch (UserException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+        }
+    }
 
-//    //1-3 OAuth인증 계좌 삭제
+    //1-3 OAuth인증 계좌 등록
+    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 등록", description = "OAuth인증 핀번호 발급", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "핀번호를 발급하였습니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = String.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "계좌 번호, 은행과 사용자가 일치하지 않을 때"),
+    })
+    @PostMapping("/oauth/2.0/regist")
+    public ResponseEntity<?> pinAccount(@RequestBody AccountRegistRequesDto requesDto, HttpServletRequest httpServletRequest) {
+        try {
+            requesDto.setTranDtime(LocalDateTime.now());
+            String pinNumber = accountService.registAccount(requesDto);
+            Map<String, String> map = new HashMap<>();
+            map.put("pinNumber", pinNumber);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 등록 완료", map));
+        } catch (MobileException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+        } catch (UserException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+        }
+    }
+
+//    //1-4 OAuth인증 계좌 삭제
 //    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 삭제", description = "OAuth인증 핀번호 삭제", tags = {"AccountController"})
 //    @ApiResponses(value = {
 //            @ApiResponse(responseCode = "200", description = "핀번호를 삭제합니다.",
@@ -90,7 +118,7 @@ public class AccountController {
 //            ),
 //    })
 //    @DeleteMapping("/oauth/2.0/pin")
-//    public ResponseEntity<?> pinNumberDelete(@RequestBody InquiryRequestDto inquiryRequestDto, HttpServletRequest httpServletRequest) {
+//    public ResponseEntity<?> pinNumberDelete(@RequestBody AccountRegistRequesDto requesDto, HttpServletRequest httpServletRequest) {
 //        try {
 //            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
 //            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
@@ -146,6 +174,8 @@ public class AccountController {
         }
     }
 
+
+
     //4.거래 내역 조회
     @Operation(operationId = "transaction_list", summary = "거래 내역 조회", description = "은행 계좌 거래 내역 조회", tags = {"AccountController"})
     @ApiResponses(value = {
@@ -167,6 +197,8 @@ public class AccountController {
         }
     }
 
+
+
     //5.입금 이체
     @Operation(operationId = "deposit", summary = "입금 이체", description = "핀테크에서 목적지에 입금 이체", tags = {"AccountController"})
     @ApiResponses(value = {
@@ -186,10 +218,11 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "입금 이체 완료", depositResponseDto));
         } catch (AccountException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
-        }catch (BackAccountException e){
+        }catch (BankAccountException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
+
 
     //6.출금 이체
     @Operation(operationId = "withdraw", summary = "출금 이체", description = "고객의 계좌에서 핀테크로 출금 이체", tags = {"AccountController"})
@@ -212,10 +245,11 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 이체 완료", withdraw));
         } catch (AccountException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404 ", e.getMessage(), null));
-        }catch (BackAccountException e){
+        }catch (BankAccountException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
+
 
     //7.은행 이미지 경로 전송
     @Operation(operationId = "images", summary = "은행 이미지 출력", description = "각 은행의 원형 이미지 출력", tags = {"AccountController"})
@@ -230,10 +264,11 @@ public class AccountController {
         try{
             List<BankRequestDto> bankRequestDtos = accountService.selectImage();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "이미지 경로 출력 완료", bankRequestDtos));
-        } catch (BackAccountException e){
+        } catch (BankAccountException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
         }
     }
+
 
     //8.수취조회
     @Operation(operationId = "receive", summary = "수취 조회", description = "핀테크에서 계좌와 은행 이름으로 수취 조회", tags = {"AccountController"})

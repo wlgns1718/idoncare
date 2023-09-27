@@ -17,12 +17,11 @@ public class UserService {
     private final UserRepository userRepository;
 
     public void createUser(AuthRequestDto authRequestDto) throws Exception {
-        String user = userRepository.findUser(authRequestDto.getName(), authRequestDto.getPhoneNumber());
-        if(user==null){
-            userRepository.save(new User(authRequestDto.getName(), authRequestDto.getPhoneNumber(), Role.INDIVIDUAL));
-        }
-        else{
-            throw new UserException.AlreadySaveException("이미 등록된 회원입니다.");
-        }
+        userRepository.findUser(authRequestDto.getName(), authRequestDto.getPhoneNumber()).ifPresent(
+                user -> {
+                    throw new UserException.AlreadySaveException("이미 등록된 회원입니다.");
+                }
+        );
+        userRepository.save(new User(authRequestDto.getName(), authRequestDto.getPhoneNumber(), Role.INDIVIDUAL));
     }
 }

@@ -52,7 +52,6 @@ public class VirtualAccountController {
         }
     }
 
-
     //월별 가상계좌 거래내역 조회
     @GetMapping("/{Year}/{Month}")
     @Operation(summary = "월별 가상 계좌 거래내역 조회", description = "년월별 가상 계좌 거래내역 조회")
@@ -73,7 +72,6 @@ public class VirtualAccountController {
         }
     }
 
-
     //거래내역 키워드 검색
     @GetMapping("/content/{content}")
     @Operation(summary = "거래 내역 키워드 검색", description = "거래 내역 키워드로 검색")
@@ -93,7 +91,6 @@ public class VirtualAccountController {
             return ResponseDto.fail(e);
         }
     }
-
 
     //계좌이체 (가상계좌 → 가상계좌)
     @PostMapping("")

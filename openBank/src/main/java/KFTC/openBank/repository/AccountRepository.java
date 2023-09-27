@@ -15,4 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, String> {
     //핀테크 이용번호로 은행코드와 계좌번호 검색
     @Query("SELECT a.bank.id, a.accountNumber FROM Account a WHERE a.id = :accountId")
     Tuple findBankAndAccountNumberById(@Param("accountId") String accountId);
+
+    @Query("SELECT a FROM Account a WHERE a.bank.id = :bankId AND a.accountNumber = :accountNum")
+    Optional<Account> findPinNumber(@Param("bankId") String bankId, @Param("accountNum") String bankAccount);
 }

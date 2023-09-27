@@ -21,7 +21,7 @@ public class VirtualToVirtualReq {
     @Schema(description = "금액")
     private Long money;
 
-    @Schema(description = "CHARGE, MISSIONM, POCKET, TRANSFER, RETURN/충전, 미션, 용돈, 이체, 반환")
+    @Schema(description = "CHARGE, MISSION, POCKET, TRANSFER, RETURN/충전, 미션, 용돈, 이체, 반환")
     private Type type;
 
 }
