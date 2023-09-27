@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface MissionData {
+export interface MissionData {
   title: string;
   amount: number;
   type: string;

@@ -33,6 +33,7 @@ import KidSetting from "./pages/KidSetting";
 import MissonPage from "./pages/MissonPage";
 import MissionDetailPage from "./pages/MissionDetailPage";
 import MissionCreatPage from "./pages/MissionCreatPage";
+import MissionCreateMoney from "./pages/MissionCreateMoney";
 
 function App() {
   const queryClient = new QueryClient();
@@ -76,6 +77,7 @@ function App() {
               <Route path="mission" element={<MissonPage />} />
               <Route path="mission/detail/:missionId" element={<MissionDetailPage />} />
               <Route path="mission/create" element={<MissionCreatPage />} />
+              <Route path="mission/create/money" element={<MissionCreateMoney />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
