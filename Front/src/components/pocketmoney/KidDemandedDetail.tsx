@@ -1,20 +1,23 @@
 import React from "react";
 
-type ChildReguestMoneyDetailProps = {
+type KidDemandMoneyDetailProps = {
   name: string;
   message: string;
+  // amount: number;
   amount: string;
   requestDate: string;
   cancelDate: string;
 };
 
-const ChildReguestMoneyDetail: React.FC<ChildReguestMoneyDetailProps> = ({
+
+const KidDemandMoneyDetail: React.FC<KidDemandMoneyDetailProps> = ({
   name,
   message,
   amount,
   requestDate,
   cancelDate,
 }) => {
+
   return (
     <div>
       <div className="text-m mb-10">
@@ -29,7 +32,7 @@ const ChildReguestMoneyDetail: React.FC<ChildReguestMoneyDetailProps> = ({
         </div>
         <div className="text-darkgray">{message}</div>
         <div className="mt-7 font-strong">
-          <span className="text-main font-strong">{amount}</span>이 필요해요
+          <span className="text-main font-strong">{amount}</span>원이 필요해요
         </div>
       </div>
 
@@ -48,4 +51,4 @@ const ChildReguestMoneyDetail: React.FC<ChildReguestMoneyDetailProps> = ({
   );
 };
 
-export default ChildReguestMoneyDetail;
+export default KidDemandMoneyDetail;

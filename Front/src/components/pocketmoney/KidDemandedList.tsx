@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
-type ChildReguestMoneyListProps = {
+type KidDemandedListProps = {
   name: string;
   amount: string;
+  pocketMoneyRequestId: number;
 };
 
-const ChildReguestMoneyList: React.FC<ChildReguestMoneyListProps> = ({
+const KidDemandedList: React.FC<KidDemandedListProps> = ({
   name,
   amount,
+  pocketMoneyRequestId,
 }) => {
   return (
     <div className="flex justify-between items-center text-s mb-8">
@@ -17,7 +19,7 @@ const ChildReguestMoneyList: React.FC<ChildReguestMoneyListProps> = ({
           alt="Icon"
           className="ml-2 mr-5 w-10 h-10"
         />
-        <Link to="/childReguestMoney">
+        <Link to={`/demandMoneyCheck/${pocketMoneyRequestId}`}>
           <div>{name}</div>
         </Link>
       </div>
@@ -26,4 +28,4 @@ const ChildReguestMoneyList: React.FC<ChildReguestMoneyListProps> = ({
   );
 };
 
-export default ChildReguestMoneyList;
+export default KidDemandedList;

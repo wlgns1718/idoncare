@@ -6,6 +6,7 @@ type ParentProps = {
   pname?: React.ReactNode;
   onClick?: () => void;
   isSelected?: boolean;
+  className?: string;
 };
 
 const Parent: React.FC<ParentProps> = ({
@@ -14,13 +15,14 @@ const Parent: React.FC<ParentProps> = ({
   pname,
   onClick,
   isSelected,
+  className="",
 }) => {
 
-const className = isSelected ? "scale-105" : "scale-95 grayscale";
+const selectedClassName = isSelected ? "scale-105" : "scale-95 grayscale";
 
 return (
     <div 
-      className={`m-3 ${className}`}
+      className={`m-3 ${selectedClassName} ${className}`}
       onClick={onClick}
     >
       <img
@@ -28,7 +30,7 @@ return (
         src={imgSrc}
         alt="icon"
       />
-      <div className="text-center text-l mt-6">{pname}</div>
+      <div className="text-center text-m mt-6">{pname}</div>
     </div>
 );
 };

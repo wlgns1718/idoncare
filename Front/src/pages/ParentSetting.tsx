@@ -10,14 +10,23 @@ type ParentData = {
   createdAt: string;
 };
 
+type ParentCheckData = {
+  relationshipRequestId: number;
+  parentName: string;
+  parentPhoneNumber: string;
+};
+
 const ParentSetting: React.FC = () => {
   const [parentsData, setParentsData] = useState<ParentData[]>([]);
+  const [parentCheckRequests, setParentCheckRequests] = useState<
+    ParentCheckData[]
+  >([]);
 
   useEffect(() => {
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU2OTQwOTMxMTM5NTM3MDAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTcwNTI0NiwiZXhwIjoxNjk1NzQ4NDQ2fQ.SYeeIXTusf65dwt5DEaniRuFTawUPNoYG46jnEbi1ng",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjY1Mzc2Njc2NTAwODUyMTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTc5MzY4MCwiZXhwIjoxNjk1ODM2ODgwfQ.ms_k330ZMaMjcqT4LAt__R3g3Rd3T8LBDwRrwExmt9E",
       },
     })
       .then((response) => response.json())
@@ -25,10 +34,20 @@ const ParentSetting: React.FC = () => {
         if (result.data && result.data.relationList) {
           setParentsData(result.data.relationList);
         } else {
-          console.error('Unexpected response:', result);
+          console.error("Unexpected response:", result);
         }
       })
-      .catch((error) => console.error('Error:', error));
+      .catch((error) => console.error("Error:", error));
+
+    fetch("http://j9d209.p.ssafy.io:8081/api/relationship/child/request", {
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjY1Mzc2Njc2NTAwODUyMTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTc5MzY4MCwiZXhwIjoxNjk1ODM2ODgwfQ.ms_k330ZMaMjcqT4LAt__R3g3Rd3T8LBDwRrwExmt9E",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => setParentCheckRequests(result.data.requests))
+      .catch((error) => console.error("Error:", error));
   }, []);
 
   return (
@@ -37,24 +56,34 @@ const ParentSetting: React.FC = () => {
         <Header pageTitle="부모님" headerType="normal" headerLink="/" />
 
         <div className="mt-56">
-          <div className="text-l text-center">내 부모님</div>
-          <div className="m-5 flex">
-            
-{parentsData.map(parent =>
-    <Parent 
-        key={parent.relationshipId}
-        is_connect={true} 
-        isSelected={true} 
-        pname={parent.userName} 
-    />
-)}
-
+          <div className="text-l text-center">내 보호자</div>
+          <div className="m-5 flex flex-wrap">
+            {parentsData.map((parent) => (
+              <Parent
+                key={parent.relationshipId}
+                is_connect={true}
+                isSelected={true}
+                pname={parent.userName}
+                className="w-36"
+              />
+            ))}
           </div>
         </div>
       </div>
 
       <div className="mb-20">
-        <ParentCheck name="김슬기" phoneNumber="010-1234-1234" />
+        {parentCheckRequests.map((request, index) => (
+          <div
+            key={request.relationshipRequestId}
+            className={index !== 0 ? "mt-5" : ""}
+          >
+            <ParentCheck
+              name={request.parentName}
+              phoneNumber={request.parentPhoneNumber}
+              relationshipRequestId={request.relationshipRequestId}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

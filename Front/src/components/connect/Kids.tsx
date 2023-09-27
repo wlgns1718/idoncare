@@ -24,7 +24,7 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3MDIyNzUsImV4cCI6MTY5NTc0NTQ3NX0.K7BmrgBzUerJrm8kkFvRzHp0Wp0C5I_ervHCtLxQ2gw",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExNjMwNjYxNTgyNTAyNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3OTM0NzcsImV4cCI6MTY5NTgzNjY3N30.NZKyJkkgz9JP9I9f70z1uGwdCUC33ZANXbYkCBFxEjQ",
       },
     })
     .then((response) => response.json())

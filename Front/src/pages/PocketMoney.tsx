@@ -1,13 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
-import ChildReguestMoneyList from "../components/pocketmoney/KidDemandedList";
+import KidDemandedList from "../components/pocketmoney/KidDemandedList";
 import SmallBtn from "../components/pocketmoney/SmallBtn";
 import RegularMoneyBox from "../components/pocketmoney/RegularBox";
 import RegularMoneyBoxEmpty from "../components/pocketmoney/RegularBoxEmpty";
 import SendMoneyBox from "../components/pocketmoney/MenuBox";
 
+type KidDemandedData = {
+  pocketMoneyRequestId: number;
+  parent: {
+    id: number;
+    name: string;
+  };
+  child: {
+    id: number;
+    name: string;
+  };
+  amount: number;
+  type: string;
+};
+
 const PocketMoney: React.FC = () => {
+  const [kidDemandedList, setKidDemandedList] = useState<KidDemandedData[]>([]);
+
+  useEffect(() => {
+    
+    fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/request?pageNum=1", {
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzkxNTYsImV4cCI6MTY5NTgyMjM1Nn0.NOi0Wv2MSqFgcgeSvyElB1n07bLe9AUFl2R0Jy9jck4"
+      }
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      const requestList = result.data.list.filter((item : KidDemandedData) => item.type === 'REQUEST');
+      
+    setKidDemandedList(requestList);
+    })
+    .catch((error) => console.error('Error:', error));
+    
+      
+   }, []);
+
   return (
     <div className="pb-60">
       <div className="bg-green-100 text-m">
@@ -24,9 +61,15 @@ const PocketMoney: React.FC = () => {
         </div>
 
         <div className="ml-4">
-          <ChildReguestMoneyList name="김슬기" amount="30,000" />
-          <ChildReguestMoneyList name="이우철" amount="20,000" />
-        </div>
+          {kidDemandedList.map(demand =>
+            <KidDemandedList 
+              key={demand.pocketMoneyRequestId} 
+              name={demand.child.name} 
+              amount={demand.amount.toString()} 
+              pocketMoneyRequestId={demand.pocketMoneyRequestId}
+            />
+          )}
+          </div>
 
         <div className="text-right">
           <SmallBtn link="/" text="전체보기" classes="mb-10" />
