@@ -184,7 +184,7 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> BankList(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -208,7 +208,7 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> findMyRealAccount(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -228,7 +228,7 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "일치하는 고객이 없을 때 발생.")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> findRealAccount(@RequestBody ReceiveReq receiveReq, HttpServletRequest request) throws Exception {
         Map<String, String> map = new HashMap<>();
         try {
@@ -251,7 +251,7 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> chargeMoney(@RequestBody ChargeAccountRes chargeAccountRes, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -291,7 +291,7 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "가상 계좌에서 실 계좌로 송금 완료"),
             @ApiResponse(responseCode = "402", description = "가상 계좌의 잔액 부족")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> virtualToReal(@RequestBody VirtualToRealReq payment, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");

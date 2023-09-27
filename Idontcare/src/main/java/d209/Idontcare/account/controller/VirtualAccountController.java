@@ -36,7 +36,7 @@ public class VirtualAccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> accountBalance(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -79,7 +79,7 @@ public class VirtualAccountController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> accountContent(@PathVariable("content") String content, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -99,7 +99,7 @@ public class VirtualAccountController {
             @ApiResponse(responseCode = "200", description = "가상 게좌에서 가상 계좌로 송금 완료"),
             @ApiResponse(responseCode = "402", description = "가상 계좌의 잔액 부족")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> virtualToVirtual(@RequestBody VirtualToVirtualReq payment, HttpServletRequest request) throws Exception {
             //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -120,7 +120,7 @@ public class VirtualAccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
