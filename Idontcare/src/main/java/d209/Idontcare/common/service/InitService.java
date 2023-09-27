@@ -47,20 +47,17 @@ public class InitService {
   private void userDataInit(){
     if(userRepository.count() > 0) return;
     for(long i = 1L; i <= 9; i++){
-      User parent = new User(  i, i, "010" + "1234" + "567" + (i+7 % 10), "김부모" + (i == 1L ? "" : i), Role.PARENT, "김부모" + i + "_닉네임") ;
+      User parent = new User(  i, i, "010" + "1234" + "567" + ((i+7) % 10), "김부모" + i, Role.PARENT, "김부모" + i + "_닉네임") ;
       parent.setUUID();
       User savedParent = userRepository.save(parent);
-      UserDetail parentDetail = new UserDetail(savedParent.getUserId(), savedParent, "199101" + i, "mail" + i + "@naver.com");
+      UserDetail parentDetail = new UserDetail(savedParent.getUserId(), savedParent, "1990010" + i, "mail" + i + "@naver.com");
       userDetailRepository.save(parentDetail);
-
       User child = new User(10L + i, 10L + i, "010" + "4321" + "001" + i, "김자식" + i, Role.CHILD, "김자식" + i + "_닉네임");
       child.setUUID();
       User savedChild = userRepository.save(child);
-      UserDetail childDetail = new UserDetail(savedChild.getUserId(), savedChild, "200101" + i, "mail" + i + "@gmail.com");
+      UserDetail childDetail = new UserDetail(savedChild.getUserId(), savedChild, "2000010" + i, "mail" + i + "@gmail.com");
       userDetailRepository.save(childDetail);
     }
-
-
   }
 
   private void virtualAccountDataInit(){

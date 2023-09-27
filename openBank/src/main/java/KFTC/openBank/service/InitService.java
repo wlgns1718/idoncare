@@ -58,10 +58,15 @@ public class InitService {
   public void bankAccountDataInit(){
     if(bankAccountRepository.count() > 0) return;
     Bank bank41 = bankRepository.getReferenceById("41");
-    bankAccountRepository.save(new BankAccount("0000000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
-    bankAccountRepository.save(new BankAccount("8888888888", bank41, 1000000000000L, "starbucks", "202309011"));
-    bankAccountRepository.save(new BankAccount("1111111111", bank41, 1000000L, "김부모", "19900101"));
-    bankAccountRepository.save(new BankAccount("9999999999", bank41, 1000000L, "김사람", "20000111"));
+    bankAccountRepository.save(new BankAccount("00000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
+    bankAccountRepository.save(new BankAccount("88888888", bank41, 1000000000000L, "starbucks", "202309011"));
+    for(int i = 1; i <= 9; i++){
+      bankAccountRepository.save(new BankAccount("1111111"+i, bank41, 1000000L, "김부모" + i, "1990010" + i));
+    }
+    for(int i = 1; i <= 9; i++){
+      bankAccountRepository.save(new BankAccount("2222222" + i, bank41, 1000L, "김자식" + i, "2000010" + i));
+    }
+    bankAccountRepository.save(new BankAccount("99999999", bank41, 1000000L, "김사람", "20000111"));
   }
 
   public void userDataInit(){
@@ -87,8 +92,12 @@ public class InitService {
   
   public void mobileDataInit(){
     if(mobileRepository.count() > 0) return;
-    mobileRepository.save(new Mobile("01012340001", "김부모", "19900101", MobileSort.SK));
-    mobileRepository.save(new Mobile("01045671234", "김아이", "20000101", MobileSort.KT));
+    for(int i = 1; i <= 9; i++){
+      mobileRepository.save(new Mobile("0101234567" + ((i + 7) % 10), "김부모" + i, "1990010" + i, MobileSort.SK));
+    }
+    for(int i = 1; i <= 9; i++){
+      mobileRepository.save(new Mobile("0104321001" + i, "김자식" + i, "2000010"+i, MobileSort.KT));
+    }
     mobileRepository.save(new Mobile("01099999999", "김사람", "19900101", MobileSort.LG));
   }
 }

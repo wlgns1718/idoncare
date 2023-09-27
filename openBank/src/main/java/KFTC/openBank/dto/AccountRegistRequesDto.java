@@ -18,9 +18,9 @@ public class AccountRegistRequesDto {
     tran_dtime : 요청일시
      */
 
-    @Schema(description = "유저의 이름", example = "김부모1")
+    @Schema(description = "유저의 이름", example = "김부모")
     private String name;
-    @Schema(description = "유저의 휴대폰 번호", example = "01012345678")
+    @Schema(description = "유저의 휴대폰 번호", example = "01012340001")
     private String phoneNumber;
     @Schema(description = "은행 코드", example = "51")
     private String bankCodeStd;
