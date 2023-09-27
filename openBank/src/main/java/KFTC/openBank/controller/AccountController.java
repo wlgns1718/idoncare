@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ import java.util.Map;
 @RequestMapping("/openbanking")
 @RequiredArgsConstructor
 @CrossOrigin("*")
+@Slf4j
 @Tag(name = "AccountController", description = "계좌 관련 컨트롤러")
 public class AccountController {
 
@@ -261,8 +263,10 @@ public class AccountController {
     })
     @GetMapping("/bank/image")
     public ResponseEntity<?> allImages(){
+        log.info("이미지 경로 전송 메서드 호출");
         try{
             List<BankRequestDto> bankRequestDtos = accountService.selectImage();
+            log.info("이미지 경로 전송 메서드 반환");
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "이미지 경로 출력 완료", bankRequestDtos));
         } catch (BankAccountException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));

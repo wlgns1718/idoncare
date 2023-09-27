@@ -1,8 +1,5 @@
 package d209.Idontcare.account.controller;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.databind.JsonNode;
 import d209.Idontcare.account.dto.req.*;
 import d209.Idontcare.account.dto.res.ChargeAccountRes;
 import d209.Idontcare.account.dto.res.RealAccountRes;
@@ -22,13 +19,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +32,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
 
     public final EncryptService encryptService;
@@ -187,13 +184,16 @@ public class AccountController {
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> BankList(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
+        log.info("은행 리스트 조회 함수 호출");
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try {
+            log.info("OPEN BANK API 호출 이전");
             APIResultDto result = APIBuilder.build()
                     .url(url + "/openbanking/bank/image")
                     .method(HttpMethod.GET)
                     .execute();
+            log.info("OPEN BANK API 호출 이후");
             return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
         } catch (Exception e) {
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
