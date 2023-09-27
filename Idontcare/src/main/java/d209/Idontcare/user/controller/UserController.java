@@ -97,9 +97,24 @@ public class UserController {
             content=@Content(schema = @Schema(implementation = AccessRefreshTokenDto.class))),
         @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto refresh(@Valid @RequestBody RefreshReqDto req){
         AccessRefreshTokenDto result = jwtTokenProvider.refresh(req.getRefreshToken());
         
         return ResponseDto.success(result);
+    }
+    
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃", description = "로그아웃을 수행합니다")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "성공",
+            content=@Content(schema = @Schema(implementation = AccessRefreshTokenDto.class)))
+    })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    public ResponseDto logout(HttpServletRequest request){
+        String accessToken = jwtTokenProvider.getBearerToken(request);
+        jwtTokenProvider.expireTokens(accessToken);
+        
+        return ResponseDto.success(null);
     }
 }

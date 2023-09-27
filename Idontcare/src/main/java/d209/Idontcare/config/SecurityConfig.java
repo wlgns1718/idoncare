@@ -34,7 +34,6 @@ import java.io.IOException;
 public class SecurityConfig {
   
   private final JwtTokenProvider jwtTokenProvider;
-  private final UserRepository userRepository;
 
     @Value("${springsecurity.secret.key}")
     private String secret;
@@ -60,7 +59,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         );
 
-    http.apply(new JwtSecurityConfig(jwtTokenProvider, userRepository));
+    http.apply(new JwtSecurityConfig(jwtTokenProvider));
     return http.build();
     }
 
