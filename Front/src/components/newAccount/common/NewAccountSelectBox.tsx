@@ -1,25 +1,19 @@
 import { MobileSort } from "../../../store/newAccount/atoms";
 
 type Step = number;
-type Choice = "mobileSort" | "bank";
 
 interface NewAccountSelectBoxProps {
   step: Step;
-  choice: Choice;
   changeValue : (value: MobileSort) => void;
 }
 
 const NewAccountSelectBox = ({
   step,
-  choice,
   changeValue,
 }: NewAccountSelectBoxProps) => {
   const data = [
     {
       value: ["이동통신사를 선택하세요", "SKT", "KT", "LG"],
-    },
-    {
-      value: ["은행을 선택하세요", "대구은행", "농협", "국민은행", "신한은행"],
     },
   ];
   return (

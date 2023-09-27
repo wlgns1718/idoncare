@@ -7,9 +7,16 @@ import NewAccountVertificationHelp from "./NewAccountVertification/NewAccountVer
 import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/atoms";
 import axios from "axios";
+import { useState } from 'react';
 
 const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
+
+  const [ authenticationNumber, setAuthenticationNumber ] = useState<number>(); 
   const token = useRecoilValue(userToken);
+
+  const handleInputAccount = (value: string | number) => {
+    setAuthenticationNumber(value as number);
+  };
 
   const registAccount = () => {
     axios
@@ -36,8 +43,17 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
       <NewAccountHeader step={step} />
       <NewAccountVertificationAccount />
       <NewAccountVertificationHelp />
-      <NewAccountInput placeholder="입금자명(숫자4자리)" />
-      <div onClick={() => onChangeStep(4)}>
+      <NewAccountInput
+        changeValue={handleInputAccount}
+        value={authenticationNumber}
+        placeholder="입금자명(숫자4자리)"
+      />
+      <div
+        onClick={() => {
+          onChangeStep(4);
+          registAccount();
+        }}
+      >
         <FullBtn buttonText="인증완료" buttonLink="/newAccount" />
       </div>
     </div>

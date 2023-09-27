@@ -3,7 +3,7 @@ type Placeholder = string;
 interface NewAccountInputProps {
   placeholder: Placeholder;
   changeValue : (value: string | number) => void;
-  value : string | number | null;
+  value : string | number | null | undefined;
 }
 
 const NewAccountInput = ({

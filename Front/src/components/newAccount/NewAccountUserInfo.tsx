@@ -118,7 +118,6 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
       />
       <NewAccountSelectBox
         step={step}
-        choice={"mobileSort"}
         changeValue={handleSelectMobileSort}
       />
       <NewAccountCheckBox
