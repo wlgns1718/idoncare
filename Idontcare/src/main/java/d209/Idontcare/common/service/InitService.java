@@ -95,17 +95,12 @@ public class InitService {
   private void realAccountDataInit(){
     if(realAccountRepository.count() > 0) return;
     String pw = encryptService.encrypt("123456");
-<<<<<<< HEAD
-
     for(long i = 2L; i <= 5; i++){
       RealAccount account = new RealAccount(encryptService.encrypt(String.valueOf(i)), userRepository.findByKakaoId(i).get(), pw, "신한은행", "41");
       realAccountRepository.save(account);
     }
-=======
-    /* 진짜 계좌 넣기 */
     RealAccount parentReal = new RealAccount(encryptService.encrypt("1111111111"), userRepository.findByKakaoId(1L).get(), pw, "신한은행", "41");
     realAccountRepository.save(parentReal);
->>>>>>> bb5621d023d79227f153040b38f4dc9cd3b14aef
   }
 
   private void relationshipDataInit(){
