@@ -20,7 +20,8 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
   
-  private final RedisTemplate<String, String> redisTemplate;
+  private final RedisTemplate<String, String> invalidAccessRedisTemplate;
+  private final RedisTemplate<String, String> refreshRedisTemplate;
   private final UserRepository userRepository;
 
   @Value("${jwt.secret}")
@@ -65,7 +66,7 @@ public class JwtTokenProvider {
         .compact();
     
     // 리프레시 토큰을 Redis에 저장
-    redisTemplate.opsForValue()
+    refreshRedisTemplate.opsForValue()
         .set(
             String.valueOf(userId),
             refreshToken,
@@ -76,6 +77,7 @@ public class JwtTokenProvider {
     return refreshToken;
   }
   
+  /* Access Token에서 정보를 받아옵니다 */
   public AuthInfo getAuthInfo(String token){
     Claims claims = Jwts.parser()
         .setSigningKey(secret)
@@ -112,6 +114,14 @@ public class JwtTokenProvider {
   
   /* Access Token 검증 */
   public boolean validateToken(String token){
+    Long userId = getUserId(token);
+    System.out.println(invalidAccessRedisTemplate.opsForValue().get(String.valueOf(userId)));
+    
+    if(invalidAccessRedisTemplate.opsForSet().isMember(String.valueOf(userId), token)){
+      //만약 로그아웃 처리로 인해 못 쓰는 토큰일 경우
+      return false;
+    }
+    
     try{
       Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
       return true;
@@ -125,7 +135,7 @@ public class JwtTokenProvider {
   /* Refresh Token으로 AccessToken, RefreshToken 발급 */
   public AccessRefreshTokenDto refresh(String refreshToken){
     Long userId = getUserId(refreshToken);
-    String savedRefreshToken = redisTemplate.opsForValue().get(String.valueOf(userId));
+    String savedRefreshToken = refreshRedisTemplate.opsForValue().get(String.valueOf(userId));
     
     if(savedRefreshToken == null){
       //저장되어 있던 적이 없으면
@@ -146,5 +156,16 @@ public class JwtTokenProvider {
       result.setRefreshToken(newRefreshToken);
 
     return result;
+  }
+  
+  /* Acess Token을 통해 토큰들을 못 쓰도록 해버립니다 */
+  public void expireTokens(String accessToken){
+    if( !validateToken(accessToken) ) throw new BadRequestException("Access Token이 잘 못 되었습니다");
+    Long userId = getAuthInfo(accessToken).getUserId();
+    
+    invalidAccessRedisTemplate.opsForSet().add(String.valueOf(userId), accessToken);                           //못쓰는 토큰으로 넣기
+    invalidAccessRedisTemplate.expire(String.valueOf(userId), accessExpirationTime, TimeUnit.MICROSECONDS);    //못쓰는 토큰의 만료기간 정해주기
+    
+    refreshRedisTemplate.delete(String.valueOf(userId));                                                       //리프레시 토큰도 없애버리기
   }
 }

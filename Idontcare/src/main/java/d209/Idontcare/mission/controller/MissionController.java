@@ -28,7 +28,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/mission")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @Tag(name = "미션 API")
 public class MissionController {
 
@@ -40,9 +39,10 @@ public class MissionController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> regist(@RequestBody MissionDto missionDto,HttpServletRequest request){
-
+//        (Long)request.getAttribute("userId");
+        
         try{
             System.out.println(missionDto);
             Long[] missionIds = missionService.registMission(missionDto);
