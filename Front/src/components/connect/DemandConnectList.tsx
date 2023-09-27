@@ -1,5 +1,5 @@
 import React from "react";
-import KNoBtn from "../connect/KNoBtn";
+// import KNoBtn from "../connect/KNoBtn";
 
 type DemandConnectListProps = {
   name: string;
@@ -14,7 +14,7 @@ const DemandConnectList: React.FC<DemandConnectListProps> = ({ name, phoneNumber
         <span className="text-s">{phoneNumber}</span>
       </div>
 
-      <KNoBtn />
+      {/* <KNoBtn /> */}
     </div>
   );
 };

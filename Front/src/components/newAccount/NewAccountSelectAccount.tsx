@@ -5,6 +5,9 @@ import NewAccountHeader from "./common/NewAccountHeader";
 import NewAccountInput from "./common/NewAccountInput";
 import NewAccountSelectBox from "./common/NewAccountSelectBox";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/atoms";
 
 const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const [withdrawServiceAgree, setWithdrawServiceAgree] = useState(false);
@@ -13,6 +16,27 @@ const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const handleWithdrawServiceAgree = () => setWithdrawServiceAgree(!withdrawServiceAgree);
   const handleFinDataAgree = () => setFinDataAgree(!finDataAgree);
   const handlePrivateFinDataAgree = () => setPrivateFinDataAgree(!privateFinDataAgree);
+
+  const token = useRecoilValue(userToken);
+
+
+  const accountValidCheck = () => {
+    axios
+      .get(
+        `http://j9d209.p.ssafy.io:8081/api/account`,
+        {
+          bankCodeStd: "01012345678",
+          accountNum: "19900101",
+        },
+        {
+          headers: { Authorization: token as string },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
   return (
     <div className="flex flex-col text-m">
       <NewAccountHeader step={step} />

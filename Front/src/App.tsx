@@ -59,7 +59,8 @@ function App() {
               <Route path="transfer/input" element={<Transfer />} />
               <Route path="transfer/confirm" element={<TransferConfirm />} />
               <Route path="pocketMoney" element={<PocketMoney />} />
-              <Route path="childReguestMoney" element={<DemandMoneyCheck />} />
+              {/* <Route path="demandMoneyCheck" element={<DemandMoneyCheck />} /> */}
+              <Route path="demandMoneyCheck/:pocketMoneyRequestId" element={<DemandMoneyCheck />} />
               <Route path="sendPocketMoney" element={<SendPocketMoney />} />
               <Route path="sendRegularMoney" element={<SendRegularMoney />} />
               <Route path="kidDemandMoney" element={<KidDemandMoney />} />

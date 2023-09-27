@@ -2,21 +2,31 @@ import React, { useState } from "react";
 import Modal from "../common/Modal";
 import FullBtn from "../common/FullBtn";
 
-const PYesNoBtn: React.FC = () => {
+type PYesNoBtnProps = {
+  relationshipRequestId: number;
+};
+
+
+const PYesNoBtn: React.FC<PYesNoBtnProps> = ({relationshipRequestId}) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
   const sendRequest = (processType: string) => {
+    const body = JSON.stringify({
+      relationshipRequestId,
+      process: processType,
+    })
+
+    console.log(body);
+
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship/child/request", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3MDIyNzUsImV4cCI6MTY5NTc0NTQ3NX0.K7BmrgBzUerJrm8kkFvRzHp0Wp0C5I_ervHCtLxQ2gw"
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjY1Mzc2Njc2NTAwODUyMTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTc5MzY4MCwiZXhwIjoxNjk1ODM2ODgwfQ.ms_k330ZMaMjcqT4LAt__R3g3Rd3T8LBDwRrwExmt9E"
       },
-      body: JSON.stringify({
-        relationRequestId: 1,
-        process: processType,
-      }),
+      body,
     })
     .then(response => response.json())
     .then(data => console.log(data))

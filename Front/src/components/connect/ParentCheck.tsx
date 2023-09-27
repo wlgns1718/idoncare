@@ -4,9 +4,10 @@ import PYesNoBtn from "../connect/PYesNoBtn";
 type ParentCheckProps = {
   name: string;
   phoneNumber: string;
+  relationshipRequestId: number;
 };
 
-const ParentCheck: React.FC<ParentCheckProps> = ({ name, phoneNumber }) => {
+const ParentCheck: React.FC<ParentCheckProps> = ({ name, phoneNumber ,relationshipRequestId }) => {
   return (
     <div className="p-3 flex justify-between items-center bg-mediumgray rounded-lg">
       <div className="ml-4">
@@ -14,7 +15,7 @@ const ParentCheck: React.FC<ParentCheckProps> = ({ name, phoneNumber }) => {
         <span className="text-s">{phoneNumber}</span>
       </div>
 
-      <PYesNoBtn />
+      <PYesNoBtn relationshipRequestId={relationshipRequestId}/> 
     </div>
   );
 };
