@@ -8,7 +8,8 @@ import NewAccountToggleButton from "./common/NewAccountToggleButton";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 import axios from "axios";
 import { userToken } from "../../store/common/atoms";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { MobileSort, authenticationData } from "../../store/newAccount/atoms";
 
 const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const [serviceAgree, setServiceAgree] = useState(false);
@@ -21,16 +22,51 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const handleGender = (data: boolean) => setGender(data);
 
   const token = useRecoilValue(userToken);
+  const [authenticationRecoilData, setAuthenticationData] =
+    useRecoilState(authenticationData);
+
+
+  const handleInputName = (value: string | number) => {
+    setAuthenticationData({
+      ...authenticationRecoilData,
+      name: value as string,
+    });
+  };
+  const handleInputBirth = (value: string | number) => {
+    setAuthenticationData({
+      ...authenticationRecoilData,
+      birth: value as number,
+    });
+  };
+  const handleInputPhoneNumber = (value: string | number) => {
+    setAuthenticationData({
+      ...authenticationRecoilData,
+      phoneNumber: value as number,
+    });
+  };
+  const handleSelectMobileSort = (value: MobileSort) => {
+    setAuthenticationData({
+      ...authenticationRecoilData,
+      mobileSort: value,
+    });
+  };
 
   const userAuthentication = () => {
+    console.log({
+      phoneNumber: authenticationRecoilData.phoneNumber,
+      birth: authenticationRecoilData.birth,
+      mobileSort: authenticationRecoilData.mobileSort,
+      name: authenticationRecoilData.name,
+    });
+    
     axios
       .post(
         `http://j9d209.p.ssafy.io:8081/api/account/auth`,
         {
-          phoneNumber: "01012345678",
-          birth: "19900101",
+          phoneNumber: authenticationRecoilData.phoneNumber,
+          birth: authenticationRecoilData.birth,
           mobileSort: "SK",
-          name: "김엄마",
+          name: authenticationRecoilData.name,
         },
         {
           headers: { Authorization: token as string },
@@ -38,7 +74,11 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
       )
       .then((res) => {
         console.log(res.data);
-      });
+      })
+      .catch((err) => {
+        console.log(err);
+        
+      })
   };
 
   return (
@@ -46,7 +86,11 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
       <NewAccountHeader step={step} />
       <p className="text-s mb-[10px]">제공되는 정보 : 성명, 연계정보(CI)값</p>
       <div className="flex items-center text-m">
-        <NewAccountInput placeholder="성명" />
+        <NewAccountInput
+          placeholder="성명"
+          value={authenticationRecoilData.name}
+          changeValue={handleInputName}
+        />
         <NewAccountToggleButton
           first="내국인"
           second="외국인"
@@ -55,7 +99,11 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
         />
       </div>
       <div className="flex items-center text-m">
-        <NewAccountInput placeholder="생년월일(8자리)" />
+        <NewAccountInput
+          placeholder="생년월일(8자리)"
+          value={authenticationRecoilData.birth}
+          changeValue={handleInputBirth}
+        />
         <NewAccountToggleButton
           first="남"
           second="여"
@@ -63,8 +111,16 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
           onChange={handleGender}
         />
       </div>
-      <NewAccountInput placeholder="휴대폰번호(숫자만)" />
-      <NewAccountSelectBox step={step} />
+      <NewAccountInput
+        placeholder="휴대폰번호(숫자만)"
+        value={authenticationRecoilData.phoneNumber}
+        changeValue={handleInputPhoneNumber}
+      />
+      <NewAccountSelectBox
+        step={step}
+        choice={"mobileSort"}
+        changeValue={handleSelectMobileSort}
+      />
       <NewAccountCheckBox
         text="서비스 이용 및 개인정보처리 동의"
         isCheck={serviceAgree}
@@ -81,7 +137,11 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
           userAuthentication();
         }}
       >
-        <FullBtn buttonText="다음" buttonLink="/newAccount" />
+        <FullBtn
+          buttonText="다음"
+          buttonLink="/newAccount"
+          isDone={serviceAgree && privateAgree}
+        />
       </div>
     </div>
   );

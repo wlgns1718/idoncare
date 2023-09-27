@@ -1,18 +1,20 @@
 import { atom } from "recoil";
 
+export type MobileSort = "SK" | "KT" | "LG";
+
 interface AuthenticationData {
-  phoneNumber: number;
-  birth: number;
-  mobileSort: "SK" | "KT" | "LG";
-  name: string;
+  phoneNumber: number | null;
+  birth: number | null;
+  mobileSort: MobileSort | null;
+  name: string | null;
 }
 
 export const authenticationData = atom<AuthenticationData>({
   key: "authenticationData",
   default: {
-    phoneNumber: 0,
-    birth: 0,
-    mobileSort: "SK",
+    phoneNumber: null,
+    birth: null,
+    mobileSort: null,
     name: "",
   },
 });
