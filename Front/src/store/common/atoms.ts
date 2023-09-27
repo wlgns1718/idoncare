@@ -9,18 +9,17 @@ export const BottomSheetOpen = atom<boolean>({
 export const userToken = atom<string>({
   key: "UserToken",
   default:
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2ODg0OTcsImV4cCI6MTY5NTczMTY5N30.gDzzodoE7Ze64nEfnP72qpc84xeuj1U0qHrFscm5TH4",
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzMzODQsImV4cCI6MTY5NTgxNjU4NH0.iVFNUtzLgMhyITkQwmCDs2FJiiKeHbdo8xl1YpP5cqY",
 });
-
 
 export const userData = atom<UserData | null>({
   key: "userData",
   default: {
-    nickname: 'null',
+    nickname: "null",
     joined: true,
     userId: 12,
-    email: 'null',
-    refreshToken: 'null',
+    email: "null",
+    refreshToken: "null",
     accessToken:
       "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2ODg0OTcsImV4cCI6MTY5NTczMTY5N30.gDzzodoE7Ze64nEfnP72qpc84xeuj1U0qHrFscm5TH4",
     role: "PARENT",
