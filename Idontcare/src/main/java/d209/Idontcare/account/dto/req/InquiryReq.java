@@ -24,6 +24,8 @@ public class InquiryReq {
 
     @Schema(description = "은행 코드", example = "41")
     private String bankCodeStd;
+    @Schema(description = "은행 이름", example = "신한은행")
+    private String bankName;
     @Schema(description = "계좌번호", example = "1234567890")
     private String accountNum;
 }

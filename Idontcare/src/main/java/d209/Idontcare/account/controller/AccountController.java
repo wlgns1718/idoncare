@@ -143,14 +143,15 @@ public class AccountController {
                             .finTechServiceId("1234512345")
                             .build())
                     .execute();
-            System.out.println(result.getBody());
+            Map<String, Object> data = (Map<String, Object>) ((Map<String, Object>) result.getBody()).get("data");
+            String pinNumber = (String) data.get("pinNumber");
+            realAccountService.saveRealAccount(inquiryReq.getAccountNum(), user, pinNumber, inquiryReq.getBankName(),  inquiryReq.getBankCodeStd());
             return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
         } catch (Exception e) {
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
             return ResponseDto.fail(errorCode);
         }
     }
-
 
 ////    계좌 삭제
 //    @DeleteMapping("/")

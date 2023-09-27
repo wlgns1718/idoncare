@@ -99,17 +99,13 @@ public class InitService {
       RealAccount account = new RealAccount(encryptService.encrypt(String.valueOf(i)), userRepository.findByKakaoId(i).get(), pw, "신한은행", "41");
       realAccountRepository.save(account);
     }
-    RealAccount parentReal = new RealAccount(encryptService.encrypt("1111111111"), userRepository.findByKakaoId(1L).get(), pw, "신한은행", "41");
-    realAccountRepository.save(parentReal);
   }
 
   private void relationshipDataInit(){
     if(relationshipRepository.count() > 0) return;
-
     User parent1 = userRepository.findByKakaoId(1L).get();
     User parent2 = userRepository.findByKakaoId(2L).get();
     User parent3 = userRepository.findByKakaoId(3L).get();
-
     User child1 = userRepository.findByKakaoId(11L).get();
     User child2 = userRepository.findByKakaoId(12L).get();
     User child3 = userRepository.findByKakaoId(13L).get();
