@@ -13,7 +13,7 @@ public class ProcessReceivedRequestReqDto {
 
   @Schema(description = "요청받은 id", example = "1")
   @NotNull(message = "요청받은 id가 입력되어야합니다")
-  private Long relationRequestId;
+  private Long relationshipRequestId;
   
   @Schema(description = "수락 or 거절", example = "ACCEPT | REJECT")
   @Valid @NotNull(message = "수락 또는 거절 여부가 입력되어야합니다")
