@@ -4,10 +4,10 @@ import TradeListItem from "./TradeListItem";
 
 interface DailyTradeListProps {
   list: MonthlyTradeListResponse;
-  showCategoty?: CashFlow;
+  showCategory?: CashFlow;
 }
 
-function DailyTradeList({ list, showCategoty = "ALL" }: DailyTradeListProps) {
+function DailyTradeList({ list, showCategory = "ALL" }: DailyTradeListProps) {
   const dateString = list.historyList[0].localDate;
   const dateParts = dateString.split("-");
 
@@ -15,10 +15,10 @@ function DailyTradeList({ list, showCategoty = "ALL" }: DailyTradeListProps) {
   const day = parseInt(dateParts[2]);
 
   const filteringList = () => {
-    if (showCategoty === "ALL") {
+    if (showCategory === "ALL") {
       return list.historyList;
     } else {
-      return list.historyList.filter((item) => item.cashFlow === showCategoty);
+      return list.historyList.filter((item) => item.cashFlow === showCategory);
     }
   };
 

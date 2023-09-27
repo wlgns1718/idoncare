@@ -1,8 +1,10 @@
 import axios from "axios";
 import { ChangeEventHandler } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { userToken } from "../../store/common/atoms";
+import { useSetRecoilState } from "recoil";
 import { searchResultTradeList } from "../../store/wallet/atoms";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/atoms";
 
 interface SearchFormProps {
   searchKeyword: string;
@@ -11,40 +13,32 @@ interface SearchFormProps {
   className?: string;
 }
 
-function SearchForm({
-  searchKeyword,
-  onChange,
-  resetKeyword,
-  className,
-}: SearchFormProps) {
-  const Token = useRecoilValue(userToken);
+function SearchForm({ searchKeyword, onChange, resetKeyword, className }: SearchFormProps) {
+  const setSearchResultTradeList = useSetRecoilState(searchResultTradeList);
+  const token = useRecoilValue(userToken);
 
-  const setSearchResultTradeList = useSetRecoilState(searchResultTradeList)
-
-  const searchTrasition = () => {
+  const searchTransition = () => {
     axios
       .get(
         `http://j9d209.p.ssafy.io:8081/api/virtual/content/${searchKeyword}`,
-        {
-          headers: { Authorization: Token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);
-        setSearchResultTradeList(res.data.data)
+        setSearchResultTradeList(res.data.data);
       });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     console.log("search keyword: ", searchKeyword);
-    searchTrasition();
+    searchTransition();
   };
 
   const handleClick = () => {
     console.log("search keyword: ", searchKeyword);
-    searchTrasition();
+    searchTransition();
   };
 
   return (
@@ -71,7 +65,7 @@ function SearchForm({
           <input
             type="text"
             placeholder="찾을 내용을 입력해주세요"
-            className="bg-gray ml-2 grow focus:outline-none"
+            className="ml-2 bg-gray grow focus:outline-none"
             value={searchKeyword}
             onChange={onChange}
           />
