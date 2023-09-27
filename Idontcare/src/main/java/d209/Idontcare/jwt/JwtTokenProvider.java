@@ -20,8 +20,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
   
-  private final RedisTemplate<String, String> invalidAccessRedisTemplate;
-  private final RedisTemplate<String, String> refreshRedisTemplate;
+  private final RedisTemplate<String, String> redisTemplate;
   private final UserRepository userRepository;
 
   @Value("${jwt.secret}")
@@ -32,6 +31,9 @@ public class JwtTokenProvider {
   
   @Value("${jwt.refresh-expiration-time}")
   private Long refreshExpirationTime;
+  
+  private final String ACCESS_PREFIX = "access_";
+  private final String REFRESH_PREFIX = "refresh_";
   
   /* Access 토큰 생생 */
   public String createAccessToken(Long userId, Role role){
@@ -66,9 +68,9 @@ public class JwtTokenProvider {
         .compact();
     
     // 리프레시 토큰을 Redis에 저장
-    refreshRedisTemplate.opsForValue()
+    redisTemplate.opsForValue()
         .set(
-            String.valueOf(userId),
+            REFRESH_PREFIX + userId,
             refreshToken,
             refreshExpirationTime,
             TimeUnit.MICROSECONDS
@@ -114,11 +116,11 @@ public class JwtTokenProvider {
   
   /* Access Token 검증 */
   public boolean validateToken(String token){
-    Long userId = getUserId(token);
-    System.out.println(invalidAccessRedisTemplate.opsForValue().get(String.valueOf(userId)));
+    Long userId = getAuthInfo(token).getUserId();
     
-    if(invalidAccessRedisTemplate.opsForSet().isMember(String.valueOf(userId), token)){
-      //만약 로그아웃 처리로 인해 못 쓰는 토큰일 경우
+    // 못 쓰는 액세스 토큰 목록에서 보기
+    String prefixedUserId = ACCESS_PREFIX + userId;
+    if(Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(prefixedUserId, token))){
       return false;
     }
     
@@ -135,15 +137,11 @@ public class JwtTokenProvider {
   /* Refresh Token으로 AccessToken, RefreshToken 발급 */
   public AccessRefreshTokenDto refresh(String refreshToken){
     Long userId = getUserId(refreshToken);
-    String savedRefreshToken = refreshRedisTemplate.opsForValue().get(String.valueOf(userId));
+    String savedRefreshToken = redisTemplate.opsForValue().get(REFRESH_PREFIX + userId);
     
     if(savedRefreshToken == null){
       //저장되어 있던 적이 없으면
       throw new BadRequestException("잘못 된 토큰입니다");
-    }
-    
-    if(!refreshToken.equals(savedRefreshToken)){
-      throw new BadRequestException("변조 된 토큰입니다");
     }
     
     User user = userRepository.findById(userId).orElseThrow(BadRequestException::new);
@@ -163,9 +161,11 @@ public class JwtTokenProvider {
     if( !validateToken(accessToken) ) throw new BadRequestException("Access Token이 잘 못 되었습니다");
     Long userId = getAuthInfo(accessToken).getUserId();
     
-    invalidAccessRedisTemplate.opsForSet().add(String.valueOf(userId), accessToken);                           //못쓰는 토큰으로 넣기
-    invalidAccessRedisTemplate.expire(String.valueOf(userId), accessExpirationTime, TimeUnit.MICROSECONDS);    //못쓰는 토큰의 만료기간 정해주기
-    
-    refreshRedisTemplate.delete(String.valueOf(userId));                                                       //리프레시 토큰도 없애버리기
+    // 못 쓰는 액세스 토큰으로 넣기
+    String prefixedUserId = ACCESS_PREFIX + userId;
+    redisTemplate.opsForSet().add(prefixedUserId, accessToken);
+    redisTemplate.expire(prefixedUserId, accessExpirationTime, TimeUnit.MICROSECONDS);
+  
+    redisTemplate.delete(REFRESH_PREFIX + userId);
   }
 }
