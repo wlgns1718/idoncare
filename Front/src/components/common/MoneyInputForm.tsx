@@ -1,14 +1,14 @@
-import React from "react";
 import NumberPlate from "./NumberPlate";
 import useComma from './../../hooks/useComma';
 
 type MoneyInputFormProps = {
+  amount: number;
+  setAmount : (amount: number) => void;
   text: string;
-  balance: number;
+  balance?: number;
 };
 
-function MoneyInputForm({ text, balance }: MoneyInputFormProps) {
-  const [amount, setAmount] = React.useState(0);
+function MoneyInputForm({ amount, setAmount, text, balance = 0 }: MoneyInputFormProps) {
 
   const PlusChip = [
     {
@@ -41,7 +41,7 @@ function MoneyInputForm({ text, balance }: MoneyInputFormProps) {
   return (
     <div>
       <div className="m-10 text-center flex-grow">
-        <div className="text-l mt-24 mb-20">{text}</div>
+        <div className="text-l mt-10 mb-10">{text}</div>
 
         <div className="text-l text-main font-strong mb-5">
           {useComma(amount)} 원
