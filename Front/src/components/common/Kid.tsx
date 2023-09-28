@@ -10,22 +10,22 @@ type KidProps = {
   isSelected?: boolean;
 }
 
-const Kid: React.FC<KidProps> = ({ imgSrc = "/icons/circle-pink.png", is_connect = true, kname, className, onClick, isSelected = true }) => {
+const Kid: React.FC<KidProps> = ({ imgSrc = "/icons/circle-pink.png", is_connect = true, kname, className, onClick, isSelected }) => {
   
-  const handleClick = () => {
-    if (is_connect && onClick) {
-      onClick();
+    const handleClick = () => {
+        if (is_connect && onClick) {
+            onClick();
+        }
     }
-  }
 
-   const opacityClass = isSelected ? '' : 'opacity-50';
+    const selectedClassName = isSelected ? "scale-105" : "scale-95 grayscale";
 
-   return (
-     <div className={`m-3 ${className}`} onClick={handleClick}>
-       <img className={`${is_connect ? '' : 'opacity-50'} ${opacityClass}`} src={imgSrc} alt="icon" />
-       <div className={`text-center text-l mt-6 ${opacityClass}`}>{kname}</div> {/* 수정된 부분 */}
-     </div>
-   )
+    return (
+        <div className={`m-3 ${selectedClassName} ${className}`} onClick={handleClick}>
+            <img className={`${is_connect ? '' : 'opacity-50'}`} src={imgSrc} alt="icon" />
+            <div className="text-center text-l mt-6">{kname}</div>
+        </div>
+    )
 }
 
 export default Kid

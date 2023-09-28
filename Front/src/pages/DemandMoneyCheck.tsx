@@ -3,25 +3,10 @@ import { useParams } from "react-router-dom";
 import Header from "../components/common/Header";
 import YesNoBtn from "../components/common/YesNoBtn";
 import SmallBtn from "../components/pocketmoney/SmallBtn";
-import ChildReguestMoneyDetail from "../components/pocketmoney/KidDemandedDetail";
+import KidDemandedDetail from "../components/pocketmoney/KidDemandedDetail";
 import MoneyDone from "../components/pocketmoney/Done";
 import DemandCheckModal from "../components/pocketmoney/DemandCheckModal";
-
-type KidDemandedData = {
-  pocketMoneyRequestId: number;
-  parent: {
-    id: number;
-    name: string;
-  };
-  child: {
-    id: number;
-    name: string;
-  };
-  amount: number;
-  type: string;
-  createdAt: string;
-  cancelDate: string;
-};
+import { KidDemandedData } from "../components/pocketmoney/TypeDemand";
 
 const DemandMoneyCheck: React.FC = () => {
   const [requestData, setRequestData] = useState<KidDemandedData | null>(null);
@@ -31,38 +16,36 @@ const DemandMoneyCheck: React.FC = () => {
 
   const sendRequest = (type: string) => {
     fetch(`http://j9d209.p.ssafy.io:8081/api/pocketmoney/request`, {
-      method:'PUT',
-      headers:{
-        'Content-Type': 'application/json',
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzkxNTYsImV4cCI6MTY5NTgyMjM1Nn0.NOi0Wv2MSqFgcgeSvyElB1n07bLe9AUFl2R0Jy9jck4"
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzOTA4ODU1ODUwMjgwNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU4NTc0NDMsImV4cCI6MTY5NTkwMDY0M30.bgr0elriq1lCsiSHTIuLncxSH9f27uZZtmQ8_doQjZ0",
       },
       body: JSON.stringify({
         pocketMoneyRequestId: Number(pocketMoneyRequestId),
-        type
+        type,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log(result);
+
+        if (result.code === 200 && type === "ACCEPT") {
+          setIsAccepted(true);
+          setIsModalOpen(false);
+        }
       })
-    })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-      
-      if (result.code === 200 && type === 'ACCEPT') {
-        setIsAccepted(true);
-        setIsModalOpen(false);
-      }
-      
-    })
-    .catch((error) => console.error('Error:', error));
+      .catch((error) => console.error("Error:", error));
   };
-  
 
   const handleAccept = () => {
-    sendRequest('ACCEPT');
+    sendRequest("ACCEPT");
     setIsAccepted(true);
   };
 
   const handleOpenModal = () => {
-    sendRequest('REJECT');
+    sendRequest("REJECT");
     setIsModalOpen(true);
   };
 
@@ -75,33 +58,33 @@ const DemandMoneyCheck: React.FC = () => {
   }>();
 
   useEffect(() => {
-    fetch(`http://j9d209.p.ssafy.io:8081/api/pocketmoney/request`, {
+    fetch(`http://j9d209.p.ssafy.io:8081/api/pocketmoney/request?pageNum=1`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzkxNTYsImV4cCI6MTY5NTgyMjM1Nn0.NOi0Wv2MSqFgcgeSvyElB1n07bLe9AUFl2R0Jy9jck4",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzOTA4ODU1ODUwMjgwNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU4NTc0NDMsImV4cCI6MTY5NTkwMDY0M30.bgr0elriq1lCsiSHTIuLncxSH9f27uZZtmQ8_doQjZ0",
       },
     })
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
-        setRequestData(result.data.list[0]);
+        setRequestData(result.data.list[Number(pocketMoneyRequestId) - 1]);
       })
       .catch((error) => console.error("Error:", error));
   }, [pocketMoneyRequestId]);
 
-  if (isAccepted) {
+  if (isAccepted && requestData) {
     return (
       <MoneyDone
         title="용돈 보내기 완료"
         content={
           <>
-            <div className="text-m">김슬기</div>
-            <div className="text-m text-main">3,000원</div>
+            <div className="text-m">{requestData.child.name}</div>
+            <div className="text-m text-main">{requestData.amount}원</div>
           </>
         }
-        ps="남은 잔액 102,000원"
+        ps="남은 잔액 102,000원" // 남은 잔액 계산
       />
     );
   }
@@ -112,21 +95,7 @@ const DemandMoneyCheck: React.FC = () => {
 
       <div className="m-10 text-center flex flex-col flex-grow">
         <SmallBtn text="대기중" classes="mb-10 block mx-auto" />
-
-        {requestData && (
-          <ChildReguestMoneyDetail
-            name={requestData.child.name}
-            message={requestData.type}
-            amount={requestData.amount.toString()}
-            // amount={requestData.amount}
-            requestDate={
-              new Date(requestData.createdAt).toISOString().split("T")[0]
-            }
-            cancelDate={
-              new Date(requestData.cancelDate).toISOString().split("T")[0]
-            }
-          />
-        )}
+        {requestData && <KidDemandedDetail data={requestData} />}
 
         <YesNoBtn
           yesLink=""

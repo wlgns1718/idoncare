@@ -26,7 +26,7 @@ const ParentSetting: React.FC = () => {
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjY1Mzc2Njc2NTAwODUyMTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTc5MzY4MCwiZXhwIjoxNjk1ODM2ODgwfQ.ms_k330ZMaMjcqT4LAt__R3g3Rd3T8LBDwRrwExmt9E",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjkxODMxMzczMDc2Njg4NTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTg4NDg2NCwiZXhwIjoxNjk1OTI4MDY0fQ.0BpIXU9V-Zon3FclpY4TB_3MDGu8SPpiRrz9pNYbc7g",
       },
     })
       .then((response) => response.json())
@@ -42,7 +42,7 @@ const ParentSetting: React.FC = () => {
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship/child/request", {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjY1Mzc2Njc2NTAwODUyMTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTc5MzY4MCwiZXhwIjoxNjk1ODM2ODgwfQ.ms_k330ZMaMjcqT4LAt__R3g3Rd3T8LBDwRrwExmt9E",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjkxODMxMzczMDc2Njg4NTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTg4NDg2NCwiZXhwIjoxNjk1OTI4MDY0fQ.0BpIXU9V-Zon3FclpY4TB_3MDGu8SPpiRrz9pNYbc7g",
       },
     })
       .then((response) => response.json())

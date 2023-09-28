@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Number from "../pocketmoney/Number";
 
 interface AmountItem {
   label: string;
   value: number;
+}
+
+interface Props {
+  onValueChange: (value: number) => void;
 }
 
 const amounts: AmountItem[] = [
@@ -12,22 +16,43 @@ const amounts: AmountItem[] = [
   { value: 10000, label: "1만" },
 ];
 
-const MoneyAmountSet: React.FC = () => {
+const MoneyAmountSet: React.FC<Props> = ({ onValueChange }) => {
   const [moneyAmount, setMoneyAmount] = useState(0);
+  const [pendingValue, setPendingValue] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (pendingValue !== null) {
+      onValueChange(pendingValue);
+      setPendingValue(null);
+    }
+  }, [pendingValue, onValueChange]);
 
   const handleNumberClick = (num: number | string) => {
     if (typeof num === "number") {
-      setMoneyAmount((prevValue) => prevValue * 10 + num);
+      setMoneyAmount((prevValue) => {
+        const newValue = prevValue * 10 + num;
+        setPendingValue(newValue);
+        return newValue;
+      });
     }
   };
-
+  
   const handleDoubleZero = () => {
-    setMoneyAmount((prevState) => prevState * 100);
+    setMoneyAmount((prevValue) => {
+      const newValue = prevValue * 100;
+      setPendingValue(newValue);
+      return newValue;
+    });
   };
-
+  
   const handleBackspace = () => {
-    setMoneyAmount((prevState) => Math.floor(prevState / 10));
+    setMoneyAmount((prevValue) => {
+      const newValue = Math.floor(prevValue / 10);
+      setPendingValue(newValue);
+      return newValue;
+    });
   };
+  
 
   return (
     <div>
@@ -42,7 +67,11 @@ const MoneyAmountSet: React.FC = () => {
             <div
               key={item.label}
               onClick={() =>
-                setMoneyAmount((prevValue) => prevValue + item.value)
+                setMoneyAmount((prev) => {
+                  const newValue = prev + item.value;
+                  setPendingValue(newValue);
+                  return newValue;
+                })
               }
               className="px-5 py-3 bg-gray rounded-3xl"
             >
