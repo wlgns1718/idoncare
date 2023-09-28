@@ -5,7 +5,7 @@ import FullBtn from "../common/FullBtn";
 import Kid from "../common/Kid";
 
 interface Props {
-  onNext: () => void;
+  onNext: (kidUserId: number, kidUserName: string) => void;
 }
 
 type KidData = {
@@ -16,7 +16,8 @@ type KidData = {
 };
 
 const KidSelectForm: React.FC<Props> = ({ onNext }) => {
-  const [selectedKidIds, setSelectedKidIds] = useState<number[]>([]);
+  const [selectedKidId, setSelectedKidId] = useState<number | null>(null); // selectedKidIds를 selectedKidId로 변경하였습니다.
+  const [selectedKidName, setSelectedKidName] = useState<string | null>(null); // 추가된 상태 변수
 
   const [kidsData, setKidsData] = useState<KidData[]>([]);
 
@@ -36,39 +37,43 @@ const KidSelectForm: React.FC<Props> = ({ onNext }) => {
         }
       })
       .catch((error) => console.error("Error:", error));
-    }, []); 
+  }, []);
 
-    const handleKidClick = (id:number) =>{
-        if(selectedKidIds.includes(id)){
-            setSelectedKidIds(selectedKidIds.filter(kidId=>kidId !== id))
-        }else{
-            setSelectedKidIds([...selectedKidIds,id])
-        }
+  const handleKidClick = (id: number, name: string) => {
+    if (selectedKidId === id) {
+      setSelectedKidId(null);
+      setSelectedKidName(null);
+    } else {
+      setSelectedKidId(id);
+      setSelectedKidName(name);
     }
+  };
 
   return (
     <div className="flex flex-col h-screen pb-60">
       <Header pageTitle="용돈 보내기" headerType="normal" headerLink="/" />
 
       <div className="m-10 text-center flex-grow">
-       <div className="text-l mt-24 mb-28">자녀를 선택해주세요.</div>
+        <div className="text-l mt-24 mb-28">자녀를 선택해주세요.</div>
 
         <div className="m-5 flex flex-wrap justify-center">
-            {kidsData.map((kid) => (
-              <Kid
-                key={kid.relationshipId}
-                is_connect={true}
-                isSelected={selectedKidIds.includes(kid.relationshipId)}
-                kname={kid.userName}
-                className="w-36 mr-10 mb-6"
-                onClick={() => handleKidClick(kid.relationshipId)}
-              />
-            ))}
-          </div>
-
+          {kidsData.map((kid) => (
+            <Kid
+              key={kid.relationshipId}
+              is_connect={true}
+              isSelected={selectedKidId === kid.userId}
+              kname={kid.userName}
+              className="w-36 mr-10 mb-6"
+              onClick={() => handleKidClick(kid.userId, kid.userName)}
+            />
+          ))}
+        </div>
       </div>
-      <FullBtn buttonText="다음" onClick={onNext} isDone={selectedKidIds.length > 0}/> 
-
+      <FullBtn
+        buttonText="다음"
+        onClick={() => onNext(selectedKidId!, selectedKidName!)}
+        isDone={selectedKidId !== null}
+      />
     </div>
   );
 };
