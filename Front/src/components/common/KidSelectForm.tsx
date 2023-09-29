@@ -25,7 +25,7 @@ const KidSelectForm: React.FC<Props> = ({ onNext }) => {
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzOTA4ODU1ODUwMjgwNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU5MDEwMDEsImV4cCI6MTY5NTk0NDIwMX0.7BL9OQesx4R058h4YnQSL9m74BV-J6EJod9_WsSXV7I",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc1NjA2MTY0MTgwOTUyMTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU5ODgxMzAsImV4cCI6MTY5NjAzMTMzMH0.D4P1T6o-g_Z0wbvRXtNVCwXNv32tRI4fPdaqQuy3rJM",
       },
     })
       .then((response) => response.json())
