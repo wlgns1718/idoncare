@@ -7,10 +7,7 @@ import d209.Idontcare.common.exception.BadRequestException;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.NoSuchContentException;
 import d209.Idontcare.common.exception.UpdateFailException;
-import d209.Idontcare.mission.dto.GetMissionInfoDto;
-import d209.Idontcare.mission.dto.MissionDto;
-import d209.Idontcare.mission.dto.MissionSimpleDto;
-import d209.Idontcare.mission.dto.MissionStatusDto;
+import d209.Idontcare.mission.dto.*;
 import d209.Idontcare.mission.service.MissionService;
 import d209.Idontcare.user.entity.Role;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -42,11 +41,13 @@ public class MissionController {
     @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto<?> regist(@RequestBody MissionDto missionDto,HttpServletRequest request){
 //        (Long)request.getAttribute("userId");
-        
+        Role role = (Role) request.getAttribute("role");
         try{
             System.out.println(missionDto);
-            Long[] missionIds = missionService.registMission(missionDto);
+            System.out.println(role);
+            Long[] missionIds = missionService.registMission(missionDto,role);
             return ResponseDto.success(missionIds);
+
         }
         catch (CommonException e){
             return ResponseDto.fail(e);
@@ -71,6 +72,25 @@ public class MissionController {
             return ResponseDto.fail(e);
         }
     }
+    @GetMapping("/{missionId}")
+    @Operation(summary = "미션 상세 조회", description =  "미션ID로 미션 상세 정보 불러오기")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공",
+            content = @Content(schema = @Schema(implementation = GetMissionDetailInfoDto.class))),
+            @ApiResponse(responseCode = BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
+    })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    public ResponseDto<?> getMissionDetail(@PathVariable("missionId") Long missionId){
+        try{
+            MissionDto missionDto = missionService.getMissionDetail(missionId);
+            return ResponseDto.success(missionDto);
+        }
+        catch (NoSuchContentException e){
+            return ResponseDto.fail(e);
+        }
+    }
+
+
 
     @PutMapping("/status")
     @Operation(summary = "미션 상태 변경", description = "REQUEST > PROCESS > UNPAID > COMPLETE")
@@ -82,14 +102,15 @@ public class MissionController {
     public ResponseDto<?> changeStatus(@RequestBody MissionStatusDto missionStatusDto,HttpServletRequest request){
         try{
             Role role = (Role) request.getAttribute("role");
-
-            missionService.updateStatus(missionStatusDto, role);
-            return ResponseDto.success(null);
+            Long missionId = missionService.updateStatus(missionStatusDto, role);
+            return ResponseDto.success(missionId);
         }catch (UpdateFailException | NoSuchContentException e){
             return ResponseDto.fail(e);
         }
 
     }
+
+
 
     @DeleteMapping("/{missionId}")
     @Operation(summary = "미션 삭제", description = "MissionId로 조회 후 삭제")
@@ -100,7 +121,9 @@ public class MissionController {
     public ResponseDto<?> deleteMission(@PathVariable("missionId") Long missionId){
         try{
             missionService.deleteMission(missionId);
-            return ResponseDto.success(null);
+            HashMap<String,String> map= new HashMap<>();
+            map.put("msg","삭제가 완료되었습니다.");
+            return ResponseDto.success(map);
         }
         catch (NoSuchContentException e){
             return ResponseDto.fail(e);

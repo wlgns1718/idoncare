@@ -21,7 +21,6 @@ public class Mission extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long missionId;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT")
     private User parent;
@@ -49,7 +48,7 @@ public class Mission extends BaseEntity {
     @Column(name = "COMPLETE_AT")
     private LocalDateTime completeAt;
 
-    public static Mission toEntity(MissionDto missionDto, User child, User parent){
+    public static Mission toRegistEntity(MissionDto missionDto, User child, User parent){
         return Mission.builder()
                 .child(child)
                 .parent(parent)

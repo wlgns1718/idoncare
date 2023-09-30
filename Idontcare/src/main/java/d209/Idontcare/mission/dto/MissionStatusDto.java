@@ -12,5 +12,4 @@ public class MissionStatusDto {
     private User user;
 
     private Long amount;
-
 }
