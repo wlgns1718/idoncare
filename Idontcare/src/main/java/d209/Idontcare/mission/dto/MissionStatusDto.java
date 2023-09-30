@@ -9,7 +9,9 @@ public class MissionStatusDto {
 
     private Long missionId;
 
-    private User user;
+    private String afterMessage;
+
+    private String beforeMessage;
 
     private Long amount;
 }

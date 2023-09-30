@@ -5,6 +5,7 @@ import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.NoSuchContentException;
+import d209.Idontcare.common.exception.UpdateFailException;
 import d209.Idontcare.mission.dto.MissionDto;
 import d209.Idontcare.mission.dto.MissionSimpleDto;
 import d209.Idontcare.mission.dto.MissionStatusDto;
@@ -64,69 +65,6 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public List<MissionSimpleDto> findRequestMissionParent(Long parent_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(parent_userId, Type.REQUEST);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findProcessMissionParent(Long parent_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(parent_userId, Type.PROCESS);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findUnpaidMissionParent(Long parent_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(parent_userId, Type.UNPAID);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findCompleteMissionParent(Long parent_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(parent_userId, Type.COMPLETE);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findRequestMissionChild(Long child_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(child_userId, Type.REQUEST);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findProcessMissionChild(Long child_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(child_userId, Type.PROCESS);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findUnpaidMissionChild(Long child_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(child_userId, Type.UNPAID);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-    @Override
-    public List<MissionSimpleDto> findCompleteMissionChild(Long child_userId) throws CommonException {
-        List<Tuple> list;
-        list = missionRepository.findByParent_UserIdAndType(child_userId, Type.COMPLETE);
-        return list.stream().map(MissionSimpleDto::new).toList();
-    }
-
-
-    @Override
-    public Mission findMission(Long missionId) throws CommonException {
-        return missionRepository.findById(missionId).orElseThrow(NoSuchContentException::new);
-
-    }
-
-    @Override
     public List<MissionSimpleDto> findAllMission(Long userId, Role role) {
         List<Tuple> missions;
         if(role == Role.PARENT){
@@ -141,10 +79,11 @@ public class MissionServiceImpl implements MissionService {
     @Override
     public Long updateStatus(MissionStatusDto missionStatusDto, Role role) {
         Long missionId = missionStatusDto.getMissionId();
-
         Mission mission = missionRepository.findById(missionId).orElseThrow(NoSuchContentException::new);
 
         if(mission.getType() == Type.PROCESS && role == Role.CHILD){
+
+            mission.setAfterMessage(missionStatusDto.getAfterMessage());
             mission.setType(Type.UNPAID);
         }
         else if(mission.getType() == Type.UNPAID && role == Role.PARENT){
@@ -160,8 +99,16 @@ public class MissionServiceImpl implements MissionService {
             mission.setType(Type.COMPLETE);
         }
         else if (mission.getType() == Type.REQUEST && role == Role.PARENT) {
-            mission.setAmount(missionStatusDto.getAmount());
+            if(missionStatusDto.getAmount() != 0){
+                mission.setAmount(missionStatusDto.getAmount());
+            }
+            if(missionStatusDto.getBeforeMessage() != null){
+                mission.setBeforeMessage(missionStatusDto.getBeforeMessage());
+            }
             mission.setType(Type.PROCESS);
+        }
+        else{
+            throw new UpdateFailException();
         }
         return mission.getMissionId();
     }

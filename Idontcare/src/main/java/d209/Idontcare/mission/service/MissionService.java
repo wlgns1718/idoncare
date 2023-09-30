@@ -16,24 +16,6 @@ public interface MissionService {
 
     Long[] registMission(MissionDto missionDto,Role role) throws CommonException;
 
-    List<MissionSimpleDto> findRequestMissionParent(Long parent_userId) throws CommonException;
-
-    List<MissionSimpleDto> findProcessMissionParent (Long parent_userId) throws CommonException;
-
-    List<MissionSimpleDto> findUnpaidMissionParent (Long parent_userId) throws CommonException;
-
-    List<MissionSimpleDto> findCompleteMissionParent (Long parent_userId) throws CommonException;
-
-    List<MissionSimpleDto> findRequestMissionChild(Long child_userId) throws CommonException;
-
-    List<MissionSimpleDto> findProcessMissionChild (Long child_userId) throws CommonException;
-
-    List<MissionSimpleDto> findUnpaidMissionChild (Long child_userId) throws CommonException;
-
-    List<MissionSimpleDto> findCompleteMissionChild (Long child_userId) throws CommonException;
-
-    Mission findMission(Long missionId) throws CommonException;
-
      List<MissionSimpleDto> findAllMission(Long userId, Role role);
 
     Long updateStatus(MissionStatusDto missionStatusDto, Role role);
