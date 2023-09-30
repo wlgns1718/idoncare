@@ -207,4 +207,13 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
       pocketMoneyRequest.setType(PocketMoneyRequest.Type.REJECT);
     }
   }
+  
+  @Override
+  public void deleteRegularPocketMoney(Long parentUserId, DeleteRegularPocketMoneyReqDto req) {
+    
+    RegularPocketMoney regularPocketMoney = regularPocketMoneyRepository.findById(req.getRegularPocketMoneyId()).orElseThrow(NoSuchContentException::new);
+    if( !regularPocketMoney.getParent().getUserId().equals(parentUserId) ) throw new AuthorizationException("접근 권한이 없습니다");
+    
+    regularPocketMoneyRepository.delete(regularPocketMoney);
+  }
 }
