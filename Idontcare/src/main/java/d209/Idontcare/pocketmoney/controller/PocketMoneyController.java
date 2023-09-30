@@ -74,6 +74,27 @@ public class PocketMoneyController {
         return ResponseDto.success(result);
     }
 
+    //부모가 정기용돈 해제
+    @DeleteMapping("/regular")
+    @Operation(summary="정기용돈 삭제", description="부모가 아이에게 등록 된 정기용돈을 삭제")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(schema = @Schema(implementation= Void.class))),
+        @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= AuthorizationException.CODE, description = AuthorizationException.DESCRIPTION),
+        @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION),
+        @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
+        @ApiResponse(responseCode= NoSuchContentException.CODE, description = NoSuchContentException.DESCRIPTION),
+    })
+    @LoginOnly(level = Level.PARENT_ONLY)
+    public ResponseDto deleteRegularPocketMoney(@Valid @RequestBody DeleteRegularPocketMoneyReqDto req, HttpServletRequest request){
+        Long parentUserId = (Long)request.getAttribute("userId");
+        
+        pocketMoneyService.deleteRegularPocketMoney(parentUserId, req);
+        
+        return ResponseDto.success(null);
+    }
+    
     //부모가 아이에게 일회성 용돈 전송
     @PostMapping("/send")
     @Operation(summary="일회성 용돈 전송", description="부모가 아이에게 일회성으로 용돈 전송")
