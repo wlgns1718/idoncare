@@ -1,13 +1,10 @@
 package KFTC.openBank.repository;
 
 import KFTC.openBank.domain.BankAccount;
-import KFTC.openBank.exception.BackAccountException;
-import io.netty.handler.codec.string.StringEncoder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.Tuple;
 import java.util.Optional;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, String> {

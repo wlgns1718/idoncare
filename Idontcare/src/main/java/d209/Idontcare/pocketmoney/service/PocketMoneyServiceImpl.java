@@ -5,11 +5,8 @@ import d209.Idontcare.account.entity.Type;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.*;
-import d209.Idontcare.pocketmoney.dto.req.ProcessPocketMoneyRequestReqDto;
-import d209.Idontcare.pocketmoney.dto.req.RegistRegularPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.req.RequestPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.req.SendPocketMoneyReqDto;
-import d209.Idontcare.pocketmoney.dto.res.GetPocketMoneyRequestResDto;
+import d209.Idontcare.pocketmoney.dto.req.*;
+import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
@@ -80,6 +77,13 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
+  public List<GetRegularPocketMoneysResDto> getRegularPocketMoneys(Long parentUserId) {
+    List<Tuple> tuples = regularPocketMoneyRepository.findAllByParentUserId(parentUserId);
+    
+    return tuples.stream().map(GetRegularPocketMoneysResDto::new).toList();
+  }
+  
+  @Override
   public RegularPocketMoney registryRegularPocketMoney(Long parentUserId, RegistRegularPocketMoneyReqDto req, LocalDateTime now) throws CommonException {
     
     User child = userService.findByUserId(req.getChildUserId()).orElseThrow(() -> new NoSuchUserException("해당하는 자녀를 찾을 수 없습니다"));
@@ -89,7 +93,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     if( !relationshipService.relationExistsByParentAndChild(parentUserId, child.getUserId()) ) throw new BadRequestException("부모와 자식간의 관계가 아닙니다");
     
     Integer cycle = req.getCycle();
-    if(req.getType() == RegularPocketMoney.Type.DAY && cycle != null) throw new BadRequestException("DAY타입에는 주기를 정할 수 없습니다");
+    if(req.getType() == RegularPocketMoney.Type.DAY && (cycle == null || cycle != 1)) throw new BadRequestException("DAY타입에는 주기가 1이어야 합니다");
     if(req.getType() == RegularPocketMoney.Type.WEEK){
       if( !(cycle >= 1 && cycle <= 7) ) throw new BadRequestException("WEEK타입에는 1 ~ 7 사이의 주기만 정할 수 있습니다");
     }
@@ -118,7 +122,6 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   @Override
   public void sendPocketMoney(Long parentUserId, SendPocketMoneyReqDto req){
     
-    User parent = userRepository.findByUserId(parentUserId).get();
     if( !userRepository.existsById(req.getChildUserId()) ){
       throw new NoSuchUserException("해당 자녀를 찾을 수 없습니다");
     }
@@ -128,7 +131,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
         .builder()
         .money(req.getAmount())
         .userId(req.getChildUserId())
-        .content(String.format("%s님의 용돈 지급", parent.getName()))
+        .content(req.getComment())
         .type(Type.POCKET)
         .build();
     
@@ -203,5 +206,14 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
       //거절이면
       pocketMoneyRequest.setType(PocketMoneyRequest.Type.REJECT);
     }
+  }
+  
+  @Override
+  public void deleteRegularPocketMoney(Long parentUserId, DeleteRegularPocketMoneyReqDto req) {
+    
+    RegularPocketMoney regularPocketMoney = regularPocketMoneyRepository.findById(req.getRegularPocketMoneyId()).orElseThrow(NoSuchContentException::new);
+    if( !regularPocketMoney.getParent().getUserId().equals(parentUserId) ) throw new AuthorizationException("접근 권한이 없습니다");
+    
+    regularPocketMoneyRepository.delete(regularPocketMoney);
   }
 }

@@ -12,12 +12,14 @@ import d209.Idontcare.common.ObjectMapper;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.dto.ResponseDto;
+import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +32,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
-
 
     public final EncryptService encryptService;
     public final RealAccountService realAccountService;
     public final VirtualAccountService virtualAccountService;
     public final UserService userService;
-
 
     @Value("${openbank.url}")
     private String url;
@@ -47,8 +48,6 @@ public class AccountController {
 
     @Value("${idontcare.bankcode}")
     private String iDontCareBankCode;
-
-
 
     //사용자 인증
     @PostMapping("/auth")
@@ -60,6 +59,13 @@ public class AccountController {
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto findTransaction(@RequestBody AuthReq authReq, HttpServletRequest request) throws Exception {
         Map<String, String> map = new HashMap<>();
+        Long userId = (Long) request.getAttribute("userId");
+        User user = userService.findByUserId(userId).get();
+        if(!user.getName().equals(authReq.getName())){
+            map.put("code", "402");
+            map.put("error", "본인 명의만 등록 가능합니다.");
+            return ResponseDto.fail(map);
+        }
         try {
             APIResultDto result = APIBuilder.build()
                     .url(url + "/openbanking/oauth/2.0/token")
@@ -77,30 +83,96 @@ public class AccountController {
         }
     }
 
-
-    //충전 계좌 등록
-    @PostMapping("/regist")
-    @Operation(summary = "충전 계좌 등록", description = "실계좌 조희")
+    //충전 계좌 유효성 체크
+    @PostMapping("/valid")
+    @Operation(summary = "충전 계좌 유효성 체크", description = "충전 계좌 유효성 체크")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
+            @ApiResponse(responseCode = "402", description = "계좌가 없습니다.")
+    })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    public ResponseDto validateAccount(@RequestBody InquiryReq inquiryReq, HttpServletRequest request) throws Exception {
+        //토큰에 대한 사용자 userId
+        Long userId = (Long) request.getAttribute("userId");
+        User user = userService.findByUserId(userId).get();
+        Map<String, String> map = new HashMap<>();
+            try {
+                APIResultDto result = APIBuilder.build()
+                        .url(url + "/openbanking/inquiry/receive")
+                        .method(HttpMethod.POST)
+                        .body(inquiryReq)
+                        .execute();
+                com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                Map<String, Object> data = (Map<String, Object>) ((Map<String, Object>) result.getBody()).get("data");
+                String clientName = (String) data.get("clientName");
+                if(!user.getName().equals(clientName)){
+                    map.put("code", "402");
+                    map.put("error", "본인 명의만 등록 가능합니다.");
+                    return ResponseDto.fail(map);
+                }
+                return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
+            }catch (Exception e) {
+            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
+            return ResponseDto.fail(errorCode);
+        }
+    }
+
+//    계좌 등록
+    @PostMapping("/")
+    @Operation(summary = "충전 계좌 등록", description = "은행 서버에 등록 되어 있는 실계좌를 핀테크 서비스에서 open bank 서비스를 이용하기 위해 등록")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto findTransaction(@RequestBody InquiryReq inquiryReq, HttpServletRequest request) throws Exception {
-        Long userId = 1L;
         try {
+            Long userId = (Long) request.getAttribute("userId");
+            User user = userService.findByUserId(userId).get();
             APIResultDto result = APIBuilder.build()
-                    .url(url + "/openbanking/oauth/2.0/pin")
+                    .url(url + "/openbanking/oauth/2.0/regist")
                     .method(HttpMethod.POST)
-                    .body(inquiryReq)
+                    .body(AccountRegistReq.builder()
+                            .name(user.getName())
+                            .phoneNumber(user.getPhoneNumber())
+                            .bankCodeStd(inquiryReq.getBankCodeStd())
+                            .accountNum(inquiryReq.getAccountNum())
+                            .tranDtime(null)
+                            .finTechServiceId("1234512345")
+                            .build())
                     .execute();
-            System.out.println(result.getBody());
-            return ResponseDto.success(((Map<String, String>) result.getBody()).get("data"));
+            Map<String, Object> data = (Map<String, Object>) ((Map<String, Object>) result.getBody()).get("data");
+            String pinNumber = (String) data.get("pinNumber");
+            realAccountService.saveRealAccount(inquiryReq.getAccountNum(), user, pinNumber, inquiryReq.getBankName(),  inquiryReq.getBankCodeStd());
+            return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
         } catch (Exception e) {
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
             return ResponseDto.fail(errorCode);
         }
     }
+
+////    계좌 삭제
+//    @DeleteMapping("/")
+//    @Operation(summary = "충전 계좌 등록", description = "실계좌 조희")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "성공"),
+//            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
+//    })
+//    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+//    public ResponseDto findTransaction(@RequestBody InquiryReq inquiryReq, HttpServletRequest request) throws Exception {
+//        Long userId = 1L;
+//        try {
+//            APIResultDto result = APIBuilder.build()
+//                    .url(url + "/openbanking/oauth/2.0/pin")
+//                    .method(HttpMethod.POST)
+//                    .body(inquiryReq)
+//                    .execute();
+//            System.out.println(result.getBody());
+//            return ResponseDto.success(((Map<String, String>) result.getBody()).get("data"));
+//        } catch (Exception e) {
+//            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
+//            return ResponseDto.fail(errorCode);
+//        }
+//    }
 
 
     //은행 리스트 조회
@@ -109,23 +181,25 @@ public class AccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> BankList(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
+        log.info("은행 리스트 조회 함수 호출");
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try {
+            log.info("OPEN BANK API 호출 이전");
             APIResultDto result = APIBuilder.build()
                     .url(url + "/openbanking/bank/image")
                     .method(HttpMethod.GET)
                     .execute();
+            log.info("OPEN BANK API 호출 이후");
             return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
         } catch (Exception e) {
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
             return ResponseDto.fail(errorCode);
         }
     }
-
 
     //계좌 충전 창에서 실계좌를 등록했는지 조회
     @GetMapping("/my")
@@ -134,7 +208,7 @@ public class AccountController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> findMyRealAccount(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -147,18 +221,15 @@ public class AccountController {
         }
     }
 
-
     //실계좌 유효성 체크
-    @GetMapping("")
+    @PostMapping("")
     @Operation(summary = "계좌이체시 실 계좌 유효성 체크", description = "실계좌 유효성 체크")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "404", description = "일치하는 고객이 없을 때 발생.")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> findRealAccount(@RequestBody ReceiveReq receiveReq, HttpServletRequest request) throws Exception {
-        //토큰에 대한 사용자 userId
-        Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
         try {
             APIResultDto result = APIBuilder.build()
@@ -166,6 +237,7 @@ public class AccountController {
                     .method(HttpMethod.POST)
                     .body(receiveReq)
                     .execute();
+            System.out.println(((Map<String, Object>) result.getBody()).get("data"));
             return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
         } catch (Exception e) {
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
@@ -173,14 +245,13 @@ public class AccountController {
         }
     }
 
-
     //충전 (출금계좌 → 가상계좌 )
     @PostMapping("/charge")
     @Operation(summary = "등록한 출금 계좌에서 가상 계좌로 돈 출금", description = "충전")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> chargeMoney(@RequestBody ChargeAccountRes chargeAccountRes, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
@@ -214,13 +285,13 @@ public class AccountController {
     }
 
     //계좌이체 (가상계좌 → 실계좌)
-    @PostMapping("")
+    @PostMapping("/pay")
     @Operation(summary = "가상 계좌에서 실 계좌로 송금(나에게로 보내기 혹은 타인에게 보내기)", description = "가상에서 실계좌로 송금")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "가상 계좌에서 실 계좌로 송금 완료"),
             @ApiResponse(responseCode = "402", description = "가상 계좌의 잔액 부족")
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> virtualToReal(@RequestBody VirtualToRealReq payment, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");

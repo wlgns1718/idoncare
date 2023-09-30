@@ -22,14 +22,10 @@ public class InquiryReq {
     tran_dtime : 요청일시
      */
 
-    @Schema(description = "은행 코드", example = "51")
+    @Schema(description = "은행 코드", example = "41")
     private String bankCodeStd;
+    @Schema(description = "은행 이름", example = "신한은행")
+    private String bankName;
     @Schema(description = "계좌번호", example = "1234567890")
     private String accountNum;
-    @Schema(description = "은행거래고유번호", example = "T9916764")
-    private String bankTranId;
-    @Schema(description = "예금주 인증정보", example = "20000101")
-    private String accountHolderInfo;
-    @Schema(description = "요청일시", example = "2023-09-14T10:30:00")
-    private LocalDateTime tranDtime;
 }

@@ -4,6 +4,7 @@ import d209.Idontcare.account.dto.res.RealAccountRes;
 import d209.Idontcare.account.entity.RealAccount;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.repository.RealAccountRepository;
+import d209.Idontcare.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,10 @@ public class RealAccountService {
                     return RealAccountRes.RealAccountToDto(account, decrypAccount, decrypPinNumber);
                 })
                 .orElseThrow(() -> new VirtualAccountException(402, "충전 계좌가 등록 되지 않았습니다."));
+    }
+
+    //충전 계좌 등록하기
+    public void saveRealAccount(String accountNum, User user, String pinNumber, String bankName, String bankCode){
+        realAccountRepository.save(new RealAccount(accountNum, user, pinNumber, bankName, bankCode));
     }
 }

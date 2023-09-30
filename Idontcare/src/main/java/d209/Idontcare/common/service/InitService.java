@@ -47,20 +47,17 @@ public class InitService {
   private void userDataInit(){
     if(userRepository.count() > 0) return;
     for(long i = 1L; i <= 9; i++){
-      User parent = new User(  i, i, "010" + "1234" + "567" + (i+7 % 10), "김부모" + (i == 1L ? "" : i), Role.PARENT, "김부모" + i + "_닉네임") ;
+      User parent = new User(  i, i, "010" + "1234" + "567" + ((i+7) % 10), "김부모" + i, Role.PARENT, "김부모" + i + "_닉네임") ;
       parent.setUUID();
       User savedParent = userRepository.save(parent);
-      UserDetail parentDetail = new UserDetail(savedParent.getUserId(), savedParent, "199101" + i, "mail" + i + "@naver.com");
+      UserDetail parentDetail = new UserDetail(savedParent.getUserId(), savedParent, "1990010" + i, "mail" + i + "@naver.com");
       userDetailRepository.save(parentDetail);
-
       User child = new User(10L + i, 10L + i, "010" + "4321" + "001" + i, "김자식" + i, Role.CHILD, "김자식" + i + "_닉네임");
       child.setUUID();
       User savedChild = userRepository.save(child);
-      UserDetail childDetail = new UserDetail(savedChild.getUserId(), savedChild, "200101" + i, "mail" + i + "@gmail.com");
+      UserDetail childDetail = new UserDetail(savedChild.getUserId(), savedChild, "2000010" + i, "mail" + i + "@gmail.com");
       userDetailRepository.save(childDetail);
     }
-
-
   }
 
   private void virtualAccountDataInit(){
@@ -95,18 +92,17 @@ public class InitService {
   private void realAccountDataInit(){
     if(realAccountRepository.count() > 0) return;
     String pw = encryptService.encrypt("123456");
-    /* 진짜 계좌 넣기 */
-    RealAccount parentReal = new RealAccount(encryptService.encrypt("1111111111"), userRepository.findByKakaoId(1L).get(), pw, "신한은행", "41");
-    realAccountRepository.save(parentReal);
+    for(long i = 2L; i <= 5; i++){
+      RealAccount account = new RealAccount(encryptService.encrypt(String.valueOf(i)), userRepository.findByKakaoId(i).get(), pw, "신한은행", "41");
+      realAccountRepository.save(account);
+    }
   }
 
   private void relationshipDataInit(){
     if(relationshipRepository.count() > 0) return;
-
     User parent1 = userRepository.findByKakaoId(1L).get();
     User parent2 = userRepository.findByKakaoId(2L).get();
     User parent3 = userRepository.findByKakaoId(3L).get();
-
     User child1 = userRepository.findByKakaoId(11L).get();
     User child2 = userRepository.findByKakaoId(12L).get();
     User child3 = userRepository.findByKakaoId(13L).get();

@@ -50,5 +50,7 @@ public class Account {
         this.user = user;
         this.accountNumber = accountNumber;
         this.finTechService = finTechService;
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
     }
 }

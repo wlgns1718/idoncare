@@ -1,42 +1,61 @@
 package KFTC.openBank.service;
 
 
-import KFTC.openBank.domain.Bank;
-import KFTC.openBank.domain.BankAccount;
-import KFTC.openBank.domain.TransactionHistory;
-import KFTC.openBank.domain.Type;
+import KFTC.openBank.domain.*;
 import KFTC.openBank.dto.*;
 import KFTC.openBank.exception.AccountException;
-import KFTC.openBank.exception.BackAccountException;
+import KFTC.openBank.exception.BankAccountException;
 import KFTC.openBank.exception.TransactionHistoryException;
-import KFTC.openBank.repository.AccountRepository;
-import KFTC.openBank.repository.BankAccountRepository;
-import KFTC.openBank.repository.BankRepository;
-import KFTC.openBank.repository.TransactionHistoryRepository;
+import KFTC.openBank.exception.UserException;
+import KFTC.openBank.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Tuple;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AccountService {
 
+    private final FinTechServiceRepository finTechServiceRepository;
+    private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final BankRepository bankRepository;
     private final BankAccountRepository bankAccountRepository;
     private final TransactionHistoryRepository transactionHistoryRepository;
 
+    //계좌 유효성 체크
+    public void validAccount(AccountVerifiRequesDto reqDto){
+        String userName = bankAccountRepository.findNameByIdAndBankId(reqDto.getAccountNum(), reqDto.getBankCodeStd()).orElseThrow(() -> new BankAccountException.NotFoundException("요청하신 계좌는 없는 계좌입니다."));
+        if(!userName.equals(reqDto.getName())){
+            throw new UserException("계좌의 실소유주와 요청자가 일치하지 않습니다.");
+        }
+    }
+
     //플랫폼에 계좌 등록
-    public void registAccount(String pinNumber) throws AccountException {
+    public String registAccount(AccountRegistRequesDto reqDto) throws AccountException {
+        Bank bank = bankRepository.findById(reqDto.getBankCodeStd()).orElseThrow(() -> new BankAccountException("요청하신 은행은 찾을 수 없습니다."));
+        User user = userRepository.findUser(reqDto.getName(), reqDto.getPhoneNumber()).orElseThrow(() -> new UserException("해당 유저는 등록 되지 않은 유저입니다."));
+        FinTechService finTechService = finTechServiceRepository.findById(reqDto.getFinTechServiceId()).orElseThrow(() -> new AccountException.FintechNumNotFoundException("허가 받지 않은 핀테크 서비스 입니다."));
+        accountRepository.findPinNumber(reqDto.getBankCodeStd(), reqDto.getAccountNum()).ifPresent(a -> {throw new AccountException("이미 등록 된 계좌입니다.");});
+        Account account = new Account(GeneratePinNumber(), bank, user, reqDto.getAccountNum(), finTechService);
+        accountRepository.save(account);
+        return account.getId();
+    }
+
+    //플랫폼에 계좌 삭제
+    public void deleteAccount(AccountRegistRequesDto reqDto) throws AccountException {
+
+
     }
 
     //플랫폼에 등록된 계좌에서 잔액 조회
@@ -58,7 +77,7 @@ public class AccountService {
     //계좌 실명 조회
     @Transactional(readOnly = true)
     public InquiryResponseDto findRealName(InquiryRequestDto inquiryRequestDto) throws AccountException {
-        String accountName = bankAccountRepository.findNameById(inquiryRequestDto.getAccountNum(), inquiryRequestDto.getBankCodeStd(), inquiryRequestDto.getAccountHolderInfo());
+        String accountName = bankAccountRepository.findNameById(inquiryRequestDto.getAccountNum(), inquiryRequestDto.getBankCodeStd(), inquiryRequestDto.getUserId());
         if(accountName == null){
             throw new AccountException.AccoutNotFoundException("요청 하신 정보와 일치하는 계좌는 없습니다.");
         }
@@ -102,8 +121,8 @@ public class AccountService {
 
 
     //입금 이체
-    @Transactional(rollbackFor = {AccountException.class, BackAccountException.class})
-    public DepositResponseDto depositLogic(DepositRequestDto depositRequestDto) throws AccountException, BackAccountException {
+    @Transactional(rollbackFor = {AccountException.class, BankAccountException.class})
+    public DepositResponseDto depositLogic(DepositRequestDto depositRequestDto) throws AccountException, BankAccountException {
         String depositName = bankAccountRepository.findNameByIdAndBankId(depositRequestDto.getCntrAccountNum(), depositRequestDto.getCntrAccountBankCodeStd())
                 .orElseThrow(() -> new AccountException.FintechNumNotFoundException("요청 하신 핀테크 기업의 계좌 번호는 없는 계좌 번호 입니다."));
         //핀테크 기업의 은행 코드 및 계좌 번호
@@ -133,8 +152,8 @@ public class AccountService {
 
 
     //출금 이체
-    @Transactional(rollbackFor = {AccountException.class, BackAccountException.class})
-    public WithdrawReponseDto withdrawLogic(WithdrawRequestDto withdrawRequestDto) throws AccountException, BackAccountException {
+    @Transactional(rollbackFor = {AccountException.class, BankAccountException.class})
+    public WithdrawReponseDto withdrawLogic(WithdrawRequestDto withdrawRequestDto) throws AccountException, BankAccountException {
         Tuple result = accountRepository.findBankAndAccountNumberById(withdrawRequestDto.getFintechUseNum());
         if(result==null){
             throw new AccountException.FintechNumNotFoundException("요청 하신 핀테크 이용 번호는 등록되어 있지 않습니다.");
@@ -170,11 +189,11 @@ public class AccountService {
     }
 
     //출금
-    public void withdraw(PaymentDto paymentDto) throws BackAccountException{
+    public void withdraw(PaymentDto paymentDto) throws BankAccountException {
         System.out.println(paymentDto.toString());
         BankAccount account = bankAccountRepository.findByNameAndBankIdAndId(paymentDto.getWithdrawer(), paymentDto.getWithdrawerBankId(), paymentDto.getWithdrawerAccountNum());
         if(account == null){
-            throw new BackAccountException.WithdrawException("출금하려는 계좌의 정보가 없습니다.");
+            throw new BankAccountException.WithdrawException("출금하려는 계좌의 정보가 없습니다.");
         }
         try{
             BankAccount bankAccount = bankAccountRepository.findById(paymentDto.getWithdrawerAccountNum()).get();
@@ -182,16 +201,16 @@ public class AccountService {
             TransactionHistory transactionHistory = new TransactionHistory(bankAccount, paymentDto.getWithdrawerContent(), LocalDateTime.now(), paymentDto.getMoney(), Type.WITHDRAWAL, money);
             transactionHistoryRepository.save(transactionHistory);
         }catch (Exception e){
-            throw new BackAccountException.WithdrawException("출금 중 문제가 발생했습니다!");
+            throw new BankAccountException.WithdrawException("출금 중 문제가 발생했습니다!");
         }
     }
 
     //입금
-    public void deposit(PaymentDto paymentDto) throws BackAccountException {
+    public void deposit(PaymentDto paymentDto) throws BankAccountException {
         System.out.println(paymentDto.toString());
         BankAccount account = bankAccountRepository.findByNameAndBankIdAndId(paymentDto.getDepositor(), paymentDto.getDepositorBankId(), paymentDto.getDepositorAccountNum());
         if(account == null){
-            throw new BackAccountException.WithdrawException("입금하려는 계좌의 정보가 없습니다.");
+            throw new BankAccountException.WithdrawException("입금하려는 계좌의 정보가 없습니다.");
         }
         try{
             BankAccount bankAccount = bankAccountRepository.findById(paymentDto.getDepositorAccountNum()).get();
@@ -199,7 +218,7 @@ public class AccountService {
             TransactionHistory transactionHistory = new TransactionHistory(bankAccount, paymentDto.getDepositorContent(), LocalDateTime.now(), paymentDto.getMoney(), Type.DEPOSIT, money);
             transactionHistoryRepository.save(transactionHistory);
         }catch (Exception e){
-            throw new BackAccountException.WithdrawException("입금 중 문제가 발생했습니다!");
+            throw new BankAccountException.WithdrawException("입금 중 문제가 발생했습니다!");
         }
     }
 
@@ -215,13 +234,24 @@ public class AccountService {
 
     // 수취 조회
     public ReceiveResponseDto findClient(ReceiveRequestDto receiveRequestDto) {
-        String clientName = bankAccountRepository.findNameByIdAndBankId(receiveRequestDto.getAccountNum(), receiveRequestDto.getBankCdoeStd())
+        String clientName = bankAccountRepository.findNameByIdAndBankId(receiveRequestDto.getAccountNum(), receiveRequestDto.getBankCodeStd())
                 .orElseThrow(() -> new AccountException.AccoutNotFoundException("일치하는 고객이 없습니다."));
         return ReceiveResponseDto.builder()
                 .accountNum(receiveRequestDto.getAccountNum())
                 .clientName(clientName)
-                .bankCdoeStd(receiveRequestDto.getBankCdoeStd())
-                .bankStd(bankRepository.findNameById(receiveRequestDto.getBankCdoeStd()))
+                .bankCdoeStd(receiveRequestDto.getBankCodeStd())
+                .bankStd(bankRepository.findNameById(receiveRequestDto.getBankCodeStd()))
                 .build();
+    }
+
+    public String GeneratePinNumber(){
+        String result = "";
+        Random random = new Random();
+        result += Integer.toString(random.nextInt(9) + 1);
+
+        for(int i = 0; i < 8; i++){
+            result += Integer.toString(random.nextInt(10));
+        }
+        return result;
     }
 }
