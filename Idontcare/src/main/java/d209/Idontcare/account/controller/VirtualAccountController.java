@@ -1,6 +1,7 @@
 package d209.Idontcare.account.controller;
 
 import d209.Idontcare.account.dto.req.ActiveReq;
+import d209.Idontcare.account.dto.req.ActiveRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
 import d209.Idontcare.account.dto.res.MonthTransactionHistoryRes;
 import d209.Idontcare.account.exception.TransactionHistoryException;
@@ -40,12 +41,13 @@ public class VirtualAccountController {
     public ResponseDto<?> accountBalance(HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
-        Map<String, String> map = new HashMap<>();
         try {
+            Map<String, Long> map = new HashMap<>();
             Long userBalance = virtualAccountService.userBalance(userId);
-            map.put("balance", Long.toString(userBalance));
+            map.put("balance", userBalance);
             return ResponseDto.success(map);
         } catch (Exception e) {
+            Map<String, String> map = new HashMap<>();
             map.put("code", "500");
             map.put("error", "가상 계좌 잔액 조회 도중 오류 발생");
             return ResponseDto.fail(map);
@@ -69,6 +71,10 @@ public class VirtualAccountController {
             return ResponseDto.success(result);
         }catch(TransactionHistoryException e){
             return ResponseDto.fail(e);
+        }catch (Exception e) {
+            map.put("code", "500");
+            map.put("error", e.getMessage());
+            return ResponseDto.fail(map);
         }
     }
 
@@ -80,7 +86,7 @@ public class VirtualAccountController {
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-    public ResponseDto<?> accountContent(@PathVariable("content") String content, HttpServletRequest request) throws Exception {
+    public ResponseDto<?> accountContent(@PathVariable(value = "content", required = false) String content, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
@@ -89,6 +95,10 @@ public class VirtualAccountController {
             return ResponseDto.success(result);
         }catch(TransactionHistoryException e){
             return ResponseDto.fail(e);
+        }catch (Exception e) {
+            map.put("code", "500");
+            map.put("error", e.getMessage());
+            return ResponseDto.fail(map);
         }
     }
 
@@ -104,32 +114,47 @@ public class VirtualAccountController {
             //토큰에 대한 사용자 userId
         Long userId = (Long) request.getAttribute("userId");
         Map<String, String> map = new HashMap<>();
+        if(payment.getUserId() == userId){
+            map.put("code", "403");
+            map.put("error", "자기 자신에게는 보낼 수 없습니다.");
+            return ResponseDto.fail(map);
+        }
         try{
             Long virtualAccount = virtualAccountService.userAccount(userId);
             virtualAccountService.virtualPayment(payment, virtualAccount);
             return ResponseDto.success("가상 계좌에서 가상 계좌로 송금 완료");
         }catch (VirtualAccountException e){
             return ResponseDto.fail(e);
+        }catch (Exception e) {
+            map.put("code", "500");
+            map.put("error", e.getMessage());
+            return ResponseDto.fail(map);
         }
     }
 
     //자녀의 활동 보고서(월)
     //현재 월의 최근 5개월
     @GetMapping("/active")
-    @Operation(summary = "활동보고서", description = "가상계좌 월별 입출금 내역")
+    @Operation(summary = "자녀 활동보고서", description = "자녀의 활동 보고서(자녀의 uuid 필요)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-    public ResponseDto<?> findActiveReport(HttpServletRequest request) throws Exception {
+    public ResponseDto<?> findActiveReport(ActiveReq req, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
-        Long userId = (Long) request.getAttribute("userId");
+        Long userId = req.getUserId();
         Map<String, String> map = new HashMap<>();
-        ActiveReq activeReq = transactionHistoryService.reportPerMonth(userId);
+        ActiveRes activeRes = transactionHistoryService.reportPerMonth(userId);
         try{
-            return ResponseDto.success(activeReq);
+            return ResponseDto.success(activeRes);
         }catch (VirtualAccountException e){
             return ResponseDto.fail(e);
+        }catch (Exception e) {
+            map.put("code", "500");
+            map.put("error", e.getMessage());
+            System.out.println(map.get("error"));
+            System.out.println(map.get("code"));
+            return ResponseDto.fail(map);
         }
     }
 }

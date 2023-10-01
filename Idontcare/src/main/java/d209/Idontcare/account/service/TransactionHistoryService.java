@@ -1,16 +1,19 @@
 package d209.Idontcare.account.service;
 
-import d209.Idontcare.account.dto.req.ActiveReq;
+import d209.Idontcare.account.dto.req.ActiveRes;
 import d209.Idontcare.account.dto.res.MonthHistoryRes;
 import d209.Idontcare.account.dto.res.MonthTransactionHistoryRes;
 import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.entity.TransactionHistory;
 import d209.Idontcare.account.exception.TransactionHistoryException;
+import d209.Idontcare.account.exception.UserException;
+import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +89,8 @@ public class TransactionHistoryService {
     }
 
     //최근 5개월의 월별 보고서
-    public ActiveReq reportPerMonth(Long userId){
+    public ActiveRes reportPerMonth(Long userId){
+        userRepository.findByUserId(userId).orElseThrow(() -> new UserException.UserNotFoundException(404, "해당 유저는 없습니다."));
         int Month = LocalDateTime.now().getMonthValue();
         Long thisMonthExpend = transactionHistoryRepository.ThisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
                 .orElse(0L);
@@ -96,7 +100,7 @@ public class TransactionHistoryService {
                 .orElse(0L);
         Long missionEarn = transactionHistoryRepository.ThisMonthMission(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
                 .orElse(0L);
-        ActiveReq activeReq = new ActiveReq(thisMonthExpend, thisMonthExpend - LastMonthExpend, pocketEarn, missionEarn);
+        ActiveRes activeReq = new ActiveRes(thisMonthExpend, thisMonthExpend - LastMonthExpend, pocketEarn, missionEarn);
         for(int i = Month; i > Month - 5; i-- ) {
             int year = LocalDateTime.now().getYear();
             int month = i;

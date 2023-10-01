@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@Tag(name="가상 계좌 API")
+@Tag(name="실계좌 API")
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
@@ -150,30 +150,30 @@ public class AccountController {
         }
     }
 
-////    계좌 삭제
-//    @DeleteMapping("/")
-//    @Operation(summary = "충전 계좌 등록", description = "실계좌 조희")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "성공"),
-//            @ApiResponse(responseCode = "402", description = "계좌를 등록 하지 않았음")
-//    })
-//    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-//    public ResponseDto findTransaction(@RequestBody InquiryReq inquiryReq, HttpServletRequest request) throws Exception {
-//        Long userId = 1L;
-//        try {
-//            APIResultDto result = APIBuilder.build()
-//                    .url(url + "/openbanking/oauth/2.0/pin")
-//                    .method(HttpMethod.POST)
-//                    .body(inquiryReq)
-//                    .execute();
-//            System.out.println(result.getBody());
-//            return ResponseDto.success(((Map<String, String>) result.getBody()).get("data"));
-//        } catch (Exception e) {
-//            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
-//            return ResponseDto.fail(errorCode);
-//        }
-//    }
-
+//    계좌 삭제
+    @DeleteMapping("/")
+    @Operation(summary = "충전 계좌 삭제", description = "충전 계좌 삭제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "402", description = "계좌 삭제 완료")
+    })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    public ResponseDto deleteAccount(@RequestBody AccountDeleteReq req, HttpServletRequest request) throws Exception {
+        Long userId = (Long) request.getAttribute("userId");
+        User user = userService.findByUserId(userId).get();
+        try {
+            APIResultDto result = APIBuilder.build()
+                    .url(url + "/openbanking/oauth/2.0/pin")
+                    .method(HttpMethod.DELETE)
+                    .body(req)
+                    .execute();
+            realAccountService.deleteRealAccount(user);
+            return ResponseDto.success(((Map<String, Object>) result.getBody()).get("msg"));
+        } catch (Exception e) {
+            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
+            return ResponseDto.fail(errorCode);
+        }
+    }
 
     //은행 리스트 조회
     @GetMapping("/bank")
@@ -245,7 +245,7 @@ public class AccountController {
         }
     }
 
-    //충전 (출금계좌 → 가상계좌 )
+    //충전 (출금계좌 → 가상계좌)
     @PostMapping("/charge")
     @Operation(summary = "등록한 출금 계좌에서 가상 계좌로 돈 출금", description = "충전")
     @ApiResponses(value = {
@@ -279,6 +279,9 @@ public class AccountController {
             virtualAccountService.charge(userId, chargeAccountRes.getMoney(), chargeAccountRes.getType());
             return ResponseDto.success(((Map<String, Object>) result.getBody()).get("data"));
         } catch (VirtualAccountException e) {
+            Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
+            return ResponseDto.fail(errorCode);
+        }catch (Exception e) {
             Map<String, String> errorCode = ObjectMapper.findErrorCode(e.getMessage());
             return ResponseDto.fail(errorCode);
         }
