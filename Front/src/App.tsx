@@ -21,9 +21,6 @@ import Purchase from "./pages/Purchase";
 import QRcodePurchase from "./pages/QRcodePurchase";
 import CameraPurchase from "./pages/CameraPurchase";
 import MyPage from "./pages/MyPage";
-import RegistAccount from "./pages/RegistAccount";
-import ARSPage from "./pages/ARSPage";
-import RegistAgreement from "./pages/RegistAgreement";
 import Report from "./pages/Report";
 import Transfer from "./pages/Transfer";
 import TransferSelect from "./pages/TransferSelect";
@@ -49,9 +46,6 @@ function App() {
               <Route path="wallet" element={<Wallet />} />
               <Route path="wallet/search" element={<WalletSearch />} />
               <Route path="wallet/recharge" element={<WalletRecharge />} />
-              <Route path="wallet/recharge/regist" element={<RegistAccount />} />
-              <Route path="wallet/recharge/regist/agreement" element={<RegistAgreement />} />
-              <Route path="wallet/recharge/regist/agreement/ARS" element={<ARSPage />} />
               <Route path="report" element={<Report />} />
               <Route path="purchase" element={<Purchase />} />
               <Route path="purchase/qrcode" element={<QRcodePurchase />} />
