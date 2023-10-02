@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { SignupCode } from "../../store/signup/atoms";
 import { PostSignupAxios } from "../../apis/axios/PostSignupAxios";
 import { useMutation } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm = () => {
   type Data = null | SignupUserInfo;
@@ -20,13 +21,16 @@ const SignupForm = () => {
   const [step, setStep] = useState<number>(1);
   const [signupUserInfo, setSignupUserInfo] = useState<SignupUserInfo>();
   const userId = useRecoilValue<string | null>(SignupCode);
+  const navigate = useNavigate();
 
   const { mutate } = useMutation<PostSignup>(() => PostSignupAxios(signupUserInfo!), {
     onSuccess: (res) => {
       if (res.code === 200) {
         alert("회원가입이 완료되었습니다.");
+        navigate("/");
       } else {
         alert("Error: " + res.code + " " + res.error);
+        navigate("/login");
       }
 
       console.log(res);

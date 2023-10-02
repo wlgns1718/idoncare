@@ -31,6 +31,7 @@ import MissonPage from "./pages/MissonPage";
 import MissionDetailPage from "./pages/MissionDetailPage";
 import MissionCreatPage from "./pages/MissionCreatPage";
 import MissionCreateMoney from "./pages/MissionCreateMoney";
+import PrivateRoute from "./routes/privateRoute";
 
 function App() {
   const queryClient = new QueryClient();
@@ -42,37 +43,98 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="login" element={<Login />} />
-              <Route path="mypage" element={<MyPage />} />
-              <Route path="wallet" element={<Wallet />} />
-              <Route path="wallet/search" element={<WalletSearch />} />
-              <Route path="wallet/recharge" element={<WalletRecharge />} />
-              <Route path="report" element={<Report />} />
-              <Route path="purchase" element={<Purchase />} />
-              <Route path="purchase/qrcode" element={<QRcodePurchase />} />
-              <Route path="purchase/camera" element={<CameraPurchase />} />
-              <Route path="transfer/account" element={<TransferSelect />} />
-              <Route path="transfer/input" element={<Transfer />} />
-              <Route path="transfer/confirm" element={<TransferConfirm />} />
-              <Route path="pocketMoney" element={<PocketMoney />} />
-              {/* <Route path="demandMoneyCheck" element={<DemandMoneyCheck />} /> */}
-              <Route path="demandMoneyCheck/:pocketMoneyRequestId" element={<DemandMoneyCheck />} />
-              <Route path="sendPocketMoney" element={<SendPocketMoney />} />
-              <Route path="sendRegularMoney" element={<SendRegularMoney />} />
-              <Route path="kidDemandMoney" element={<KidDemandMoney />} />
-              <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
-              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
-              <Route path="kidRegist" element={<KidRegist />} />
-              <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
-              <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
-              <Route path="signup" element={<Signup />} />
-              <Route path="newAccount" element={<NewAccount />} />
-              <Route path="parentSetting" element={<ParentSetting />} />
-              <Route path="kidSetting" element={<KidSetting />} />
-              <Route path="kidSetting" element={<KidSetting />} />
-              <Route path="mission" element={<MissonPage />} />
-              <Route path="mission/detail/:missionId" element={<MissionDetailPage />} />
-              <Route path="mission/create" element={<MissionCreatPage />} />
-              <Route path="mission/create/money" element={<MissionCreateMoney />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="mypage" element={<MyPage />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="wallet" element={<Wallet />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="wallet/search" element={<WalletSearch />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="wallet/recharge" element={<WalletRecharge />} />
+              </Route>
+              <Route element={<PrivateRoute />}></Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="report" element={<Report />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="purchase" element={<Purchase />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="purchase/qrcode" element={<QRcodePurchase />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="purchase/camera" element={<CameraPurchase />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="transfer/account" element={<TransferSelect />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="transfer/input" element={<Transfer />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="transfer/confirm" element={<TransferConfirm />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="pocketMoney" element={<PocketMoney />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route
+                  path="demandMoneyCheck/:pocketMoneyRequestId"
+                  element={<DemandMoneyCheck />}
+                />
+                <Route path="sendPocketMoney" element={<SendPocketMoney />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="sendRegularMoney" element={<SendRegularMoney />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidDemandMoney" element={<KidDemandMoney />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidRegist" element={<KidRegist />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="signup" element={<Signup />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="newAccount" element={<NewAccount />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="parentSetting" element={<ParentSetting />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidSetting" element={<KidSetting />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="kidSetting" element={<KidSetting />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="mission" element={<MissonPage />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="mission/detail/:missionId" element={<MissionDetailPage />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="mission/create" element={<MissionCreatPage />} />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route path="mission/create/money" element={<MissionCreateMoney />} />
+              </Route>
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
