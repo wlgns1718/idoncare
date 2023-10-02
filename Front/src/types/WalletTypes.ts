@@ -4,9 +4,9 @@ export type TradeHistoryCategory = {
 };
 
 export type BankDataType = {
-  icon: string;
-  name: string;
-  code: number;
+  bankImage: string;
+  bankName: string;
+  bankId: string;
 } | null;
 
 export type AccountDataType = {
@@ -23,6 +23,15 @@ export type RechargeAccountResponse = {
   bankCode: number;
   accountNumber: number;
   userId: number;
+};
+
+export type TransferAccountData = {
+  amount : number;
+  account : {
+  bankCodeStd: number;
+  bankStd: string;
+  accountNum: number;
+  clientName: string;} | null
 };
 
 export type CashFlow = "WITHDRAWAL" | "DEPOSIT" | "ALL";
