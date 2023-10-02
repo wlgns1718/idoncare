@@ -65,7 +65,7 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
         {
           phoneNumber: authenticationRecoilData.phoneNumber,
           birth: authenticationRecoilData.birth,
-          mobileSort: "SK",
+          mobileSort: authenticationRecoilData.mobileSort,
           name: authenticationRecoilData.name,
         },
         {
@@ -117,8 +117,6 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
         changeValue={handleInputPhoneNumber}
       />
       <NewAccountSelectBox
-        step={step}
-        choice={"mobileSort"}
         changeValue={handleSelectMobileSort}
       />
       <NewAccountCheckBox

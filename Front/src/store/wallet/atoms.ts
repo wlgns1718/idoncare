@@ -1,6 +1,5 @@
 import { atom } from "recoil";
-import KBICON from "../../assets/imgs/bank/PNG_KB.png";
-import { AccountDataType, BankDataType, TradeItem } from "../../types/WalletTypes";
+import { AccountDataType, BankDataType, TradeItem, TransferAccountData } from "../../types/WalletTypes";
 import { MonthlyTradeListResponse } from "../../components/wallet/TradeHistory";
 
 interface BankDataInterface {
@@ -11,41 +10,6 @@ export const bankData = atom<BankDataInterface>({
   key: "bankData",
   default: {
     bankList: [
-      {
-        icon: KBICON,
-        code: 1,
-        name: "KB국민",
-      },
-      {
-        icon: KBICON,
-        code: 2,
-        name: "KB국민",
-      },
-      {
-        icon: KBICON,
-        code: 3,
-        name: "KB국민",
-      },
-      {
-        icon: KBICON,
-        code: 4,
-        name: "KB국민",
-      },
-      {
-        icon: KBICON,
-        code: 5,
-        name: "KB국민",
-      },
-      {
-        icon: KBICON,
-        code: 6,
-        name: "KB국민",
-      },
-      {
-        icon: KBICON,
-        code: 5,
-        name: "KB국민",
-      },
     ],
   },
 });
@@ -79,4 +43,12 @@ export const tradeList = atom<TradeItem[]>({
 export const searchResultTradeList = atom<MonthlyTradeListResponse[]>({
   key: "searchResultTradeList",
   default: [],
+});
+
+export const transferData = atom<TransferAccountData>({
+  key: "transferData",
+  default: {
+    amount : 0,
+    account : null,
+  },
 });

@@ -2,8 +2,8 @@ import { useState } from "react";
 import NewAccountCreateUserInfo from "../components/newAccount/NewAccountUserInfo";
 import NewAccountSelectAccount from "../components/newAccount/NewAccountSelectAccount";
 import NewAccountVertification from "../components/newAccount/NewAccountVertification";
-// import NewAccountARS from "../components/newAccount/NewAccountARS";
 import Header from "../components/common/Header";
+import NewAccountARS from "../components/newAccount/NewAccountARS";
 
 const NewAccount = () => {
   const [step, setStep] = useState(1);
@@ -21,7 +21,7 @@ const NewAccount = () => {
         {step === 3 && (
           <NewAccountVertification onChangeStep={handleStep} step={step} />
         )}
-        {/* {step === 4 && <NewAccountARS onChangeStep={handleStep} step={step} />} */}
+        {step === 4 && <NewAccountARS />}
       </div>
     </>
   );

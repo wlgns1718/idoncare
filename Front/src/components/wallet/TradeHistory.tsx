@@ -148,7 +148,7 @@ function TradeHistory() {
               <DailyTradeList
                 key={index}
                 list={list}
-                showCategoty={currentCategory}
+                showCategory={currentCategory}
               />
             );
           })}

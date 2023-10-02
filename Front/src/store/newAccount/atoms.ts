@@ -9,6 +9,11 @@ interface AuthenticationData {
   name: string | null;
 }
 
+interface BankValidationData {
+  bankCodeStd: number | null;
+  accountNum: number | null;
+}
+
 export const authenticationData = atom<AuthenticationData>({
   key: "authenticationData",
   default: {
@@ -16,5 +21,13 @@ export const authenticationData = atom<AuthenticationData>({
     birth: null,
     mobileSort: null,
     name: "",
+  },
+});
+
+export const bankValidationData = atom<BankValidationData>({
+  key: "bankValidationData",
+  default: {
+    bankCodeStd: null,
+    accountNum: null,
   },
 });

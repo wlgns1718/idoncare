@@ -37,7 +37,7 @@ const NumberPlate: React.FC<NumberPlateProps> = ({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-20 mt-5 mb-10">
+    <div className="grid grid-cols-3 gap-10 mt-5 mb-10">
       {numbers.map((row, i) =>
         row.map((num, j) => (
           <div

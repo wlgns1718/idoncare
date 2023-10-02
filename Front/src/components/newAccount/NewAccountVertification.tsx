@@ -7,20 +7,24 @@ import NewAccountVertificationHelp from "./NewAccountVertification/NewAccountVer
 import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/atoms";
 import axios from "axios";
+import { useState } from "react";
 
 const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
+  const [authenticationNumber, setAuthenticationNumber] = useState<number>();
   const token = useRecoilValue(userToken);
+
+  const handleInputAccount = (value: string | number) => {
+    setAuthenticationNumber(value as number);
+  };
 
   const registAccount = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account/regist`,
+        `http://j9d209.p.ssafy.io:8081/api/account`,
         {
-          bankCodeStd: "51",
-          accountNum: "1234567890",
-          bankTranId: "T9916764",
-          accountHolderInfo: "20000101",
-          tranDtime: "2023-09-26T19:05:16.539Z",
+          bankCodeStd: 41,
+          bankName: "신한은행",
+          accountNum: 77777777,
         },
         {
           headers: { Authorization: token as string },
@@ -28,6 +32,10 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
       )
       .then((res) => {
         console.log(res.data);
+        if (res.data.code == 404) {
+          return;
+        }
+        onChangeStep(4);
       });
   };
 
@@ -36,8 +44,16 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
       <NewAccountHeader step={step} />
       <NewAccountVertificationAccount />
       <NewAccountVertificationHelp />
-      <NewAccountInput placeholder="입금자명(숫자4자리)" />
-      <div onClick={() => onChangeStep(4)}>
+      <NewAccountInput
+        changeValue={handleInputAccount}
+        value={authenticationNumber}
+        placeholder="입금자명(숫자4자리)"
+      />
+      <div
+        onClick={() => {
+          registAccount();
+        }}
+      >
         <FullBtn buttonText="인증완료" buttonLink="/newAccount" />
       </div>
     </div>

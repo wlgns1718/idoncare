@@ -13,7 +13,7 @@ interface SendOptionS {
 function TransferSelectForm() {
   const [sendOption, setSendOption] = useState<SendOption>("family");
 
-  // const selectedBank = useRecoilValue<BankDataType>(sendAccountBank);
+  const [isValid, setIsValid] = useState(false)
 
   const options: SendOptionS[] = [
     { value: "family", label: "가족" },
@@ -58,11 +58,11 @@ function TransferSelectForm() {
       )}
       {sendOption === "account" && (
         <div>
-          <AccountSelectForm />
+          <AccountSelectForm setIsValid={setIsValid} />
           <RechargeAccountList />
         </div>
       )}
-      <FullBtn />
+      <FullBtn isDone={isValid} buttonLink="/transfer/input"/>
     </div>
   );
 }

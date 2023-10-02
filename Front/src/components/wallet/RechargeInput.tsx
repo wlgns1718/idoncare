@@ -1,8 +1,12 @@
-import React from "react";
+interface RechargeInputProps {
+  rechargeAmount: number;
+  setRechargeAmount : (amount: number) => void;
+}
 
-function RechargeInput() {
-  const [rechargeAmount, setRechargeAmount] = React.useState(0);
-
+function RechargeInput({
+  rechargeAmount,
+  setRechargeAmount,
+}: RechargeInputProps) {
   const Amounts = [
     {
       value: 500,
@@ -42,6 +46,7 @@ function RechargeInput() {
             </div>
           );
         })}
+        <div className="px-5 py-3 bg-gray rounded-3xl" onClick={()=>{setRechargeAmount(0);}}>초기화</div>
       </div>
     </div>
   );
