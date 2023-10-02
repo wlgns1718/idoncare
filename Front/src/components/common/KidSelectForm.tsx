@@ -16,8 +16,8 @@ type KidData = {
 };
 
 const KidSelectForm: React.FC<Props> = ({ onNext }) => {
-  const [selectedKidId, setSelectedKidId] = useState<number | null>(null); // selectedKidIds를 selectedKidId로 변경하였습니다.
-  const [selectedKidName, setSelectedKidName] = useState<string | null>(null); // 추가된 상태 변수
+  const [selectedKidId, setSelectedKidId] = useState<number | null>(null);
+  const [selectedKidName, setSelectedKidName] = useState<string | null>(null);
 
   const [kidsData, setKidsData] = useState<KidData[]>([]);
 
@@ -25,7 +25,7 @@ const KidSelectForm: React.FC<Props> = ({ onNext }) => {
     fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc1NjA2MTY0MTgwOTUyMTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU5ODgxMzAsImV4cCI6MTY5NjAzMTMzMH0.D4P1T6o-g_Z0wbvRXtNVCwXNv32tRI4fPdaqQuy3rJM",
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ",
       },
     })
       .then((response) => response.json())

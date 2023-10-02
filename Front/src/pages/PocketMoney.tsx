@@ -21,8 +21,19 @@ type KidDemandedData = {
   type: string;
 };
 
+type RegularMoneyData = {
+  regularPocketMoneyId: number;
+  childUserId: number;
+  childName: string;
+  type: string;
+  cycle: number;
+  amount: number;
+  createdAt: string; // 날짜는 보통 문자열로 받아옵니다.
+};
+
 const PocketMoney: React.FC = () => {
   const [kidDemandedList, setKidDemandedList] = useState<KidDemandedData[]>([]);
+  const [regularPocketMoneyList, setRegularPocketMoneyList] = useState<RegularMoneyData[]>([]);
 
   useEffect(() => {
     
@@ -31,7 +42,8 @@ const PocketMoney: React.FC = () => {
       headers:{
         'Content-Type': 'application/json',
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc1NjA2MTY0MTgwOTUyMTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU5ODgxMzAsImV4cCI6MTY5NjAzMTMzMH0.D4P1T6o-g_Z0wbvRXtNVCwXNv32tRI4fPdaqQuy3rJM"
+        // 부모
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ"
       }
     })
     .then((response) => response.json())
@@ -42,6 +54,20 @@ const PocketMoney: React.FC = () => {
     })
     .catch((error) => console.error('Error:', error));
     
+      
+    fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/regular", {
+      method:'GET',
+      headers:{
+        'Content-Type': 'application/json',
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ"
+      }
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      setRegularPocketMoneyList(result.data);
+    })
+    .catch((error) => console.error('Error:', error));
       
    }, []);
 
@@ -97,12 +123,15 @@ const PocketMoney: React.FC = () => {
         </div>
 
         <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
-        <RegularMoneyBox
-          regularDate="매월 2일"
-          amount="15,000원"
-          startDate="2023.09.13"
-        />
-        <RegularMoneyBoxEmpty />
+        {regularPocketMoneyList.length > 0 ? regularPocketMoneyList.map(money =>
+          <RegularMoneyBox
+            regularPocketMoneyId={money.regularPocketMoneyId}
+            regularDate={`매월 ${money.cycle}일`}
+            cname={money.childName}
+            amount={`${money.amount.toLocaleString()}원`}
+            startDate={new Date(money.createdAt).toLocaleDateString()}
+          />
+        ) : <RegularMoneyBoxEmpty />}
       </div>
     </div>
   );

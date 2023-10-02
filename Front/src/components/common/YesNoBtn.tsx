@@ -44,7 +44,7 @@ const YesNoBtn: React.FC<YesNoBtnProps> = ({
           onClick={handleNoClick}
           className={`block ${className}`}
         >
-          <div className="inline-block w-48 p-4 mr-5 text-black bg-mediumgray rounded-3xl text-s">
+          <div className="inline-block w-48 p-4 mr-5 text-black bg-mediumgray rounded-3xl text-s text-center">
             {noText}
           </div>
         </Link>
@@ -53,7 +53,7 @@ const YesNoBtn: React.FC<YesNoBtnProps> = ({
           onClick={handleYesClick}
           className={`block ${className}`}
         >
-          <div className="inline-block w-48 p-4 text-white bg-main rounded-3xl text-s">
+          <div className="inline-block w-48 p-4 text-white bg-main rounded-3xl text-s text-center">
             {yesText}
           </div>
         </Link>

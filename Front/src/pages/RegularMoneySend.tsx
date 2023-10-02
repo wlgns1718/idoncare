@@ -39,7 +39,8 @@ const SendRegularMoney: React.FC = () => {
         method: "POST",
         headers: {
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc1NjA2MTY0MTgwOTUyMTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU5ODgxMzAsImV4cCI6MTY5NjAzMTMzMH0.D4P1T6o-g_Z0wbvRXtNVCwXNv32tRI4fPdaqQuy3rJM",
+          // 부모
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
