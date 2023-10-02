@@ -8,9 +8,8 @@ const Home = () => {
       <div className="flex flex-col bg-red-100">
         <Link to="/login">login</Link>
       </div>
-
-      <div>
-        <TopMenu />
+      <TopMenu />
+      <div className="mx-8">
         <BottomMenu />
       </div>
     </div>
