@@ -104,7 +104,7 @@ function MissonList() {
         })}
         <MissionHistoryPlusCard />
       </div>
-      <BottomSheet size={60}>
+      <BottomSheet >
         <div className="flex flex-col gap-6 justify-evenly text-s px-10">
           {missionStates.map((state) => {
             return (

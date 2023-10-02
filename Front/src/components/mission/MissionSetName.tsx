@@ -38,7 +38,7 @@ function MissionSetName({ missionData, setMissionData }: MissionSetNameProps) {
         </div>
       </div>
 
-      <BottomSheet size={80}>
+      <BottomSheet>
         <MissionBox />
       </BottomSheet>
     </div>
