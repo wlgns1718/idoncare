@@ -10,6 +10,8 @@ const NewAccountARS = () => {
   const handleEmailChange = (value : string | number) => {
     setEmail(value as string);
   }
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return (
     <div className="flex flex-col text-m">
       <NewAccountARSHelp />
@@ -22,7 +24,11 @@ const NewAccountARS = () => {
         />
         <NewAccountText arsTextIndex={1} />
       </div>
-      <FullBtn buttonText="ARS 출금 동의 완료" buttonLink="/main" />
+      <FullBtn
+        buttonText="ARS 출금 동의 완료"
+        buttonLink="/"
+        isDone={emailRegex.test(email)}
+      />
     </div>
   );
 };

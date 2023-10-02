@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { rechargeAccount } from "../../store/wallet/atoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { isExistRechargeAccount } from "../../store/wallet/selectors";
 import { useEffect } from "react";
 import axios from "axios";
@@ -14,7 +14,7 @@ export const EmptyAccount = () => {
       <div>충전 계좌 추가</div>
       <div
         onClick={() => {
-          navigate("/wallet/recharge/regist");
+          navigate("/newAccount");
         }}
       >
         +
@@ -25,6 +25,27 @@ export const EmptyAccount = () => {
 
 export const RechargeAccountComponent = () => {
   const myRechargeAccount = useRecoilValue(rechargeAccount);
+  const resetRechargeAccount = useResetRecoilState(rechargeAccount);
+  const Token = useRecoilValue(userToken);
+
+  const removeAccount = () => {
+
+    axios
+      .delete(
+        `http://j9d209.p.ssafy.io:8081/api/account/`,
+        {
+          headers: { Authorization: Token as string },
+          data: {
+            bankCode: 41,
+            realAccountId: 77777777,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        resetRechargeAccount()
+      });
+  };
   return (
     <div className="w-full h-[80px] px-8 my-4 bg-gray rounded-xl flex items-center justify-between ">
       <div className="flex">
@@ -37,7 +58,10 @@ export const RechargeAccountComponent = () => {
           <div>{myRechargeAccount?.realAccountId}</div>
         </div>
       </div>
-      <div className="flex items-center rounded-md bg-red-50 px-4 p-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">
+      <div
+        className="flex items-center rounded-md bg-red-50 px-4 p-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
+        onClick={() => {removeAccount()}}
+      >
         삭제
       </div>
     </div>
@@ -55,6 +79,9 @@ function RechargeAccountList() {
         })
         .then((res) => {
           console.log(res.data);
+          if(res.data.error) {
+            return
+          }
           const account: RechargeAccountResponse = res.data.data;
           setRechargeAccount({
             realAccountId: account.realAccountId,
@@ -76,6 +103,7 @@ function RechargeAccountList() {
       <div className="">
         {!isRechargeAccount ? <EmptyAccount /> : <RechargeAccountComponent />}
       </div>
+      {!isRechargeAccount && <div className="text-center text-red-600">충전 계좌가 등록되지 않았습니다</div>}
     </div>
   );
 }

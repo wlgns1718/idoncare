@@ -2,13 +2,15 @@ import { useState } from "react";
 import FullBtn from "../common/FullBtn";
 import NewAccountCheckBox from "./common/NewAccountCheckBox";
 import NewAccountHeader from "./common/NewAccountHeader";
-import NewAccountInput from "./common/NewAccountInput";
-import NewAccountSelectBox from "./common/NewAccountSelectBox";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 import axios from "axios";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/atoms";
-import { bankValidationData } from "../../store/newAccount/atoms";
+import AccountSelectForm from "../wallet/AccountSelectForm";
+import {
+  resistRechargeAccountInput,
+  sendAccountBank,
+} from "../../store/wallet/atoms";
 
 const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const [withdrawServiceAgree, setWithdrawServiceAgree] = useState(false);
@@ -22,36 +24,36 @@ const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
 
   const token = useRecoilValue(userToken);
 
-  const [bankData, setBankData] = useRecoilState(bankValidationData);
+  const accountNum = useRecoilValue(resistRechargeAccountInput);
+  const bank = useRecoilValue(sendAccountBank);
 
   const accountValidCheck = () => {
     axios
-      .get(`http://j9d209.p.ssafy.io:8081/api/account`, {
-        headers: { Authorization: token as string },
-        data: {
-          bankCodeStd: "41",
-          accountNum: "111111111111",
+      .post(
+        `http://j9d209.p.ssafy.io:8081/api/account/valid`,
+        {
+          bankCodeStd: bank?.bankId,
+          bankName: bank?.bankName,
+          accountNum: accountNum,
         },
-      })
+        {
+          headers: { Authorization: token as string },
+        }
+      )
       .then((res) => {
         console.log(res.data);
+        if (res.data == null) {
+          console.log(res.data.error);
+          return;
+        }
+        onChangeStep(3);
       });
   };
-
-  const handleBank = (value: number | string) =>
-    setBankData({ ...bankData, bankCodeStd: value as number });
-  const handleAccountNumber = (value: number | string) =>
-    setBankData({ ...bankData, accountNum: value as number });
 
   return (
     <div className="flex flex-col text-m">
       <NewAccountHeader step={step} />
-      <NewAccountSelectBox step={step} changeValue={handleBank} />
-      <NewAccountInput
-        placeholder="계좌번호 (숫자만)"
-        changeValue={handleAccountNumber}
-        value={bankData.accountNum}
-      />
+      <AccountSelectForm btn={false} />
       <NewAccountCheckBox
         text="출금서비스(은행) 약관 동의"
         isCheck={withdrawServiceAgree}
@@ -69,11 +71,13 @@ const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
       />
       <div
         onClick={() => {
-          onChangeStep(3);
           accountValidCheck();
         }}
       >
-        <FullBtn buttonText="다음" buttonLink="/newAccount" />
+        <FullBtn
+          buttonText="다음"
+          isDone={withdrawServiceAgree && finDataAgree && privateFinDataAgree}
+        />
       </div>
     </div>
   );
