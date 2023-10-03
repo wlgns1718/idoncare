@@ -11,6 +11,7 @@ import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.service.PocketMoneyService;
 import d209.Idontcare.common.annotation.LoginOnly.Level;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.List;
 @RequestMapping("/api/pocketmoney")
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class PocketMoneyController {
 
     private final PocketMoneyService pocketMoneyService;
@@ -40,7 +43,7 @@ public class PocketMoneyController {
     @Operation(summary = "정기용돈 등록 목록 조회", description = "부모가 아이에게 등록한 정기용돈 목록 조회")
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
-            content=@Content(schema = @Schema(implementation= GetRegularPocketMoneysResDto.Result.class))),
+            content=@Content(array = @ArraySchema(schema = @Schema(implementation= GetRegularPocketMoneysResDto.class)))),
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
     })
@@ -178,15 +181,19 @@ public class PocketMoneyController {
     /* 매일 오전 01시 정기용돈 이체 */
     @Scheduled(cron = "0 0 1 * * ?")
     public void executeRegularPocketMoney(){
-        // TODO : 정기용돈 이체 필요
         LocalDateTime now = LocalDateTime.now();
         pocketMoneyService.executeRegularPocketMoney(now);
     }
     
-    @PostMapping("/regular/test")
-    public void testRegularPocketMoney(){
-        // TODO : 테스트용 API 필요
+    @PostMapping("/regular/test/{day}")
+    @Operation(summary = "정기용돈 지급 테스트용", description = "정기용돈 지급 테스트")
+    public void testRegularPocketMoney(@PathVariable("day") Integer day){
+        int year = day / 10_000;
+        int month = (day % 10_000) / 100;
+        int date = day % 100;
         
+        LocalDateTime now = LocalDateTime.of(year, month, date, 0, 0);
+        pocketMoneyService.executeRegularPocketMoney(now);
     }
     
     @GetMapping("/time/test")
@@ -194,10 +201,19 @@ public class PocketMoneyController {
     public String timeTest(){
         return LocalDateTime.now().toString();
     }
-    
-    /* 서버시간마다 제대로 CRON 동작하는지 확인용 */
-    @Scheduled(cron = "0 35 16 * * ?")
-    public void cronTest(){
-        log.info(LocalDateTime.now().toString());
+
+    @GetMapping("/regular/rejected")
+    @Operation(summary = "정기용돈 미입금 내역 조회")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(array = @ArraySchema(schema = @Schema(implementation= GetRegularPocketMoneyRejectedResDto.class)))),
+        @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
+    })
+    @LoginOnly(level=Level.PARENT_ONLY)
+    public ResponseDto getRegularPocketMoneyRejectedList(HttpServletRequest request){
+        Long parentUserId = (Long)request.getAttribute("userId");
+        List<GetRegularPocketMoneyRejectedResDto> list = pocketMoneyService.getRegularPocketMoneyRejectedList(parentUserId);
+        return ResponseDto.success(list);
     }
 }
