@@ -132,11 +132,12 @@ public class OauthServiceImpl implements OauthService{
         
 
         GetUserInfoDto resultDto = GetUserInfoDto.builder()
-            .userId(user.getUserId())
+            .userId(user.getUserId().toString())
             .msg(isJoined ? "등록된 회원입니다." : "회원정보가 없습니다. 회원가입 페이지로 이동합니다.")
             .joined(isJoined)
             .nickname(nickname)
             .email(email)
+            .role(isJoined ? user.getRole() : null)
             .accessToken(jwtAccessToken)
             .refreshToken(jwtRefreshToken)
             .build();
@@ -153,11 +154,12 @@ public class OauthServiceImpl implements OauthService{
         String jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
         
         GetUserInfoDto resultDto = GetUserInfoDto.builder()
-            .userId(user.getUserId())
+            .userId(user.getUserId().toString())
             .msg("등록된 회원입니다.")
             .joined(true)
             .nickname(user.getNickName())
             .email("")
+            .role(user.getRole())
             .accessToken(jwtAccessToken)
             .refreshToken(jwtRefreshToken)
             .build();
