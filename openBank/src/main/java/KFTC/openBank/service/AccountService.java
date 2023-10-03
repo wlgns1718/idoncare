@@ -242,7 +242,7 @@ public class AccountService {
         return ReceiveResponseDto.builder()
                 .accountNum(receiveRequestDto.getAccountNum())
                 .clientName(clientName)
-                .bankCdoeStd(receiveRequestDto.getBankCodeStd())
+                .bankCodeStd(receiveRequestDto.getBankCodeStd())
                 .bankStd(bankRepository.findNameById(receiveRequestDto.getBankCodeStd()))
                 .build();
     }
