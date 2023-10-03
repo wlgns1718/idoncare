@@ -29,4 +29,6 @@ public interface PocketMoneyService {
       throws MustParentException, NoSuchContentException, VirtualAccountException;
   
   void deleteRegularPocketMoney(Long parentUserId, DeleteRegularPocketMoneyReqDto req);
+  
+  void executeRegularPocketMoney(LocalDateTime now);
 }

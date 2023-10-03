@@ -111,27 +111,27 @@ public class AccountController {
         }
     }
 
-//    //1-4 OAuth인증 계좌 삭제
-//    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 삭제", description = "OAuth인증 핀번호 삭제", tags = {"AccountController"})
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "핀번호를 삭제합니다.",
-//                    content = @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = String.class))
-//            ),
-//    })
-//    @DeleteMapping("/oauth/2.0/pin")
-//    public ResponseEntity<?> pinNumberDelete(@RequestBody AccountRegistRequesDto requesDto, HttpServletRequest httpServletRequest) {
-//        try {
-//            InquiryResponseDto realName = accountService.findRealName(inquiryRequestDto);
-//            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "핀번호를 발급하였습니다.", realName));
-//        } catch (MobileException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
-//        } catch (UserException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
-//        }
-//    }
+    //1-4 OAuth인증 계좌 삭제
+    @Operation(operationId = "Auth", summary = "OAuth인증 계좌 삭제", description = "OAuth인증 핀번호 삭제", tags = {"AccountController"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "핀번호를 삭제합니다.",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = String.class))
+            ),
+    })
+    @DeleteMapping("/oauth/2.0/pin")
+    public ResponseEntity<?> pinNumberDelete(@RequestBody AccountDeleteRequestDto requesDto, HttpServletRequest httpServletRequest) {
+        try {
+            accountService.deleteAccount(requesDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "계좌 삭제 완료.", null));
+        } catch (MobileException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDto("404", e.getMessage(), null));
+        } catch (UserException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("409", e.getMessage(), null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("500", e.getMessage(), null));
+        }
+    }
 
     //2.잔액 조회
     @Operation(operationId = "balance", summary = "잔액 조회", description = "미리 등록한 계좌의 잔액 조회", tags = {"AccountController"})
@@ -214,7 +214,6 @@ public class AccountController {
     @PostMapping("/transfer/deposit/fin_num")
     public ResponseEntity<?> deposit(@RequestBody DepositRequestDto depositRequestDto, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        System.out.println(depositRequestDto);
         try{
             DepositResponseDto depositResponseDto = accountService.depositLogic(depositRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "입금 이체 완료", depositResponseDto));
@@ -240,8 +239,6 @@ public class AccountController {
     public ResponseEntity<?> withdraw(@RequestBody WithdrawRequestDto withdrawRequestDto, HttpServletRequest request){
         String token = request.getHeader("Authorization");
         withdrawRequestDto.setTranDtime(LocalDateTime.now());
-        System.out.println(111111);
-        System.out.println(withdrawRequestDto.toString());
         try{
             WithdrawReponseDto withdraw = accountService.withdrawLogic(withdrawRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "출금 이체 완료", withdraw));

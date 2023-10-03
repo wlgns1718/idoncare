@@ -46,6 +46,10 @@ public class AccountService {
         Bank bank = bankRepository.findById(reqDto.getBankCodeStd()).orElseThrow(() -> new BankAccountException("요청하신 은행은 찾을 수 없습니다."));
         User user = userRepository.findUser(reqDto.getName(), reqDto.getPhoneNumber()).orElseThrow(() -> new UserException("해당 유저는 등록 되지 않은 유저입니다."));
         FinTechService finTechService = finTechServiceRepository.findById(reqDto.getFinTechServiceId()).orElseThrow(() -> new AccountException.FintechNumNotFoundException("허가 받지 않은 핀테크 서비스 입니다."));
+        String tempUser = bankAccountRepository.findNameByIdAndBankId(reqDto.getAccountNum(), reqDto.getBankCodeStd()).orElseThrow(() -> new BankAccountException("요청 하신 계좌는 찾을 수 없습니다."));
+        if(!tempUser.equals(user.getName())){
+            throw new BankAccountException("본인 명의의 계좌만 등록 가능합니다.");
+        }
         accountRepository.findPinNumber(reqDto.getBankCodeStd(), reqDto.getAccountNum()).ifPresent(a -> {throw new AccountException("이미 등록 된 계좌입니다.");});
         Account account = new Account(GeneratePinNumber(), bank, user, reqDto.getAccountNum(), finTechService);
         accountRepository.save(account);
@@ -53,9 +57,8 @@ public class AccountService {
     }
 
     //플랫폼에 계좌 삭제
-    public void deleteAccount(AccountRegistRequesDto reqDto) throws AccountException {
-
-
+    public void deleteAccount(AccountDeleteRequestDto reqDto) throws AccountException {
+        accountRepository.delete(accountRepository.findPinNumber(reqDto.getBankCode(), reqDto.getRealAccountId()).get());
     }
 
     //플랫폼에 등록된 계좌에서 잔액 조회

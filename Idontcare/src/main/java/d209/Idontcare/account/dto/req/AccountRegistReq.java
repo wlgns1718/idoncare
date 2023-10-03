@@ -33,4 +33,5 @@ public class AccountRegistReq {
     private LocalDateTime tranDtime;
     @Schema(description = "핀테크 서비스 번호", example = "12345678")
     private String finTechServiceId;
+
 }
