@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 public class GetMissionDetailInfoDto {
@@ -31,5 +33,7 @@ public class GetMissionDetailInfoDto {
     @Schema(description = "상태", example = "REQUEST, PROCESS, UNPAID ,COMPLETE 중에 하나")
     private Type type;
 
+    @Schema(description = "생성일",example = "2023-10-03")
+    private LocalDateTime createdAt;
 
 }

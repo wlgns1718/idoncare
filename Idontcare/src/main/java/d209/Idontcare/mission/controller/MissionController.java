@@ -31,7 +31,6 @@ import java.util.List;
 public class MissionController {
 
     private final MissionService missionService;
-
     @PostMapping(value = "/regist")
     @Operation(summary = "미션 등록", description = "부모와 미션 등록할 자녀의 userId를 통해 미션 등록")
     @ApiResponses(value = {
@@ -82,8 +81,8 @@ public class MissionController {
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> getMissionDetail(@PathVariable("missionId") Long missionId){
         try{
-            MissionDto missionDto = missionService.getMissionDetail(missionId);
-            return ResponseDto.success(missionDto);
+            MissionDetailInfoDto missionDetailInfoDto = missionService.getMissionDetail(missionId);
+            return ResponseDto.success(missionDetailInfoDto);
         }
         catch (NoSuchContentException e){
             return ResponseDto.fail(e);

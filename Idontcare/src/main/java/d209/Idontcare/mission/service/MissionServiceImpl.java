@@ -6,6 +6,7 @@ import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.NoSuchContentException;
 import d209.Idontcare.common.exception.UpdateFailException;
+import d209.Idontcare.mission.dto.MissionDetailInfoDto;
 import d209.Idontcare.mission.dto.MissionDto;
 import d209.Idontcare.mission.dto.MissionSimpleDto;
 import d209.Idontcare.mission.dto.MissionStatusDto;
@@ -89,7 +90,6 @@ public class MissionServiceImpl implements MissionService {
         else if(mission.getType() == Type.UNPAID && role == Role.PARENT){
             Long childId = mission.getChild().getUserId();
             VirtualToVirtualReq virtualToVirtualReq = new VirtualToVirtualReq();
-
             virtualToVirtualReq.setUserId(childId);
             virtualToVirtualReq.setContent("미션 리워드");
             virtualToVirtualReq.setType(d209.Idontcare.account.entity.Type.MISSION);
@@ -125,9 +125,9 @@ public class MissionServiceImpl implements MissionService {
     }
 
     @Override
-    public MissionDto getMissionDetail(Long missionId) {
+    public MissionDetailInfoDto getMissionDetail(Long missionId) {
         Mission mission = missionRepository.findById(missionId).orElseThrow((NoSuchContentException::new));
-        return MissionDto.toDto(mission);
+        return MissionDetailInfoDto.toDto(mission);
     }
 
 
