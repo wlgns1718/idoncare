@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/pocketmoney")
 @RequiredArgsConstructor
+@Slf4j
 public class PocketMoneyController {
 
     private final PocketMoneyService pocketMoneyService;
@@ -174,8 +176,28 @@ public class PocketMoneyController {
     }
 
     /* 매일 오전 01시 정기용돈 이체 */
-    @Scheduled(cron = "0 0 01 * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void executeRegularPocketMoney(){
         // TODO : 정기용돈 이체 필요
+        LocalDateTime now = LocalDateTime.now();
+        pocketMoneyService.executeRegularPocketMoney(now);
+    }
+    
+    @PostMapping("/regular/test")
+    public void testRegularPocketMoney(){
+        // TODO : 테스트용 API 필요
+        
+    }
+    
+    @GetMapping("/time/test")
+    @Operation(summary="서버시간 확인용", description="시간확인 해보자")
+    public String timeTest(){
+        return LocalDateTime.now().toString();
+    }
+    
+    /* 서버시간마다 제대로 CRON 동작하는지 확인용 */
+    @Scheduled(cron = "0 35 16 * * ?")
+    public void cronTest(){
+        log.info(LocalDateTime.now().toString());
     }
 }
