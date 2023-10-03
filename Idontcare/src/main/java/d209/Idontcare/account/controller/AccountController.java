@@ -222,7 +222,7 @@ public class AccountController {
     }
 
     //실계좌 유효성 체크
-    @PostMapping("")
+    @PostMapping("/check")
     @Operation(summary = "계좌이체시 실 계좌 유효성 체크", description = "실계좌 유효성 체크")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
