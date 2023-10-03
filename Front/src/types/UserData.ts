@@ -1,10 +1,10 @@
-type Nickname = string;
+type Nickname = string | null;
 type Joined = boolean;
-type UserId = number;
-type Email = string;
-type RefreshToken = string;
-type AccessToken = string;
-type Role = "CHILD" | "PARENT";
+type UserId = string | null;
+type Email = string | null;
+type RefreshToken = string | null;
+type AccessToken = string | null;
+type Role = string | null;
 
 export type UserData = {
   nickname: Nickname;

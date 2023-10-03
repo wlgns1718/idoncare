@@ -1,9 +1,9 @@
 import { useRecoilValue } from "recoil";
-import { userToken } from "../store/common/atoms";
+import { userData } from "../store/common/atoms";
 
 const useAccessTokenState = () => {
-  const accessToken = useRecoilValue(userToken);
-  return { accessToken };
+  const data = useRecoilValue(userData);
+  return data?.accessToken;
 };
 
 export default useAccessTokenState;

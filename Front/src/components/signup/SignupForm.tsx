@@ -22,16 +22,15 @@ const SignupForm = () => {
   const [signupUserInfo, setSignupUserInfo] = useState<SignupUserInfo>();
   const userId = useRecoilValue<string | null>(SignupCode);
   const navigate = useNavigate();
-
   const { mutate } = useMutation<PostSignup>(() => PostSignupAxios(signupUserInfo!), {
     onSuccess: (res) => {
+      console.log(res);
       if (res.code === 200) {
         alert("회원가입이 완료되었습니다.");
-        navigate("/");
       } else {
         alert("Error: " + res.code + " " + res.error);
-        navigate("/login");
       }
+      navigate("/login");
 
       console.log(res);
     },
