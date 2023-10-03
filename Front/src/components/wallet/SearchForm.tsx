@@ -4,7 +4,7 @@ import { useSetRecoilState } from "recoil";
 import { searchResultTradeList } from "../../store/wallet/atoms";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
 import { useRecoilValue } from "recoil";
-import { userToken } from "../../store/common/atoms";
+import { userToken } from "../../store/common/selectors";
 import { baseUrl } from "../../apis/url/baseUrl";
 
 interface SearchFormProps {
@@ -19,6 +19,9 @@ function SearchForm({ searchKeyword, onChange, resetKeyword, className }: Search
   const token = useRecoilValue(userToken);
 
   const searchTransition = () => {
+    if (token == null) {
+      return;
+    }
     axios
       .get(
         baseUrl +

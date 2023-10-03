@@ -5,13 +5,14 @@ import NewAccountHeader from "./common/NewAccountHeader";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { userToken } from "../../store/common/atoms";
+import { userToken } from "../../store/common/selectors";
 import AccountSelectForm from "../wallet/AccountSelectForm";
 import {
   resistRechargeAccountInput,
   sendAccountBank,
 } from "../../store/wallet/atoms";
 import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const [withdrawServiceAgree, setWithdrawServiceAgree] = useState(false);
@@ -39,15 +40,13 @@ const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
           bankName: bank?.bankName,
           accountNum: accountNum,
         },
-        {
-          headers: { Authorization: token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);
         if (res.data.data == null) {
           console.log(res.data.error);
-          setErrorMessage(res.data.error)
+          setErrorMessage(res.data.error);
           return;
         }
         onChangeStep(3);

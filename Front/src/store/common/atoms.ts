@@ -6,13 +6,7 @@ export const BottomSheetOpen = atom<boolean>({
   default: false,
 });
 
-export const userToken = atom<string>({
-  key: "UserToken",
-  default:
-    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzMxNzIsImV4cCI6MTY5NTgxNjM3Mn0.qPleDWrL5fyUs69LBGl4LbIYaWF9WI18ToyeAFsGhp0",
-});
-
-export const userData = atom<UserData | null>({
+export const userData = atom<UserData>({
   key: "userData",
   default: {
     nickname: null,

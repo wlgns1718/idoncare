@@ -4,6 +4,7 @@ import SearchForm from "../components/wallet/SearchForm";
 import { searchResultTradeList } from "../store/wallet/atoms";
 import { useRecoilValue } from "recoil";
 import TotalTradeList from "../components/wallet/TotalTradeList";
+import BottomNav from "../components/common/BottomNav";
 
 const WalletSearch = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -30,6 +31,7 @@ const WalletSearch = () => {
         />
         <TotalTradeList tradeList={tradeResultList} />
       </div>
+      <BottomNav />
     </div>
   );
 };

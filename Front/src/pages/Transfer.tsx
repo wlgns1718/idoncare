@@ -32,6 +32,7 @@ function Transfer() {
           }}
         />
       </div>
+      
     </div>
   );
 }

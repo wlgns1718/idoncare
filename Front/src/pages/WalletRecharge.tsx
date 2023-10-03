@@ -4,13 +4,15 @@ import RechargeInput from "../components/wallet/RechargeInput";
 import RechargeAccountList from "../components/wallet/RechargeAccountList";
 import FullBtn from "../components/common/FullBtn";
 import axios from "axios";
-import { userToken } from "../store/common/atoms";
+import { userToken } from "../store/common/selectors";
 import { useRecoilValue } from "recoil";
 import { rechargeAccount } from "../store/wallet/atoms";
 import { baseUrl } from "../apis/url/baseUrl";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import BottomNav from "../components/common/BottomNav";
 
 function WalletRecharge() {
-  const Token = useRecoilValue(userToken);
+  const token = useRecoilValue(userToken);
   const myRechargeAccount = useRecoilValue(rechargeAccount);
   const [rechargeAmount, setRechargeAmount] = useState(0);
 
@@ -23,9 +25,7 @@ function WalletRecharge() {
           money: rechargeAmount,
           type: "CHARGE",
         },
-        {
-          headers: { Authorization: Token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);
@@ -41,11 +41,9 @@ function WalletRecharge() {
           setRechargeAmount={setRechargeAmount}
         />
         <RechargeAccountList />
-        <FullBtn
-          buttonText="충전"
-          onClick={rechageMoney}
-        />
+        <FullBtn buttonText="충전" onClick={rechageMoney} />
       </div>
+      <BottomNav />
     </div>
   );
 }

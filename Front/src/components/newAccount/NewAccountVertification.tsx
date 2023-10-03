@@ -5,10 +5,11 @@ import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 import NewAccountVertificationAccount from "./NewAccountVertification/NewAccountVertificationAccount";
 import NewAccountVertificationHelp from "./NewAccountVertification/NewAccountVertificationHelp";
 import { useRecoilValue } from "recoil";
-import { userToken } from "../../store/common/atoms";
+import { userToken } from "../../store/common/selectors";
 import axios from "axios";
 import { useState } from "react";
 import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
   const [authenticationNumber, setAuthenticationNumber] = useState<number>();
@@ -27,9 +28,7 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
           bankName: "신한은행",
           accountNum: 77777777,
         },
-        {
-          headers: { Authorization: token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);

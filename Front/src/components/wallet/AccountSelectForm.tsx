@@ -7,10 +7,12 @@ import {
 } from "../../store/wallet/atoms";
 import { BottomSheet } from "../common/BottomSheet";
 import BankGridList from "./BankGridList";
-import { BottomSheetOpen, userToken } from "../../store/common/atoms";
+import { BottomSheetOpen } from "../../store/common/atoms";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { baseUrl } from "../../apis/url/baseUrl";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 interface AccountSelectFormProps {
   btn?: boolean;
@@ -39,7 +41,7 @@ function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormP
     setIsChecked(false);
   };
 
-  const Token = useRecoilValue(userToken);
+  const token = useRecoilValue(userToken);
   const accountNum = useRecoilValue(resistRechargeAccountInput);
   const bank = useRecoilValue(sendAccountBank);
 
@@ -56,9 +58,7 @@ function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormP
           bankCodeStd: bank?.bankId,
           accountNum: accountNum,
         },
-        {
-          headers: { Authorization: Token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);

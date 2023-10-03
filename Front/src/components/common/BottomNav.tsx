@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Icon from "./Icon";
+import React from "react";
 
 const BottomTaps = [
   {
@@ -19,7 +20,7 @@ const BottomTaps = [
   },
 ];
 
-function BottomNav() {
+const BottomNav = React.memo(function BottomNav() {
   const navigate = useNavigate();
   return (
     <div>
@@ -42,6 +43,6 @@ function BottomNav() {
       </div>
     </div>
   );
-}
+})
 
 export default BottomNav;
