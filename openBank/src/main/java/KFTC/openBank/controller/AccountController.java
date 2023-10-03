@@ -214,7 +214,6 @@ public class AccountController {
     @PostMapping("/transfer/deposit/fin_num")
     public ResponseEntity<?> deposit(@RequestBody DepositRequestDto depositRequestDto, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        System.out.println(depositRequestDto);
         try{
             DepositResponseDto depositResponseDto = accountService.depositLogic(depositRequestDto);
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto("200", "입금 이체 완료", depositResponseDto));

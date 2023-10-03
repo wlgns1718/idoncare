@@ -19,7 +19,7 @@ public class ReceiveResponseDto {
     */
 
     @Schema(description = "은행코드", example = "은행 표준 코드, 51")
-    private String bankCdoeStd;
+    private String bankCodeStd;
     @Schema(description = "은행이름", example = "은행 이름, 신한")
     private String bankStd;
     @Schema(description = "계좌번호", example = "999999999999")
