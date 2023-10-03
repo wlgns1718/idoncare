@@ -58,6 +58,7 @@ public class InitService {
   public void bankAccountDataInit(){
     if(bankAccountRepository.count() > 0) return;
     Bank bank41 = bankRepository.getReferenceById("41");
+    bankAccountRepository.save(new BankAccount("77777777", bank41, 1000000L, "이정훈", "19980502"));
     bankAccountRepository.save(new BankAccount("00000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
     bankAccountRepository.save(new BankAccount("88888888", bank41, 1000000000000L, "starbucks", "202309011"));
     for(int i = 1; i <= 9; i++){
@@ -99,5 +100,6 @@ public class InitService {
       mobileRepository.save(new Mobile("0104321001" + i, "김자식" + i, "2000010"+i, MobileSort.KT));
     }
     mobileRepository.save(new Mobile("01099999999", "김사람", "19900101", MobileSort.LG));
+    mobileRepository.save(new Mobile("01038300631", "이정훈", "19980502", MobileSort.LG));
   }
 }
