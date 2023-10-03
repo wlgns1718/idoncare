@@ -31,4 +31,6 @@ public interface PocketMoneyService {
   void deleteRegularPocketMoney(Long parentUserId, DeleteRegularPocketMoneyReqDto req);
   
   void executeRegularPocketMoney(LocalDateTime now);
+  
+  List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId);
 }

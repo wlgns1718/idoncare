@@ -36,6 +36,10 @@ public class VirtualAccountService {
     }
 
     //가상 계좌끼리 거래
+    /* 트랜잭션 내부에 트랜잭션이 있을때 내부 트랜잭션이 있으면 외부 트랜잭션또한 같이 취소됩니다
+     * 이를 해결하기 위해 외부 트랜잭션까지 전파가 안되게 할려면 REQUIRES_NEW를 사용해야 함
+     *  */
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public void virtualPayment(VirtualToVirtualReq request, Long startAccount) throws VirtualAccountException{
         LocalDateTime now = LocalDateTime.now();
         if(request.getMoney() < 0){
