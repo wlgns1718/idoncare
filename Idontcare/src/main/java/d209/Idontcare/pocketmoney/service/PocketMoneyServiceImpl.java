@@ -216,4 +216,9 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     
     regularPocketMoneyRepository.delete(regularPocketMoney);
   }
+  
+  @Override
+  public void executeRegularPocketMoney(LocalDateTime now) {
+  
+  }
 }
