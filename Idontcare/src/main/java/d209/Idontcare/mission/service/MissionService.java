@@ -2,6 +2,7 @@ package d209.Idontcare.mission.service;
 
 
 import d209.Idontcare.common.exception.CommonException;
+import d209.Idontcare.mission.dto.MissionDetailInfoDto;
 import d209.Idontcare.mission.dto.MissionDto;
 import d209.Idontcare.mission.dto.MissionSimpleDto;
 import d209.Idontcare.mission.dto.MissionStatusDto;
@@ -22,5 +23,5 @@ public interface MissionService {
 
     void deleteMission(Long missionId);
 
-    MissionDto getMissionDetail(Long missionId);
+    MissionDetailInfoDto getMissionDetail(Long missionId);
 }
