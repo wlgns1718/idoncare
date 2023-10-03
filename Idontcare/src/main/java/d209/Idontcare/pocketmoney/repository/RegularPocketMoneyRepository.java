@@ -1,6 +1,7 @@
 package d209.Idontcare.pocketmoney.repository;
 
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +15,7 @@ public interface RegularPocketMoneyRepository extends JpaRepository<RegularPocke
       "r.type as type, r.cycle as cycle, r.amount as amount, r.createdAt as createdAt " +
       "from RegularPocketMoney r where r.parent.userId = :parentUserId")
   List<Tuple> findAllByParentUserId(@Param("parentUserId") Long parentUserId);
+  
+  @EntityGraph(attributePaths = {"parent.userId", "child.userId"}, type= EntityGraph.EntityGraphType.LOAD)
+  List<RegularPocketMoney> findAllByDueDate(Integer dueDate);
 }

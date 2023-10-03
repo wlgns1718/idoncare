@@ -5,11 +5,14 @@ import d209.Idontcare.account.entity.Type;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.*;
+import d209.Idontcare.pocketmoney.dto.RegularPocketMoneyProcessDto;
 import d209.Idontcare.pocketmoney.dto.req.*;
 import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
+import d209.Idontcare.pocketmoney.entity.RegularPocketMoneyRejected;
 import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
+import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRejectedRepository;
 import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
 import d209.Idontcare.relationship.service.RelationshipService;
 import d209.Idontcare.user.entity.User;
@@ -34,7 +37,10 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   private final UserService userService;
   private final UserRepository userRepository;
   private final RegularPocketMoneyRepository regularPocketMoneyRepository;
+  private final RegularPocketMoneyRejectedRepository regularPocketMoneyRejectedRepository;
   private final PocketMoneyRequestRepository pocketMoneyRequestRepository;
+  
+  
   private final RelationshipService relationshipService;
   private final VirtualAccountService virtualAccountService;
   
@@ -217,8 +223,51 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     regularPocketMoneyRepository.delete(regularPocketMoney);
   }
   
+
   @Override
   public void executeRegularPocketMoney(LocalDateTime now) {
+    int year = now.getYear();
+    int month = now.getMonthValue();
+    int day = now.getDayOfMonth();
+    
+    Integer curr = year * 10_000 + month * 100 + day;
+    
+    List<RegularPocketMoney> result = regularPocketMoneyRepository.findAllByDueDate(curr);
+    
+    for(RegularPocketMoney r: result){
+      //각각의 처리되어야 하는 정기용돈에 대해
+      VirtualToVirtualReq req = VirtualToVirtualReq.builder()
+          .userId(r.getChild().getUserId())         //아이가 받을 예정
+          .content(curr + "정기용돈")
+          .money(r.getAmount().longValue())
+          .type(Type.POCKET)
+          .build();
+      Long parentVirtualAcdountId =
+          virtualAccountService.userAccount(r.getParent().getUserId());
+      
+      //다음 지급날짜로 바꿔주기
+      Integer nextDueDate = this.getNextDueDate(now, r.getType(), r.getCycle());
+      r.setDueDate(nextDueDate);
+      
+      try{
+        virtualAccountService.virtualPayment(req, parentVirtualAcdountId);
+      } catch(VirtualAccountException e){
+        //돈 부족일 경우
+        // -> Rejected로 정기용돈 미입금내역으로 넣어주자
+        RegularPocketMoneyRejected rejected = RegularPocketMoneyRejected.builder()
+            .parent(userRepository.getReferenceById(r.getParent().getUserId()))
+            .child(userRepository.getReferenceById(r.getChild().getUserId()))
+            .amount(r.getAmount())
+            .dueDate(curr)
+            .build();
+        regularPocketMoneyRejectedRepository.save(rejected);
+      }
+    }
+  }
   
+  @Override
+  public List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId) {
+    return regularPocketMoneyRejectedRepository.findByParentUserId(parentUserId)
+        .stream().map(GetRegularPocketMoneyRejectedResDto::new).toList();
   }
 }
