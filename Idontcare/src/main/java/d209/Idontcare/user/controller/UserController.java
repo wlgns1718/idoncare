@@ -117,4 +117,18 @@ public class UserController {
         
         return ResponseDto.success(null);
     }
+    
+    @GetMapping("/token/valid")
+    @Operation(summary = "토큰 유효성 체크", description = "Access Token의 유효성을 체크")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "성공",
+            content=@Content(schema = @Schema(implementation = Void.class))),
+        @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= ExpiredTokenException.CODE, description = ExpiredTokenException.DESCRIPTION),
+        @ApiResponse(responseCode= InternalServerException.CODE, description = InternalServerException.DESCRIPTION),
+    })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    public ResponseDto checkAccessToken(){
+        return ResponseDto.success(null);
+    }
 }

@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -170,5 +171,11 @@ public class PocketMoneyController {
         
         pocketMoneyService.processPocketMoneyRequest(parentUserId, req);
         return ResponseDto.success(null);
+    }
+
+    /* 매일 오전 01시 정기용돈 이체 */
+    @Scheduled(cron = "0 0 01 * * ?")
+    public void executeRegularPocketMoney(){
+        // TODO : 정기용돈 이체 필요
     }
 }
