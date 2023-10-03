@@ -11,6 +11,7 @@ import {
   resistRechargeAccountInput,
   sendAccountBank,
 } from "../../store/wallet/atoms";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const [withdrawServiceAgree, setWithdrawServiceAgree] = useState(false);
@@ -27,10 +28,12 @@ const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
   const accountNum = useRecoilValue(resistRechargeAccountInput);
   const bank = useRecoilValue(sendAccountBank);
 
+  const [errorMsg, setErrorMessage] = useState("");
+
   const accountValidCheck = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account/valid`,
+        baseUrl + `api/account/valid`,
         {
           bankCodeStd: bank?.bankId,
           bankName: bank?.bankName,
@@ -42,17 +45,20 @@ const NewAccountSelectAccount = ({ onChangeStep, step }: NewAccountCreate) => {
       )
       .then((res) => {
         console.log(res.data);
-        if (res.data == null) {
+        if (res.data.data == null) {
           console.log(res.data.error);
+          setErrorMessage(res.data.error)
           return;
         }
         onChangeStep(3);
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <div className="flex flex-col text-m">
       <NewAccountHeader step={step} />
+      <div className="my-6 text-center text-red-600">{errorMsg}</div>
       <AccountSelectForm btn={false} />
       <NewAccountCheckBox
         text="출금서비스(은행) 약관 동의"

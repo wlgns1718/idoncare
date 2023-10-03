@@ -7,6 +7,7 @@ import axios from "axios";
 import { userToken } from "../store/common/atoms";
 import { useRecoilValue } from "recoil";
 import { rechargeAccount } from "../store/wallet/atoms";
+import { baseUrl } from "../apis/url/baseUrl";
 
 function WalletRecharge() {
   const Token = useRecoilValue(userToken);
@@ -16,7 +17,7 @@ function WalletRecharge() {
   const rechageMoney = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account/charge`,
+        baseUrl + `api/account/charge`,
         {
           pinNumber: myRechargeAccount?.pinNumber,
           money: rechargeAmount,

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/atoms";
 import { transferData } from "../store/wallet/atoms";
+import { baseUrl } from "../apis/url/baseUrl";
 
 function TransferConfirm() {
   const transferAccountData = useRecoilValue(transferData);
@@ -13,7 +14,7 @@ function TransferConfirm() {
   const transferMoney = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account/pay`,
+        baseUrl + `api/account/pay`,
         {
           name: transferAccountData?.account?.clientName,
           bankCode: transferAccountData?.account?.bankCodeStd,

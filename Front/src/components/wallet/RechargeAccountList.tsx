@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { userToken } from "../../store/common/atoms";
 import { RechargeAccountResponse } from "../../types/WalletTypes";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 export const EmptyAccount = () => {
   const navigate = useNavigate();
@@ -31,19 +32,16 @@ export const RechargeAccountComponent = () => {
   const removeAccount = () => {
 
     axios
-      .delete(
-        `http://j9d209.p.ssafy.io:8081/api/account/`,
-        {
-          headers: { Authorization: Token as string },
-          data: {
-            bankCode: 41,
-            realAccountId: 77777777,
-          },
-        }
-      )
+      .delete(baseUrl + `api/account/`, {
+        headers: { Authorization: Token as string },
+        data: {
+          bankCode: myRechargeAccount?.bankCode,
+          realAccountId: myRechargeAccount?.realAccountId,
+        },
+      })
       .then((res) => {
         console.log(res.data);
-        resetRechargeAccount()
+        resetRechargeAccount();
       });
   };
   return (

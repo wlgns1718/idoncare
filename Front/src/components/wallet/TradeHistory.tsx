@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { userToken } from "../../store/common/atoms";
 import { useRecoilValue } from "recoil";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 export interface MonthlyTradeListResponse {
   date: number;
@@ -67,9 +68,10 @@ function TradeHistory() {
   const getTradeHistory = () => {
     axios
       .get(
-        `http://j9d209.p.ssafy.io:8081/api/virtual/${currentDate.getFullYear()}/${
-          currentDate.getMonth() + 1
-        }`,
+        baseUrl +
+          `api/virtual/${currentDate.getFullYear()}/${
+            currentDate.getMonth() + 1
+          }`,
         { headers: { Authorization: Token } }
       )
       .then((response) => {

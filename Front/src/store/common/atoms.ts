@@ -8,8 +8,8 @@ export const BottomSheetOpen = atom<boolean>({
 
 export const userToken = atom<string>({
   key: "UserToken",
-  default: "",
-  // "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzMxNzIsImV4cCI6MTY5NTgxNjM3Mn0.qPleDWrL5fyUs69LBGl4LbIYaWF9WI18ToyeAFsGhp0",
+  default:
+    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQ2MTU2OTczMzI3ODkzMzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYzMjA5MjIsImV4cCI6MTY5NjM2NDEyMn0.DbcpMjz5boirYukJqXBu6yWn_tegFE4mFQMIm7BC6Rk",
 });
 
 export const userData = atom<UserData | null>({
@@ -21,7 +21,7 @@ export const userData = atom<UserData | null>({
     email: "null",
     refreshToken: "null",
     accessToken:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3NzMxNzIsImV4cCI6MTY5NTgxNjM3Mn0.qPleDWrL5fyUs69LBGl4LbIYaWF9WI18ToyeAFsGhp0",
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQ2MTU2OTczMzI3ODkzMzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYzMjA5MjIsImV4cCI6MTY5NjM2NDEyMn0.DbcpMjz5boirYukJqXBu6yWn_tegFE4mFQMIm7BC6Rk",
     role: "PARENT",
   },
 });
