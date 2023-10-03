@@ -26,12 +26,13 @@ export type RechargeAccountResponse = {
 };
 
 export type TransferAccountData = {
-  amount : number;
-  account : {
-  bankCodeStd: number;
-  bankStd: string;
-  accountNum: number;
-  clientName: string;} | null
+  amount: number;
+  account: {
+    bankCodeStd: number;
+    bankStd: string;
+    accountNum: number;
+    clientName: string;
+  } | null;
 };
 
 export type CashFlow = "WITHDRAWAL" | "DEPOSIT" | "ALL";

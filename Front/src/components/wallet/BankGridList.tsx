@@ -4,6 +4,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import BankItem from "./BankItem";
 import axios from "axios";
 import { userToken } from "../../store/common/atoms";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 interface BankListInterface {}
 
@@ -12,18 +13,18 @@ const BankGridList: React.FC<BankListInterface> = () => {
 
   const Token = useRecoilValue(userToken);
 
-  const setBankList = useSetRecoilState(bankData)
+  const setBankList = useSetRecoilState(bankData);
 
-  useEffect(()=>{
+  useEffect(() => {
     axios
-      .get(`http://j9d209.p.ssafy.io:8081/api/account/bank`, {
+      .get(baseUrl + `api/account/bank`, {
         headers: { Authorization: Token as string },
       })
       .then((res) => {
         console.log(res.data);
-        setBankList({ bankList : res.data.data});
+        setBankList({ bankList: res.data.data });
       });
-  },[])
+  }, []);
 
   return (
     <div className="mb-20">

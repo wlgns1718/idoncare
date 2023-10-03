@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/atoms";
 import axios from "axios";
 import { useState } from "react";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
   const [authenticationNumber, setAuthenticationNumber] = useState<number>();
@@ -20,7 +21,7 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
   const registAccount = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account`,
+        baseUrl + `api/account/`,
         {
           bankCodeStd: 41,
           bankName: "신한은행",

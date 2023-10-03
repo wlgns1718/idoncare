@@ -10,6 +10,7 @@ import BankGridList from "./BankGridList";
 import { BottomSheetOpen, userToken } from "../../store/common/atoms";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 interface AccountSelectFormProps {
   btn?: boolean;
@@ -50,7 +51,7 @@ function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormP
   const handleCheckAccount = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account`,
+        baseUrl + `api/account/check`,
         {
           bankCodeStd: bank?.bankId,
           accountNum: accountNum,
@@ -68,7 +69,7 @@ function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormP
             amount: transferAccountData?.amount
               ? transferAccountData?.amount
               : 0,
-            account: { ...res.data.data, bankCodeStd: res.data.data.bankCdoeStd },
+            account: { ...res.data.data },
           });
         } else {
           setIsValidAccount(false);
