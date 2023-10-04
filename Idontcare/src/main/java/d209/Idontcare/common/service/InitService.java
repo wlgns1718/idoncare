@@ -109,7 +109,7 @@ public class InitService {
         transactionHistoryRepository.save(depository);
         current -= 500L * (j+1);
 
-        withdrawal = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusDays(1), "부모님으로부터 용돈" + j, 1_200L * (j+1), Type.POCKET, CashFlow.WITHDRAWAL, current);
+        withdrawal = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusDays(j), "부모님으로부터 용돈" + j, 1_200L * (j+1), Type.POCKET, CashFlow.WITHDRAWAL, current);
         transactionHistoryRepository.save(withdrawal);
         current += 1_200L * (j+1);
       }
