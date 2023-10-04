@@ -17,7 +17,7 @@ public class MonthHistoryRes {
     expend : 지출
      */
     
-    int month;
+    String day;
     Long earn;
     Long expend;
 
