@@ -4,11 +4,14 @@ import QRCode from "react-qr-code";
 import { userBalanace } from "../store/wallet/atoms";
 import { useRecoilValue } from "recoil";
 import useComma from "../hooks/useComma";
+import { myId } from "../store/common/selectors";
 
 function QRcodePurchase() {
   const [expiryTime, setExpiryTime] = useState(Date.now() + 3 * 60 * 1000); // 현재 시간 + 3분
   const [timeLeft, setTimeLeft] = useState(expiryTime - Date.now());
   const balance = useRecoilValue(userBalanace);
+
+  const userId = useRecoilValue(myId);
 
 
   useEffect(() => {
@@ -29,16 +32,6 @@ function QRcodePurchase() {
     setExpiryTime(Date.now() + 3 * 60 * 1000);
   };
 
-  const tempQRData = {
-    name: "starbux",
-    bankCode: "41",
-    accountNum: 8888888,
-    printContent: "",
-    tranAmt: 10000,
-  };
-
-  const jsonStr = JSON.stringify(tempQRData);
-
   return (
     <div>
       <Header
@@ -48,7 +41,15 @@ function QRcodePurchase() {
       />
       <div className="mx-8">
         <div className="flex justify-center bg-darkgray rounded-2xl py-20">
-          <QRCode value={jsonStr} size={200} />
+          <QRCode
+            value={JSON.stringify({
+              userId: userId,
+              content: "payment",
+              money: 1000,
+              type: "PAYMENT",
+            })}
+            size={200}
+          />
         </div>
         <div>
           <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">

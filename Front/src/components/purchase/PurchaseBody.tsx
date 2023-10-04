@@ -6,8 +6,14 @@ import useComma from "../../hooks/useComma";
 
 const menus = [
   {
-    Title: "현장에서 결제하기",
+    Title: "금액설정해서 QR 코드 생성",
     subTitle: "QR코드로 결제",
+    link: "qrcode",
+    icon: "",
+  },
+  {
+    Title: "금액을 설정하지 않고 QR코드 생성",
+    subTitle: "QR코드 만들어서 결제",
     link: "qrcode",
     icon: "",
   },
