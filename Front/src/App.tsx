@@ -67,7 +67,7 @@ function App() {
                 <Route path="purchase" element={<Purchase />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="purchase/qrcode" element={<QRcodePurchase />} />
+                <Route path="purchase/qrcode/:payType" element={<QRcodePurchase />} />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="purchase/camera" element={<CameraPurchase />} />

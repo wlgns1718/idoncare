@@ -13,7 +13,37 @@ interface SendOptionS {
 function TransferSelectForm() {
   const [sendOption, setSendOption] = useState<SendOption>("family");
 
-  const [isValid, setIsValid] = useState(false)
+  const [isValid, setIsValid] = useState(false);
+
+  
+  // const token = useRecoilValue(userToken);
+  // const [selectedKidId, setSelectedKidId] = useState<number | null>(null);
+  // const [selectedKidName, setSelectedKidName] = useState<string | null>(null);
+
+  // const [kidsData, setKidsData] = useState<KidData[]>([]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get(baseUrl + `api/relationship`, AxiosHeader({ token }))
+  //     .then((response) => {
+  //       if (response.data.data && response.data.data.relationList) {
+  //         setKidsData(response.data.data.relationList);
+  //       } else {
+  //         console.error("Unexpected response:", response);
+  //       }
+  //     })
+  //     .catch((error) => console.error("Error:", error));
+  // }, [token]);
+
+  // const handleKidClick = (id: number, name: string) => {
+  //   if (selectedKidId === id) {
+  //     setSelectedKidId(null);
+  //     setSelectedKidName(null);
+  //   } else {
+  //     setSelectedKidId(id);
+  //     setSelectedKidName(name);
+  //   }
+  // };
 
   const options: SendOptionS[] = [
     { value: "family", label: "가족" },
@@ -50,16 +80,7 @@ function TransferSelectForm() {
           ))}
         </div>
       </div>
-      {sendOption === "family" && (
-        <div className="flex justify-center gap-10 m-10">
-          <div className="w-36 h-36 bg-slate-600 rounded-full text-white items-center flex justify-center">
-            자녀 1
-          </div>
-          <div className="w-36 h-36 bg-slate-600 rounded-full text-white items-center flex justify-center">
-            자녀 2
-          </div>
-        </div>
-      )}
+      {sendOption === "family" && <div></div>}
       {sendOption === "account" && (
         <div>
           <AccountSelectForm setIsValid={setIsValid} />
