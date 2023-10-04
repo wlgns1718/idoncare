@@ -28,6 +28,13 @@ function TransferConfirm() {
       )
       .then((res) => {
         console.log(res.data);
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        // useDone({
+        //   // eslint-disable-next-line react-hooks/rules-of-hooks
+        //   title: `${useComma(transferAccountData.amount)} 원`,
+        //   content: "송금 완료",
+        //   ps: "성공적으로 송금되었습니다.",
+        // });
       });
   };
   return (

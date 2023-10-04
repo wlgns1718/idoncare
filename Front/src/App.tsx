@@ -32,6 +32,7 @@ import MissionDetailPage from "./pages/MissionDetailPage";
 import MissionCreatPage from "./pages/MissionCreatPage";
 import MissionCreateMoney from "./pages/MissionCreateMoney";
 import PrivateRoute from "./routes/privateRoute";
+import DonePage from "./pages/DonePage";
 
 function App() {
   const queryClient = new QueryClient();
@@ -41,7 +42,9 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/" element={<Home />} />
+              </Route>
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
               <Route element={<PrivateRoute />}>
@@ -95,19 +98,31 @@ function App() {
                 <Route path="kidDemandMoney" element={<KidDemandMoney />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+                <Route
+                  path="kidDemandMoneyList"
+                  element={<KidDemandMoneyList />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
+                <Route
+                  path="kidDemanedMoneyList"
+                  element={<KidDemanedMoneyList />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="kidRegist" element={<KidRegist />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="kidDemandMoneyList" element={<KidDemandMoneyList />} />
+                <Route
+                  path="kidDemandMoneyList"
+                  element={<KidDemandMoneyList />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
+                <Route
+                  path="kidDemanedMoneyList"
+                  element={<KidDemanedMoneyList />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="newAccount" element={<NewAccount />} />
@@ -125,13 +140,25 @@ function App() {
                 <Route path="mission" element={<MissonPage />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="mission/detail/:missionId" element={<MissionDetailPage />} />
+                <Route
+                  path="mission/detail/:missionId"
+                  element={<MissionDetailPage />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="mission/create" element={<MissionCreatPage />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="mission/create/money" element={<MissionCreateMoney />} />
+                <Route
+                  path="mission/create/money"
+                  element={<MissionCreateMoney />}
+                />
+              </Route>
+              <Route element={<PrivateRoute />}>
+                <Route
+                  path="done"
+                  element={<DonePage />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>
