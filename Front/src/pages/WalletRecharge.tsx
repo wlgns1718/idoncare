@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from "react";
 import Header from "../components/common/Header";
 import RechargeInput from "../components/wallet/RechargeInput";
 import RechargeAccountList from "../components/wallet/RechargeAccountList";
@@ -10,6 +10,8 @@ import { rechargeAccount } from "../store/wallet/atoms";
 import { baseUrl } from "../apis/url/baseUrl";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import BottomNav from "../components/common/BottomNav";
+// import useComma from "../hooks/useComma";
+// import { useDone } from "../hooks/useDone";
 
 function WalletRecharge() {
   const token = useRecoilValue(userToken);
@@ -28,7 +30,15 @@ function WalletRecharge() {
         AxiosHeader({ token })
       )
       .then((res) => {
-        console.log(res.data);
+        if (res.data.code == 200) {
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          // useDone({
+          //   // eslint-disable-next-line react-hooks/rules-of-hooks
+          //   title: `${useComma(rechargeAmount)} 원`,
+          //   content: "충전 완료",
+          //   ps: "성공적으로 충전되었습니다.",
+          // });
+        }
       });
   };
 
@@ -41,7 +51,9 @@ function WalletRecharge() {
           setRechargeAmount={setRechargeAmount}
         />
         <RechargeAccountList />
-        <FullBtn buttonText="충전" onClick={rechageMoney} />
+        <div onClick={rechageMoney}>
+          <FullBtn buttonText="충전" />
+        </div>
       </div>
       <BottomNav />
     </div>

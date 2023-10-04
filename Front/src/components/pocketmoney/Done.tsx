@@ -2,9 +2,9 @@ import React from "react";
 import FullBtn from "../common/FullBtn";
 
 type MoneyDoneProps = {
-  title: string;
-  content: JSX.Element | string;
-  ps: string;
+  title: string | undefined;
+  content: JSX.Element | string | undefined;
+  ps: string | undefined;
 };
 
 const MoneyDone: React.FC<MoneyDoneProps> = ({ title, content, ps }) => {
@@ -24,7 +24,9 @@ const MoneyDone: React.FC<MoneyDoneProps> = ({ title, content, ps }) => {
 
         <div className="text-darkgray text-s">{ps}</div>
       </div>
-      <FullBtn buttonLink="/" className="mb-6" />
+      <div className="mx-8">
+        <FullBtn buttonLink="/" className="mb-6" />
+      </div>
     </div>
   );
 };

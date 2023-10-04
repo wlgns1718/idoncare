@@ -31,7 +31,6 @@ export const RechargeAccountComponent = () => {
   const Token = useRecoilValue(userToken);
 
   const removeAccount = () => {
-
     axios
       .delete(baseUrl + `api/account/`, {
         headers: { Authorization: Token as string },
@@ -59,7 +58,9 @@ export const RechargeAccountComponent = () => {
       </div>
       <div
         className="flex items-center rounded-md bg-red-50 px-4 p-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
-        onClick={() => {removeAccount()}}
+        onClick={() => {
+          removeAccount();
+        }}
       >
         삭제
       </div>
@@ -73,10 +74,7 @@ function RechargeAccountList() {
   useEffect(() => {
     if (!isRechargeAccount) {
       axios
-        .get(
-          `http://j9d209.p.ssafy.io:8081/api/account/my`,
-          AxiosHeader({ token })
-        )
+        .get(baseUrl + `api/account/my`, AxiosHeader({ token }))
         .then((res) => {
           console.log(res.data);
           if (res.data.error) {
@@ -103,7 +101,11 @@ function RechargeAccountList() {
       <div className="">
         {!isRechargeAccount ? <EmptyAccount /> : <RechargeAccountComponent />}
       </div>
-      {!isRechargeAccount && <div className="text-center text-red-600">충전 계좌가 등록되지 않았습니다</div>}
+      {!isRechargeAccount && (
+        <div className="text-center text-red-600">
+          충전 계좌가 등록되지 않았습니다
+        </div>
+      )}
     </div>
   );
 }

@@ -34,7 +34,12 @@ const RegularSendFormCycle: React.FC<Props> = ({ onNext }) => {
       <Header pageTitle="정기용돈 등록" headerType="normal" headerLink="/" />
       <div className="mt-52 text-center flex-grow">
         <select
-          style={{ width: "50%", height: "40px", fontSize: '15px', marginBottom: '10px' }}
+          style={{
+            width: "50%",
+            height: "40px",
+            fontSize: "15px",
+            marginBottom: "10px",
+          }}
           onChange={(e) => handleTypeChange(e.target.value)}
         >
           <option value="">이체 주기를 선택해주세요.</option>
@@ -47,7 +52,7 @@ const RegularSendFormCycle: React.FC<Props> = ({ onNext }) => {
           <>
             <br />
             <select
-              style={{ width: "50%", height: "40px", fontSize: '15px' }}
+              style={{ width: "50%", height: "40px", fontSize: "15px" }}
               onChange={(e) => handleCycleChange(Number(e.target.value))}
             >
               <option value="" disabled selected>
@@ -74,7 +79,7 @@ const RegularSendFormCycle: React.FC<Props> = ({ onNext }) => {
           <>
             <br />
             <select
-              style={{ width: "50%", height: "40px", fontSize: '15px' }}
+              style={{ width: "50%", height: "40px", fontSize: "15px" }}
               onChange={(e) => handleCycleChange(Number(e.target.value))}
             >
               {/* disabled와 selected 속성 추가 */}

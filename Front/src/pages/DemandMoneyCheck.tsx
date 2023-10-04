@@ -7,31 +7,33 @@ import KidDemandedDetail from "../components/pocketmoney/KidDemandedDetail";
 import MoneyDone from "../components/pocketmoney/Done";
 import DemandCheckModal from "../components/pocketmoney/DemandCheckModal";
 import { KidDemandedData } from "../components/pocketmoney/TypeDemand";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../store/common/selectors";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { baseUrl } from "../apis/url/baseUrl";
 
 const DemandMoneyCheck: React.FC = () => {
+  const token = useRecoilValue(userToken);
   const [requestData, setRequestData] = useState<KidDemandedData | null>(null);
   // const { pocketMoneyRequestId } = useParams<{ pocketMoneyRequestId: string }>();
   const [isAccepted, setIsAccepted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sendRequest = (type: string) => {
-    fetch(`http://j9d209.p.ssafy.io:8081/api/pocketmoney/request`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzOTA4ODU1ODUwMjgwNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU4NTc0NDMsImV4cCI6MTY5NTkwMDY0M30.bgr0elriq1lCsiSHTIuLncxSH9f27uZZtmQ8_doQjZ0",
-      },
-      body: JSON.stringify({
-        pocketMoneyRequestId: Number(pocketMoneyRequestId),
-        type,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        // console.log(result);
+    axios
+      .put(
+        baseUrl + `api/pocketmoney/request`,
+        {
+          pocketMoneyRequestId: Number(pocketMoneyRequestId),
+          type,
+        },
+        AxiosHeader({ token })
+      )
+      .then((response) => {
+        // console.log(response);
 
-        if (result.code === 200 && type === "ACCEPT") {
+        if (response.data.code === 200 && type === "ACCEPT") {
           setIsAccepted(true);
           setIsModalOpen(false);
         }
@@ -58,21 +60,19 @@ const DemandMoneyCheck: React.FC = () => {
   }>();
 
   useEffect(() => {
-    fetch(`http://j9d209.p.ssafy.io:8081/api/pocketmoney/request?pageNum=1`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIzOTA4ODU1ODUwMjgwNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU4NTc0NDMsImV4cCI6MTY5NTkwMDY0M30.bgr0elriq1lCsiSHTIuLncxSH9f27uZZtmQ8_doQjZ0",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        setRequestData(result.data.list[Number(pocketMoneyRequestId) - 1]);
+    axios
+      .get(
+        baseUrl + `api/pocketmoney/request?pageNum=1`,
+        AxiosHeader({ token })
+      )
+      .then((response) => {
+        console.log(response);
+        setRequestData(
+          response.data.data.list[Number(pocketMoneyRequestId) - 1]
+        );
       })
       .catch((error) => console.error("Error:", error));
-  }, [pocketMoneyRequestId]);
+  }, [pocketMoneyRequestId, token]);
 
   if (isAccepted && requestData) {
     return (

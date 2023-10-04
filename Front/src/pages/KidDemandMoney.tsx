@@ -3,8 +3,14 @@ import KidFormAmount from "../components/pocketmoney/kid/KidFormAmount";
 import KidFormMsg from "../components/pocketmoney/kid/KidFormMsg";
 import MoneyDone from "../components/pocketmoney/Done";
 import ParentSelectForm from "../components/common/ParentSelectForm";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../store/common/selectors";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { baseUrl } from "../apis/url/baseUrl";
 
 function KidDemandMoney() {
+  const token = useRecoilValue(userToken);
   const [step, setStep] = useState(1);
   const [parentUserId, setParentUserId] = useState<number | null>(null);
   const [parentUserName, setParentUserName] = useState<string | null>(null);
@@ -35,21 +41,17 @@ function KidDemandMoney() {
 
   const nextStep = (message?: string) => {
     if (step === 3) {
-      fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/request", {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjkxODMxMzczMDc2Njg4NTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTg4NDg2NCwiZXhwIjoxNjk1OTI4MDY0fQ.0BpIXU9V-Zon3FclpY4TB_3MDGu8SPpiRrz9pNYbc7g",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          parentUserId,
-          amount,
-          content: message || content,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data))
+      axios
+        .post(
+          baseUrl + "api/pocketmoney/request",
+          {
+            parentUserId,
+            amount,
+            content: message || content,
+          },
+          AxiosHeader({ token })
+        )
+        .then((response) => console.log(response.data))
         .catch((error) => console.error("Error:", error));
     }
 

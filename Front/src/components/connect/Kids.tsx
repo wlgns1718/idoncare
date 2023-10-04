@@ -3,6 +3,11 @@ import Kid from "../../components/common/Kid";
 import Modal from "../../components/common/Modal";
 import FullBtn from "../../components/common/FullBtn";
 import KidAdd from "../../components/connect/KidAdd";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 type KidData = {
   relationshipId: number;
@@ -18,24 +23,19 @@ type KidsProps = {
 };
 
 const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
+  const token = useRecoilValue(userToken);
   const [kidsData, setKidsData] = useState<KidData[]>([]);
 
   useEffect(() => {
-    fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExNjMwNjYxNTgyNTAyNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3OTM0NzcsImV4cCI6MTY5NTgzNjY3N30.NZKyJkkgz9JP9I9f70z1uGwdCUC33ZANXbYkCBFxEjQ",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.data && result.data.relationList) {
-          setKidsData(result.data.relationList);
+    axios
+      .get(baseUrl + `api/relationship`, AxiosHeader({ token }))
+      .then((response) => {
+        if (response.data.data && response.data.data.relationList) {
+          setKidsData(response.data.data.relationList);
         } else {
-          console.error("Unexpected response:", result);
+          console.error("Unexpected response:", response);
         }
       })
-
       .catch((error) => console.error("Error:", error));
   }, []);
 

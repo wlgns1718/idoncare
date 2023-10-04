@@ -11,6 +11,10 @@ import { BottomSheetOpen } from "../../store/common/atoms";
 import MissionHistoryPlusCard from "./MissionHistoryPlusCard";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 const missionStates: {
   icon: ICON_NAME;
@@ -45,22 +49,17 @@ const missionStates: {
 ];
 
 const MissonList: React.FC = () => {
+  const token = useRecoilValue(userToken);
   const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
   const [missionFilter, setMissionFilter] = useState<MissionStateType>("ALL");
   const [missions, setMissions] = useState<MissionDataType[]>([]);
 
   useEffect(() => {
-    axios
-      .get("https://j9d209.p.ssafy.io:9081/api/mission", {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI3NTA4OTk0NDY4NDM5ODAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYzMjAzNzQsImV4cCI6MTY5NjM2MzU3NH0.6byHM3nkXrY3rU4VaEFxxVc-3eXPVYF_0ClmslKOdqA",
-        },
-      })
+    axios.get(baseUrl + "api/mission", AxiosHeader({ token }))
       .then((response) => {
         setMissions(response.data.data);
       });
-  }, []);
+}, [token]);
 
   return (
     <div className={`${bottomSheetOpen ? "scroll" : ""}`}>

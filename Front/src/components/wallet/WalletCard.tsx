@@ -68,7 +68,7 @@ function WalletCard() {
           setBalance(res.data.data.balance);
         }
       });
-  }, []);
+  }, [token, setBalance]);
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden">

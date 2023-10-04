@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import Modal from "../common/Modal";
 import FullBtn from "../common/FullBtn";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 type PYesNoBtnProps = {
   relationshipRequestId: number;
@@ -8,29 +13,22 @@ type PYesNoBtnProps = {
 
 
 const PYesNoBtn: React.FC<PYesNoBtnProps> = ({relationshipRequestId}) => {
+  const token = useRecoilValue(userToken);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
   const sendRequest = (processType: string) => {
-    const body = JSON.stringify({
+    const bodyData = {
       relationshipRequestId,
       process: processType,
-    })
+    }
 
-    console.log(body);
+    console.log(bodyData);
 
-    fetch("http://j9d209.p.ssafy.io:8081/api/relationship/child/request", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjY1Mzc2Njc2NTAwODUyMTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTc5MzY4MCwiZXhwIjoxNjk1ODM2ODgwfQ.ms_k330ZMaMjcqT4LAt__R3g3Rd3T8LBDwRrwExmt9E"
-      },
-      body,
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
+    axios.put(baseUrl + `api/relationship/child/request`, bodyData , AxiosHeader({ token }))
+      .then(response => console.log(response.data))
+      .catch(error => console.error('Error:', error));
+      
   };
 
   const handleYesClick = (e: React.MouseEvent<HTMLButtonElement>) => {
