@@ -3,6 +3,7 @@ package d209.Idontcare.account.controller;
 import d209.Idontcare.account.dto.req.ActiveReq;
 import d209.Idontcare.account.dto.req.ActiveRes;
 import d209.Idontcare.account.dto.req.VirtualToVirtualReq;
+import d209.Idontcare.account.dto.res.DailyHistoryRes;
 import d209.Idontcare.account.dto.res.MonthTransactionHistoryRes;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.VirtualAccountException;
@@ -10,7 +11,12 @@ import d209.Idontcare.account.service.TransactionHistoryService;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
+import d209.Idontcare.mission.dto.GetMissionInfoDto;
+import d209.Idontcare.pocketmoney.dto.res.GetRegularPocketMoneysResDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +142,7 @@ public class VirtualAccountController {
     //자녀의 활동 보고서(월)
     //현재 월의 최근 5개월
     @GetMapping("/active")
-    @Operation(summary = "자녀 활동보고서", description = "자녀의 활동 보고서(자녀의 uuid 필요)")
+    @Operation(summary = "월간 자녀 활동보고서", description = "자녀의 활동 보고서(자녀의 uuid 필요)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
@@ -156,5 +163,21 @@ public class VirtualAccountController {
             System.out.println(map.get("code"));
             return ResponseDto.fail(map);
         }
+    }
+    
+    
+    @GetMapping("/active/{userId}/daily")
+    @Operation(summary = "일별 자녀 활동보고서", description = "자녀의 일별 활동보고서(자녀의 ID필요)")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "성공",
+            content=@Content(array = @ArraySchema(schema = @Schema(implementation= DailyHistoryRes.class)))),
+    })
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    public ResponseDto<?> findDailyActiveRepost(@PathVariable("userId") Long childUserId, HttpServletRequest request){
+        Long parentUserId = (Long)request.getAttribute("userId");
+        
+        LocalDateTime day = LocalDateTime.now();
+        List<DailyHistoryRes> result = transactionHistoryService.reportPerDaily(parentUserId, childUserId, day);
+        return ResponseDto.success(result);
     }
 }

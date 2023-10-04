@@ -1,15 +1,19 @@
 package d209.Idontcare.account.repository;
 
+import d209.Idontcare.account.entity.CashFlow;
 import d209.Idontcare.account.entity.TransactionHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.Tuple;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface TransactionHistoryRepository extends JpaRepository<TransactionHistory, Long> {
 
+public interface TransactionHistoryRepository extends JpaRepository<TransactionHistory, Long> {
+    
     @Query("SELECT a FROM TransactionHistory a WHERE a.user.userId = :userId " +
             "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month")
     List<TransactionHistory> findTransactionHistory(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
@@ -20,21 +24,29 @@ public interface TransactionHistoryRepository extends JpaRepository<TransactionH
     //이번 달 지출
     @Query("SELECT SUM(a.amount) FROM TransactionHistory a WHERE a.user.userId = :userId " +
             "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND (a.type = 'PAYMENT' OR a.type = 'TRANSFER') AND a.cashFlow = 'WITHDRAWAL'")
-    Optional<Long> ThisMonthExpend(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
+    Optional<Long> thisMonthExpend(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
 
     //이번 달 수입
     @Query("SELECT SUM(a.amount) FROM TransactionHistory a WHERE a.user.userId = :userId " +
             "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND (a.type = 'MISSION' OR a.type = 'POCKET') AND a.cashFlow = 'DEPOSIT'")
-    Optional<Long> ThisMonthEarn(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
+    Optional<Long> thisMonthEarn(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
 
     //이번 달 받은 용돈
     @Query("SELECT SUM(a.amount) FROM TransactionHistory a WHERE a.user.userId = :userId " +
             "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND a.type = 'MISSION' AND a.cashFlow = 'DEPOSIT'")
-    Optional<Long> ThisMonthPocket(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
+    Optional<Long> thisMonthPocket(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
 
 
     //이번 달 받은 미션금
     @Query("SELECT SUM(a.amount) FROM TransactionHistory a WHERE a.user.userId = :userId " +
             "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND a.type = 'POCKET' AND a.cashFlow = 'DEPOSIT'")
-    Optional<Long> ThisMonthMission(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
+    Optional<Long> thisMonthMission(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
+
+    //일별 해당 유저의 돈 내역
+    @Query("SELECT SUM(t.amount) as amount, DATE(t.localDateTime) as day" +
+        " FROM TransactionHistory  t" +
+        " WHERE t.user.userId=:userId AND t.cashFlow = :cashFlow" +
+        "   AND DATE(t.localDateTime) >= DATE(:before) AND DATE(t.localDateTime) <= DATE(:after) " +
+        " GROUP BY DATE(t.localDateTime)")
+    List<Tuple> aggregationGroupByDay(@Param("userId")Long userId, @Param("before")LocalDateTime before, @Param("after")LocalDateTime after, @Param("cashFlow")CashFlow cashFlow);
 }
