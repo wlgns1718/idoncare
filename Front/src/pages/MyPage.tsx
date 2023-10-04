@@ -12,17 +12,17 @@ const boxMenus: Menu[] = [
   {
     title: "내 지갑",
     link: "/wallet",
-    icon: "home",
+    icon: "wallet",
   },
   {
     title: "설정",
     link: "/settings",
-    icon: "home",
+    icon: "settings",
   },
   {
     title: "로그아웃",
     link: "/logout",
-    icon: "home",
+    icon: "logout",
   },
 ];
 
@@ -30,52 +30,52 @@ const menus: Menu[] = [
   {
     title: "알림확인하기",
     link: "/alert",
-    icon: "home",
+    icon: "alert",
   },
   {
     title: "결제하기",
     link: "/purchase",
-    icon: "home",
+    icon: "purchase",
   },
   {
     title: "용돈 관리",
     link: "/pocketMoney",
-    icon: "home",
+    icon: "pocketMoney",
   },
   {
     title: "미션 관리",
     link: "/mission",
-    icon: "home",
+    icon: "mission",
   },
   {
     title: "충전하기",
     link: "/wallet/recharge",
-    icon: "home",
+    icon: "recharge",
   },
   {
     title: "송금하기",
     link: "/wallet/send",
-    icon: "home",
+    icon: "send",
   },
   {
     title: "거래내역 검색하기",
     link: "/wallet/search",
-    icon: "home",
+    icon: "search",
   },
   {
     title: "활동 보고서",
     link: "/report",
-    icon: "home",
+    icon: "report",
   },
   {
     title: "멤버 관리",
     link: "/member",
-    icon: "home",
+    icon: "member",
   },
   {
     title: "결제 비밀번호 설정하기",
     link: "/password/reset",
-    icon: "home",
+    icon: "reset",
   },
 ];
 
