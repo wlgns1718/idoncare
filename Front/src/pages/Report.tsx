@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Header from "../components/common/Header";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BarDatum, ResponsiveBar } from "@nivo/bar";
 import useComma from "../hooks/useComma";
 import axios from "axios";
@@ -35,17 +35,6 @@ interface ChartData extends BarDatum {
   expend: number;
 }
 
-const SummaryItem = () => {
-  return (
-    <div className="w-full flex p-6 rounded-lg shadow-lg bg-gray justify-between">
-      <div>아이콘</div>
-      <div className="flex-grow mx-4 text-center">
-        지난주보다 1000만원 더 썼어요.
-      </div>
-    </div>
-  );
-};
-
 function Report() {
   const token = useRecoilValue(userToken);
 
@@ -54,19 +43,37 @@ function Report() {
   const [dailyData, setDailyData] = useState<Array<ChartData>>([]);
   const [monthlyData, setMonthlyData] = useState<Array<ChartData>>([]);
 
-  const onClickChild = async (child: RelationType) => {
+  const onClickChild = (child: RelationType) => {
     //해당 자녀를 선택하면 어떠한 행동을 할지 정의
     // -> 해당 자녀에 대한 일별, 월별 보고서 데이터 불러오기
-    const result = await axios.get<APIResult<Array<ChartData>>>(
-      `${baseUrl}api/virtual/active/${child.userId}/daily`,
-      AxiosHeader({ token })
-    );
 
-    const { code, data } = result.data;
-    if (code === 200) {
-      //성공적으로 불러 왔으면
-      setDailyData(data);
-    }
+    //일별 데이터 받아오기
+    (async () => {
+      const result = await axios.get<APIResult<Array<ChartData>>>(
+        `${baseUrl}api/virtual/active/${child.userId}/daily`,
+        AxiosHeader({ token })
+      );
+
+      const { code, data } = result.data;
+      if (code === 200) {
+        //성공적으로 불러 왔으면
+        setDailyData(data);
+      }
+    })();
+
+    //월별 데이터 받아오기
+    (async () => {
+      const result = await axios.get<APIResult<any>>(
+        `${baseUrl}api/virtual/active/${child.userId}/monthly`,
+        AxiosHeader({ token })
+      );
+
+      const { code, data } = result.data;
+      if (code === 200) {
+        //성공적으로 불러 왔으면
+        setMonthlyData(data.list);
+      }
+    })();
   };
 
   return (
@@ -101,7 +108,15 @@ function Report() {
             })}
           </div>
         </div>
-        <div className="w-full h-[40vh]">{BarData(dailyData)}</div>
+        <div className="w-full h-[40vh]">
+          {}
+          {dailyData.length !== 0 &&
+            dateScale === "daily" &&
+            BarData(dailyData)}
+          {monthlyData.length !== 0 &&
+            dateScale === "monthly" &&
+            BarData(monthlyData)}
+        </div>
         {/* <div className="flex">
           <SummaryItem />
         </div> */}
