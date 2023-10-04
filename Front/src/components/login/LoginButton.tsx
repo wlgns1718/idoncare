@@ -87,7 +87,7 @@ const LoginButton = () => {
     <>
       {!redirect ? (
         <button
-          className="w-full bg-[#fae100] rounded-[10px] h-[60px] flex justify-center items-center mt-[100px]"
+          className="w-full bg-[#fae100] rounded-[10px] h-[60px] flex justify-center items-center my-[50px]"
           onClick={handleLogin}
         >
           <img className="w-[20px] mx-[2px] mt-[4px]" src={kakaoLogo} />
