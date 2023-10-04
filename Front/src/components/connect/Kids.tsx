@@ -27,29 +27,29 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
           "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExNjMwNjYxNTgyNTAyNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3OTM0NzcsImV4cCI6MTY5NTgzNjY3N30.NZKyJkkgz9JP9I9f70z1uGwdCUC33ZANXbYkCBFxEjQ",
       },
     })
-    .then((response) => response.json())
-    .then((result) => {
-      if (result.data && result.data.relationList) {
-        setKidsData(result.data.relationList);
-      } else {
-        console.error('Unexpected response:', result);
-      }
-    })    
-      
-      .catch((error) => console.error('Error:', error));
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.data && result.data.relationList) {
+          setKidsData(result.data.relationList);
+        } else {
+          console.error("Unexpected response:", result);
+        }
+      })
+
+      .catch((error) => console.error("Error:", error));
   }, []);
 
   return (
     <div className="flex flex-wrap justify-between">
-        {kidsData.map(kid =>
-            <Kid
-                key={kid.relationshipId}
-                className="w-1/4"
-                is_connect={true}
-                kname={kid.userName}
-                onClick={() => setIsOpen(true)}
-            />
-        )}
+      {kidsData.map((kid) => (
+        <Kid
+          key={kid.relationshipId}
+          className="w-1/4"
+          is_connect={true}
+          kname={kid.userName}
+          onClick={() => setIsOpen(true)}
+        />
+      ))}
 
       {isOpen && (
         <Modal>
