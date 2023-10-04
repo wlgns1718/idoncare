@@ -146,7 +146,7 @@ public class TransactionHistoryService {
             Long amount = (Long)earn.get("amount");
             Date targetDay = (Date)earn.get("day");
             
-            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDay());
+            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDate());
             targetRes.setEarn(amount);
         }
         
@@ -154,7 +154,7 @@ public class TransactionHistoryService {
             Long amount = (Long)expend.get("amount");
             Date targetDay = (Date)expend.get("day");
             
-            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDay());
+            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDate());
             targetRes.setExpend(amount);
         }
         
