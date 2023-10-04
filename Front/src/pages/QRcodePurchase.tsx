@@ -1,35 +1,32 @@
-import { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import QRCode from "react-qr-code";
 import { userBalanace } from "../store/wallet/atoms";
 import { useRecoilValue } from "recoil";
 import useComma from "../hooks/useComma";
 import { myId } from "../store/common/selectors";
+import { useParams } from "react-router";
+import { ChangeEvent, useState } from "react";
+
+export interface QRcodeDataPayload {
+  payType: "fast" | "slow";
+  userId: number;
+  content: string;
+  money: number;
+  type: "PAYMENT";
+}
 
 function QRcodePurchase() {
-  const [expiryTime, setExpiryTime] = useState(Date.now() + 3 * 60 * 1000); // 현재 시간 + 3분
-  const [timeLeft, setTimeLeft] = useState(expiryTime - Date.now());
   const balance = useRecoilValue(userBalanace);
 
   const userId = useRecoilValue(myId);
 
+  const params = useParams();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = Date.now();
-      if (now >= expiryTime) {
-        clearInterval(timer);
-        setTimeLeft(0);
-      } else {
-        setTimeLeft(expiryTime - now);
-      }
-    }, 1000);
+  const [amount, setAmount] = useState(0);
+  const [ready, setReady] = useState(false);
 
-    return () => clearInterval(timer);
-  }, [expiryTime]);
-
-  const increaseTime = () => {
-    setExpiryTime(Date.now() + 3 * 60 * 1000);
+  const handleAmount = (event: ChangeEvent<HTMLInputElement>) => {
+    setAmount(Number(event.target.value));
   };
 
   return (
@@ -40,34 +37,60 @@ function QRcodePurchase() {
         headerType="normal"
       />
       <div className="mx-8">
-        <div className="flex justify-center bg-darkgray rounded-2xl py-20">
-          <QRCode
-            value={JSON.stringify({
-              userId: userId,
-              content: "payment",
-              money: 1000,
-              type: "PAYMENT",
-            })}
-            size={200}
-          />
+        <div
+          className={`flex flex-col justify-center bg-darkgray rounded-2xl py-20 `}
+        >
+          <div className={`mx-auto ${amount || params.payType == "slow" ? "" : "opacity-10"}`}>
+            <QRCode
+              value={JSON.stringify({
+                payType: params.payType,
+                userId: userId,
+                content: "payment",
+                money: amount,
+                type: "PAYMENT",
+              })}
+              size={200}
+            />
+          </div>
+          {params.payType == "fast" && (
+            <div
+              className={`text-white text-center mt-4 ${
+                amount ? "opacity-0" : ""
+              }`}
+            >
+              금액을 설정해주세요
+            </div>
+          )}
         </div>
         <div>
           <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">
             <div className="text-black">지갑잔액</div>
             <div className=" text-main ">{useComma(balance)} 원</div>
           </div>
-          <div className="w-full h-[10vh] bg-gray  rounded-3xl flex items-center justify-center">
-            <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto ">
-              남은시간 {Math.floor(timeLeft / 60000)}:
-              {((timeLeft % 60000) / 1000).toFixed(0).padEnd(2, "0")}
+          {params.payType == "fast" && (
+            <div className="w-full h-[10vh] bg-gray  rounded-3xl flex items-center justify-center">
+              {!ready ? (
+                <div className="text-main" onClick={() => setReady(true)}>
+                  눌러서 금액 입력
+                </div>
+              ) : (
+                <div>
+                  <input
+                    type="number"
+                    className=" bg-white m-2 rounded-lg text-end outline-0 mx-3 p-2"
+                    value={amount ? amount : undefined}
+                    onChange={handleAmount}
+                  />{" "}
+                  원
+                </div>
+              )}
             </div>
-            <div
-              className="mx-4 py-3 px-6 text-white bg-darkgray rounded-3xl w-auto "
-              onClick={() => increaseTime()}
-            >
-              연장
+          )}
+          {params.payType == "slow" && (
+            <div className="w-full h-[10vh] bg-gray  rounded-3xl flex items-center justify-center">
+              QR 코드를 찍어서 금액을 설정해주세요
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
