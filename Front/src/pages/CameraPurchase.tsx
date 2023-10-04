@@ -4,16 +4,27 @@ import QrScanner from "qr-scanner";
 import useComma from "../hooks/useComma";
 import { useRecoilValue } from "recoil";
 import { userBalanace } from "../store/wallet/atoms";
+import axios from "axios";
+import { baseUrl } from "../apis/url/baseUrl";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { userToken } from "../store/common/selectors";
 
 function CameraPurchase() {
   const balance = useRecoilValue(userBalanace);
+  const token = useRecoilValue(userToken);
 
   const handleScan = (result: QrScanner.ScanResult) => {
     console.log(typeof result.data);
-    console.log(result.data);
-    console.log(result);
-    // const ob = JSON.parse(result.data);
-    // console.log(ob);
+    const parseData = JSON.parse(result.data);
+
+    axios
+      .post(baseUrl + "api/virtual", parseData, AxiosHeader({ token }))
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const videoRef = useRef(null);
@@ -28,9 +39,6 @@ function CameraPurchase() {
   };
 
   useEffect(() => {
-    Notification.requestPermission().then((result) => {
-      console.log(result);
-    });
     navigator.mediaDevices.getUserMedia({
       video: true,
     });

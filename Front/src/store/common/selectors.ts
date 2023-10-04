@@ -15,3 +15,9 @@ export const myRole = selector({
   key: "myRole",
   get: ({ get }) => get(userData).role,
 });
+
+export const myId = selector({
+  key: "myId",
+  get: ({ get }) => get(userData).userId,
+});
+

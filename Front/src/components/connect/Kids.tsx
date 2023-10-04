@@ -3,7 +3,7 @@ import Kid from "../../components/common/Kid";
 import Modal from "../../components/common/Modal";
 import FullBtn from "../../components/common/FullBtn";
 import KidAdd from "../../components/connect/KidAdd";
-import axios from 'axios';
+import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/selectors";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
@@ -27,8 +27,8 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
   const [kidsData, setKidsData] = useState<KidData[]>([]);
 
   useEffect(() => {
-
-    axios.get(baseUrl + `api/relationship`, AxiosHeader({ token }))
+    axios
+      .get(baseUrl + `api/relationship`, AxiosHeader({ token }))
       .then((response) => {
         if (response.data.data && response.data.data.relationList) {
           setKidsData(response.data.data.relationList);
@@ -36,21 +36,20 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
           console.error("Unexpected response:", response);
         }
       })
-      .catch((error) => console.error('Error:', error));
-      
-   }, []);
+      .catch((error) => console.error("Error:", error));
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-between">
-        {kidsData.map(kid =>
-            <Kid
-                key={kid.relationshipId}
-                className="w-1/4"
-                is_connect={true}
-                kname={kid.userName}
-                onClick={() => setIsOpen(true)}
-            />
-        )}
+      {kidsData.map((kid) => (
+        <Kid
+          key={kid.relationshipId}
+          className="w-1/4"
+          is_connect={true}
+          kname={kid.userName}
+          onClick={() => setIsOpen(true)}
+        />
+      ))}
 
       {isOpen && (
         <Modal>
