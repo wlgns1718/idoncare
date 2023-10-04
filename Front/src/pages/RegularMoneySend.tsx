@@ -3,7 +3,7 @@ import KidSelectForm from "../components/common/KidSelectForm";
 import RegularSendForm from "../components/pocketmoney/RegularSendForm";
 import RegularSendFormCycle from "../components/pocketmoney/RegularSendFormCycle";
 import MoneyPassword from "../components/pocketmoney/MoneyPassword";
-import MoneyDone from "../components/pocketmoney/Done";
+import MoneyDone from "../components/pocketmoney/MoneyDone";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/selectors";
@@ -64,7 +64,9 @@ const SendRegularMoney: React.FC = () => {
   let form;
   switch (step) {
     case 1:
-      form = <KidSelectForm onNext={onNextKidSelectForm} />;
+      form = <KidSelectForm 
+      onNext={onNextKidSelectForm}
+      pageTitle="정기용돈 등록" />;
       break;
     case 2:
       form = <RegularSendFormCycle onNext={onNextFormCycle} />;

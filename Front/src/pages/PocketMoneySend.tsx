@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PocketMoneySendForm from "../components/pocketmoney/PocketSendForm";
 import PocketSendMsgForm from "../components/pocketmoney/PocketSendMsgForm";
-import MoneyDone from "../components/pocketmoney/Done";
+import MoneyDone from "../components/pocketmoney/MoneyDone";
 import MoneyPassword from "../components/pocketmoney/MoneyPassword";
 import KidSelectForm from "../components/common/KidSelectForm";
 import axios from "axios";
@@ -9,14 +9,17 @@ import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
+import { userBalanace } from "../store/wallet/atoms";
 
 const PocketMoneySend: React.FC = () => {
   const token = useRecoilValue(userToken);
+  const balance = useRecoilValue(userBalanace);
   const [step, setStep] = useState(1);
   const [childUserId, setChildUserId] = useState<number | null>(null);
   const [childUserName, setChildUserName] = useState<string | null>(null);
   const [amount, setAmount] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
 
   const onNextKidSelectForm = (childUserId: number, childUserName: string) => {
     console.log("자녀 선택:", childUserId, childUserName);
@@ -49,8 +52,14 @@ const PocketMoneySend: React.FC = () => {
           },
           AxiosHeader({ token })
         )
-        .then((response) => console.log(response.data))
-        .catch((error) => console.error("Error:", error));
+        .then((response) => {
+          console.log(response.data);
+          setIsSuccess(true);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setIsSuccess(false);
+        });
     }
 
     setStep(step + 1);
@@ -61,7 +70,10 @@ const PocketMoneySend: React.FC = () => {
   let form;
   switch (step) {
     case 1:
-      form = <KidSelectForm onNext={onNextKidSelectForm} />;
+      form = <KidSelectForm 
+      onNext={onNextKidSelectForm} 
+      pageTitle="용돈 보내기"
+      />;
       break;
     case 2:
       form = <PocketMoneySendForm onNext={onNextSendPocketMoneyForm} />;
@@ -87,14 +99,19 @@ const PocketMoneySend: React.FC = () => {
     case 5:
       form = (
         <MoneyDone
-          title="용돈 보내기 완료"
+          title={isSuccess ? "용돈 보내기 완료" : "용돈 보내기 실패"}
           content={
             <>
               <div className="text-m">{childUserName}</div>
               <div className="text-m text-main">{amount}원</div>
             </>
           }
-          ps="남은 잔액:102,000원" // 잔액 처리 로직 추가하기
+          ps={
+            isSuccess
+              ? `남은 잔액: ${balance - (amount || 0)}원`
+              : "계좌 잔고가 부족합니다."
+          }
+          is_done={isSuccess}
         />
       );
       break;

@@ -4,7 +4,7 @@ import Header from "../components/common/Header";
 import YesNoBtn from "../components/common/YesNoBtn";
 import SmallBtn from "../components/pocketmoney/SmallBtn";
 import KidDemandedDetail from "../components/pocketmoney/KidDemandedDetail";
-import MoneyDone from "../components/pocketmoney/Done";
+import MoneyDone from "../components/pocketmoney/MoneyDone";
 import DemandCheckModal from "../components/pocketmoney/DemandCheckModal";
 import { KidDemandedData } from "../components/pocketmoney/TypeDemand";
 import axios from "axios";
@@ -12,13 +12,16 @@ import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
+import { userBalanace } from "../store/wallet/atoms";
 
 const DemandMoneyCheck: React.FC = () => {
   const token = useRecoilValue(userToken);
+  const balance = useRecoilValue(userBalanace)
   const [requestData, setRequestData] = useState<KidDemandedData | null>(null);
   // const { pocketMoneyRequestId } = useParams<{ pocketMoneyRequestId: string }>();
   const [isAccepted, setIsAccepted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(true);
 
   const sendRequest = (type: string) => {
     axios
@@ -36,9 +39,13 @@ const DemandMoneyCheck: React.FC = () => {
         if (response.data.code === 200 && type === "ACCEPT") {
           setIsAccepted(true);
           setIsModalOpen(false);
+          setIsSuccess(true);
         }
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => {
+        console.error("Error:", error);
+        setIsSuccess(false);
+            });
   };
 
   const handleAccept = () => {
@@ -77,15 +84,16 @@ const DemandMoneyCheck: React.FC = () => {
   if (isAccepted && requestData) {
     return (
       <MoneyDone
-        title="용돈 보내기 완료"
-        content={
-          <>
-            <div className="text-m">{requestData.child.name}</div>
-            <div className="text-m text-main">{requestData.amount}원</div>
-          </>
-        }
-        ps="남은 잔액 102,000원" // 남은 잔액 계산
-      />
+      title={isSuccess ? "용돈 보내기 완료" : "용돈 보내기 실패"}
+      content={
+        <>
+          <div className="text-m">{requestData.child.name}</div>
+          <div className="text-m text-main">{requestData.amount}원</div>
+        </>
+      }
+      ps={isSuccess ? `남은 잔액: ${balance - (requestData.amount || 0)}원` : "통장 잔액이 부족합니다."}
+      is_done={isSuccess}
+          />
     );
   }
 

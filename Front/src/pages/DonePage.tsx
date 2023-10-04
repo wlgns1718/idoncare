@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import MoneyDone from '../components/pocketmoney/Done';
+import MoneyDone from '../components/pocketmoney/MoneyDone';
 
 export interface DoneData {
   title : string;
