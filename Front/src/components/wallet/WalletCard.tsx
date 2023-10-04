@@ -1,7 +1,7 @@
 import Icon, { ICON_NAME } from "../common/Icon";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { userToken } from "../../store/common/selectors";
 import useComma from "./../../hooks/useComma";
@@ -56,9 +56,11 @@ function WalletCard() {
   const token = useRecoilValue(userToken);
 
   const [balance, setBalance] = useRecoilState(userBalanace);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios
+    setTimeout(() => {
+      axios
       .get(baseUrl + `api/virtual/balance`, AxiosHeader({ token }))
       .then((res) => {
         console.log(res.data);
@@ -67,8 +69,10 @@ function WalletCard() {
         } else {
           setBalance(res.data.data.balance);
         }
+        setIsLoading(false)
       });
-  }, []);
+    }, 1000);
+  }, [token, setBalance]);
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
@@ -80,7 +84,12 @@ function WalletCard() {
           }}
         >
           <div>잔액</div>
-          <div className="text-m">{useComma(balance)} 원</div>
+          {isLoading ? (
+            <div className="text-m">0 원</div>
+            ) : (
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            <div className="text-m">{useComma(balance)} 원</div>
+          )}
         </div>
         <div className="flex justify-between px-6 py-5 text-center">
           {cardButton.map((item, index) => {
