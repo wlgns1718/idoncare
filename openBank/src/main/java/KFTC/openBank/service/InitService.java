@@ -4,7 +4,6 @@ import KFTC.openBank.domain.*;
 import KFTC.openBank.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 
 @Service
@@ -58,23 +57,22 @@ public class InitService {
   public void bankAccountDataInit(){
     if(bankAccountRepository.count() > 0) return;
     Bank bank41 = bankRepository.getReferenceById("41");
-    bankAccountRepository.save(new BankAccount("77777777", bank41, 1000000L, "이정훈", "19980502"));
+    Bank bank11 = bankRepository.getReferenceById("11");
+    bankAccountRepository.save(new BankAccount("40660204210915", bank11, 1000000L, "이정훈", "19980502"));
+    bankAccountRepository.save(new BankAccount("55555555", bank11, 1000000L, "김슬기", "19980413"));
     bankAccountRepository.save(new BankAccount("00000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
-    bankAccountRepository.save(new BankAccount("88888888", bank41, 1000000000000L, "starbucks", "202309011"));
-    for(int i = 1; i <= 9; i++){
+    bankAccountRepository.save(new BankAccount("99999999", bank41, 1000000000000L, "starbucks", "202309011"));
+    for(int i = 1; i <= 2; i++){
       bankAccountRepository.save(new BankAccount("1111111"+i, bank41, 1000000L, "김부모" + i, "1990010" + i));
     }
-    for(int i = 1; i <= 9; i++){
+    for(int i = 3; i <= 5; i++){
       bankAccountRepository.save(new BankAccount("2222222" + i, bank41, 1000L, "김자식" + i, "2000010" + i));
     }
-    bankAccountRepository.save(new BankAccount("99999999", bank41, 1000000L, "김사람", "20000111"));
   }
 
   public void userDataInit(){
     if(userRepository.count() > 0) return;
     userRepository.save(new User("아이돈케어", "01000000000", Role.CORPORATION));
-//    userRepository.save(new User("김부모1", "01012340001", Role.INDIVIDUAL));
-    userRepository.save(new User("김사람", "01099999999", Role.INDIVIDUAL));
   }
   
   public void finTechServiceDataInit(){
@@ -93,13 +91,13 @@ public class InitService {
   
   public void mobileDataInit(){
     if(mobileRepository.count() > 0) return;
-    for(int i = 1; i <= 9; i++){
-      mobileRepository.save(new Mobile("0101234567" + ((i + 7) % 10), "김부모" + i, "1990010" + i, MobileSort.SK));
+    for(int i = 1; i <= 2; i++){
+      mobileRepository.save(new Mobile("0101234567" + i, "김부모" + i, "1990010" + i, MobileSort.SK));
     }
-    for(int i = 1; i <= 9; i++){
-      mobileRepository.save(new Mobile("0104321001" + i, "김자식" + i, "2000010"+i, MobileSort.KT));
+    for(int i = 3; i <= 5; i++){
+      mobileRepository.save(new Mobile("0104321001" + i, "김자식" + i, "2000010"+i, MobileSort.SK));
     }
-    mobileRepository.save(new Mobile("01099999999", "김사람", "19900101", MobileSort.LG));
     mobileRepository.save(new Mobile("01038300631", "이정훈", "19980502", MobileSort.LG));
+    mobileRepository.save(new Mobile("01050321051", "김슬기", "19980413", MobileSort.KT));
   }
 }

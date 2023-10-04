@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -30,8 +32,7 @@ public class TransactionHistory {
     @Column(name = "CONTENT")
     String content;
 
-    @Column(name="CREATED_AT")
-    @CreatedDate
+    @Column(name="CREATED_AT", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     LocalDateTime localDateTime;
 
     @Column(name = "AMOUNT")

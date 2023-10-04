@@ -7,13 +7,11 @@ import d209.Idontcare.account.dto.res.TransactionHistoryRes;
 import d209.Idontcare.account.entity.TransactionHistory;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.UserException;
-import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
