@@ -61,10 +61,11 @@ public class VirtualAccountController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "204", description = "거래 내역 없음"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+//    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> accountYearMonth(@PathVariable("Year") String year, @PathVariable("Month") String month, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
-        Long userId = (Long) request.getAttribute("userId");
+//        Long userId = (Long) request.getAttribute("userId");
+        Long userId = 3718839819283610000L;
         Map<String, String> map = new HashMap<>();
         try{
             List<MonthTransactionHistoryRes> result = transactionHistoryService.userTransactionHistoryByDate(userId, Integer.parseInt(year), Integer.parseInt(month));

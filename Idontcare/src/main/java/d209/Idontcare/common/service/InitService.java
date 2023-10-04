@@ -92,8 +92,8 @@ public class InitService {
   private void realAccountDataInit(){
     if(realAccountRepository.count() > 0) return;
     String pw = encryptService.encrypt("123456");
-    for(long i = 1L; i <= 5; i++){
-      RealAccount account = new RealAccount(encryptService.encrypt(String.valueOf(i)), userRepository.findByKakaoId(i).get(), pw, "신한은행", "41");
+    for(long i = 1L; i <= 9; i++){
+      RealAccount account = new RealAccount(encryptService.encrypt(String.valueOf("1111111"+i)), userRepository.findByKakaoId(i).get(), pw, "신한은행", "41");
       realAccountRepository.save(account);
     }
   }

@@ -38,5 +38,4 @@ public class RealAccount {
         this.bankName = bankName;
         this.bankCode = bankCode;
     }
-    
 }

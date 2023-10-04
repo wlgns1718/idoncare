@@ -37,7 +37,9 @@ public class TransactionHistoryService {
         for(int i = 0; i < 32; i++){
             list.add(new MonthTransactionHistoryRes(i));
         }
-        for(TransactionHistory trans : transactionHistoryRepository.findTransactionHistory(userId, year, month)){
+        List<TransactionHistory> transactionHistory = transactionHistoryRepository.findTransactionHistory(userId, year, month);
+        for(int i = transactionHistory.size() - 1; i >= 0; i--){
+            TransactionHistory trans = transactionHistory.get(i);
             int day = trans.getLocalDateTime().getDayOfMonth();
             list.get(day).getHistoryList().add(TransactionHistoryRes.TransactionHistoryToDto(trans));
         }
@@ -49,6 +51,7 @@ public class TransactionHistoryService {
         if(list.size() == 0){
             throw new TransactionHistoryException(204, "거래 내역이 없습니다.");
         }
+        Collections.sort(list, (a, b) -> b.getDate() - a.getDate());
         return list;
     }
     
