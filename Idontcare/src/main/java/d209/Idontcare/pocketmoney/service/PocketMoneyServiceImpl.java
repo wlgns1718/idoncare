@@ -255,6 +255,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
         //돈 부족일 경우
         // -> Rejected로 정기용돈 미입금내역으로 넣어주자
         RegularPocketMoneyRejected rejected = RegularPocketMoneyRejected.builder()
+            .regularPocketMoney(regularPocketMoneyRepository.getReferenceById(r.getRegularPocketMoneyId()))
             .parent(userRepository.getReferenceById(r.getParent().getUserId()))
             .child(userRepository.getReferenceById(r.getChild().getUserId()))
             .amount(r.getAmount())
@@ -266,8 +267,12 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId) {
-    return regularPocketMoneyRejectedRepository.findByParentUserId(parentUserId)
+  public List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId, Long regularPocketMoneyId) {
+    RegularPocketMoney regularPocketMoney = regularPocketMoneyRepository.findById(regularPocketMoneyId).orElseThrow(NoSuchContentException::new);
+    
+    if( !regularPocketMoney.getParent().getUserId().equals(parentUserId) ) throw new AuthorizationException();
+    
+    return regularPocketMoneyRejectedRepository.findByRegularPocketMoneyId(regularPocketMoneyId)
         .stream().map(GetRegularPocketMoneyRejectedResDto::new).toList();
   }
 }

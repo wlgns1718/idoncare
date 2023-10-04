@@ -202,18 +202,20 @@ public class PocketMoneyController {
         return LocalDateTime.now().toString();
     }
 
-    @GetMapping("/regular/rejected")
+    @GetMapping("/regular/rejected/{regularPocketMoneyId}")
     @Operation(summary = "정기용돈 미입금 내역 조회")
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
             content=@Content(array = @ArraySchema(schema = @Schema(implementation= GetRegularPocketMoneyRejectedResDto.class)))),
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= AuthorizationException.CODE, description = AuthorizationException.DESCRIPTION),
+        @ApiResponse(responseCode= NoSuchContentException.CODE, description = NoSuchContentException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
     })
     @LoginOnly(level=Level.PARENT_ONLY)
-    public ResponseDto getRegularPocketMoneyRejectedList(HttpServletRequest request){
+    public ResponseDto getRegularPocketMoneyRejectedList(@PathVariable("regularPocketMoneyId") Long regularPocketMoneyId, HttpServletRequest request){
         Long parentUserId = (Long)request.getAttribute("userId");
-        List<GetRegularPocketMoneyRejectedResDto> list = pocketMoneyService.getRegularPocketMoneyRejectedList(parentUserId);
+        List<GetRegularPocketMoneyRejectedResDto> list = pocketMoneyService.getRegularPocketMoneyRejectedList(parentUserId, regularPocketMoneyId);
         return ResponseDto.success(list);
     }
 }
