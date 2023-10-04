@@ -32,5 +32,6 @@ public interface PocketMoneyService {
   
   void executeRegularPocketMoney(LocalDateTime now);
   
-  List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId);
+  List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId, Long regularPocketMoneyId)
+      throws NoSuchContentException, AuthorizationException;
 }

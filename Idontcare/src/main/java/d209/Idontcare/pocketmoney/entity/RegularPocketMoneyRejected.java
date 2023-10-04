@@ -15,6 +15,10 @@ public class RegularPocketMoneyRejected {
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn
+  private RegularPocketMoney regularPocketMoney;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn
   private User parent;
   
   @ManyToOne(fetch = FetchType.LAZY)

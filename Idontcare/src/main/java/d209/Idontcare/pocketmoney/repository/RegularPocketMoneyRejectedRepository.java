@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.Tuple;
+import java.util.Arrays;
 import java.util.List;
 
 public interface RegularPocketMoneyRejectedRepository extends JpaRepository<RegularPocketMoneyRejected, Long> {
   
   @Query("select r.regularPocketMoneyRejectedId as regularPocketMoneyRejectedId, r.amount as amount, r.dueDate as dueDate" +
       " from RegularPocketMoneyRejected r" +
-      " where r.parent.userId = :parentUserId")
-  List<Tuple> findByParentUserId(@Param("parentUserId") Long parentUserId);
+      " where r.regularPocketMoney.regularPocketMoneyId = :regularPocketMoneyId")
+  List<Tuple> findByRegularPocketMoneyId(@Param("regularPocketMoneyId") Long regularPocketMoneyId);
 }
