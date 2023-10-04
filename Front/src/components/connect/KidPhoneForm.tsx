@@ -28,7 +28,6 @@ const KidPhoneForm: React.FC<KidPhoneFormProps> = ({ onPhoneNumberChange }) => {
     });
   };
 
-  // 형식 맞추기
   const formatInputValue = (value: string) => {
     const numericValue = value.replace(/[^0-9]/g, '');
     if (numericValue.length >= 4 && numericValue.length < 7) {

@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Header from "../components/common/Header";
 import KidPhoneForm from "../components/connect/KidPhoneForm";
 import FullBtn from "../components/common/FullBtn";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../store/common/selectors";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { baseUrl } from "../apis/url/baseUrl";
 
 const KidRegist: React.FC = () => {
+  const token = useRecoilValue(userToken);
   const [childPhoneNumber, setChildPhoneNumber] = useState("");
   const navigate = useNavigate();
 
   const handleChildPhoneNumberSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://j9d209.p.ssafy.io:8081/api/relationship/request",
+        baseUrl + `api/relationship/request`,
         { childPhoneNumber: String(childPhoneNumber) },
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExNjMwNjYxNTgyNTAyNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3OTM0NzcsImV4cCI6MTY5NTgzNjY3N30.NZKyJkkgz9JP9I9f70z1uGwdCUC33ZANXbYkCBFxEjQ",
-          },
-        }
+        AxiosHeader({ token })
       );
 
       console.log(response.data);

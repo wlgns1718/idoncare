@@ -4,8 +4,14 @@ import RegularSendForm from "../components/pocketmoney/RegularSendForm";
 import RegularSendFormCycle from "../components/pocketmoney/RegularSendFormCycle";
 import MoneyPassword from "../components/pocketmoney/MoneyPassword";
 import MoneyDone from "../components/pocketmoney/Done";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../store/common/selectors";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { baseUrl } from "../apis/url/baseUrl";
 
 const SendRegularMoney: React.FC = () => {
+  const token = useRecoilValue(userToken);
   const [step, setStep] = useState(1);
   const [childUserId, setChildUserId] = useState<number | null>(null);
   const [childUserName, setChildUserName] = useState<string | null>(null);
@@ -35,67 +41,62 @@ const SendRegularMoney: React.FC = () => {
 
   const nextStep = () => {
     if (step === 4) {
-      fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/regular", {
-        method: "POST",
-        headers: {
-          Authorization:
-          // 부모
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type,
-          cycle,
-          childUserId,
-          amount,
-        }),
-      })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error("Error:", error));
+      axios
+        .post(
+          baseUrl + "api/pocketmoney/regular",
+          {
+            type,
+            cycle,
+            childUserId,
+            amount,
+          },
+          AxiosHeader({ token })
+        )
+        .then((response) => console.log(response.data))
+        .catch((error) => console.error("Error:", error));
     }
 
     setStep(step + 1);
-};
+  };
 
   console.log("Current step:", step);
 
   let form;
-switch (step) {
-case 1:
-form = <KidSelectForm onNext={onNextKidSelectForm} />;
-break;
-case 2:
-form = <RegularSendFormCycle onNext={onNextFormCycle} />;
-break;
-case 3:
-form = <RegularSendForm onNext={onNextFormAmount} />;
-break;
-case 4:
-  form = <MoneyPassword onNext={nextStep} />;
-  break;
-case 5:
-form = (
-<MoneyDone
-title="정기용돈 등록 완료"
-content={
-<>
-<div className="text-m">{childUserName}</div>
-<div className="text-m">
-매월 {cycle}일 <span className="text-main">{amount}</span>원
-</div>
-</>
-}
-ps="충전잔액이 부족하면 이체되지 않습니다."
-/>
-);
-break;
+  switch (step) {
+    case 1:
+      form = <KidSelectForm onNext={onNextKidSelectForm} />;
+      break;
+    case 2:
+      form = <RegularSendFormCycle onNext={onNextFormCycle} />;
+      break;
+    case 3:
+      form = <RegularSendForm onNext={onNextFormAmount} />;
+      break;
+    case 4:
+      form = <MoneyPassword onNext={nextStep} />;
+      break;
+    case 5:
+      form = (
+        <MoneyDone
+          title="정기용돈 등록 완료"
+          content={
+            <>
+              <div className="text-m">{childUserName}</div>
+              <div className="text-m">
+                매월 {cycle}일 <span className="text-main">{amount}</span>원
+              </div>
+            </>
+          }
+          ps="충전잔액이 부족하면 이체되지 않습니다."
+        />
+      );
+      break;
 
-default:
-throw new Error("Invalid step");
-}
+    default:
+      throw new Error("Invalid step");
+  }
 
-return <div>{form}</div>;
+  return <div>{form}</div>;
 };
 
 export default SendRegularMoney;

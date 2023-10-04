@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Kid from "../common/Kid"
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 interface Relation {
   relationshipId: number;
@@ -13,10 +18,10 @@ interface Props {
 }
 
 const MyKidList: React.FC<Props> = ({ onKidsSelected }) => {
+  const token = useRecoilValue(userToken);
   const [selectedKids, setSelectedKids] = useState<string[]>([]);
   const [relationList, setRelationList] = useState<Relation[] | null>(null);
 
-   // handleKidClick 함수 추가
    const handleKidClick = (kidName: string) => {
     if (selectedKids.includes(kidName)) {
       setSelectedKids(selectedKids.filter(kid => kid !== kidName));
@@ -25,32 +30,20 @@ const MyKidList: React.FC<Props> = ({ onKidsSelected }) => {
     }
    }
 
-  useEffect(() => {
-    fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
-      headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc3NDg5OTIwNTM0NjI3MTAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU2MTc4NTMsImV4cCI6MTY5NTY2MTA1M30.ehm3HVBigEsnET5z8qd7OCmqEDJjew9JQts8Fl8-WWg'
-      }
-    })
+   useEffect(() => {
+    axios.get(baseUrl + "api/relationship", AxiosHeader({ token }))
       .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+        console.log(response.data);
+        setRelationList(response.data.relationList);
       })
-      .then(data => { 
-        console.log(data);
-        setRelationList(data.relationList);
-     })
       .catch(error => console.error('Error:', error));
       
     if (onKidsSelected) onKidsSelected(selectedKids.length);
-  }, [selectedKids]);
+}, [selectedKids, token, onKidsSelected]);
 
-  
-   // API 요청 중일 때 또는 관계가 없는 경우
+
    if (!relationList || relationList.length === 0) return <div className="text-m text-darkgray mt-72">연결된 자녀가 없습니다.</div>;
 
-   // 관계가 있는 경우
    return (
      <div className="flex">
        {relationList.map(relation =>

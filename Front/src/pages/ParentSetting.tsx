@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import Header from "../components/common/Header";
 import Parent from "../components/common/Parent";
 import ParentCheck from "../components/connect/ParentCheck";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../store/common/selectors";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { baseUrl } from "../apis/url/baseUrl";
 
 type ParentData = {
   relationshipId: number;
@@ -17,38 +22,32 @@ type ParentCheckData = {
 };
 
 const ParentSetting: React.FC = () => {
+  const token = useRecoilValue(userToken);
+
   const [parentsData, setParentsData] = useState<ParentData[]>([]);
   const [parentCheckRequests, setParentCheckRequests] = useState<
     ParentCheckData[]
   >([]);
 
   useEffect(() => {
-    fetch("http://j9d209.p.ssafy.io:8081/api/relationship", {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjkxODMxMzczMDc2Njg4NTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTg4NDg2NCwiZXhwIjoxNjk1OTI4MDY0fQ.0BpIXU9V-Zon3FclpY4TB_3MDGu8SPpiRrz9pNYbc7g",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.data && result.data.relationList) {
-          setParentsData(result.data.relationList);
+    axios
+      .get(baseUrl + `api/relationship`, AxiosHeader({ token }))
+      .then((response) => {
+        if (response.data.data && response.data.data.relationList) {
+          setParentsData(response.data.data.relationList);
         } else {
-          console.error("Unexpected response:", result);
+          console.error("Unexpected response:", response);
         }
       })
       .catch((error) => console.error("Error:", error));
 
-    fetch("http://j9d209.p.ssafy.io:8081/api/relationship/child/request", {
-      headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjkxODMxMzczMDc2Njg4NTAwMDAsInJvbGUiOiJDSElMRCIsImlhdCI6MTY5NTg4NDg2NCwiZXhwIjoxNjk1OTI4MDY0fQ.0BpIXU9V-Zon3FclpY4TB_3MDGu8SPpiRrz9pNYbc7g",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => setParentCheckRequests(result.data.requests))
+    axios
+      .get(baseUrl + `api/relationship/child/request`, AxiosHeader({ token }))
+      .then((response) => {
+        setParentCheckRequests(response.data.data.requests);
+      })
       .catch((error) => console.error("Error:", error));
-  }, []);
+  }, [token]);
 
   return (
     <div className="flex flex-col justify-between h-screen">

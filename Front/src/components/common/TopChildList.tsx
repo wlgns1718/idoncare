@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import Profile from "./Profile";
 import defaultImg from "/icons/circle-pink.png";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 interface Child {
   relationshipId: number;
@@ -11,21 +15,21 @@ interface Child {
 }
 
 const TopChildList: React.FC = () => {
+  const token = useRecoilValue(userToken);
   const [children, setChildren] = useState<Child[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://j9d209.p.ssafy.io:8081/api/relationship', {
-        headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI3NTA4OTk0NDY4NDM5ODAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYzMjAzNzQsImV4cCI6MTY5NjM2MzU3NH0.6byHM3nkXrY3rU4VaEFxxVc-3eXPVYF_0ClmslKOdqA'
-        }
-      });
-      
+      const result = await axios.get(
+        baseUrl + `api/relationship`,
+        AxiosHeader({ token })
+      );
+
       setChildren(result.data.data.relationList);
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div className="m-8 mb-12">
@@ -41,12 +45,13 @@ const TopChildList: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="ml-16 mt-4 mb-8 text-s text-darkgray">등록된 자녀가 없습니다.</div>
+          <div className="ml-16 mt-4 mb-8 text-s text-darkgray">
+            등록된 자녀가 없습니다.
+          </div>
         )}
       </div>
     </div>
   );
-  
-}
+};
 
 export default TopChildList;

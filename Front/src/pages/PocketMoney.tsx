@@ -7,6 +7,12 @@ import RegularMoneyBox from "../components/pocketmoney/RegularBox";
 import RegularMoneyBoxEmpty from "../components/pocketmoney/RegularBoxEmpty";
 import SendMoneyBox from "../components/pocketmoney/MenuBox";
 
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../store/common/selectors";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { baseUrl } from "../apis/url/baseUrl";
+
 type KidDemandedData = {
   pocketMoneyRequestId: number;
   parent: {
@@ -32,44 +38,34 @@ type RegularMoneyData = {
 };
 
 const PocketMoney: React.FC = () => {
+  const token = useRecoilValue(userToken);
+
   const [kidDemandedList, setKidDemandedList] = useState<KidDemandedData[]>([]);
-  const [regularPocketMoneyList, setRegularPocketMoneyList] = useState<RegularMoneyData[]>([]);
+  const [regularPocketMoneyList, setRegularPocketMoneyList] = useState<
+    RegularMoneyData[]
+  >([]);
 
   useEffect(() => {
-    
-    fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/request?pageNum=1", {
-      method:'GET',
-      headers:{
-        'Content-Type': 'application/json',
-        Authorization:
-        // 부모
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ"
-      }
-    })
-    .then((response) => response.json())
-    .then((result) => {
-      const requestList = result.data.list.filter((item : KidDemandedData) => item.type === 'REQUEST');
-      
-    setKidDemandedList(requestList);
-    })
-    .catch((error) => console.error('Error:', error));
-    
-      
-    fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/regular", {
-      method:'GET',
-      headers:{
-        'Content-Type': 'application/json',
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ"
-      }
-    })
-    .then((response) => response.json())
-    .then((result) => {
-      setRegularPocketMoneyList(result.data);
-    })
-    .catch((error) => console.error('Error:', error));
-      
-   }, []);
+    axios
+      .get(
+        baseUrl + `api/pocketmoney/request?pageNum=1`,
+        AxiosHeader({ token })
+      )
+      .then((response) => {
+        const requestList = response.data.data.list.filter(
+          (item: KidDemandedData) => item.type === "REQUEST"
+        );
+        setKidDemandedList(requestList);
+      })
+      .catch((error) => console.error("Error:", error));
+
+    axios
+      .get(baseUrl + `api/pocketmoney/regular`, AxiosHeader({ token }))
+      .then((response) => {
+        setRegularPocketMoneyList(response.data.data);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, [token]);
 
   return (
     <div className="pb-60">
@@ -87,15 +83,15 @@ const PocketMoney: React.FC = () => {
         </div>
 
         <div className="ml-4">
-          {kidDemandedList.map(demand =>
-            <KidDemandedList 
-              key={demand.pocketMoneyRequestId} 
-              name={demand.child.name} 
-              amount={demand.amount.toString()} 
+          {kidDemandedList.map((demand) => (
+            <KidDemandedList
+              key={demand.pocketMoneyRequestId}
+              name={demand.child.name}
+              amount={demand.amount.toString()}
               pocketMoneyRequestId={demand.pocketMoneyRequestId}
             />
-          )}
-          </div>
+          ))}
+        </div>
 
         <div className="text-right">
           <SmallBtn link="/" text="전체보기" classes="mb-10" />
@@ -123,15 +119,19 @@ const PocketMoney: React.FC = () => {
         </div>
 
         <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
-        {regularPocketMoneyList.length > 0 ? regularPocketMoneyList.map(money =>
-          <RegularMoneyBox
-            regularPocketMoneyId={money.regularPocketMoneyId}
-            regularDate={`매월 ${money.cycle}일`}
-            cname={money.childName}
-            amount={`${money.amount.toLocaleString()}원`}
-            startDate={new Date(money.createdAt).toLocaleDateString()}
-          />
-        ) : <RegularMoneyBoxEmpty />}
+        {regularPocketMoneyList.length > 0 ? (
+          regularPocketMoneyList.map((money) => (
+            <RegularMoneyBox
+              regularPocketMoneyId={money.regularPocketMoneyId}
+              regularDate={`매월 ${money.cycle}일`}
+              cname={money.childName}
+              amount={`${money.amount.toLocaleString()}원`}
+              startDate={new Date(money.createdAt).toLocaleDateString()}
+            />
+          ))
+        ) : (
+          <RegularMoneyBoxEmpty />
+        )}
       </div>
     </div>
   );

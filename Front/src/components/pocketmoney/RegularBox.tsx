@@ -3,6 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 // import SmallBtn from "./SmallBtn";
 import BottomModal from "../common/Modal";
 import YesNoBtn from "../common/YesNoBtn";
+import axios from "axios";
+import { useRecoilValue } from "recoil";
+import { userToken } from "../../store/common/selectors";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { baseUrl } from "../../apis/url/baseUrl";
 
 type RegularMoneyBoxProps = {
   regularDate: string;
@@ -19,36 +24,30 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
   startDate,
   regularPocketMoneyId,
 }) => {
-
+  const token = useRecoilValue(userToken);
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-    const handleDeleteClick = () => {
-        setIsModalOpen(true);
-    };
 
-    const handleCancelClick = () => {
-        setIsModalOpen(false);
-    };
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
 
-    const handleConfirmClick = () => {
-      fetch("http://j9d209.p.ssafy.io:8081/api/pocketmoney/regular", {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjE3MDk5MzM4OTgxNzIwMjAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYyMjEyMTIsImV4cCI6MTY5NjI2NDQxMn0.tdQ_hGCsmNw45LwAJTHGzodkW_BFLiVz9PZc-QUXXjQ"
-        },
-        body: JSON.stringify({ regularPocketMoneyId })
+  const handleCancelClick = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmClick = () => {
+    axios
+      .delete(baseUrl + "api/pocketmoney/regular", {
+        ...AxiosHeader({ token }),
+        data: { regularPocketMoneyId },
       })
-      .then(response => response.json())
       .then(() => {
         navigate("/");
-      })      
-      .catch(error => console.error('Error:', error));
+      })
+      .catch((error) => console.error("Error:", error));
   };
-  
 
   return (
     <div className="bg-gray p-10 pr-6 rounded-xl mt-5 text-s">
@@ -66,25 +65,25 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
       <div className="flex justify-between items-center">
         <span>시작일: {startDate}</span>
         <Link to="#" onClick={handleDeleteClick}>
-            <img src="/icons/icon-x.png" alt="Icon" className="w-6 h-6" />
-          </Link>
+          <img src="/icons/icon-x.png" alt="Icon" className="w-6 h-6" />
+        </Link>
 
-          {isModalOpen && (
-            <BottomModal>
-              <div className="mt-10 mb-10">
+        {isModalOpen && (
+          <BottomModal>
+            <div className="mt-10 mb-10">
               <p className="text-center">정기용돈을 해제할까요?</p>
-              <YesNoBtn 
+              <YesNoBtn
                 noText="아니오"
                 yesText="네"
                 onNoClick={handleCancelClick}
                 onYesClick={handleConfirmClick}
               />
-              </div>
-            </BottomModal>
-          )}
+            </div>
+          </BottomModal>
+        )}
       </div>
     </div>
- );
+  );
 };
 
 export default RegularMoneyBox;
