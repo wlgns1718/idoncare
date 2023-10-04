@@ -28,7 +28,7 @@ type RegularMoneyData = {
   type: string;
   cycle: number;
   amount: number;
-  createdAt: string; // 날짜는 보통 문자열로 받아옵니다.
+  createdAt: string;
 };
 
 const PocketMoney: React.FC = () => {

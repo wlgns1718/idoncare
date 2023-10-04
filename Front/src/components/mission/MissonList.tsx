@@ -9,34 +9,8 @@ import Icon, { ICON_NAME } from "../common/Icon";
 import MissionHistoryCard from "./MissionHistoryCard";
 import { BottomSheetOpen } from "../../store/common/atoms";
 import MissionHistoryPlusCard from "./MissionHistoryPlusCard";
-import { useState } from "react";
-
-const missions: MissionDataType[] = [
-  {
-    missionId: 1,
-    title: "Mission Title 1",
-    type: "COMPLETE",
-    amount: 10000,
-  },
-  {
-    missionId: 2,
-    title: "Mission Title 2",
-    type: "PROCESS",
-    amount: 10000,
-  },
-  {
-    missionId: 3,
-    title: "Mission Title 4",
-    type: "REQUEST",
-    amount: 10000,
-  },
-  {
-    missionId: 4,
-    title: "Mission Title 6",
-    type: "UNPAID",
-    amount: 10000,
-  },
-];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const missionStates: {
   icon: ICON_NAME;
@@ -70,15 +44,29 @@ const missionStates: {
   },
 ];
 
-function MissonList() {
+const MissonList: React.FC = () => {
   const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
   const [missionFilter, setMissionFilter] = useState<MissionStateType>("ALL");
+  const [missions, setMissions] = useState<MissionDataType[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("https://j9d209.p.ssafy.io:9081/api/mission", {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI3NTA4OTk0NDY4NDM5ODAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTYzMjAzNzQsImV4cCI6MTY5NjM2MzU3NH0.6byHM3nkXrY3rU4VaEFxxVc-3eXPVYF_0ClmslKOdqA",
+        },
+      })
+      .then((response) => {
+        setMissions(response.data.data);
+      });
+  }, []);
 
   return (
     <div className={`${bottomSheetOpen ? "scroll" : ""}`}>
       <div className="flex justify-between mx-4 ">
         <div className="flex text-m gap-2">
-          <div className="content-center flex">
+          <div className="content-center flex mb-8">
             {MissionStateName[missionFilter]}
           </div>
           <div
@@ -104,13 +92,13 @@ function MissonList() {
         })}
         <MissionHistoryPlusCard />
       </div>
-      <BottomSheet >
+      <BottomSheet>
         <div className="flex flex-col gap-6 justify-evenly text-s px-10">
           {missionStates.map((state) => {
             return (
               <div
                 className="flex items-center gap-4"
-                key={state.icon}
+                key={state.type}
                 onClick={() => {
                   setMissionFilter(state.type);
                   setBottomSheetOpen(false);
@@ -125,6 +113,6 @@ function MissonList() {
       </BottomSheet>
     </div>
   );
-}
+};
 
 export default MissonList;

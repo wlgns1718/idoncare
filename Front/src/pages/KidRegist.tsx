@@ -1,35 +1,37 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Header from "../components/common/Header";
 import KidPhoneForm from "../components/connect/KidPhoneForm";
 import FullBtn from "../components/common/FullBtn";
 
 const KidRegist: React.FC = () => {
-  const [childPhoneNumber, setChildPhoneNumber] = useState('');
+  const [childPhoneNumber, setChildPhoneNumber] = useState("");
   const navigate = useNavigate();
 
   const handleChildPhoneNumberSubmit = async () => {
     try {
-      const response = await axios.post('http://j9d209.p.ssafy.io:8081/api/relationship/request', { childPhoneNumber: String(childPhoneNumber) }, {
-  headers: {
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExNjMwNjYxNTgyNTAyNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3OTM0NzcsImV4cCI6MTY5NTgzNjY3N30.NZKyJkkgz9JP9I9f70z1uGwdCUC33ZANXbYkCBFxEjQ',
-  },
-});
-
+      const response = await axios.post(
+        "http://j9d209.p.ssafy.io:8081/api/relationship/request",
+        { childPhoneNumber: String(childPhoneNumber) },
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjExNjMwNjYxNTgyNTAyNzAwMDAsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE2OTU3OTM0NzcsImV4cCI6MTY5NTgzNjY3N30.NZKyJkkgz9JP9I9f70z1uGwdCUC33ZANXbYkCBFxEjQ",
+          },
+        }
+      );
 
       console.log(response.data);
       console.log(childPhoneNumber);
 
-      alert('등록되었습니다.');
-      navigate('/');
-
+      alert("등록되었습니다.");
+      navigate("/");
     } catch (error) {
-
       console.error(error);
       console.log(childPhoneNumber);
 
-      alert('오류가 발생했습니다.');
+      alert("오류가 발생했습니다.");
     }
   };
 

@@ -23,6 +23,6 @@ export type MissionResistType = {
   title: string;
   amount: number;
   type: "REQUEST";
-  beforeMessage: string;
+  beforeMessage?: string;
   afterMessage: string;
 };

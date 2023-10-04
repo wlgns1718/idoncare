@@ -1,13 +1,14 @@
+import React from 'react';
 import Header from "../components/common/Header";
 import TopChildList from "../components/common/TopChildList";
 import MissonList from "../components/mission/MissonList";
 
-function MissonPage() {
+const MissonPage: React.FC = () => {
   return (
     <div>
       <Header pageTitle="미션관리" headerLink="/" />
       <div className="my-6">
-        <TopChildList></TopChildList>
+        <TopChildList />
       </div>
       <div className="mx-6">
         <MissonList />

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import PasswordForm from '../common/PasswordForm';
-import FullBtn from '../common/FullBtn';
+import React, { useState } from "react";
+import PasswordForm from "../common/PasswordForm";
+import FullBtn from "../common/FullBtn";
 import Modal from "../common/Modal";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ParentComponent: React.FC<Props> = ({ onNext }) => {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -19,24 +19,23 @@ const ParentComponent: React.FC<Props> = ({ onNext }) => {
   return (
     <div>
       <PasswordForm password={password} handleSetPassword={setPassword} />
-      <FullBtn onClick={() => { 
-                if(password.length === 6){
-                    if(onNext) onNext();
-                    console.log(password);
-                } else{
-                  handleNoClick(); // Call the function here
-                }
-            }}/>
+      <FullBtn
+        onClick={() => {
+          if (password.length === 6) {
+            if (onNext) onNext();
+            console.log(password);
+          } else {
+            handleNoClick();
+          }
+        }}
+      />
       {modalIsOpen && (
         <Modal>
           <div className="text-m m-16">
             비밀번호는 <br />
             6자리입니다.
           </div>
-          <FullBtn
-            buttonText="확인"
-            onClick={() => setModalIsOpen(false)}
-          />
+          <FullBtn buttonText="확인" onClick={() => setModalIsOpen(false)} />
         </Modal>
       )}
     </div>
