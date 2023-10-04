@@ -47,7 +47,7 @@ function CameraPurchase() {
       return;
     }
     axios
-      .post(baseUrl + "api/virtual", scanData, AxiosHeader({ token }))
+      .post(baseUrl + "api/virtual", {...scanData, money:amount}, AxiosHeader({ token }))
       .then((res) => {
         console.log(res.data);
         if (res.data.code == 200) {
