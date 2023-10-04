@@ -20,7 +20,7 @@ const state = (useLocation() as RouteState).state;
         ps={state.ps}
         title={state.title}
         content={state.content}
-        isSuccess={state.isSuccess}
+        is_done={state.isSuccess}
       />
     </div>
   );

@@ -137,7 +137,7 @@ const BarData = (data: Array<ChartData>) => {
       axisLeft={{
         tickSize: 0,
         tickValues: 5,
-        format: (num) => useComma(num),
+        format: (num : number) => useComma(num),
       }}
       axisBottom={{
         tickSize: 2,

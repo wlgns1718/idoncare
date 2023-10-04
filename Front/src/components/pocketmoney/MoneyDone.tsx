@@ -5,31 +5,23 @@ type MoneyDoneProps = {
   title: string | undefined;
   content: JSX.Element | string | undefined;
   ps: string | undefined;
-  isSuccess ?: boolean; 
+  is_done?: boolean;
 };
 
 const MoneyDone: React.FC<MoneyDoneProps> = ({
   title,
   content,
   ps,
-  isSuccess = true,
+  is_done = true,
 }) => {
   return (
     <div className="pb-60 flex flex-col h-screen justify-between">
       <div className="flex flex-col items-center justify-center flex-grow">
-        {isSuccess? 
         <img
-          src="/icons/icon-check.png"
+          src={is_done ? "/icons/icon-check.png" : "/icons/icon-fail.png"}
           alt="Icon"
           className="w-32 h-32 mx-auto block"
         />
-        :
-        <img
-          src="/icons/icon-fail.png"
-          alt="Icon"
-          className="w-32 h-32 mx-auto block"
-        />
-        }
         <div className="text-l mt-10">{title}</div>
 
         <div className="bg-gray p-10 pr-6 rounded-xl mt-16 mb-5 w-5/6 text-center text-s">
