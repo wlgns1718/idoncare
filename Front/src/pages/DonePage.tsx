@@ -5,6 +5,7 @@ export interface DoneData {
   title : string;
   content : string;
   ps : string;
+  isSuccess ?: boolean;
 }
 
 interface RouteState {
@@ -15,7 +16,12 @@ function DonePage() {
 const state = (useLocation() as RouteState).state;
   return (
     <div>
-      <MoneyDone ps={state.ps} title={state.title} content={state.content} />
+      <MoneyDone
+        ps={state.ps}
+        title={state.title}
+        content={state.content}
+        isSuccess={state.isSuccess}
+      />
     </div>
   );
 }

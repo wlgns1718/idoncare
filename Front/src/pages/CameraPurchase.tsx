@@ -18,6 +18,7 @@ function CameraPurchase() {
 
   const [isScanned, setIsScanned] = useState(true);
   const [amount, setAmount] = useState(0);
+  const [payType, setPayType] = useState("");
   const [scanData, setScanData] = useState<QRcodeDataPayload | null>(null);
 
   const handleScan = (result: QrScanner.ScanResult) => {
@@ -27,7 +28,13 @@ function CameraPurchase() {
       return;
     }
     setIsScanned(true);
-    setScanData(parseData);
+    setScanData({
+      userId: parseData.userId,
+      content: "payment",
+      money: parseData.amount,
+      type: "PAYMENT",
+    });
+    setPayType(parseData.payType);
     setAmount(parseData.money);
   };
 
@@ -43,19 +50,37 @@ function CameraPurchase() {
       .post(baseUrl + "api/virtual", scanData, AxiosHeader({ token }))
       .then((res) => {
         console.log(res.data);
-        navigate(
-          {
-            pathname: "/done",
-          },
-          {
-            state: {
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              title: `${useComma(amount)} 원`,
-              content: "결제 완료",
-              ps: "성공적으로 결제되었습니다.",
+        if (res.data.code == 200) {
+          navigate(
+            {
+              pathname: "/done",
             },
-          }
-        );
+            {
+              state: {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                title: `${useComma(amount)} 원`,
+                content: "결제 완료",
+                ps: "성공적으로 결제되었습니다.",
+              },
+            }
+          );
+        }
+        else {
+          navigate(
+            {
+              pathname: "/done",
+            },
+            {
+              state: {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                title: `${useComma(amount)} 원`,
+                content: "결제 실패",
+                ps: res.data.error,
+                isSuccess : false
+              },
+            }
+          );
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -107,7 +132,7 @@ function CameraPurchase() {
           </div>
           <p>{}</p>
           <div className="w-full p-10 bg-gray  rounded-3xl flex items-center justify-center">
-            {isScanned && scanData?.payType == "slow" && (
+            {isScanned && payType == "slow" && (
               <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto">
                 <input
                   type="number"
@@ -118,7 +143,7 @@ function CameraPurchase() {
                 원
               </div>
             )}
-            {isScanned && scanData?.payType == "fast" && (
+            {isScanned && payType == "fast" && (
               <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto mb-4 text-center">
                 {amount} 원
               </div>

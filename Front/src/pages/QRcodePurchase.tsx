@@ -8,7 +8,6 @@ import { useParams } from "react-router";
 import { ChangeEvent, useState } from "react";
 
 export interface QRcodeDataPayload {
-  payType: "fast" | "slow";
   userId: number;
   content: string;
   money: number;
@@ -45,10 +44,9 @@ function QRcodePurchase() {
               value={JSON.stringify({
                 payType: params.payType,
                 userId: userId,
-                content: "payment",
                 money: amount,
-                type: "PAYMENT",
               })}
+              level="L"
               size={200}
             />
           </div>
