@@ -120,7 +120,7 @@ public class TransactionHistoryService {
             Long earn = transactionHistoryRepository.thisMonthEarn(userId, year, month)
                     .orElse(0L);
             activeReq.getList().add(MonthHistoryRes.builder()
-                    .month(month)
+                    .day(month + "월")
                     .earn(earn)
                     .expend(expend)
                     .build());
