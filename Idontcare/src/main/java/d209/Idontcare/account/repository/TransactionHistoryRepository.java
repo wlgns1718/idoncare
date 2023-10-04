@@ -23,12 +23,12 @@ public interface TransactionHistoryRepository extends JpaRepository<TransactionH
 
     //이번 달 지출
     @Query("SELECT SUM(a.amount) FROM TransactionHistory a WHERE a.user.userId = :userId " +
-            "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND (a.type = 'PAYMENT' OR a.type = 'TRANSFER') AND a.cashFlow = 'WITHDRAWAL'")
+            "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND a.cashFlow = 'WITHDRAWAL'")
     Optional<Long> thisMonthExpend(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
 
     //이번 달 수입
     @Query("SELECT SUM(a.amount) FROM TransactionHistory a WHERE a.user.userId = :userId " +
-            "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND (a.type = 'MISSION' OR a.type = 'POCKET') AND a.cashFlow = 'DEPOSIT'")
+            "AND YEAR(a.localDateTime) = :year AND MONTH(a.localDateTime) = :month AND a.cashFlow = 'DEPOSIT'")
     Optional<Long> thisMonthEarn(@Param("userId") Long userId, @Param("year") int year, @Param("month") int month);
 
     //이번 달 받은 용돈
