@@ -141,17 +141,18 @@ public class VirtualAccountController {
 
     //자녀의 활동 보고서(월)
     //현재 월의 최근 5개월
-    @GetMapping("/active")
+    @GetMapping("/active/{userId}/monthly")
     @Operation(summary = "월간 자녀 활동보고서", description = "자녀의 활동 보고서(자녀의 uuid 필요)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-    public ResponseDto<?> findActiveReport(ActiveReq req, HttpServletRequest request) throws Exception {
+    public ResponseDto
+        <?> findActiveReport(@PathVariable("userId") Long userId, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
-        Long userId = req.getUserId();
         Map<String, String> map = new HashMap<>();
         ActiveRes activeRes = transactionHistoryService.reportPerMonth(userId);
+        
         try{
             return ResponseDto.success(activeRes);
         }catch (VirtualAccountException e){

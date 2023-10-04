@@ -98,18 +98,18 @@ public class TransactionHistoryService {
     //최근 5개월의 월별 보고서
     public ActiveRes reportPerMonth(Long userId){
         userRepository.findByUserId(userId).orElseThrow(() -> new UserException.UserNotFoundException(404, "해당 유저는 없습니다."));
-            int Month = LocalDateTime.now().getMonthValue();
-            Long thisMonthExpend = transactionHistoryRepository.thisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
-                .orElse(0L);
-            Long LastMonthExpend = transactionHistoryRepository.thisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().minusMonths(1).getMonth().getValue())
-                .orElse(0L);
-            Long pocketEarn = transactionHistoryRepository.thisMonthPocket(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
-                .orElse(0L);
-            Long missionEarn = transactionHistoryRepository.thisMonthMission(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
-                .orElse(0L);
-            ActiveRes activeReq = new ActiveRes(thisMonthExpend, thisMonthExpend - LastMonthExpend, pocketEarn, missionEarn);
-            for(int i = Month; i > Month - 5; i-- ) {
-                int year = LocalDateTime.now().getYear();
+        int Month = LocalDateTime.now().getMonthValue();
+        Long thisMonthExpend = transactionHistoryRepository.thisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+            .orElse(0L);
+        Long LastMonthExpend = transactionHistoryRepository.thisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().minusMonths(1).getMonth().getValue())
+            .orElse(0L);
+        Long pocketEarn = transactionHistoryRepository.thisMonthPocket(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+            .orElse(0L);
+        Long missionEarn = transactionHistoryRepository.thisMonthMission(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+            .orElse(0L);
+        ActiveRes activeReq = new ActiveRes(thisMonthExpend, thisMonthExpend - LastMonthExpend, pocketEarn, missionEarn);
+        for(int i = Month-4; i <= Month; i++ ) {
+            int year = LocalDateTime.now().getYear();
             int month = i;
             if(i <= 0) {
                 year -= 1;
