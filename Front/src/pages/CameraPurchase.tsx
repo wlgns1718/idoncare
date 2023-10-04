@@ -1,8 +1,13 @@
 import { useEffect, useRef } from "react";
 import Header from "../components/common/Header";
 import QrScanner from "qr-scanner";
+import useComma from "../hooks/useComma";
+import { useRecoilValue } from "recoil";
+import { userBalanace } from "../store/wallet/atoms";
 
 function CameraPurchase() {
+  const balance = useRecoilValue(userBalanace);
+
   const handleScan = (result: QrScanner.ScanResult) => {
     console.log(typeof result.data);
     console.log(result.data);
@@ -54,7 +59,7 @@ function CameraPurchase() {
       <div>
         <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">
           <div className="text-black">지갑잔액</div>
-          <div className=" text-main ">99,000 원</div>
+          <div className=" text-main ">{useComma(balance)} 원</div>
         </div>
         <p>{}</p>
         <div className="w-full h-[10vh] bg-gray  rounded-3xl flex items-center justify-center">

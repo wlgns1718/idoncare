@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect } from "react";
 import axios from "axios";
-import { userToken } from "../../store/common/atoms";
-import useComma from './../../hooks/useComma';
+import { userToken } from "../../store/common/selectors";
+import useComma from "./../../hooks/useComma";
 import { userBalanace } from "../../store/wallet/atoms";
+import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 type CardButtonType = {
   text: string;
@@ -51,18 +53,20 @@ const CardButton: React.FC<CardButtonProps> = ({ item }) => {
 function WalletCard() {
   const navigate = useNavigate();
 
-  const Token = useRecoilValue(userToken);
+  const token = useRecoilValue(userToken);
 
   const [balance, setBalance] = useRecoilState(userBalanace);
 
   useEffect(() => {
     axios
-      .get(`http://j9d209.p.ssafy.io:8081/api/virtual/balance`, {
-        headers: { Authorization: Token as string },
-      })
+      .get(baseUrl + `api/virtual/balance`, AxiosHeader({ token }))
       .then((res) => {
         console.log(res.data);
-        setBalance(res.data.data.balance);
+        if (res.data.data.balance == null) {
+          setBalance(0);
+        } else {
+          setBalance(res.data.data.balance);
+        }
       });
   }, []);
 

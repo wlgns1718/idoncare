@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon, { ICON_NAME } from "../components/common/Icon";
+import BottomNav from "../components/common/BottomNav";
 
 type Menu = {
   title: string;
@@ -82,7 +83,9 @@ function MyPage() {
   return (
     <div>
       <div className="flex-col">
-        <div className="w-[100px] h-[100px] rounded-[50%] bg-gray overflow-hidden mx-auto">자녀 아이콘</div>
+        <div className="w-[100px] h-[100px] rounded-[50%] bg-gray overflow-hidden mx-auto">
+          자녀 아이콘
+        </div>
         <div className="text-center">자녀 이름</div>
       </div>
       <div className="flex justify-center gap-5 my-10">
@@ -93,8 +96,8 @@ function MyPage() {
               key={index}
               className="bg-gray w-[25%] rounded-xl text-center p-2"
             >
-                <Icon name={item.icon} className="mx-auto"/>
-                <span>{item.title}</span>
+              <Icon name={item.icon} className="mx-auto" />
+              <span>{item.title}</span>
             </Link>
           );
         })}
@@ -111,6 +114,7 @@ function MyPage() {
           );
         })}
       </div>
+      <BottomNav />
     </div>
   );
 }

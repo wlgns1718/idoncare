@@ -4,8 +4,10 @@ import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { isExistRechargeAccount } from "../../store/wallet/selectors";
 import { useEffect } from "react";
 import axios from "axios";
-import { userToken } from "../../store/common/atoms";
+import { userToken } from "../../store/common/selectors";
 import { RechargeAccountResponse } from "../../types/WalletTypes";
+import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 export const EmptyAccount = () => {
   const navigate = useNavigate();
@@ -31,19 +33,16 @@ export const RechargeAccountComponent = () => {
   const removeAccount = () => {
 
     axios
-      .delete(
-        `http://j9d209.p.ssafy.io:8081/api/account/`,
-        {
-          headers: { Authorization: Token as string },
-          data: {
-            bankCode: 41,
-            realAccountId: 77777777,
-          },
-        }
-      )
+      .delete(baseUrl + `api/account/`, {
+        headers: { Authorization: Token as string },
+        data: {
+          bankCode: myRechargeAccount?.bankCode,
+          realAccountId: myRechargeAccount?.realAccountId,
+        },
+      })
       .then((res) => {
         console.log(res.data);
-        resetRechargeAccount()
+        resetRechargeAccount();
       });
   };
   return (
@@ -69,18 +68,19 @@ export const RechargeAccountComponent = () => {
 };
 
 function RechargeAccountList() {
-  const Token = useRecoilValue(userToken);
+  const token = useRecoilValue(userToken);
   const setRechargeAccount = useSetRecoilState(rechargeAccount);
   useEffect(() => {
     if (!isRechargeAccount) {
       axios
-        .get(`http://j9d209.p.ssafy.io:8081/api/account/my`, {
-          headers: { Authorization: Token as string },
-        })
+        .get(
+          `http://j9d209.p.ssafy.io:8081/api/account/my`,
+          AxiosHeader({ token })
+        )
         .then((res) => {
           console.log(res.data);
-          if(res.data.error) {
-            return
+          if (res.data.error) {
+            return;
           }
           const account: RechargeAccountResponse = res.data.data;
           setRechargeAccount({

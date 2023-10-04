@@ -51,9 +51,13 @@ function TransferSelectForm() {
         </div>
       </div>
       {sendOption === "family" && (
-        <div>
-          <div>자녀 1</div>
-          <div>자녀 2</div>
+        <div className="flex justify-center gap-10 m-10">
+          <div className="w-36 h-36 bg-slate-600 rounded-full text-white items-center flex justify-center">
+            자녀 1
+          </div>
+          <div className="w-36 h-36 bg-slate-600 rounded-full text-white items-center flex justify-center">
+            자녀 2
+          </div>
         </div>
       )}
       {sendOption === "account" && (
@@ -62,7 +66,7 @@ function TransferSelectForm() {
           <RechargeAccountList />
         </div>
       )}
-      <FullBtn isDone={isValid} buttonLink="/transfer/input"/>
+      <FullBtn isDone={isValid} buttonLink="/transfer/input" />
     </div>
   );
 }

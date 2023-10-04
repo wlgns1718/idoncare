@@ -9,8 +9,10 @@ import {
   TradeItem,
 } from "../../types/WalletTypes";
 import axios from "axios";
-import { userToken } from "../../store/common/atoms";
+import { userToken } from "../../store/common/selectors";
 import { useRecoilValue } from "recoil";
+import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 export interface MonthlyTradeListResponse {
   date: number;
@@ -21,7 +23,7 @@ function TradeHistory() {
   const navigate = useNavigate();
 
   const [currentCategory, setCurrentCategory] = useState<CashFlow>("ALL");
-  const Token = useRecoilValue(userToken);
+  const token = useRecoilValue(userToken);
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -67,10 +69,11 @@ function TradeHistory() {
   const getTradeHistory = () => {
     axios
       .get(
-        `http://j9d209.p.ssafy.io:8081/api/virtual/${currentDate.getFullYear()}/${
-          currentDate.getMonth() + 1
-        }`,
-        { headers: { Authorization: Token } }
+        baseUrl +
+          `api/virtual/${currentDate.getFullYear()}/${
+            currentDate.getMonth() + 1
+          }`,
+          AxiosHeader({ token })
       )
       .then((response) => {
         console.log(response.data.data);

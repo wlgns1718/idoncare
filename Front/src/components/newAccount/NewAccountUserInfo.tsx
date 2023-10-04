@@ -7,9 +7,11 @@ import NewAccountSelectBox from "./common/NewAccountSelectBox";
 import NewAccountToggleButton from "./common/NewAccountToggleButton";
 import { NewAccountCreate } from "../../types/NewAccountCreateProps";
 import axios from "axios";
-import { userToken } from "../../store/common/atoms";
+import { userToken } from "../../store/common/selectors";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { MobileSort, authenticationData } from "../../store/newAccount/atoms";
+import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
 
 const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const [serviceAgree, setServiceAgree] = useState(false);
@@ -25,6 +27,7 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
   const [authenticationRecoilData, setAuthenticationData] =
     useRecoilState(authenticationData);
 
+  const [errorMsg, setErrorMessage] = useState("");
 
   const handleInputName = (value: string | number) => {
     setAuthenticationData({
@@ -58,27 +61,31 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
       mobileSort: authenticationRecoilData.mobileSort,
       name: authenticationRecoilData.name,
     });
-    
+
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account/auth`,
+        baseUrl + `api/account/auth`,
         {
           phoneNumber: authenticationRecoilData.phoneNumber,
           birth: authenticationRecoilData.birth,
           mobileSort: authenticationRecoilData.mobileSort,
           name: authenticationRecoilData.name,
         },
-        {
-          headers: { Authorization: token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);
+        if (!(res.data.code == 200 || res.data.code == 409)) {
+          setErrorMessage("본인 정보를 확인해주세요.");
+          return;
+        }
+        setErrorMessage("");
+        onChangeStep(2);
       })
       .catch((err) => {
         console.log(err);
-        
-      })
+        setErrorMessage("본인 정보를 확인해주세요.");
+      });
   };
 
   return (
@@ -116,9 +123,7 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
         value={authenticationRecoilData.phoneNumber}
         changeValue={handleInputPhoneNumber}
       />
-      <NewAccountSelectBox
-        changeValue={handleSelectMobileSort}
-      />
+      <NewAccountSelectBox changeValue={handleSelectMobileSort} />
       <NewAccountCheckBox
         text="서비스 이용 및 개인정보처리 동의"
         isCheck={serviceAgree}
@@ -131,15 +136,11 @@ const NewAccountUserInfo = ({ onChangeStep, step }: NewAccountCreate) => {
       />
       <div
         onClick={() => {
-          onChangeStep(2);
           userAuthentication();
         }}
       >
-        <FullBtn
-          buttonText="다음"
-          buttonLink="/newAccount"
-          isDone={serviceAgree && privateAgree}
-        />
+        {errorMsg && <div className="text-center text-red-600">{errorMsg}</div>}
+        <FullBtn buttonText="다음" isDone={serviceAgree && privateAgree} />
       </div>
     </div>
   );

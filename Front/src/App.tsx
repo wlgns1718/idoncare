@@ -43,6 +43,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
               <Route element={<PrivateRoute />}>
                 <Route path="mypage" element={<MyPage />} />
               </Route>
@@ -107,9 +108,6 @@ function App() {
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="kidDemanedMoneyList" element={<KidDemanedMoneyList />} />
-              </Route>
-              <Route element={<PrivateRoute />}>
-                <Route path="signup" element={<Signup />} />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="newAccount" element={<NewAccount />} />

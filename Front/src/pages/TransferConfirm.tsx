@@ -3,17 +3,19 @@ import TransferMsg from "./../components/wallet/TransferMsg";
 import FullBtn from "./../components/common/FullBtn";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { userToken } from "../store/common/atoms";
+import { userToken } from "../store/common/selectors";
 import { transferData } from "../store/wallet/atoms";
+import { baseUrl } from "../apis/url/baseUrl";
+import AxiosHeader from "../apis/axios/AxiosHeader";
 
 function TransferConfirm() {
   const transferAccountData = useRecoilValue(transferData);
-  const Token = useRecoilValue(userToken);
+  const token = useRecoilValue(userToken);
 
   const transferMoney = () => {
     axios
       .post(
-        `http://j9d209.p.ssafy.io:8081/api/account/pay`,
+        baseUrl + `api/account/pay`,
         {
           name: transferAccountData?.account?.clientName,
           bankCode: transferAccountData?.account?.bankCodeStd,
@@ -22,9 +24,7 @@ function TransferConfirm() {
           tranAmt: transferAccountData.amount,
           type: "TRANSFER",
         },
-        {
-          headers: { Authorization: Token as string },
-        }
+        AxiosHeader({ token })
       )
       .then((res) => {
         console.log(res.data);

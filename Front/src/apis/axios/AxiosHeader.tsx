@@ -1,4 +1,4 @@
-type Token = string;
+type Token = string | null;
 
 interface AxiosHeaderProps {
   token: Token;
@@ -6,7 +6,7 @@ interface AxiosHeaderProps {
 
 export const AxiosHeader = ({ token }: AxiosHeaderProps) => {
   const axiosHeader = {
-    headers: { Authorization: token as string },
+    headers: { Authorization: "Bearer " + token as string },
   };
   return axiosHeader;
 };
