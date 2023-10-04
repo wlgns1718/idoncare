@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import useAccessTokenState from "../../hooks/useAccessTokenState";
 import { baseUrl } from "../../apis/url/baseUrl";
+import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { userToken } from "../../store/common/selectors";
+import { useRecoilValue } from "recoil";
+import Kid from "../common/Kid";
 
 interface APIResult<T> {
   code: number;
@@ -9,7 +12,7 @@ interface APIResult<T> {
   data: T;
 }
 
-interface RelationType {
+export interface RelationType {
   relationshipId: number;
   userId: number;
   userName: string;
@@ -20,20 +23,26 @@ interface RelationResult {
   relationList: Array<RelationType>;
 }
 
-const Kids = () => {
-  const accessToken = useAccessTokenState();
+interface Props {
+  onClick?: (child: RelationType) => void; //해당 자녀를 클릭했을때 어떤 이벤트를 할 것인지 정의
+}
+
+const Kids = ({ onClick }: Props) => {
+  const token = useRecoilValue(userToken);
   const [childs, setChilds] = useState<Array<RelationType>>([]);
+  const [selectedChildUserId, setSelectedChildUserId] = useState<number>(0);
+
+  const onClickChild = (child: RelationType) => {
+    setSelectedChildUserId(child.userId);
+    onClick ? onClick(child) : null;
+  };
 
   useEffect(() => {
     //아이 목록 불러오기
     (async () => {
       const result = await axios.get<APIResult<RelationResult>>(
         baseUrl + "api/relationship",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        AxiosHeader({ token })
       );
 
       const { code, data } = result.data;
@@ -46,9 +55,18 @@ const Kids = () => {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-wrap justify-start">
       {childs.map((child) => {
-        return <div>{child.userName}</div>;
+        return (
+          <Kid
+            key={child.relationshipId}
+            className="w-1/6"
+            is_connect={true}
+            kname={child.userName}
+            isSelected={selectedChildUserId === child.userId}
+            onClick={() => onClickChild(child)}
+          />
+        );
       })}
     </div>
   );
