@@ -6,7 +6,6 @@ import d209.Idontcare.account.repository.TransactionHistoryRepository;
 import d209.Idontcare.account.repository.VirtualAccountRepository;
 import d209.Idontcare.account.service.EncryptService;
 import d209.Idontcare.relationship.entity.Relationship;
-import d209.Idontcare.relationship.entity.RelationshipRequest;
 import d209.Idontcare.relationship.repository.RelationshipRepository;
 import d209.Idontcare.relationship.repository.RelationshipRequestRepository;
 import d209.Idontcare.user.entity.Role;
@@ -15,7 +14,6 @@ import d209.Idontcare.user.entity.UserDetail;
 import d209.Idontcare.user.repository.UserDetailRepository;
 import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

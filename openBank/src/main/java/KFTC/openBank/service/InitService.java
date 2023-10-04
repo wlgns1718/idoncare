@@ -49,7 +49,7 @@ public class InitService {
     bankRepository.save(new Bank("24", "토스뱅크", "/images/토스뱅크.png"));
     bankRepository.save(new Bank("21", "하나은행", "/images/하나은행.png"));
     bankRepository.save(new Bank("61", "현대카드", "/images/현대카드.png"));
-    bankRepository.save(new Bank("11", "KB", "/images/KB은행.png"));
+    bankRepository.save(new Bank("11", "KB은행", "/images/KB은행.png"));
     bankRepository.save(new Bank("91", "NH농협", "/images/NH농협.png"));
     bankRepository.save(new Bank("34", "Sh수협은행", "/images/Sh수협은행.png"));
   }
