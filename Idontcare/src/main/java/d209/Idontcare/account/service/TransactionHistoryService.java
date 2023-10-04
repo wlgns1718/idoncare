@@ -1,13 +1,17 @@
 package d209.Idontcare.account.service;
 
 import d209.Idontcare.account.dto.req.ActiveRes;
+import d209.Idontcare.account.dto.res.DailyHistoryRes;
 import d209.Idontcare.account.dto.res.MonthHistoryRes;
 import d209.Idontcare.account.dto.res.MonthTransactionHistoryRes;
 import d209.Idontcare.account.dto.res.TransactionHistoryRes;
+import d209.Idontcare.account.entity.CashFlow;
 import d209.Idontcare.account.entity.TransactionHistory;
 import d209.Idontcare.account.exception.TransactionHistoryException;
 import d209.Idontcare.account.exception.UserException;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;
+import d209.Idontcare.common.exception.AuthorizationException;
+import d209.Idontcare.relationship.service.RelationshipService;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Tuple;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -23,6 +28,7 @@ import java.util.*;
 @Transactional
 public class TransactionHistoryService {
 
+    private final RelationshipService relationshipService;
     private final TransactionHistoryRepository transactionHistoryRepository;
     private final UserService userService;
     private final UserRepository userRepository;
@@ -92,26 +98,26 @@ public class TransactionHistoryService {
     //최근 5개월의 월별 보고서
     public ActiveRes reportPerMonth(Long userId){
         userRepository.findByUserId(userId).orElseThrow(() -> new UserException.UserNotFoundException(404, "해당 유저는 없습니다."));
-        int Month = LocalDateTime.now().getMonthValue();
-        Long thisMonthExpend = transactionHistoryRepository.ThisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+            int Month = LocalDateTime.now().getMonthValue();
+            Long thisMonthExpend = transactionHistoryRepository.thisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
                 .orElse(0L);
-        Long LastMonthExpend = transactionHistoryRepository.ThisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().minusMonths(1).getMonth().getValue())
+            Long LastMonthExpend = transactionHistoryRepository.thisMonthExpend(userId, LocalDateTime.now().getYear(), LocalDateTime.now().minusMonths(1).getMonth().getValue())
                 .orElse(0L);
-        Long pocketEarn = transactionHistoryRepository.ThisMonthPocket(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+            Long pocketEarn = transactionHistoryRepository.thisMonthPocket(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
                 .orElse(0L);
-        Long missionEarn = transactionHistoryRepository.ThisMonthMission(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
+            Long missionEarn = transactionHistoryRepository.thisMonthMission(userId, LocalDateTime.now().getYear(), LocalDateTime.now().getMonth().getValue())
                 .orElse(0L);
-        ActiveRes activeReq = new ActiveRes(thisMonthExpend, thisMonthExpend - LastMonthExpend, pocketEarn, missionEarn);
-        for(int i = Month; i > Month - 5; i-- ) {
-            int year = LocalDateTime.now().getYear();
+            ActiveRes activeReq = new ActiveRes(thisMonthExpend, thisMonthExpend - LastMonthExpend, pocketEarn, missionEarn);
+            for(int i = Month; i > Month - 5; i-- ) {
+                int year = LocalDateTime.now().getYear();
             int month = i;
             if(i <= 0) {
                 year -= 1;
                 month += 12;
             }
-            Long expend = transactionHistoryRepository.ThisMonthExpend(userId, year, month)
+            Long expend = transactionHistoryRepository.thisMonthExpend(userId, year, month)
                     .orElse(0L);
-            Long earn = transactionHistoryRepository.ThisMonthEarn(userId, year, month)
+            Long earn = transactionHistoryRepository.thisMonthEarn(userId, year, month)
                     .orElse(0L);
             activeReq.getList().add(MonthHistoryRes.builder()
                     .month(month)
@@ -120,5 +126,39 @@ public class TransactionHistoryService {
                     .build());
         }
         return activeReq;
+    }
+    
+    public List<DailyHistoryRes> reportPerDaily(Long parentUserId, Long childUserId, LocalDateTime day) {
+        if( !relationshipService.relationExistsByParentAndChild(parentUserId, childUserId) ) throw new AuthorizationException();
+        
+        TreeMap<Integer, DailyHistoryRes> result = new TreeMap<>();
+        LocalDateTime prev = day.minusDays(6);
+        
+        for(int i = 0; i <= 6; i++){
+            LocalDateTime curr = day.minusDays(i);
+            result.put(curr.getMonthValue() * 100 + curr.getDayOfMonth(), new DailyHistoryRes(curr, 0L, 0L));
+        }
+        
+        List<Tuple> earns = transactionHistoryRepository.aggregationGroupByDay(childUserId, prev, day, CashFlow.DEPOSIT);        //벌었는(earn) 내역
+        List<Tuple> expends = transactionHistoryRepository.aggregationGroupByDay(childUserId, prev, day, CashFlow.WITHDRAWAL);  //사용한(expend) 내역
+
+        for(Tuple earn: earns){
+            Long amount = (Long)earn.get("amount");
+            Date targetDay = (Date)earn.get("day");
+            
+            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDay());
+            targetRes.setEarn(amount);
+        }
+        
+        for(Tuple expend: expends){
+            Long amount = (Long)expend.get("amount");
+            Date targetDay = (Date)expend.get("day");
+            
+            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDay());
+            targetRes.setExpend(amount);
+        }
+        
+        List<DailyHistoryRes> list = result.values().stream().toList();
+        return list;
     }
 }
