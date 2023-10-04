@@ -1,7 +1,7 @@
 import { useState } from "react";
 import KidFormAmount from "../components/pocketmoney/kid/KidFormAmount";
 import KidFormMsg from "../components/pocketmoney/kid/KidFormMsg";
-import MoneyDone from "../components/pocketmoney/Done";
+import MoneyDone from "../components/pocketmoney/MoneyDone";
 import ParentSelectForm from "../components/common/ParentSelectForm";
 import axios from "axios";
 import { useRecoilValue } from "recoil";

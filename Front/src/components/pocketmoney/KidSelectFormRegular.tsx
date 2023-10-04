@@ -11,7 +11,6 @@ import { baseUrl } from "../../apis/url/baseUrl";
 
 interface Props {
   onNext: (kidUserId: number, kidUserName: string) => void;
-  pageTitle: string;
 }
 
 type KidData = {
@@ -21,7 +20,7 @@ type KidData = {
   createdAt: string;
 };
 
-const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => { 
+const KidSelectForm: React.FC<Props> = ({ onNext }) => {
   const token = useRecoilValue(userToken);
   const [selectedKidId, setSelectedKidId] = useState<number | null>(null);
   const [selectedKidName, setSelectedKidName] = useState<string | null>(null);
@@ -53,7 +52,7 @@ const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => {
 
   return (
     <div className="flex flex-col h-screen pb-60">
-      <Header pageTitle={pageTitle} headerType="normal" headerLink="/" />
+      <Header pageTitle="정기용돈 등록" headerType="normal" headerLink="/" />
 
       <div className="m-10 text-center flex-grow">
         <div className="text-l mt-24 mb-28">자녀를 선택해주세요.</div>

@@ -45,6 +45,28 @@ const PocketMoney: React.FC = () => {
     RegularMoneyData[]
   >([]);
 
+  const getRegularDate = (type: string, cycle: number) => {
+    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+  
+    switch (type) {
+      case "MONTH":
+        return `매월 ${cycle}일`;
+      case "WEEK":
+        return `매주 ${daysOfWeek[cycle % 7]}요일`;
+      case "DAY":
+        return "매일";
+      default:
+        return "";
+    }
+  }
+
+  const getStartDate = (createdAt: string) => {
+    const date = new Date(createdAt);
+    date.setDate(date.getDate() + 1);
+    
+    return date.toLocaleDateString();
+  }
+
   useEffect(() => {
     axios
       .get(
@@ -70,9 +92,9 @@ const PocketMoney: React.FC = () => {
   return (
     <div className="pb-60">
       <div className="bg-green-100 text-m">
-        <Link to="/kidDemandMoney">KID) 용돈 조르기</Link>
+        <Link to="/kidDemandMoney">KID: 용돈 조르기</Link>
         <br />
-        <Link to="/kidDemandMoneyList">KID) 용돈 요청 조회</Link>
+        <Link to="/kidDemandMoneyList">KID: 용돈 요청 조회</Link>
       </div>
 
       <Header pageTitle="용돈" headerType="normal" headerLink="/" />
@@ -120,18 +142,18 @@ const PocketMoney: React.FC = () => {
 
         <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
         {regularPocketMoneyList.length > 0 ? (
-          regularPocketMoneyList.map((money) => (
-            <RegularMoneyBox
-              regularPocketMoneyId={money.regularPocketMoneyId}
-              regularDate={`매월 ${money.cycle}일`}
-              cname={money.childName}
-              amount={`${money.amount.toLocaleString()}원`}
-              startDate={new Date(money.createdAt).toLocaleDateString()}
-            />
-          ))
-        ) : (
-          <RegularMoneyBoxEmpty />
-        )}
+    regularPocketMoneyList.map((money) => (
+      <RegularMoneyBox
+        regularPocketMoneyId={money.regularPocketMoneyId}
+        regularDate={getRegularDate(money.type, money.cycle)}
+        cname={money.childName}
+        amount={`${money.amount.toLocaleString()}원`}
+        startDate={getStartDate(money.createdAt)}
+      />
+    ))
+  ) : (
+     <RegularMoneyBoxEmpty />
+   )}
       </div>
     </div>
   );
