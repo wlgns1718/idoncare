@@ -10,6 +10,7 @@ import axios from "axios";
 import { useState } from "react";
 import { baseUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
+import { resistRechargeAccountInput, sendAccountBank } from "../../store/wallet/atoms";
 
 const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
   const [authenticationNumber, setAuthenticationNumber] = useState<number>();
@@ -19,14 +20,17 @@ const NewAccountVertification = ({ onChangeStep, step }: NewAccountCreate) => {
     setAuthenticationNumber(value as number);
   };
 
+  const accountNum = useRecoilValue(resistRechargeAccountInput);
+  const bank = useRecoilValue(sendAccountBank);
+
   const registAccount = () => {
     axios
       .post(
         baseUrl + `api/account/`,
         {
-          bankCodeStd: 41,
-          bankName: "신한은행",
-          accountNum: 77777777,
+          bankCodeStd: bank?.bankId,
+          bankName: bank?.bankName,
+          accountNum: accountNum,
         },
         AxiosHeader({ token })
       )

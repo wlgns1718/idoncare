@@ -33,7 +33,7 @@ export const RechargeAccountComponent = () => {
   const removeAccount = () => {
     axios
       .delete(baseUrl + `api/account/`, {
-        headers: { Authorization: Token as string },
+        headers: { Authorization: "Bearer "+Token as string },
         data: {
           bankCode: myRechargeAccount?.bankCode,
           realAccountId: myRechargeAccount?.realAccountId,

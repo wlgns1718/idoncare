@@ -10,15 +10,20 @@ import { rechargeAccount } from "../store/wallet/atoms";
 import { baseUrl } from "../apis/url/baseUrl";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import BottomNav from "../components/common/BottomNav";
-// import useComma from "../hooks/useComma";
-// import { useDone } from "../hooks/useDone";
+import useComma from "../hooks/useComma";
+import { useNavigate } from "react-router";
 
 function WalletRecharge() {
   const token = useRecoilValue(userToken);
   const myRechargeAccount = useRecoilValue(rechargeAccount);
   const [rechargeAmount, setRechargeAmount] = useState(0);
 
+  const navigate = useNavigate();
+
   const rechageMoney = () => {
+    if (!myRechargeAccount) {
+      return;
+    }
     axios
       .post(
         baseUrl + `api/account/charge`,
@@ -31,13 +36,19 @@ function WalletRecharge() {
       )
       .then((res) => {
         if (res.data.code == 200) {
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          // useDone({
-          //   // eslint-disable-next-line react-hooks/rules-of-hooks
-          //   title: `${useComma(rechargeAmount)} 원`,
-          //   content: "충전 완료",
-          //   ps: "성공적으로 충전되었습니다.",
-          // });
+          navigate(
+            {
+              pathname: "/done",
+            },
+            {
+              state: {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                title: `${useComma(rechargeAmount)} 원`,
+                content: "충전 완료",
+                ps: "성공적으로 충전되었습니다.",
+              },
+            }
+          );
         }
       });
   };
