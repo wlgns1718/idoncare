@@ -31,6 +31,7 @@ public class MissionDetailInfoDto {
 
     public static MissionDetailInfoDto toDto(Mission mission) {
         return MissionDetailInfoDto.builder()
+                .missionId(mission.getMissionId())
                 .childName(mission.getChild().getNickName())
                 .parentName(mission.getParent().getNickName())
                 .title(mission.getTitle())
