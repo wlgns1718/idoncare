@@ -41,10 +41,10 @@ const ProfileSize = {
 
 const Profile = ({
   profileName,
-  profileImage,
+  // profileImage,
   size = "large",
-  type = "image",
-}: ProfileProps) => {
+}: // type = "image",
+ProfileProps) => {
   const randomNumber = Math.floor(Math.random() * 5);
 
   return (
