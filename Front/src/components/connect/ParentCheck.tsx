@@ -7,7 +7,11 @@ type ParentCheckProps = {
   relationshipRequestId: number;
 };
 
-const ParentCheck: React.FC<ParentCheckProps> = ({ name, phoneNumber ,relationshipRequestId }) => {
+const ParentCheck: React.FC<ParentCheckProps> = ({
+  name,
+  phoneNumber,
+  relationshipRequestId,
+}) => {
   return (
     <div className="p-3 flex justify-between items-center bg-mediumgray rounded-lg">
       <div className="ml-4">
@@ -15,7 +19,7 @@ const ParentCheck: React.FC<ParentCheckProps> = ({ name, phoneNumber ,relationsh
         <span className="text-s">{phoneNumber}</span>
       </div>
 
-      <PYesNoBtn relationshipRequestId={relationshipRequestId}/> 
+      <PYesNoBtn relationshipRequestId={relationshipRequestId} name={name} />
     </div>
   );
 };
