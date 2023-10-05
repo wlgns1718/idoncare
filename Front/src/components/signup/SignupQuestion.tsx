@@ -88,7 +88,7 @@ const SignupQuestion = ({
       <form className="flex justify-end" onSubmit={handleSetInfo}>
         <div className="flex items-center justify-end bg-main rounded-[20px] w-[280px] h-[40px] pl-[10px] pr-[10px]">
           <input
-            className="w-full h-full text-white bg-transparent text-m p-[5px]"
+            className="w-full h-full text-white bg-transparent text-m p-[5px] outline-none no-underline px-6"
             type="text"
             value={answerText}
             onChange={(e) => setAnswerText(e.target.value)}
