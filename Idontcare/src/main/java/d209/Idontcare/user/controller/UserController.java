@@ -79,7 +79,7 @@ public class UserController {
     }
     
     @PostMapping("/login/{kakaoId}")
-    @Operation(summary = "테스트 로그인", description = "코드를 통해 로그인, [1 ~ 9]: 부모, [11 ~ 19] : 자식")
+    @Operation(summary = "테스트 로그인", description = "코드를 통해 로그인, [1 ~ 2]: 부모, [3 ~ 5] : 자식")
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
             content=@Content(schema = @Schema(implementation = GetUserInfoDto.class)))
@@ -131,4 +131,7 @@ public class UserController {
     public ResponseDto checkAccessToken(){
         return ResponseDto.success(null);
     }
+    
+//    @GetMapping("/token/valid")
+//    @Operation(summary = "Access Token 유효성 검사", description = "로그인을 수해")
 }

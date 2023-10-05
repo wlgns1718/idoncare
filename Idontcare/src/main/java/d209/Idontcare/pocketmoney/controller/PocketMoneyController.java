@@ -140,9 +140,9 @@ public class PocketMoneyController {
         return ResponseDto.success(null);
     }
     
-    //부모가 용돈 조르기 목록을 볼 수 있다
+    //부모또는 아이가 용돈 조르기 목록을 볼 수 있다
     @GetMapping("/request")
-    @Operation(summary="조르기 목록 조회", description="부모가 아이의 조르기 목록을 볼 수 있다")
+    @Operation(summary="조르기 목록 조회", description="부모가 또는 아이가 조르기 목록을 볼 수 있다")
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
             content=@Content(schema = @Schema(implementation= GetPocketMoneyRequestResDto.GetPocketMoneyRequestResDtoResult.class))),

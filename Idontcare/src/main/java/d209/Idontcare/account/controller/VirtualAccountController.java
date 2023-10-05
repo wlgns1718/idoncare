@@ -11,8 +11,10 @@ import d209.Idontcare.account.service.TransactionHistoryService;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.annotation.LoginOnly;
 import d209.Idontcare.common.dto.ResponseDto;
+import d209.Idontcare.common.exception.MustChildException;
 import d209.Idontcare.mission.dto.GetMissionInfoDto;
 import d209.Idontcare.pocketmoney.dto.res.GetRegularPocketMoneysResDto;
+import d209.Idontcare.user.entity.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,10 +23,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -146,9 +150,9 @@ public class VirtualAccountController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공"),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
     public ResponseDto
-        <?> findActiveReport(@PathVariable("userId") Long userId, HttpServletRequest request) throws Exception {
+        <?> findActiveReportForParent(@PathVariable("userId") Long userId, HttpServletRequest request) throws Exception {
         //토큰에 대한 사용자 userId
         Map<String, String> map = new HashMap<>();
         ActiveRes activeRes = transactionHistoryService.reportPerMonth(userId);
@@ -166,6 +170,18 @@ public class VirtualAccountController {
         }
     }
     
+    @GetMapping("/active/monthly")
+    @Operation(summary = "월간 본인(자녀) 활동보고서", description = "본인(자녀)의 월별 보고서")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+    })
+    @LoginOnly(level = LoginOnly.Level.CHILD_ONLY)
+    public ResponseDto<?> findActiveReport(HttpServletRequest request){
+        Long childUserId = (Long)request.getAttribute("userId");
+        ActiveRes activeRes = transactionHistoryService.reportPerMonth(childUserId);
+        return ResponseDto.success(activeRes);
+    }
+    
     
     @GetMapping("/active/{userId}/daily")
     @Operation(summary = "일별 자녀 활동보고서", description = "자녀의 일별 활동보고서(자녀의 ID필요)")
@@ -174,11 +190,29 @@ public class VirtualAccountController {
             content=@Content(array = @ArraySchema(schema = @Schema(implementation= DailyHistoryRes.class)))),
     })
     @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
-    public ResponseDto<?> findDailyActiveRepost(@PathVariable("userId") Long childUserId, HttpServletRequest request){
+    public ResponseDto<?> findDailyActiveReportForParent(@PathVariable("userId") Long childUserId, HttpServletRequest request){
         Long parentUserId = (Long)request.getAttribute("userId");
+        LocalDateTime day = LocalDateTime.now();
+        
+        List<DailyHistoryRes> result = transactionHistoryService.reportPerDailyForParent(parentUserId, childUserId, day);
+
+        return ResponseDto.success(result);
+    }
+    
+    @GetMapping("/active/daily")
+    @Operation(summary = "일별 본인(자녀)의 활동보고서", description = "자녀 본인의 일별 보고서")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "성공",
+            content=@Content(array = @ArraySchema(schema = @Schema(implementation= DailyHistoryRes.class)))),
+        @ApiResponse(responseCode = MustChildException.CODE, description = MustChildException.DESCRIPTION),
+    })
+    @LoginOnly(level = LoginOnly.Level.CHILD_ONLY)
+    public ResponseDto<?> findDailyActiveReport(HttpServletRequest request){
+        Long childUserId = (Long)request.getAttribute("userId");
         
         LocalDateTime day = LocalDateTime.now();
-        List<DailyHistoryRes> result = transactionHistoryService.reportPerDaily(parentUserId, childUserId, day);
+        List<DailyHistoryRes> result = transactionHistoryService.reportPerDaily(childUserId, day);
+        
         return ResponseDto.success(result);
     }
 }
