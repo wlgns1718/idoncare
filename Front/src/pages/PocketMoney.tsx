@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
 import KidDemandedList from "../components/pocketmoney/KidDemandedList";
 import SmallBtn from "../components/pocketmoney/SmallBtn";
@@ -9,7 +8,7 @@ import SendMoneyBox from "../components/pocketmoney/MenuBox";
 
 import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { userToken } from "../store/common/selectors";
+import { myRole, userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
 
@@ -45,9 +44,11 @@ const PocketMoney: React.FC = () => {
     RegularMoneyData[]
   >([]);
 
+  const role = useRecoilValue(myRole);
+
   const getRegularDate = (type: string, cycle: number) => {
-    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
-  
+    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+
     switch (type) {
       case "MONTH":
         return `매월 ${cycle}일`;
@@ -58,14 +59,14 @@ const PocketMoney: React.FC = () => {
       default:
         return "";
     }
-  }
+  };
 
   const getStartDate = (createdAt: string) => {
     const date = new Date(createdAt);
     date.setDate(date.getDate() + 1);
-    
+
     return date.toLocaleDateString();
-  }
+  };
 
   useEffect(() => {
     axios
@@ -91,69 +92,107 @@ const PocketMoney: React.FC = () => {
 
   return (
     <div className="pb-60">
-      <div className="bg-green-100 text-m">
-        <Link to="/kidDemandMoney">KID: 용돈 조르기</Link>
-        <br />
-        <Link to="/kidDemandMoneyList">KID: 용돈 요청 조회</Link>
-      </div>
+      <Header pageTitle="용돈" headerType="normal" headerLink="back" />
+      <div className="m-8">
+        {role == "PARENT" && (
+          <div>
+            <div className="pt-3 pb-3 mb-5 text-m font-strong">
+              자녀가 요청한 용돈
+            </div>
+            <div className="ml-4">
+              {kidDemandedList.map((demand) => (
+                <KidDemandedList
+                  key={demand.pocketMoneyRequestId}
+                  name={demand.child.name}
+                  amount={demand.amount.toString()}
+                  pocketMoneyRequestId={demand.pocketMoneyRequestId}
+                />
+              ))}
+              {!kidDemandedList.length && <div className="text-center text-main text-s my-8">요청 받은 용돈이 없어요</div>}
+            </div>
 
-      <Header pageTitle="용돈" headerType="normal" headerLink="/" />
+            <div className="text-right">
+              <SmallBtn link="/" text="전체보기" classes="mb-10" />
+            </div>
 
-      <div className="m-10">
-        <div className="pt-3 pb-3 mb-5 text-m font-strong">
-          자녀가 요청한 용돈
-        </div>
+            <div className="flex justify-between">
+              <SendMoneyBox
+                link="/sendPocketMoney"
+                bgColor="bg-yellow"
+                textColor="text-white"
+                text="용돈보내기"
+                classes="mr-4"
+              />
+              <SendMoneyBox
+                link="/sendRegularMoney"
+                bgColor="bg-sky"
+                textColor="text-white"
+                text={
+                  <>
+                    <p>정기용돈으로</p>
+                    <p>편하게 용돈 주기</p>
+                  </>
+                }
+              />
+            </div>
+          </div>
+        )}
+        {role == "CHILD" && (
+          <div>
+            <div className="pt-3 pb-3 mb-5 text-m font-strong">
+              내가 요청중인 용돈
+            </div>
 
-        <div className="ml-4">
-          {kidDemandedList.map((demand) => (
-            <KidDemandedList
-              key={demand.pocketMoneyRequestId}
-              name={demand.child.name}
-              amount={demand.amount.toString()}
-              pocketMoneyRequestId={demand.pocketMoneyRequestId}
-            />
-          ))}
-        </div>
+            <div className="ml-4">
+              {kidDemandedList.map((demand) => (
+                <KidDemandedList
+                  key={demand.pocketMoneyRequestId}
+                  name={demand.child.name}
+                  amount={demand.amount.toString()}
+                  pocketMoneyRequestId={demand.pocketMoneyRequestId}
+                />
+              ))}
+            </div>
 
-        <div className="text-right">
-          <SmallBtn link="/" text="전체보기" classes="mb-10" />
-        </div>
+            <div className="text-right">
+              <SmallBtn link="/" text="전체보기" classes="mb-10" />
+            </div>
 
-        <div className="flex justify-between">
-          <SendMoneyBox
-            link="/sendPocketMoney"
-            bgColor="bg-yellow"
-            textColor="text-white"
-            text="용돈보내기"
-            classes="mr-4"
-          />
-          <SendMoneyBox
-            link="/sendRegularMoney"
-            bgColor="bg-sky"
-            textColor="text-white"
-            text={
-              <>
-                <p>정기용돈으로</p>
-                <p>편하게 용돈 주기</p>
-              </>
-            }
-          />
-        </div>
-
+            <div className="flex justify-between">
+              <SendMoneyBox
+                link="/kidDemandMoney"
+                bgColor="bg-yellow"
+                textColor="text-white"
+                text="용돈조르기"
+                classes="mr-4"
+              />
+              <SendMoneyBox
+                link="/kidDemandMoneyList"
+                bgColor="bg-sky"
+                textColor="text-white"
+                text={
+                  <>
+                    <p>용돈 요청 조회</p>
+                  </>
+                }
+              />
+            </div>
+          </div>
+        )}
         <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
         {regularPocketMoneyList.length > 0 ? (
-    regularPocketMoneyList.map((money) => (
-      <RegularMoneyBox
-        regularPocketMoneyId={money.regularPocketMoneyId}
-        regularDate={getRegularDate(money.type, money.cycle)}
-        cname={money.childName}
-        amount={`${money.amount.toLocaleString()}원`}
-        startDate={getStartDate(money.createdAt)}
-      />
-    ))
-  ) : (
-     <RegularMoneyBoxEmpty />
-   )}
+          regularPocketMoneyList.map((money) => (
+            <RegularMoneyBox
+              regularPocketMoneyId={money.regularPocketMoneyId}
+              regularDate={getRegularDate(money.type, money.cycle)}
+              cname={money.childName}
+              amount={`${money.amount.toLocaleString()}원`}
+              startDate={getStartDate(money.createdAt)}
+            />
+          ))
+        ) : (
+          <RegularMoneyBoxEmpty />
+        )}
       </div>
     </div>
   );

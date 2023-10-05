@@ -21,13 +21,13 @@ const SendPocketMoneyForm: React.FC<Props> = ({ onNext }) => {
   return (
     <div className="flex flex-col h-screen pb-60">
       <Header pageTitle="용돈 보내기" headerType="normal" headerLink="/" />
-      <div className="m-10 text-center flex-grow">
+      <div className="m-10 text-center flex-grow mx-8">
         <div className="text-l mt-24 mb-16">얼마를 보낼래요?</div>
 
         <MoneyAmountSet onValueChange={handleValueChange} />
 
       </div>
-      <FullBtn buttonText="다음" onClick={handleNextClick} isDone={moneyAmount > 0} />
+      <FullBtn className="mx-8" buttonText="다음" onClick={handleNextClick} isDone={moneyAmount > 0} />
     </div>
   );
 };

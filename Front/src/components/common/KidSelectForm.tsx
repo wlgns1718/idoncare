@@ -21,7 +21,7 @@ type KidData = {
   createdAt: string;
 };
 
-const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => { 
+const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => {
   const token = useRecoilValue(userToken);
   const [selectedKidId, setSelectedKidId] = useState<number | null>(null);
   const [selectedKidName, setSelectedKidName] = useState<string | null>(null);
@@ -55,7 +55,7 @@ const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => {
     <div className="flex flex-col h-screen pb-60">
       <Header pageTitle={pageTitle} headerType="normal" headerLink="/" />
 
-      <div className="m-10 text-center flex-grow">
+      <div className="m-10 text-center flex-grow ">
         <div className="text-l mt-24 mb-28">자녀를 선택해주세요.</div>
 
         <div className="m-5 flex flex-wrap justify-center">
@@ -72,6 +72,7 @@ const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => {
         </div>
       </div>
       <FullBtn
+        className="mx-8"
         buttonText="다음"
         onClick={() => onNext(selectedKidId!, selectedKidName!)}
         isDone={selectedKidId !== null}
