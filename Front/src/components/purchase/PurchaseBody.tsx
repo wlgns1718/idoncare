@@ -1,27 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/imgs/login/logo.png";
 import { useRecoilValue } from "recoil";
 import { userBalanace } from "../../store/wallet/atoms";
 import useComma from "../../hooks/useComma";
+import Icon, { ICON_NAME } from "../common/Icon";
 
-const menus = [
+const menus: {
+  Title: string;
+  subTitle: string;
+  link: string;
+  icon: ICON_NAME;
+}[] = [
   {
-    Title: "금액설정해서 QR 코드 생성",
-    subTitle: "QR코드로 결제",
+    Title: "받는 쪽에서 금액 정하기",
+    subTitle: "QR코드 생성해서 빠르게 돈 받기",
     link: "qrcode/fast",
-    icon: "",
+    icon: "qr-code",
   },
   {
-    Title: "금액을 설정하지 않고 QR코드 생성",
-    subTitle: "QR코드 만들어서 결제",
+    Title: "주는 쪽에서 금액 정하기",
+    subTitle: "QR코드 생성해서 돈 받기",
     link: "qrcode/slow",
-    icon: "",
+    icon: "qr-code",
   },
   {
     Title: "카메라로 결제하기",
     subTitle: "QR코드 찍어서 결제",
     link: "camera",
-    icon: "",
+    icon: "camera",
   },
 ];
 
@@ -32,7 +37,11 @@ function PurchaseBody() {
   return (
     <div className="mt-20">
       <div className="w-[240px] h-[130px] mx-auto p-4 pb-6 rounded-2xl flex-col flex justify-between [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
-        <img className="w-[25vw]" src={logo} />
+        <img
+          src="/icons/icon-logo-2.png"
+          alt="logo"
+          className="w-[15vw]"
+        />
         <div className="text-end items-end">
           <div className="text-t text-mediumgray">부족금액은 자동충전됨</div>
           <div className="text-white text-m">{useComma(balance)} 원</div>
@@ -47,7 +56,7 @@ function PurchaseBody() {
               onClick={() => navigate(item.link)}
             >
               <div className="mx-6">
-                <img src={item.icon} alt="" />
+                <Icon name={item.icon} size="medium"/>
               </div>
               <div>
                 <div className="text-gray-700">{item.Title}</div>
