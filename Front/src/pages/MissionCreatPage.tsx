@@ -91,10 +91,12 @@ const MissionCreate: React.FC = () => {
           <Header pageTitle="미션 등록" headerType="normal" headerLink="/" />
 
           <div className="m-10 text-center flex-grow">
-            <MissionSetName
-              missionData={missionData}
-              setMissionData={setMissionData}
-            />
+          <MissionSetName
+  missionData={missionData}
+  setMissionData={(newTitle) => setMissionData({ ...missionData, title: newTitle.title })}
+/>
+
+
           </div>
           <FullBtn
             isDone={!!missionData.title}

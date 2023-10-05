@@ -2,12 +2,13 @@ import { useSetRecoilState } from "recoil";
 import { BottomSheet } from "../common/BottomSheet";
 import { BottomSheetOpen } from "../../store/common/atoms";
 import MissionBox from "./MissionBox";
-import { MissionData } from "../../store/mission/atoms";
+import { CreateMissionData } from "../../store/mission/atoms";
 
 interface MissionSetNameProps {
-  missionData: MissionData;
-  setMissionData: (MissionData: MissionData) => void;
+  missionData: CreateMissionData; // change this line
+  setMissionData: (data: CreateMissionData) => void; // and this line
 }
+
 
 function MissionSetName({ missionData, setMissionData }: MissionSetNameProps) {
   const setBottomSheetOpen = useSetRecoilState(BottomSheetOpen);
