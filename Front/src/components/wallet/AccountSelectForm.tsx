@@ -19,10 +19,14 @@ interface AccountSelectFormProps {
   setIsValid?: (isValid: boolean) => void;
 }
 
-function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormProps) {
+function AccountSelectForm({
+  btn = true,
+  setIsValid = () => {},
+}: AccountSelectFormProps) {
   const selectedBank = useRecoilValue<BankDataType | null>(sendAccountBank);
   const [accountNumberInput, setAccountNumberInput] = useRecoilState(
-    resistRechargeAccountInput);
+    resistRechargeAccountInput
+  );
 
   const [transferAccountData, setTransferAccountData] =
     useRecoilState(transferData);
@@ -48,7 +52,6 @@ function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormP
   useEffect(() => {
     setIsValid(isChecked && isValidAccount);
   }, [isChecked, isValidAccount]);
-  
 
   const handleCheckAccount = () => {
     axios
@@ -112,15 +115,15 @@ function AccountSelectForm({ btn = true, setIsValid=()=>{} }: AccountSelectFormP
               계좌 확인
             </div>
           </div>
-          {(isChecked) && (
+          {isChecked && (
             <div className="text-center my-6">
               {isValidAccount ? (
                 <div className="bg-soft p-3 rounded-lg text-main">
-                  계좌번호가 유효합니다
+                  {transferAccountData?.account?.clientName}님의 계좌입니다
                 </div>
               ) : (
                 <div className="bg-red-200 p-3 rounded-lg text-red-500">
-                  계좌번호가 유효하지 않습니다
+                  계좌번호가 맞는지 확인해주세요
                 </div>
               )}
             </div>

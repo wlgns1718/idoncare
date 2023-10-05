@@ -87,7 +87,7 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
           }}
         />
       ))}
-<KidAdd className="w-1/4" />
+      <KidAdd className="w-1/4" />
 
       {isOpen && (
         <Modal>
@@ -96,10 +96,14 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
             <br />
             끊으시겠습니까?
           </div>
-          <YesNoBtn yesText="확인" noText="취소" onYesClick={onDelete} onNoClick={() => setIsOpen(false)} />
+          <YesNoBtn
+            yesText="확인"
+            noText="취소"
+            onYesClick={onDelete}
+            onNoClick={() => setIsOpen(false)}
+          />
         </Modal>
       )}
-
     </div>
   );
 };
