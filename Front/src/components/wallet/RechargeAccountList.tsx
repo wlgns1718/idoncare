@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { rechargeAccount } from "../../store/wallet/atoms";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { isExistRechargeAccount } from "../../store/wallet/selectors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Modal from "../common/Modal";
 import axios from "axios";
 import { userToken } from "../../store/common/selectors";
 import { RechargeAccountResponse } from "../../types/WalletTypes";
 import { baseUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
+import YesNoBtn from "../common/YesNoBtn";
 
 export const EmptyAccount = () => {
   const navigate = useNavigate();
@@ -30,45 +32,69 @@ export const RechargeAccountComponent = () => {
   const resetRechargeAccount = useResetRecoilState(rechargeAccount);
   const Token = useRecoilValue(userToken);
 
-  const removeAccount = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const handleDeleteClick = () => {
+    setModalIsOpen(true);
+  };
+
+  const handleCancelClick = () => {
+    setModalIsOpen(false);
+  };
+
+  const handleRemoveAccount = () => {
     axios
       .delete(baseUrl + `api/account/`, {
-        headers: { Authorization: "Bearer "+Token as string },
+        headers: { Authorization: ("Bearer " + Token) as string },
         data: {
           bankCode: myRechargeAccount?.bankCode,
           realAccountId: myRechargeAccount?.realAccountId,
         },
       })
       .then((res) => {
-        if(res.data.code == 200){
+        if (res.data.code == 200) {
           resetRechargeAccount();
-          return
-        }
-        else {
+          return;
+        } else {
           console.log(res.data.error);
         }
       });
+    setModalIsOpen(false);
   };
   return (
     <div className="w-full h-[80px] px-8 my-4 bg-gray rounded-xl flex items-center justify-between ">
       <div className="flex">
-        <img
-          className="w-[8vw] mx-4"
-          src={`https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/images/${myRechargeAccount?.bankName}.png`}
-        ></img>
-        <div className="flex flex-col justify-center">
+        <div className="w-[40px] mr-6">
+          <img
+            className=""
+            src={`https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app/images/${myRechargeAccount?.bankName}.png`}
+          ></img>
+        </div>
+        <div className="flex flex-col justify-center text-t">
           <div>{myRechargeAccount?.bankName}</div>
           <div>{myRechargeAccount?.realAccountId}</div>
         </div>
       </div>
       <div
-        className="flex items-center rounded-md bg-red-50 px-4 p-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
+        className="flex rounded-md bg-red-50 px-4 p-2 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
         onClick={() => {
-          removeAccount();
+          handleDeleteClick();
         }}
       >
         삭제
       </div>
+      {modalIsOpen && (
+        <Modal>
+          <div className="mt-10 mb-10">
+            <p className="text-center text-m">출금 계좌 연결을 해제할까요?</p>
+            <YesNoBtn
+              noText="아니오"
+              yesText="네"
+              onNoClick={handleCancelClick}
+              onYesClick={handleRemoveAccount}
+            />
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
@@ -100,7 +126,7 @@ function RechargeAccountList() {
 
   return (
     <div className="my-6">
-      <div className="flex justify-between">
+      <div className="flex justify-between text-s">
         <div>출금 계좌</div>
       </div>
       <div className="">
