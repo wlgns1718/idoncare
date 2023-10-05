@@ -70,7 +70,7 @@ const menus: Menu[] = [
   },
   {
     title: "송금하기",
-    link: "/wallet/send",
+    link: "/transfer/account",
     icon: "send",
   },
   {
@@ -149,7 +149,7 @@ function MyPage() {
                 className="flex items-center gap-3 shadow p-2"
               >
                 <Icon name={menu.icon} size="medium"></Icon>
-                <span className="text-lg text-black">{menu.title}</span>
+                <span className="text-2xl text-black">{menu.title}</span>
               </Link>
             </div>
           );
