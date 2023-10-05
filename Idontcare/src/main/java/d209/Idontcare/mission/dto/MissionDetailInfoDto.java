@@ -3,10 +3,13 @@ package d209.Idontcare.mission.dto;
 import d209.Idontcare.mission.entity.Mission;
 import d209.Idontcare.mission.entity.Type;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Builder
+@Getter @Setter
 public class MissionDetailInfoDto {
 
     private Long missionId;
