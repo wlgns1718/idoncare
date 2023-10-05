@@ -33,6 +33,8 @@ import MissionCreatPage from "./pages/MissionCreatPage";
 import MissionCreateMoney from "./pages/MissionCreateMoney";
 import PrivateRoute from "./routes/privateRoute";
 import DonePage from "./pages/DonePage";
+import NotFound from "./pages/NotFound";
+import Preparing from "./pages/Preparing";
 
 function App() {
   const queryClient = new QueryClient();
@@ -163,6 +165,8 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path="done" element={<DonePage />} />
               </Route>
+              <Route path="ready" element={<Preparing />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

@@ -27,7 +27,7 @@ const BankItem: React.FC<BankItemProps> = ({ item }) => {
     >
       <img
         className="w-[10vw]"
-        src={`http://j9d209.p.ssafy.io:8082${item?.bankImage}`}
+        src={`https://j9d209.p.ssafy.io:9082${item?.bankImage}`}
         alt=""
       />
       <span className="text-s text-center">{item?.bankName}</span>
