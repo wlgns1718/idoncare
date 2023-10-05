@@ -81,7 +81,6 @@ public class MissionServiceImpl implements MissionService {
     public Long updateStatus(MissionStatusDto missionStatusDto, Role role) {
         Long missionId = missionStatusDto.getMissionId();
         Mission mission = missionRepository.findById(missionId).orElseThrow(NoSuchContentException::new);
-
         if(mission.getType() == Type.PROCESS && role == Role.CHILD){
 
             mission.setAfterMessage(missionStatusDto.getAfterMessage());
@@ -102,13 +101,13 @@ public class MissionServiceImpl implements MissionService {
 
             log.info("완료 미션에 대해 리워드를 지급합니다.");
             Long childId = mission.getChild().getUserId();
+
             VirtualToVirtualReq virtualToVirtualReq = new VirtualToVirtualReq();
             virtualToVirtualReq.setUserId(childId);
             virtualToVirtualReq.setContent("미션 리워드");
             virtualToVirtualReq.setType(d209.Idontcare.account.entity.Type.MISSION);
             virtualToVirtualReq.setMoney(mission.getAmount());
-
-            virtualAccountService.virtualPayment(virtualToVirtualReq, mission.getParent().getUserId());
+            virtualAccountService.virtualPayment(virtualToVirtualReq, virtualAccountService.userAccount(mission.getParent().getUserId()));
             log.info("완료 미션에 대해 리워드를 지급 완료했습니다.");
             mission.setType(Type.COMPLETE);
         }

@@ -51,7 +51,8 @@ public class VirtualAccountService {
 
     //가상 계좌에서 출금 + 거래내역에 추가
     public void withdrawal(Long startAccount, Long money, String content, LocalDateTime localDateTime, Type type) throws VirtualAccountException {
-        VirtualAccount account = virtualAccountRepository.findById(startAccount).get();
+        VirtualAccount account = virtualAccountRepository.findById(startAccount).orElseThrow(
+                () -> new VirtualAccountException("해당 유저의 가상계좌가 존재하지 않습니다."));
         //가상 계좌에 잔액 부족
         if(account.getBalance() < money){
             throw new VirtualAccountException(402, "가상 계좌의 잔액 부족");
@@ -71,6 +72,7 @@ public class VirtualAccountService {
                 .balance(account.getBalance())
                 .build());
     }
+
 
     //가상 계좌로 입금 + 거래내역에 추가
     public void deposit(Long destinateAccount, Long money, String content,LocalDateTime localDateTime, Type type){
