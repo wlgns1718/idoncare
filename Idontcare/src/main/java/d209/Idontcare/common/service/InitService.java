@@ -147,6 +147,12 @@ public class InitService {
     User parent = userRepository.findByKakaoId(1L).get();
     User child  = userRepository.findByKakaoId(3L).get();
     for(Long i = 0L; i < 5L; i++){
+      if(i == 2L){
+        Mission mission = new Mission(parent,child, "심부름 하기",10000, d209.Idontcare.mission.entity.Type.UNPAID,
+                "열심히 할게요","미션 완료했습니다.",LocalDateTime.now());
+        missionRepository.save(mission);
+        continue;
+      }
       Mission mission = new Mission(parent,child,"방청소하기" + i, i*1000,
               d209.Idontcare.mission.entity.Type.PROCESS,"열심히 할게요" + i,null,null);
       missionRepository.save(mission);
