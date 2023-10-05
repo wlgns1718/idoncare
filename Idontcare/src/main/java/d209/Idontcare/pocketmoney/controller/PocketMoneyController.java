@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,6 @@ import java.util.List;
 @RequestMapping("/api/pocketmoney")
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class PocketMoneyController {
 
     private final PocketMoneyService pocketMoneyService;

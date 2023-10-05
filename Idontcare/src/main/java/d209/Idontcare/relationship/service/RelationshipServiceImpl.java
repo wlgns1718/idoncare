@@ -3,6 +3,7 @@ package d209.Idontcare.relationship.service;
 import d209.Idontcare.common.dto.APIResultDto;
 import d209.Idontcare.common.exception.*;
 import d209.Idontcare.common.service.APIService;
+import d209.Idontcare.pocketmoney.service.PocketMoneyService;
 import d209.Idontcare.relationship.dto.req.*;
 import d209.Idontcare.relationship.dto.res.*;
 import d209.Idontcare.relationship.entity.*;
@@ -29,38 +30,32 @@ import java.util.*;
 public class RelationshipServiceImpl implements RelationshipService{
 
   private final UserService userService;
-  
   private final UserRepository userRepository;
+  
   private final RelationshipRepository relationshipRepository;
   private final RelationshipRequestRepository relationshipRequestRepository;
+  
+  private final PocketMoneyService pocketMoneyService;
   
   @Override
   public RelationshipRequest requestRelationship(Long parentUserId, RequestRelationshipReqDto req){
     
-    System.out.println(1);
     User child = userService.findByPhoneNumber(req.getChildPhoneNumber()).orElseThrow(NoSuchUserException::new);
-    System.out.println(2);
     
     if( !child.isChild() ) throw new MustChildException("자녀에게만 요청할 수 있습니다");
-    System.out.println(3);
     
     if(relationExistsByParentAndChild(parentUserId, child.getUserId())) throw new DuplicatedException("이미 자식입니다");
-    System.out.println(4);
     
     if(relationRequestExistsByParentAndChild(parentUserId, child.getUserId())) throw new DuplicatedException("이미 요청되었습니다");
-    System.out.println(5);
     
     User parent = userRepository.getReferenceById(parentUserId);
-    System.out.println(6);
     
     RelationshipRequest relationshipRequest = RelationshipRequest.builder()
                                   .parent(parent)
                                   .child(child)
                                   .build();
-    System.out.println(7);
     
     RelationshipRequest saved = relationshipRequestRepository.save(relationshipRequest);
-    System.out.println(8);
     
     return saved;
   }
@@ -124,6 +119,21 @@ public class RelationshipServiceImpl implements RelationshipService{
     PageRequest pageRequest = PageRequest.of(0, 1);
     Page<Long> page = relationshipRepository.existsByParentAndChild(parentUserId, childUserId, pageRequest);
     return page.getTotalElements() != 0;
+  }
+  
+  @Override
+  public void deleteRelationship(Long parentUserId, Long relationshipId) throws NoSuchContentException, AuthorizationException {
+    Relationship relationship = relationshipRepository.findById(relationshipId)
+        .orElseThrow(() -> new NoSuchContentException("해당하는 관계를 찾을 수 없습니다"));
+    
+    if( !relationship.getParent().getUserId().equals(parentUserId) ) throw new AuthorizationException("권한이 없습니다");
+    
+    Long childUserId = relationship.getChild().getUserId();
+    
+    pocketMoneyService.deleteRegularPocketMoneyRejectedByParentUserIdAndChildUserId(parentUserId, childUserId);
+    pocketMoneyService.deleteRegularPocketMoneyByParentUserIdAndChildUserId(parentUserId, childUserId);
+    
+    relationshipRepository.delete(relationship);
   }
   
   private boolean relationRequestExistsByParentAndChild(Long parentUserId, Long childUserId){

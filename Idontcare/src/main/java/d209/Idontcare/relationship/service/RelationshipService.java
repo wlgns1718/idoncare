@@ -40,4 +40,7 @@ public interface RelationshipService {
    * 해당 유저간에 관계가 존재하는지 확인
    */
   boolean relationExistsByParentAndChild(Long parentUserId, Long childUserId);
+  
+  void deleteRelationship(Long parentUserId, Long relationshipId)
+      throws NoSuchContentException, AuthorizationException;
 }
