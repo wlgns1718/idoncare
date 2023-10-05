@@ -11,7 +11,6 @@ type ParentProps = {
 };
 
 const Parent: React.FC<ParentProps> = ({
-  imgSrc = "/icons/circle-blue.png",
   is_connect = false,
   pname,
   onClick,
