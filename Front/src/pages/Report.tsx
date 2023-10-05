@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Header from "../components/common/Header";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BarDatum, ResponsiveBar } from "@nivo/bar";
 import useComma from "../hooks/useComma";
 import axios from "axios";
@@ -82,7 +82,7 @@ function Report() {
       <Kids onClick={onClickChild} />
       <div>
         <div className="flex p-2 justify-between">
-          <div className="flex">
+          <div className="flex ml-5">
             <div className="flex items-center">
               <div className="bg-blue-600 w-4 h-4"></div>수입
             </div>
@@ -109,23 +109,26 @@ function Report() {
           </div>
         </div>
         <div className="w-full h-[40vh]">
-          {}
-          {dailyData.length !== 0 &&
-            dateScale === "daily" &&
-            BarData(dailyData)}
-          {monthlyData.length !== 0 &&
-            dateScale === "monthly" &&
-            BarData(monthlyData)}
+          {dailyData.length !== 0 && (
+            <BarChart data={dateScale === "daily" ? dailyData : monthlyData} />
+          )}
         </div>
-        {/* <div className="flex">
-          <SummaryItem />
-        </div> */}
+        {dailyData.length !== 0 && (
+          <Summary
+            data={dateScale === "daily" ? dailyData : monthlyData}
+            dateScale={dateScale}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-const BarData = (data: Array<ChartData>) => {
+interface BarChartType {
+  data: Array<ChartData>;
+}
+
+const BarChart = ({ data }: BarChartType) => {
   return (
     <ResponsiveBar
       data={data}
@@ -137,7 +140,7 @@ const BarData = (data: Array<ChartData>) => {
       axisLeft={{
         tickSize: 0,
         tickValues: 5,
-        format: (num : number) => useComma(num),
+        format: (num: number) => useComma(num),
       }}
       axisBottom={{
         tickSize: 2,
@@ -151,6 +154,87 @@ const BarData = (data: Array<ChartData>) => {
       enableLabel={false}
       enableGridY={false}
     />
+  );
+};
+
+interface SummaryType {
+  data: Array<ChartData>;
+  dateScale: DataScale;
+}
+
+const Summary = ({ data, dateScale }: SummaryType) => {
+  const [summary1, setSummary1] = useState<string>("");
+  const [summary2, setSummary2] = useState<string>("");
+  const [summary3, setSummary3] = useState<string>("");
+
+  const dailyDataSummary = () => {
+    //일별 요약
+    const earnDiff = data[6].earn - data[5].earn;
+    if (earnDiff > 0) {
+      setSummary1(`어제보다 ${useComma(earnDiff)}원 더 받았어요`);
+    } else if (earnDiff === 0) {
+      setSummary1(`어제와 똑같이 받았어요`);
+    } else {
+      setSummary1(`어제보다 ${useComma(Math.abs(earnDiff))}원 덜 받았어요`);
+    }
+
+    const sumOfEarn = data
+      .map((d) => d.earn)
+      .reduce((accu, curr) => accu + curr, 0);
+
+    setSummary2(`지난 7일동안 ${useComma(sumOfEarn)}원을 벌었어요`);
+
+    const sumOfExpend = data
+      .map((d) => d.expend)
+      .reduce((accu, curr) => accu + curr, 0);
+
+    setSummary3(`지난 7일동안 ${useComma(sumOfExpend)}원을 사용했어요`);
+  };
+
+  const monthlyDataSummary = () => {
+    //월별 요약
+    const earnDiff = data[4].earn - data[3].earn;
+    if (earnDiff > 0) {
+      setSummary1(`저번달보다 ${useComma(earnDiff)}원 더 받았어요`);
+    } else if (earnDiff === 0) {
+      setSummary1(`저번달과 똑같이 받았어요`);
+    } else {
+      setSummary1(`저번달보다 ${useComma(Math.abs(earnDiff))}원 덜 받았어요`);
+    }
+
+    const averageEarn =
+      data.map((d) => d.earn).reduce((accu, curr) => accu + curr, 0) / 5;
+    setSummary2(
+      `5개월 동안 평균 ${useComma(Math.ceil(averageEarn))}원을 받았어요`
+    );
+
+    const averageExpend =
+      data.map((d) => d.expend).reduce((accu, curr) => accu + curr, 0) / 5;
+    setSummary3(
+      `5개월 동안 평균 ${useComma(Math.ceil(averageExpend))}원을 사용했어요`
+    );
+  };
+
+  useEffect(() => {
+    if (dateScale === "daily") {
+      dailyDataSummary();
+    } else {
+      monthlyDataSummary();
+    }
+  }, [data, dateScale]);
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex justify-center items-center bg-gray rounded-3xl h-24 m-3 text-2xl shadow-lg">
+        {summary1}
+      </div>
+      <div className="flex justify-center items-center bg-gray rounded-3xl h-24 m-3 text-2xl shadow-lg">
+        {summary2}
+      </div>
+      <div className="flex justify-center items-center bg-gray rounded-3xl h-24 m-3 text-2xl shadow-lg">
+        {summary3}
+      </div>
+    </div>
   );
 };
 
