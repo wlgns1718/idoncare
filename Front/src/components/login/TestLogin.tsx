@@ -38,10 +38,10 @@ function TestLogin() {
     <div className="my-4 text-center">
       <div className="text-m my-2">테스트 계정 로그인</div>
       <div className="p-4">부모</div>
-      <div className="grid grid-cols-3 gap-4">
-        {[...Array(9).keys()].map((i) => (
+      <div className="grid grid-cols-2 gap-4 text-m text-main">
+        {[...Array(2).keys()].map((i) => (
           <div
-            className="bg-soft rounded-lg p-2"
+            className="bg-soft rounded-lg p-6"
             onClick={() => loginTestAccount(i + 1)}
           >
             {i + 1}
@@ -49,13 +49,13 @@ function TestLogin() {
         ))}
       </div>
       <div className="p-4">자녀</div>
-      <div className="grid grid-cols-3 gap-4">
-        {[...Array(9).keys()].map((i) => (
+      <div className="grid grid-cols-3 gap-4  text-m text-main">
+        {[...Array(3).keys()].map((i) => (
           <div
-            className="bg-soft rounded-lg p-2"
-            onClick={() => loginTestAccount(i + 11)}
+            className="bg-soft rounded-lg p-6"
+            onClick={() => loginTestAccount(i + 3)}
           >
-            {i + 11}
+            {i + 3}
           </div>
         ))}
       </div>

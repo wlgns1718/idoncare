@@ -1,11 +1,12 @@
 import { useLocation } from 'react-router-dom';
 import MoneyDone from '../components/pocketmoney/MoneyDone';
+import Header from './../components/common/Header';
 
 export interface DoneData {
-  title : string;
-  content : string;
-  ps : string;
-  isSuccess ?: boolean;
+  title: string;
+  content: string;
+  ps: string;
+  is_done?: boolean;
 }
 
 interface RouteState {
@@ -16,11 +17,12 @@ function DonePage() {
 const state = (useLocation() as RouteState).state;
   return (
     <div>
+      <Header pageTitle='확인'/>
       <MoneyDone
         ps={state.ps}
         title={state.title}
         content={state.content}
-        is_done={state.isSuccess}
+        is_done={state.is_done}
       />
     </div>
   );

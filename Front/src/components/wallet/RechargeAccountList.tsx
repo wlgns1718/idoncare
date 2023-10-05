@@ -40,8 +40,13 @@ export const RechargeAccountComponent = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        resetRechargeAccount();
+        if(res.data.code == 200){
+          resetRechargeAccount();
+          return
+        }
+        else {
+          console.log(res.data.error);
+        }
       });
   };
   return (

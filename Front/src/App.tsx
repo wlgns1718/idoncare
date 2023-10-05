@@ -33,6 +33,8 @@ import MissionCreatPage from "./pages/MissionCreatPage";
 import MissionCreateMoney from "./pages/MissionCreateMoney";
 import PrivateRoute from "./routes/privateRoute";
 import DonePage from "./pages/DonePage";
+import NotFound from "./pages/NotFound";
+import Preparing from "./pages/Preparing";
 
 function App() {
   const queryClient = new QueryClient();
@@ -67,7 +69,10 @@ function App() {
                 <Route path="purchase" element={<Purchase />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="purchase/qrcode/:payType" element={<QRcodePurchase />} />
+                <Route
+                  path="purchase/qrcode/:payType"
+                  element={<QRcodePurchase />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="purchase/camera" element={<CameraPurchase />} />
@@ -76,10 +81,13 @@ function App() {
                 <Route path="transfer/account" element={<TransferSelect />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="transfer/input" element={<Transfer />} />
+                <Route path="transfer/input/:option" element={<Transfer />} />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route path="transfer/confirm" element={<TransferConfirm />} />
+                <Route
+                  path="transfer/confirm/:option"
+                  element={<TransferConfirm />}
+                />
               </Route>
               <Route element={<PrivateRoute />}>
                 <Route path="pocketMoney" element={<PocketMoney />} />
@@ -155,11 +163,10 @@ function App() {
                 />
               </Route>
               <Route element={<PrivateRoute />}>
-                <Route
-                  path="done"
-                  element={<DonePage />}
-                />
+                <Route path="done" element={<DonePage />} />
               </Route>
+              <Route path="ready" element={<Preparing />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

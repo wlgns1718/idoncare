@@ -27,10 +27,10 @@ const BankItem: React.FC<BankItemProps> = ({ item }) => {
     >
       <img
         className="w-[10vw]"
-        src={`https://port-0-openbankapi-iciy2almk8xusg.sel5.cloudtype.app${item?.bankImage}`}
+        src={`https://j9d209.p.ssafy.io:9082${item?.bankImage}`}
         alt=""
       />
-      <span className="text-s">{item?.bankName}</span>
+      <span className="text-s text-center">{item?.bankName}</span>
     </div>
   );
 };

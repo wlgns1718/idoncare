@@ -22,9 +22,9 @@ const Kid: React.FC<KidProps> = ({ imgSrc = "/icons/circle-pink.png", is_connect
     const selectedClassName = isSelected ? "scale-105" : "scale-95 grayscale";
 
     return (
-        <div className={`m-3 ${selectedClassName} ${className}`} onClick={handleClick}>
+        <div className={`mx-4 my-3 ${selectedClassName} ${className}`} onClick={handleClick}>
             <img className={`${is_connect ? '' : 'opacity-50'}`} src={imgSrc} alt="icon" />
-            <div className="text-center text-l mt-6">{kname}</div>
+            <div className="text-center text-m mt-6 whitespace-nowrap">{kname}</div>
         </div>
     )
 }

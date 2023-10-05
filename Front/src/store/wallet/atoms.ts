@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { AccountDataType, BankDataType, TradeItem, TransferAccountData } from "../../types/WalletTypes";
 import { MonthlyTradeListResponse } from "../../components/wallet/TradeHistory";
+import { RelationType } from "../../components/active/Kids";
 
 interface BankDataInterface {
   bankList: BankDataType[];
@@ -31,6 +32,11 @@ export const sendAccountBank = atom<BankDataType | null>({
 
 export const rechargeAccount = atom<AccountDataType | null>({
   key: "rechargeAccount",
+  default: null,
+});
+
+export const selectedFamilyUser = atom<RelationType | null>({
+  key: "selectedFamilyUser",
   default: null,
 });
 

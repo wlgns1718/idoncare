@@ -25,7 +25,7 @@ const SignupTypeSelect = ({
 
   return (
     <>
-      <div className="flex">
+      <div className="flex-col mx-[14vw] mt-[-100px]">
         <div
           onClick={() => {
             onSetInfo(step, "CHILD");
@@ -37,7 +37,8 @@ const SignupTypeSelect = ({
           <Profile
             size="large"
             profileName="자식"
-            profileImage="https://shotkit.com/wp-content/uploads/bb-plugin/cache/cool-profile-pic-matheus-ferrero-landscape-6cbeea07ce870fc53bedd94909941a4b-zybravgx2q47.jpeg"
+            profileImage={""}
+            type="CHILD"
           />
           <p>용돈을 받을래요!</p>
         </div>
@@ -52,7 +53,8 @@ const SignupTypeSelect = ({
           <Profile
             size="large"
             profileName="부모"
-            profileImage="https://shotkit.com/wp-content/uploads/bb-plugin/cache/cool-profile-pic-matheus-ferrero-landscape-6cbeea07ce870fc53bedd94909941a4b-zybravgx2q47.jpeg"
+            profileImage={""}
+            type="PARENT"
           />
           <p>용돈을 줄래요!</p>
         </div>

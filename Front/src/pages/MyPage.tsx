@@ -1,12 +1,28 @@
 import { Link } from "react-router-dom";
 import Icon, { ICON_NAME } from "../components/common/Icon";
 import BottomNav from "../components/common/BottomNav";
+import Profile from "./../components/common/Profile";
+import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { baseUrl } from "../apis/url/baseUrl";
+import AxiosHeader from "../apis/axios/AxiosHeader";
+import { userToken } from "../store/common/selectors";
+import Header from './../components/common/Header';
 
 type Menu = {
   title: string;
   link: string;
   icon: ICON_NAME;
 };
+
+interface MyData {
+  userId: number;
+  nickname: string;
+  name: string;
+  role: string;
+  phoneNumber: string;
+}
 
 const boxMenus: Menu[] = [
   {
@@ -80,14 +96,28 @@ const menus: Menu[] = [
 ];
 
 function MyPage() {
+  const [myData, setMyData] = useState<MyData | null>(null);
+  const token = useRecoilValue(userToken);
+
+  useEffect(() => {
+    axios.get(baseUrl + `api/user`, AxiosHeader({ token })).then((res) => {
+      console.log(res.data);
+      setMyData(res.data.data);
+    });
+  }, []);
+
   return (
     <div>
+      <Header pageTitle="메뉴"/>
       <div className="flex-col">
-        <div className="w-[100px] h-[100px] rounded-[50%] bg-gray overflow-hidden mx-auto">
-          자녀 아이콘
-        </div>
-        <div className="text-center">자녀 이름</div>
+        <Profile
+          size="medium"
+          profileImage=""
+          type={myData?.role}
+          profileName={myData?.name}
+        />
       </div>
+      <div className="text-center text-main text-s my-4">{myData?.phoneNumber}</div>
       <div className="flex justify-center gap-5 my-10">
         {boxMenus.map((item, index) => {
           return (

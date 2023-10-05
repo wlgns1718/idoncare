@@ -55,7 +55,7 @@ const Kids = ({ onClick }: Props) => {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-start">
+    <div className="flex flex-wrap justify-center">
       {childs.map((child) => {
         return (
           <Kid
@@ -68,6 +68,11 @@ const Kids = ({ onClick }: Props) => {
           />
         );
       })}
+      {
+        !childs.length && <div className="text-center text-m text-main my-10">
+          연결된 사람이 없습니다
+        </div> 
+      }
     </div>
   );
 };

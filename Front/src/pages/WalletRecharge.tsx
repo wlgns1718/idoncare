@@ -50,6 +50,22 @@ function WalletRecharge() {
             }
           );
         }
+        else if (res.data.code == 404){
+          navigate(
+            {
+              pathname: "/done",
+            },
+            {
+              state: {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                title: `${useComma(rechargeAmount)} 원`,
+                content: "충전 실패",
+                ps: res.data.error,
+                is_done: false,
+              },
+            }
+          );
+        }
       });
   };
 
