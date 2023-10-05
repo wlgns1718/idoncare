@@ -48,9 +48,9 @@ function SearchForm({ searchKeyword, onChange, resetKeyword, className }: Search
 
   return (
     <div className={`${className}`}>
-      <div className="flex items-center">
+      <div className="flex justify-between">
         <form
-          className="bg-gray h-[35px] grow flex items-center px-4 rounded-lg"
+          className="bg-gray h-[35px] grow flex items-center px-2 rounded-lg"
           onSubmit={handleSubmit}
         >
           <svg
@@ -85,11 +85,11 @@ function SearchForm({ searchKeyword, onChange, resetKeyword, className }: Search
             </div>
           )}
         </form>
-        <div className="p-4 h-[35px]" onClick={handleClick}>
+        <div className="p-4  h-[35px] whitespace-nowrap" onClick={handleClick}>
           검색
         </div>
       </div>
-      <div className="my-4">
+      <div className="my-4 whitespace-nowrap">
         <span className="text-main">최근 180일 동안</span> 거래내역만 검색돼요
       </div>
     </div>

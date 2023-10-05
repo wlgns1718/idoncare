@@ -9,6 +9,7 @@ import { baseUrl } from "../apis/url/baseUrl";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import useComma from "../hooks/useComma";
 import { useNavigate, useParams } from "react-router";
+import BottomNav from "../components/common/BottomNav";
 
 function TransferConfirm() {
   const transferAccountData = useRecoilValue(transferData);
@@ -137,6 +138,7 @@ function TransferConfirm() {
           }}
         />
       </div>
+      <BottomNav />
     </div>
   );
 }

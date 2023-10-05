@@ -8,7 +8,7 @@ import axios from "axios";
 import { baseUrl } from "../apis/url/baseUrl";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { userToken } from "../store/common/selectors";
-import Header from './../components/common/Header';
+import Header from "./../components/common/Header";
 
 type Menu = {
   title: string;
@@ -32,12 +32,12 @@ const boxMenus: Menu[] = [
   },
   {
     title: "설정",
-    link: "/settings",
+    link: "/mypage",
     icon: "settings",
   },
   {
     title: "로그아웃",
-    link: "/logout",
+    link: "/login",
     icon: "logout",
   },
 ];
@@ -45,7 +45,7 @@ const boxMenus: Menu[] = [
 const menus: Menu[] = [
   {
     title: "알림확인하기",
-    link: "/alert",
+    link: "/mypage",
     icon: "alert",
   },
   {
@@ -83,14 +83,14 @@ const menus: Menu[] = [
     link: "/report",
     icon: "report",
   },
-  {
-    title: "멤버 관리",
-    link: "/member",
-    icon: "member",
-  },
+  // {
+  //   title: "멤버 관리",
+  //   link: "/member",
+  //   icon: "member",
+  // },
   {
     title: "결제 비밀번호 설정하기",
-    link: "/password/reset",
+    link: "/mypage",
     icon: "reset",
   },
 ];
@@ -108,7 +108,7 @@ function MyPage() {
 
   return (
     <div>
-      <Header pageTitle="메뉴"/>
+      <Header pageTitle="메뉴" />
       <div className="flex-col">
         <Profile
           size="medium"
@@ -117,7 +117,15 @@ function MyPage() {
           profileName={myData?.name}
         />
       </div>
-      <div className="text-center text-main text-s my-4">{myData?.phoneNumber}</div>
+      <div className="flex-col flex justify-center">
+
+      {/* <div className="bg-soft text-dark rounded-3xl px-4 py-2">
+        {myData?.role == "PARENT" ? "부모" : "자녀"}
+      </div> */}
+      <div className="text-center text-main text-s my-4">
+        {myData?.phoneNumber}
+      </div>
+      </div>
       <div className="flex justify-center gap-5 my-10">
         {boxMenus.map((item, index) => {
           return (
@@ -135,10 +143,13 @@ function MyPage() {
       <div className="my-10 mx-10">
         {menus.map((menu, index) => {
           return (
-            <div key={index} className="my-3">
-              <Link to={menu.link} className="flex items-center gap-2 shadow">
+            <div key={index} className="my-4 text-dark">
+              <Link
+                to={menu.link}
+                className="flex items-center gap-3 shadow p-2"
+              >
                 <Icon name={menu.icon} size="medium"></Icon>
-                <span className="text-lg">{menu.title}</span>
+                <span className="text-lg text-black">{menu.title}</span>
               </Link>
             </div>
           );

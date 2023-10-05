@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Profile from "./Profile";
 import defaultImg from "/icons/circle-pink.png";
 import axios from "axios";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { selectedChildId } from "../../store/mission/atoms";
 import { userToken } from "../../store/common/selectors";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
@@ -18,7 +18,7 @@ interface Child {
 const TopChildList: React.FC = () => {
   const token = useRecoilValue(userToken);
   const [children, setChildren] = useState<Child[]>([]);
-  const [selectedUserId, setSelectedId] = useRecoilState(selectedChildId);
+  const setSelectedId= useSetRecoilState(selectedChildId);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +49,7 @@ const TopChildList: React.FC = () => {
       profileName={child.userName}
       profileImage={defaultImg}
       size="xsmall"
+      type="CHILD"
     />
   </div>
 ))}

@@ -60,7 +60,7 @@ const Kids = ({ onClick }: Props) => {
         return (
           <Kid
             key={child.relationshipId}
-            className="w-1/6"
+            className=""
             is_connect={true}
             kname={child.userName}
             isSelected={selectedChildUserId === child.userId}

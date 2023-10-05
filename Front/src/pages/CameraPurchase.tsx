@@ -10,6 +10,7 @@ import AxiosHeader from "../apis/axios/AxiosHeader";
 import { userToken } from "../store/common/selectors";
 import { useNavigate } from "react-router";
 import { QRcodeDataPayload } from "./QRcodePurchase";
+import BottomNav from "../components/common/BottomNav";
 
 function CameraPurchase() {
   const balance = useRecoilValue(userBalanace);
@@ -156,6 +157,7 @@ function CameraPurchase() {
           </div>
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }

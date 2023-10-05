@@ -4,7 +4,7 @@ import WalletCard from "../wallet/WalletCard";
 function TopMenu() {
   return (
     <div
-      className="bg-main rounded-b-3xl flex flex-col items-center px-6 pb-10"
+      className="bg-main rounded-b-3xl flex flex-col items-center px-6 pb-10 shadow-2xl"
       style={{
         borderBottomLeftRadius: "60px",
         borderBottomRightRadius: "60px",

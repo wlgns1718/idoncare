@@ -11,6 +11,7 @@ import { useRecoilValue } from "recoil";
 import { myRole, userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
+import BottomNav from "../components/common/BottomNav";
 
 type KidDemandedData = {
   pocketMoneyRequestId: number;
@@ -108,7 +109,11 @@ const PocketMoney: React.FC = () => {
                   pocketMoneyRequestId={demand.pocketMoneyRequestId}
                 />
               ))}
-              {!kidDemandedList.length && <div className="text-center text-main text-s my-8">요청 받은 용돈이 없어요</div>}
+              {!kidDemandedList.length && (
+                <div className="text-center text-main text-s my-8">
+                  요청 받은 용돈이 없어요
+                </div>
+              )}
             </div>
 
             <div className="text-right">
@@ -194,6 +199,7 @@ const PocketMoney: React.FC = () => {
           <RegularMoneyBoxEmpty />
         )}
       </div>
+      <BottomNav />
     </div>
   );
 };

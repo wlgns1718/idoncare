@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Img1 from "../../assets/imgs/profile/부모1.png";
 import Img2 from "../../assets/imgs/profile/부모2.png";
 import Img3 from "../../assets/imgs/profile/부모3.png";
@@ -39,14 +40,17 @@ const ProfileSize = {
   large: 120,
 };
 
-const randomNumber = Math.floor(Math.random() * 5);
-
 const Profile = ({
   profileName,
   profileImage,
   size = "large",
   type = "image",
 }: ProfileProps) => {
+  const [ranNum, setRanNum] = useState(0);
+
+  useEffect(() => {
+    setRanNum(Math.floor(Math.random() * 5));
+  }, []);
   return (
     <div className="flex flex-col items-center justify-around w-full">
       <img
@@ -54,7 +58,7 @@ const Profile = ({
         src={
           type == "image"
             ? profileImage
-            : profileImages[type == "PARENT" ? randomNumber : randomNumber + 5]
+            : profileImages[type == "PARENT" ? ranNum : ranNum + 5]
         }
         alt="프로필 이미지"
       />
