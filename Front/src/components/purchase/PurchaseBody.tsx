@@ -43,7 +43,7 @@ function PurchaseBody() {
           className="w-[60px]"
         />
         <div className="text-end items-end">
-          <div className="text-t text-mediumgray">부족금액은 자동충전됨</div>
+          <div className="text-t text-mediumgray">잔액</div>
           <div className="text-white text-m">{useComma(balance)} 원</div>
         </div>
       </div>

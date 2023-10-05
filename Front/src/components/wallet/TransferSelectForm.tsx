@@ -49,7 +49,7 @@ function TransferSelectForm() {
         <div className="p-2 my-6 w-[50vw] mx-auto rounded-lg bg-gray flex">
           {options.map((option) => (
             <div
-              className={`rounded-lg p-1 flex-1 text-center ${selectedStyle(
+              className={`rounded-lg p-1 flex-1 text-center text-t ${selectedStyle(
                 option.value
               )}`}
               key={option.value}
@@ -68,6 +68,7 @@ function TransferSelectForm() {
         </div>
       )}
       <FullBtn
+        className="my-16"
         isDone={isValid || selectedFamilyUserId != null}
         buttonLink={`/transfer/input/${sendOption}`}
       />
