@@ -1,4 +1,3 @@
-import React from 'react'
 import LoginLogo from './../components/login/LoginLogo';
 
 function NotFound() {

@@ -62,9 +62,9 @@ const MissonList: React.FC = () => {
         // Filter missions based on the selected childId
         let filteredMissions;
         if (selectedUserId !== 0) {
-          filteredMissions = response.data.data.filter(
-            (mission: MissionDataType) => mission.childId === selectedUserId
-          );
+          // filteredMissions = response.data.data.filter(
+          //   (mission: MissionDataType) => mission.childId === selectedUserId
+          // );
         } else {
           filteredMissions = response.data.data;
         }

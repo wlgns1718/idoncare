@@ -9,10 +9,13 @@ import { baseUrl } from "../../apis/url/baseUrl";
 
 type PYesNoBtnProps = {
   relationshipRequestId: number;
+  name: string;
 };
 
-
-const PYesNoBtn: React.FC<PYesNoBtnProps> = ({relationshipRequestId}) => {
+const PYesNoBtn: React.FC<PYesNoBtnProps> = ({
+  relationshipRequestId,
+  name,
+}) => {
   const token = useRecoilValue(userToken);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
@@ -21,14 +24,18 @@ const PYesNoBtn: React.FC<PYesNoBtnProps> = ({relationshipRequestId}) => {
     const bodyData = {
       relationshipRequestId,
       process: processType,
-    }
+    };
 
     console.log(bodyData);
 
-    axios.put(baseUrl + `api/relationship/child/request`, bodyData , AxiosHeader({ token }))
-      .then(response => console.log(response.data))
-      .catch(error => console.error('Error:', error));
-      
+    axios
+      .put(
+        baseUrl + `api/relationship/child/request`,
+        bodyData,
+        AxiosHeader({ token })
+      )
+      .then((response) => console.log(response.data))
+      .catch((error) => console.error("Error:", error));
   };
 
   const handleYesClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -65,7 +72,7 @@ const PYesNoBtn: React.FC<PYesNoBtnProps> = ({relationshipRequestId}) => {
       {modalIsOpen && (
         <Modal>
           <div className="text-m m-16">
-            김슬기님의 요청을 <br />
+            {name}님의 요청을 <br />
             {modalContent}했습니다.
           </div>
           <FullBtn
