@@ -23,7 +23,7 @@ const MsgBox: React.FC<Props> = ({ onMessageChange }) => {
           value={message}
           onChange={handleInputChange}
           placeholder="하고싶은 말을 적어주세요."
-          className="text-darkgray"
+          className="text-darkgray text-center"
         />
       </div>
     </div>

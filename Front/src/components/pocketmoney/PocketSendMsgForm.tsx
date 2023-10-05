@@ -19,7 +19,7 @@ const SendPocketMoneyMsgForm: React.FC<Props> = ({ kname, smoney, onNext }) => {
   return (
     <div className="flex flex-col h-screen pb-60">
       <Header pageTitle="용돈 보내기" headerType="normal" headerLink="/" />
-      <div className="flex-grow">
+      <div className="flex-grow mx-8">
         <div>
           <div className="text-m mt-20 mb-32 text-center">
             <span className="text-main m-2">{kname}</span>님에게
@@ -31,7 +31,7 @@ const SendPocketMoneyMsgForm: React.FC<Props> = ({ kname, smoney, onNext }) => {
           <MsgBox onMessageChange={setMessage} />
         </div>
       </div>
-      <FullBtn buttonText="확인" onClick={handleNextClick} />
+      <FullBtn className="mx-8 my-8" buttonText="확인" onClick={handleNextClick} />
     </div>
   );
 };

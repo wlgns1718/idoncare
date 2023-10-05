@@ -17,9 +17,9 @@ type CardButtonType = {
 
 const cardButton: CardButtonType[] = [
   {
-    link: "/pocketMoney",
-    text: "용돈관리",
-    icon: "pocketMoney",
+    link: "/wallet",
+    text: "거래내역",
+    icon: "wallet",
   },
   {
     link: "/wallet/recharge",
