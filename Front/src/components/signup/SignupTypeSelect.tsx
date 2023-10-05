@@ -1,5 +1,16 @@
 import FullBtn from "../common/FullBtn";
 import Profile from "../common/Profile";
+import Img1 from "../../assets/imgs/profile/부모1.png";
+import Img2 from "../../assets/imgs/profile/부모2.png";
+import Img3 from "../../assets/imgs/profile/부모3.png";
+import Img4 from "../../assets/imgs/profile/부모4.png";
+import Img5 from "../../assets/imgs/profile/부모5.png";
+import Img6 from "../../assets/imgs/profile/아이1.png";
+import Img7 from "../../assets/imgs/profile/아이2.png";
+import Img8 from "../../assets/imgs/profile/아이3.png";
+import Img9 from "../../assets/imgs/profile/아이4.png";
+import Img10 from "../../assets/imgs/profile/아이5.png";
+import { useEffect, useState } from "react";
 
 type Type = string;
 type Step = number;
@@ -9,6 +20,19 @@ interface SignupTypeSelectProps {
   userType?: Type | undefined;
   step: Step;
 }
+
+const profileImages = [
+  Img1,
+  Img2,
+  Img3,
+  Img4,
+  Img5,
+  Img6,
+  Img7,
+  Img8,
+  Img9,
+  Img10,
+];
 
 const SignupTypeSelect = ({
   onNextStep,
@@ -22,10 +46,17 @@ const SignupTypeSelect = ({
     }
     onNextStep();
   };
+  const [randomParent, setRandomParent] = useState(0);
+  const [randomChild, setRandomChild] = useState(0);
+
+  useEffect(()=>{
+    setRandomParent(Math.floor(Math.random() * 5))
+    setRandomChild(Math.floor(Math.random() * 5) + 5);
+  }, [])
 
   return (
     <>
-      <div className="flex">
+      <div className="flex-col mx-[14vw] mt-[-100px]">
         <div
           onClick={() => {
             onSetInfo(step, "CHILD");
@@ -37,7 +68,7 @@ const SignupTypeSelect = ({
           <Profile
             size="large"
             profileName="자식"
-            profileImage="https://shotkit.com/wp-content/uploads/bb-plugin/cache/cool-profile-pic-matheus-ferrero-landscape-6cbeea07ce870fc53bedd94909941a4b-zybravgx2q47.jpeg"
+            profileImage={profileImages[randomChild]}
           />
           <p>용돈을 받을래요!</p>
         </div>
@@ -52,7 +83,7 @@ const SignupTypeSelect = ({
           <Profile
             size="large"
             profileName="부모"
-            profileImage="https://shotkit.com/wp-content/uploads/bb-plugin/cache/cool-profile-pic-matheus-ferrero-landscape-6cbeea07ce870fc53bedd94909941a4b-zybravgx2q47.jpeg"
+            profileImage={profileImages[randomParent]}
           />
           <p>용돈을 줄래요!</p>
         </div>

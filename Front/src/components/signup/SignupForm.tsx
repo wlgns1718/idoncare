@@ -26,9 +26,9 @@ const SignupForm = () => {
     onSuccess: (res) => {
       console.log(res);
       if (res.code === 200) {
-        alert("회원가입이 완료되었습니다.");
+        // alert("회원가입이 완료되었습니다.");
       } else {
-        alert("Error: " + res.code + " " + res.error);
+        // alert("Error: " + res.code + " " + res.error);
       }
       navigate("/login");
 
@@ -67,7 +67,7 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-around h-full text-center text-s">
+    <div className="flex items-center mx-8 justify-around h-full text-center text-s">
       {step === 1 && (
         <SignupTypeSelect
           userType={signupUserInfo?.role}
