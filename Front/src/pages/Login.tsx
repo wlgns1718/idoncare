@@ -6,7 +6,9 @@ const Login = () => {
   return (
     <>
       <div className="mx-8">
-        <LoginLogo />
+        <div className="pt-20">
+          <LoginLogo />
+        </div>
         <LoginButton />
         <TestLogin />
       </div>
