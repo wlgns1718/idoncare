@@ -1,7 +1,7 @@
 import Header from "../components/common/Header";
 import FullBtn from "../components/common/FullBtn";
 import MoneyInputForm from "../components/common/MoneyInputForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { transferData, userBalanace } from "../store/wallet/atoms";
 
@@ -15,6 +15,7 @@ function Transfer() {
   const setAmount = (value : number) => {
     setTransferAccountData({ amount: value , account: transferAccountData?.account });
   }
+  const params = useParams();
   return (
     <div>
       <Header pageTitle="보내기" />
@@ -28,7 +29,7 @@ function Transfer() {
         <FullBtn
           buttonText="다음"
           onClick={() => {
-            navigate("/transfer/confirm");
+            navigate(`/transfer/confirm/${params.option}`);
           }}
         />
       </div>
