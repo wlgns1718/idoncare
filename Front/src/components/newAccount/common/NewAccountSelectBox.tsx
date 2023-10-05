@@ -5,7 +5,7 @@ interface NewAccountSelectBoxProps {
 }
 
 const NewAccountSelectBox = ({ changeValue }: NewAccountSelectBoxProps) => {
-  const data = ["이동통신사를 선택하세요", "SKT", "KT", "LG"];
+  const data = ["이동통신사를 선택하세요", "SK", "KT", "LG"];
 
   return (
     <select
