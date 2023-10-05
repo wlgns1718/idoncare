@@ -5,32 +5,30 @@ import d209.Idontcare.account.entity.Type;
 import d209.Idontcare.account.exception.VirtualAccountException;
 import d209.Idontcare.account.service.VirtualAccountService;
 import d209.Idontcare.common.exception.*;
-import d209.Idontcare.pocketmoney.dto.RegularPocketMoneyProcessDto;
 import d209.Idontcare.pocketmoney.dto.req.*;
 import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.PocketMoneyRequest;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoneyRejected;
-import d209.Idontcare.pocketmoney.repository.PocketMoneyRequestRepository;
-import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRejectedRepository;
-import d209.Idontcare.pocketmoney.repository.RegularPocketMoneyRepository;
+import d209.Idontcare.pocketmoney.repository.*;
 import d209.Idontcare.relationship.service.RelationshipService;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Tuple;
-import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
-@RequiredArgsConstructor
 @Service
 public class PocketMoneyServiceImpl implements PocketMoneyService {
   
@@ -43,6 +41,23 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   
   private final RelationshipService relationshipService;
   private final VirtualAccountService virtualAccountService;
+  
+  @Autowired
+  public PocketMoneyServiceImpl(UserService userService,
+                                UserRepository userRepository,
+                                RegularPocketMoneyRepository regularPocketMoneyRepository,
+                                RegularPocketMoneyRejectedRepository regularPocketMoneyRejectedRepository,
+                                PocketMoneyRequestRepository pocketMoneyRequestRepository,
+                                @Lazy RelationshipService relationshipService,
+                                @Lazy VirtualAccountService virtualAccountService) {
+    this.userService = userService;
+    this.userRepository = userRepository;
+    this.regularPocketMoneyRepository = regularPocketMoneyRepository;
+    this.regularPocketMoneyRejectedRepository = regularPocketMoneyRejectedRepository;
+    this.pocketMoneyRequestRepository = pocketMoneyRequestRepository;
+    this.relationshipService = relationshipService;
+    this.virtualAccountService = virtualAccountService;
+  }
   
   //다음 지급 예정일에 대해 계산
   public Integer getNextDueDate(LocalDateTime now, RegularPocketMoney.Type type, Integer cycle){
@@ -266,6 +281,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     }
   }
   
+  @Transactional(readOnly = true)
   @Override
   public List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId, Long regularPocketMoneyId) {
     RegularPocketMoney regularPocketMoney = regularPocketMoneyRepository.findById(regularPocketMoneyId).orElseThrow(NoSuchContentException::new);
@@ -275,8 +291,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     return regularPocketMoneyRejectedRepository.findByRegularPocketMoneyId(regularPocketMoneyId)
         .stream().map(GetRegularPocketMoneyRejectedResDto::new).toList();
   }
-  
-  @Transactional(Transactional.TxType.REQUIRES_NEW)
+
   @Override
   public void processRegularPocketMoneyRejected(Long parentUserId, ProcessPcoketMoneyRejectedReqDto req) {
     RegularPocketMoneyRejected rejected = regularPocketMoneyRejectedRepository.findById(req.getRegularPocketMoneyRejectedId())
@@ -308,5 +323,15 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
         throw new VirtualAccountException("돈이 부족합니다");
       }
     }
+  }
+  
+  @Override
+  public void deleteRegularPocketMoneyByParentUserIdAndChildUserId(Long parentUserId, Long childUserId) {
+    regularPocketMoneyRepository.deleteAllByParentUserIdAndChildUserId(parentUserId, childUserId);
+  }
+  
+  @Override
+  public void deleteRegularPocketMoneyRejectedByParentUserIdAndChildUserId(Long parentUserId, Long childUserId) {
+    regularPocketMoneyRejectedRepository.deleteAllByParentUserIdAndChildUserId(parentUserId, childUserId);
   }
 }
