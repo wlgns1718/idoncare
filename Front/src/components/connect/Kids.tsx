@@ -73,7 +73,7 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-between">
+    <div className="flex flex-wrap justify-center ">
       {kidsData.map((kid) => (
         <Kid
           key={kid.relationshipId}
@@ -87,6 +87,7 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
           }}
         />
       ))}
+<KidAdd className="w-1/4" />
 
       {isOpen && (
         <Modal>
@@ -99,7 +100,6 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
         </Modal>
       )}
 
-      <KidAdd className="w-1/4" />
     </div>
   );
 };

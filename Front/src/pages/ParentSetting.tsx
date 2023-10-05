@@ -57,7 +57,7 @@ const ParentSetting: React.FC = () => {
 
         <div className="mt-56">
           <div className="text-l text-center">내 보호자</div>
-          <div className="m-5 flex flex-wrap">
+          <div className="m-5 flex flex-wrap justify-center gap-3">
             {parentsData.map((parent) => (
               <Parent
                 key={parent.relationshipId}
