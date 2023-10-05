@@ -12,7 +12,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({ children }) => {
   const handleCloseSheet = () => {
     setBottomSheetOpen(false);
   };
-  const height = `h-[50vh]`;
+  const height = `h-[70vh]`;
   return (
     <div
       className={`fixed inset-0 h-screen items-center justify-center z-50 flex overflow-y-auto ${
