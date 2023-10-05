@@ -147,7 +147,8 @@ public class AccountService {
             throw new AccountException.AccoutInsufficientException("최소 1원 이상 이체가 가능합니다.");
         }
         String record = depositRequestDto.getReqClientName() + "님으로 부터 받은 돈을 " + depositRequestDto.getRecvClientName() +"에게 " + depositRequestDto.getRecvDpsPrintContent() + "을(를) 이유로 입금 이체";
-        PaymentDto payment = new PaymentDto(depositName, bankId, bankName, record, accountNumber, FinalDepositName, depositRequestDto.getCntrAccountBankCodeStd(), bankRepository.findNameById(depositRequestDto.getCntrAccountBankCodeStd()), depositRequestDto.getRecvDpsPrintContent(), depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getTranAmt());
+        PaymentDto payment = new PaymentDto(depositName, bankId, bankName, record, accountNumber, FinalDepositName,depositRequestDto.getRecvClientBankCode(), bankRepository.findNameById(depositRequestDto.getRecvClientBankCode()),
+                depositRequestDto.getRecvDpsPrintContent(), depositRequestDto.getRecvClientAccountNum(), depositRequestDto.getTranAmt());
         withdraw(payment);
         deposit(payment);
         return new DepositResponseDto("A0000");
