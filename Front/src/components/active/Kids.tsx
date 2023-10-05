@@ -55,7 +55,7 @@ const Kids = ({ onClick }: Props) => {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-start">
+    <div className="flex flex-wrap justify-center">
       {childs.map((child) => {
         return (
           <Kid

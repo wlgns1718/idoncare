@@ -2,6 +2,9 @@ import { useState } from "react";
 import FullBtn from "../common/FullBtn";
 import AccountSelectForm from "./AccountSelectForm";
 import RechargeAccountList from "./RechargeAccountList";
+import Kids, { RelationType } from "../active/Kids";
+import { selectedFamilyUser } from "../../store/wallet/atoms";
+import { useRecoilState } from "recoil";
 
 type SendOption = "family" | "account";
 
@@ -12,38 +15,10 @@ interface SendOptionS {
 
 function TransferSelectForm() {
   const [sendOption, setSendOption] = useState<SendOption>("family");
+  const [selectedFamilyUserId, setSelectedFamilyUserId] =
+    useRecoilState(selectedFamilyUser);
 
   const [isValid, setIsValid] = useState(false);
-
-  
-  // const token = useRecoilValue(userToken);
-  // const [selectedKidId, setSelectedKidId] = useState<number | null>(null);
-  // const [selectedKidName, setSelectedKidName] = useState<string | null>(null);
-
-  // const [kidsData, setKidsData] = useState<KidData[]>([]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(baseUrl + `api/relationship`, AxiosHeader({ token }))
-  //     .then((response) => {
-  //       if (response.data.data && response.data.data.relationList) {
-  //         setKidsData(response.data.data.relationList);
-  //       } else {
-  //         console.error("Unexpected response:", response);
-  //       }
-  //     })
-  //     .catch((error) => console.error("Error:", error));
-  // }, [token]);
-
-  // const handleKidClick = (id: number, name: string) => {
-  //   if (selectedKidId === id) {
-  //     setSelectedKidId(null);
-  //     setSelectedKidName(null);
-  //   } else {
-  //     setSelectedKidId(id);
-  //     setSelectedKidName(name);
-  //   }
-  // };
 
   const options: SendOptionS[] = [
     { value: "family", label: "가족" },
@@ -60,6 +35,11 @@ function TransferSelectForm() {
 
   const handleSelectOption = (value: SendOption) => {
     setSendOption(value);
+  };
+
+  const handleSelectFamily = (child: RelationType) => {
+    console.log(child);
+    setSelectedFamilyUserId(child);
   };
 
   return (
@@ -80,14 +60,17 @@ function TransferSelectForm() {
           ))}
         </div>
       </div>
-      {sendOption === "family" && <div></div>}
+      {sendOption === "family" && <Kids onClick={handleSelectFamily} />}
       {sendOption === "account" && (
         <div>
           <AccountSelectForm setIsValid={setIsValid} />
           <RechargeAccountList />
         </div>
       )}
-      <FullBtn isDone={isValid} buttonLink="/transfer/input" />
+      <FullBtn
+        isDone={isValid || selectedFamilyUserId != null}
+        buttonLink={`/transfer/input/${sendOption}`}
+      />
     </div>
   );
 }
