@@ -37,4 +37,8 @@ public interface PocketMoneyService {
   
   void processRegularPocketMoneyRejected(Long parentUserId, ProcessPcoketMoneyRejectedReqDto req)
       throws NoSuchContentException, AuthorizationException, VirtualAccountException;
+  
+  void deleteRegularPocketMoneyByParentUserIdAndChildUserId(Long parentUserId, Long childUserId);
+  
+  void deleteRegularPocketMoneyRejectedByParentUserIdAndChildUserId(Long parentUserId, Long childUserId);
 }

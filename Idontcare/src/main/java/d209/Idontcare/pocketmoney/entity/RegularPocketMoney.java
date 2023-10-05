@@ -5,6 +5,8 @@ import d209.Idontcare.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Data @Builder
@@ -31,6 +33,10 @@ public class RegularPocketMoney extends BaseEntity {
   private Integer amount;
   
   private Integer dueDate;
+  
+  @OneToMany(mappedBy = "regularPocketMoney",
+      cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+  private List<RegularPocketMoneyRejected> rejectedList = new LinkedList<>();
   
   public static enum Type{
     DAY, WEEK, MONTH;
