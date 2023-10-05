@@ -76,7 +76,7 @@ function CameraPurchase() {
                 title: `${useComma(amount)} 원`,
                 content: "결제 실패",
                 ps: res.data.error,
-                isSuccess : false
+                is_done : false
               },
             }
           );
@@ -91,7 +91,7 @@ function CameraPurchase() {
 
   const QrOptions = {
     // 핸드폰의 경우, 외부 카메라인지 셀프카메라인지
-    preferredCamera: "environment",
+    preferredCamera: "user",
     // 1초당 몇번의 스캔을 할 것인지? ex) 1초에 5번 QR 코드 감지한다.
     maxScansPerSecond: 1,
     // QR 스캔이 일어나는 부분을 표시해줄 지 (노란색 네모 테두리가 생긴다.)
@@ -131,12 +131,12 @@ function CameraPurchase() {
             <div className=" text-main ">{useComma(balance)} 원</div>
           </div>
           <p>{}</p>
-          <div className="w-full p-10 bg-gray  rounded-3xl flex items-center justify-center">
+          <div className="w-full flex-col gap-4 p-10 bg-gray  rounded-3xl flex items-center justify-center">
             {isScanned && payType == "slow" && (
               <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto">
                 <input
                   type="number"
-                  className=" bg-white m-2 rounded-lg text-end outline-0 mx-3 p-2"
+                  className=" bg-white m-1 rounded-lg text-end outline-0 mx-3 p-2 text-thick"
                   value={amount ? amount : undefined}
                   onChange={handleAmount}
                 />{" "}
@@ -144,18 +144,16 @@ function CameraPurchase() {
               </div>
             )}
             {isScanned && payType == "fast" && (
-              <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto mb-4 text-center">
+              <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto text-center">
                 {amount} 원
               </div>
             )}
-            <div>
               <div
                 className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto"
                 onClick={() => payRequest()}
               >
                 {isScanned ? "결제 진행" : "스캔 중"}
               </div>
-            </div>
           </div>
         </div>
       </div>
