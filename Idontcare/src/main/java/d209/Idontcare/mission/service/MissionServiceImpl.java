@@ -17,16 +17,16 @@ import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.Tuple;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MissionServiceImpl implements MissionService {
 
     private final MissionRepository missionRepository;
@@ -84,8 +84,19 @@ public class MissionServiceImpl implements MissionService {
 
         if(mission.getType() == Type.PROCESS && role == Role.CHILD){
 
-            mission.setAfterMessage(missionStatusDto.getAfterMessage());
-            mission.setType(Type.UNPAID);
+//            mission.setAfterMessage(missionStatusDto.getAfterMessage());
+//            mission.setType(Type.UNPAID);
+            log.info("테스트 중입니다.");
+            Long childId = mission.getChild().getUserId();
+            VirtualToVirtualReq virtualToVirtualReq = new VirtualToVirtualReq();
+            virtualToVirtualReq.setUserId(childId);
+            virtualToVirtualReq.setContent("미션 리워드");
+            virtualToVirtualReq.setType(d209.Idontcare.account.entity.Type.MISSION);
+            virtualToVirtualReq.setMoney(mission.getAmount());
+
+            virtualAccountService.virtualPayment(virtualToVirtualReq, mission.getParent().getUserId());
+            mission.setType(Type.COMPLETE);
+
         }
         else if(mission.getType() == Type.UNPAID && role == Role.PARENT){
             Long childId = mission.getChild().getUserId();

@@ -34,7 +34,9 @@ public interface MissionRepository extends JpaRepository<Mission,Long> {
     List<Tuple> findByChild_UserIdAndType(Long child_userId, Type type);
 
 
-    @Query("select m.missionId as missionId, m.title as title, m.amount as amount, m.type as type from Mission m where m.parent.userId = :userId" )
+    @Query("select m.missionId as missionId, m.title as title, m.amount as amount, m.type as type, " +
+            "m.child.userId as childId, m.parent.userId as parentId, m.parent.nickName as parentName, " +
+            "m.child.nickName as childName  from Mission m where m.parent.userId = :userId" )
     List<Tuple> findAllByParent_UserId(@Param("userId") Long userId);
 
     @Query("select m.missionId as missionId, m.title as title, m.amount as amount, m.type as type from Mission m where m.child.userId = :userId" )

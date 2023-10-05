@@ -12,6 +12,14 @@ public class MissionSimpleDto {
 
     private Long missionId;
 
+    private Long parentId;
+
+    private Long childId;
+
+    private String parentName;
+
+    private String childName;
+
     private String title;
 
     private Long amount;
@@ -23,5 +31,9 @@ public class MissionSimpleDto {
         this.title = (String)tuple.get("title");
         this.amount = (Long)tuple.get("amount");
         this.type =  (Type) tuple.get("type");
+        this.childId = (Long)tuple.get("childId");
+        this.parentId = (Long)tuple.get("parentId");
+        this.parentName = (String)tuple.get("parentName");
+        this.childName = (String)tuple.get("childName");
     }
 }
