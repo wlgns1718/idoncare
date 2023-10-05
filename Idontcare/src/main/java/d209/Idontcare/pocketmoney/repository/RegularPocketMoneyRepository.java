@@ -3,6 +3,7 @@ package d209.Idontcare.pocketmoney.repository;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,4 +19,10 @@ public interface RegularPocketMoneyRepository extends JpaRepository<RegularPocke
   
   @EntityGraph(attributePaths = {"parent.userId", "child.userId"}, type= EntityGraph.EntityGraphType.LOAD)
   List<RegularPocketMoney> findAllByDueDate(Integer dueDate);
+  
+  @Modifying
+  @Query("DELETE" +
+      " FROM RegularPocketMoney r" +
+      " WHERE r.parent.userId = :parentUserId AND r.child.userId = :childUserId")
+  void deleteAllByParentUserIdAndChildUserId(@Param("parentUserId") Long parentUserId, @Param("childUserId") Long childUserId);
 }

@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,12 +98,32 @@ public class RelationshipController {
       @ApiResponse(responseCode=MustChildException.CODE, description = MustChildException.DESCRIPTION),
       @ApiResponse(responseCode=NoSuchContentException.CODE, description = "해당하는 관계 요청이 없는 경우"),
       @ApiResponse(responseCode=AuthorizationException.CODE, description = AuthorizationException.DESCRIPTION),
+      @ApiResponse(responseCode=MustParentException.CODE, description = MustParentException.DESCRIPTION),
   })
   @LoginOnly(level = Level.CHILD_ONLY)
   public ResponseDto<?> processReceivedRequest(@RequestBody ProcessReceivedRequestReqDto req, HttpServletRequest request){
     Long childUserId = (Long)request.getAttribute("userId");
     
     relationshipService.processReceivedRequest(childUserId, req);
+    return ResponseDto.success(null);
+  }
+  
+  @DeleteMapping("")
+  @Operation(summary = "관계 삭제", description = "부모가 아이와의 관계를 삭제")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode="200", description = "성공",
+          content=@Content(schema = @Schema(implementation= Void.class))),
+      @ApiResponse(responseCode=NoSuchContentException.CODE, description = "해당하는 관계 요청이 없는 경우"),
+      @ApiResponse(responseCode=AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+      @ApiResponse(responseCode=AuthorizationException.CODE, description = AuthorizationException.DESCRIPTION),
+      @ApiResponse(responseCode=MustParentException.CODE, description = MustParentException.DESCRIPTION),
+  })
+  @LoginOnly(level = Level.PARENT_ONLY)
+  public ResponseDto deleteRelationship(@RequestBody DeleteRelationshipReqDto req, HttpServletRequest request){
+    Long parentUserId = (Long)request.getAttribute("userId");
+    
+    relationshipService.deleteRelationship(parentUserId, req.getRelationshipId());
+    
     return ResponseDto.success(null);
   }
 }
