@@ -6,6 +6,7 @@ import useComma from "../hooks/useComma";
 import { myId } from "../store/common/selectors";
 import { useParams } from "react-router";
 import { ChangeEvent, useState } from "react";
+import BottomNav from "../components/common/BottomNav";
 
 export interface QRcodeDataPayload {
   userId: number;
@@ -39,7 +40,11 @@ function QRcodePurchase() {
         <div
           className={`flex flex-col justify-center bg-darkgray rounded-2xl py-20 `}
         >
-          <div className={`mx-auto ${amount || params.payType == "slow" ? "" : "opacity-10"}`}>
+          <div
+            className={`mx-auto ${
+              amount || params.payType == "slow" ? "" : "opacity-10"
+            }`}
+          >
             <QRCode
               value={JSON.stringify({
                 payType: params.payType,
@@ -91,6 +96,7 @@ function QRcodePurchase() {
           )}
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }

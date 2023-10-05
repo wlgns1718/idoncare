@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
+import BottomNav from "../components/common/BottomNav";
 
 type ParentData = {
   relationshipId: number;
@@ -84,6 +85,7 @@ const ParentSetting: React.FC = () => {
           </div>
         ))}
       </div>
+      <BottomNav />
     </div>
   );
 };

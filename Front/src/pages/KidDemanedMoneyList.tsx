@@ -1,3 +1,4 @@
+import BottomNav from "../components/common/BottomNav";
 import Header from "../components/common/Header";
 import DemandingBox from "../components/pocketmoney/kid/DemandingBox";
 
@@ -16,6 +17,7 @@ function KidDemandedMoneyList() {
           <DemandingBox />
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }

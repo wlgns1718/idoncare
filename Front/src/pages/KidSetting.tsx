@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/common/Header";
 // import DemandConnectList from "../components/connect/DemandConnectList";
 import Kids from "../components/connect/Kids";
+import BottomNav from "../components/common/BottomNav";
 
 const KidSetting: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,7 @@ const KidSetting: React.FC = () => {
 
         <Kids isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
+      <BottomNav />
     </div>
   );
 };

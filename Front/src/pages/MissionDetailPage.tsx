@@ -9,6 +9,7 @@ import { userToken, myRole } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
 import { MissionDetailType } from "../types/MissionTypes";
+import BottomNav from "../components/common/BottomNav";
 
 
 function MissionDetailPage() {
@@ -80,10 +81,15 @@ function onPay() {
     <div>
       <Header pageTitle="미션 상세보기" />
       <div className="mx-8">
-      {missionData ? <MissionDetailContent mission={missionData} /> : null}
+        {missionData ? <MissionDetailContent mission={missionData} /> : null}
 
-        <FullBtn buttonText={buttonText} buttonLink={buttonLink} onClick={onClickHandler}/>
+        <FullBtn
+          buttonText={buttonText}
+          buttonLink={buttonLink}
+          onClick={onClickHandler}
+        />
       </div>
+      <BottomNav />
     </div>
   );
 }

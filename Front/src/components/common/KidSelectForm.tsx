@@ -58,14 +58,14 @@ const KidSelectForm: React.FC<Props> = ({ onNext, pageTitle }) => {
       <div className="m-10 text-center flex-grow ">
         <div className="text-l mt-24 mb-28">자녀를 선택해주세요.</div>
 
-        <div className="m-5 flex flex-wrap justify-center">
+        <div className="flex flex-wrap justify-center">
           {kidsData.map((kid) => (
             <Kid
               key={kid.relationshipId}
               is_connect={true}
               isSelected={selectedKidId === kid.userId}
               kname={kid.userName}
-              className="w-36 mr-10 mb-6"
+              className=""
               onClick={() => handleKidClick(kid.userId, kid.userName)}
             />
           ))}

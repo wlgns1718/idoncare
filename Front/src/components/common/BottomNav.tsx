@@ -23,8 +23,8 @@ const BottomTaps = [
 const BottomNav = React.memo(function BottomNav() {
   const navigate = useNavigate();
   return (
-    <div>
-      <div className="h-[15vw]"></div>
+    <div className="text-dark">
+      <div className="h-[15vw] "></div>
       <div className="fixed bottom-0 left-0 w-full bg-white rounded-t-3xl border-t-2 pt-2 flex justify-evenly">
         {BottomTaps.map((item, index) => {
           return (

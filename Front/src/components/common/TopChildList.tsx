@@ -37,21 +37,23 @@ const TopChildList: React.FC = () => {
     <div className="m-8 mb-12">
       <div className="flex mx-auto overflow-x-auto no-scrollbar">
       {children.map((child) => (
-          <div
-            className="flex-none mx-6"
-            key={child.relationshipId}
-            onClick={() => {
-              console.log("Profile clicked, userId:", child.userId);
-              setSelectedId(child.userId);
-            }}
-          >
-            <Profile
-              profileName={child.userName}
-              profileImage={defaultImg}
-              size="xsmall"
-            />
-          </div>
-        ))}
+  <div
+    className="flex-none mx-6"
+    key={child.relationshipId}
+    onClick={() => {
+      console.log("Profile clicked, userId:", child.userId);
+      setSelectedId(child.userId);
+    }}
+  >
+    <Profile
+      profileName={child.userName}
+      profileImage={defaultImg}
+      size="xsmall"
+      type="CHILD"
+    />
+  </div>
+))}
+
       </div>
     </div>
   );

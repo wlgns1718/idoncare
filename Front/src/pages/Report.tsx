@@ -10,6 +10,7 @@ import Kids, { RelationType } from "../components/active/Kids";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/selectors";
+import BottomNav from "../components/common/BottomNav";
 
 type DataScale = "daily" | "monthly";
 
@@ -120,6 +121,7 @@ function Report() {
           />
         )}
       </div>
+      <BottomNav />
     </div>
   );
 }

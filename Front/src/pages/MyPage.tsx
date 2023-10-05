@@ -32,12 +32,12 @@ const boxMenus: Menu[] = [
   },
   {
     title: "설정",
-    link: "/settings",
+    link: "/mypage",
     icon: "settings",
   },
   {
     title: "로그아웃",
-    link: "/logout",
+    link: "/login",
     icon: "logout",
   },
 ];
@@ -45,7 +45,7 @@ const boxMenus: Menu[] = [
 const menus: Menu[] = [
   {
     title: "알림확인하기",
-    link: "/alert",
+    link: "/mypage",
     icon: "alert",
   },
   {
@@ -83,14 +83,14 @@ const menus: Menu[] = [
     link: "/report",
     icon: "report",
   },
-  {
-    title: "멤버 관리",
-    link: "/member",
-    icon: "member",
-  },
+  // {
+  //   title: "멤버 관리",
+  //   link: "/member",
+  //   icon: "member",
+  // },
   {
     title: "결제 비밀번호 설정하기",
-    link: "/password/reset",
+    link: "/mypage",
     icon: "reset",
   },
 ];
@@ -117,8 +117,14 @@ function MyPage() {
           profileName={myData?.name}
         />
       </div>
+      <div className="flex-col flex justify-center">
+
+      {/* <div className="bg-soft text-dark rounded-3xl px-4 py-2">
+        {myData?.role == "PARENT" ? "부모" : "자녀"}
+      </div> */}
       <div className="text-center text-main text-s my-4">
         {myData?.phoneNumber}
+      </div>
       </div>
       <div className="flex justify-center gap-5 my-10">
         {boxMenus.map((item, index) => {
@@ -137,13 +143,13 @@ function MyPage() {
       <div className="my-10 mx-10">
         {menus.map((menu, index) => {
           return (
-            <div key={index} className="my-4">
+            <div key={index} className="my-4 text-dark">
               <Link
                 to={menu.link}
-                className="flex items-center gap-2 shadow-sm p-2"
+                className="flex items-center gap-3 shadow p-2"
               >
-                <Icon name={menu.icon} size="large"></Icon>
-                <span className="text-2xl">{menu.title}</span>
+                <Icon name={menu.icon} size="medium"></Icon>
+                <span className="text-lg text-black">{menu.title}</span>
               </Link>
             </div>
           );

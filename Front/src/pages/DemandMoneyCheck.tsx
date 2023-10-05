@@ -13,6 +13,7 @@ import { userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
 import { userBalanace } from "../store/wallet/atoms";
+import BottomNav from "../components/common/BottomNav";
 
 const DemandMoneyCheck: React.FC = () => {
   const token = useRecoilValue(userToken);
@@ -116,6 +117,7 @@ const DemandMoneyCheck: React.FC = () => {
 )}
 
       </div>
+      <BottomNav />
     </div>
   );
 };

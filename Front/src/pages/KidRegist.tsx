@@ -8,6 +8,7 @@ import { useRecoilValue } from "recoil";
 import { userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
+import BottomNav from "../components/common/BottomNav";
 
 const KidRegist: React.FC = () => {
   const token = useRecoilValue(userToken);
@@ -47,6 +48,7 @@ const KidRegist: React.FC = () => {
       </div>
 
       <FullBtn buttonText="등록" onClick={handleChildPhoneNumberSubmit} />
+      <BottomNav />
     </div>
   );
 };

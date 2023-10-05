@@ -4,6 +4,7 @@ import TopChildList from "../components/common/TopChildList";
 import MissonList from "../components/mission/MissonList";
 import { useRecoilValue } from "recoil";
 import { myRole } from "../store/common/selectors";
+import BottomNav from '../components/common/BottomNav';
 
 const MissonPage: React.FC = () => {
   const role = useRecoilValue(myRole);
@@ -11,7 +12,7 @@ const MissonPage: React.FC = () => {
   return (
     <div>
       <Header pageTitle="미션관리" headerLink="/" />
-      {role === 'PARENT' && (
+      {role === "PARENT" && (
         <div className="my-6">
           <TopChildList />
         </div>
@@ -19,6 +20,7 @@ const MissonPage: React.FC = () => {
       <div className="mx-6">
         <MissonList />
       </div>
+      <BottomNav />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/common/Header";
 import DemandBox from "../components/pocketmoney/kid/DemandBox";
 import DemandingBox from "../components/pocketmoney/kid/DemandingBox";
+import BottomNav from "../components/common/BottomNav";
 
 function KidDemandMoneyList() {
   return (
@@ -22,6 +23,7 @@ function KidDemandMoneyList() {
           <DemandingBox />
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }
