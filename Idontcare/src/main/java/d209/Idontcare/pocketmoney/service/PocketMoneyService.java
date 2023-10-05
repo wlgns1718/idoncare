@@ -34,4 +34,11 @@ public interface PocketMoneyService {
   
   List<GetRegularPocketMoneyRejectedResDto> getRegularPocketMoneyRejectedList(Long parentUserId, Long regularPocketMoneyId)
       throws NoSuchContentException, AuthorizationException;
+  
+  void processRegularPocketMoneyRejected(Long parentUserId, ProcessPcoketMoneyRejectedReqDto req)
+      throws NoSuchContentException, AuthorizationException, VirtualAccountException;
+  
+  void deleteRegularPocketMoneyByParentUserIdAndChildUserId(Long parentUserId, Long childUserId);
+  
+  void deleteRegularPocketMoneyRejectedByParentUserIdAndChildUserId(Long parentUserId, Long childUserId);
 }

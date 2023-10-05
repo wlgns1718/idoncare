@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,6 @@ import java.util.List;
 @RequestMapping("/api/pocketmoney")
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class PocketMoneyController {
 
     private final PocketMoneyService pocketMoneyService;
@@ -217,5 +217,24 @@ public class PocketMoneyController {
         Long parentUserId = (Long)request.getAttribute("userId");
         List<GetRegularPocketMoneyRejectedResDto> list = pocketMoneyService.getRegularPocketMoneyRejectedList(parentUserId, regularPocketMoneyId);
         return ResponseDto.success(list);
+    }
+    
+    @PutMapping("/regular/rejected")
+    @Operation(summary = "정기용돈 미입금 내역 처리")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode="200", description = "성공",
+            content=@Content(array = @ArraySchema(schema = @Schema(implementation= Void.class)))),
+        @ApiResponse(responseCode= AuthorizationException.CODE, description = AuthorizationException.DESCRIPTION),
+        @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
+        @ApiResponse(responseCode= NoSuchContentException.CODE, description = NoSuchContentException.DESCRIPTION),
+        @ApiResponse(responseCode= VirtualAccountException.CODE, description = "돈이 부족합니다")
+    })
+    @LoginOnly(level = Level.PARENT_ONLY)
+    public ResponseDto processRegularPocketMoneyRejected(@RequestBody ProcessPcoketMoneyRejectedReqDto req, HttpServletRequest request){
+        Long parentUserId = (Long)request.getAttribute("userId");
+
+        pocketMoneyService.processRegularPocketMoneyRejected(parentUserId, req);
+        
+        return ResponseDto.success(null);
     }
 }

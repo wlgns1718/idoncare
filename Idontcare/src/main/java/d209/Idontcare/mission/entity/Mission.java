@@ -48,6 +48,17 @@ public class Mission extends BaseEntity {
     @Column(name = "COMPLETE_AT")
     private LocalDateTime completeAt;
 
+    public Mission(User parent, User child, String s, long l, Type type, String s1, String o, LocalDateTime o1) {
+        this.parent = parent;
+        this.child = child;
+        this.title = s;
+        this.amount = l;
+        this.type = type;
+        this.beforeMessage = s1;
+        this.afterMessage = o;
+        this.completeAt = o1;
+    }
+
     public static Mission toRegistEntity(MissionDto missionDto, User child, User parent){
         return Mission.builder()
                 .child(child)

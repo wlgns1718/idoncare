@@ -16,11 +16,15 @@ public class MissionDetailInfoDto {
 
     private String parentName;
 
+    private Long childId;
+
+    private Long parentId;
+
     private String childName;
 
     private String title;
 
-    private Long mount;
+    private Long amount;
 
     private String message;
 
@@ -35,10 +39,12 @@ public class MissionDetailInfoDto {
                 .childName(mission.getChild().getNickName())
                 .parentName(mission.getParent().getNickName())
                 .title(mission.getTitle())
-                .mount(mission.getAmount())
+                .amount(mission.getAmount())
                 .message(mission.getAfterMessage() != null ? mission.getAfterMessage() : mission.getBeforeMessage())
                 .type(mission.getType())
                 .createdAt(mission.getCreatedAt().toString().substring(0,10))
+                .parentId(mission.getParent().getUserId())
+                .childId(mission.getChild().getUserId())
                 .build();
     }
 }

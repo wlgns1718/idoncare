@@ -5,6 +5,8 @@ import d209.Idontcare.account.repository.RealAccountRepository;
 import d209.Idontcare.account.repository.TransactionHistoryRepository;
 import d209.Idontcare.account.repository.VirtualAccountRepository;
 import d209.Idontcare.account.service.EncryptService;
+import d209.Idontcare.mission.entity.Mission;
+import d209.Idontcare.mission.repository.MissionRepository;
 import d209.Idontcare.relationship.entity.Relationship;
 import d209.Idontcare.relationship.repository.RelationshipRepository;
 import d209.Idontcare.relationship.repository.RelationshipRequestRepository;
@@ -32,7 +34,7 @@ public class InitService {
   private final RealAccountRepository realAccountRepository;
   private final RelationshipRepository relationshipRepository;
   private final RelationshipRequestRepository relationshipRequestRepository;
-
+  private final MissionRepository missionRepository;
   private final EncryptService encryptService;
 
   @PostConstruct
@@ -43,6 +45,7 @@ public class InitService {
     realAccountDataInit();
     relationshipDataInit();
     relationshipRequestDataInit();
+    MissionDataInit();
   }
 
   private void userDataInit(){
@@ -139,5 +142,21 @@ public class InitService {
 //    User child1 = userRepository.findByKakaoId(5L).get();
 //
 //    relationshipRequestRepository.save(new RelationshipRequest(parent1, child1));
+  }
+  private void MissionDataInit(){
+    User parent = userRepository.findByKakaoId(1L).get();
+    User child  = userRepository.findByKakaoId(3L).get();
+    for(Long i = 0L; i < 5L; i++){
+      if(i == 2L){
+        Mission mission = new Mission(parent,child, "심부름 하기",10000, d209.Idontcare.mission.entity.Type.UNPAID,
+                "열심히 할게요","미션 완료했습니다.",LocalDateTime.now());
+        missionRepository.save(mission);
+        continue;
+      }
+      Mission mission = new Mission(parent,child,"방청소하기" + i, i*1000,
+              d209.Idontcare.mission.entity.Type.PROCESS,"열심히 할게요" + i,null,null);
+      missionRepository.save(mission);
+    }
+
   }
 }
