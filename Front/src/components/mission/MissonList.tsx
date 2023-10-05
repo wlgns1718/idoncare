@@ -8,6 +8,7 @@ import { BottomSheet } from "../common/BottomSheet";
 import Icon, { ICON_NAME } from "../common/Icon";
 import MissionHistoryCard from "./MissionHistoryCard";
 import { BottomSheetOpen } from "../../store/common/atoms";
+import { selectedChildId } from "../../store/mission/atoms";
 import MissionHistoryPlusCard from "./MissionHistoryPlusCard";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -52,14 +53,26 @@ const MissonList: React.FC = () => {
   const token = useRecoilValue(userToken);
   const [bottomSheetOpen, setBottomSheetOpen] = useRecoilState(BottomSheetOpen);
   const [missionFilter, setMissionFilter] = useState<MissionStateType>("ALL");
-  const [missions, setMissions] = useState<MissionDataType[]>([]);
+  const [missions, setMissions] = useState<MissionDataType[]>([]); 
+  const selectedUserId = useRecoilValue<number | null>(selectedChildId);
 
   useEffect(() => {
     axios.get(baseUrl + "api/mission", AxiosHeader({ token }))
       .then((response) => {
-        setMissions(response.data.data);
+        // Filter missions based on the selected childId
+        let filteredMissions;
+        if (selectedUserId !== 0) {
+          filteredMissions = response.data.data.filter(
+            (mission: MissionDataType) => mission.childId === selectedUserId
+          );
+        } else {
+          filteredMissions = response.data.data;
+        }
+        
+        setMissions(filteredMissions);
       });
-}, [token]);
+  }, [token, selectedUserId]);
+  
 
   return (
     <div className={`${bottomSheetOpen ? "scroll" : ""}`}>

@@ -35,26 +35,29 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
   const navigate = useNavigate();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isUnpaidHistoryModalOpen, setIsUnpaidHistoryModalOpen] = useState(false); 
+  const [isUnpaidHistoryModalOpen, setIsUnpaidHistoryModalOpen] =
+    useState(false);
   const [rejectedData, setRejectedData] = useState<RejectedData[]>([]);
 
   useEffect(() => {
     axios
-      .get(baseUrl + "api/pocketmoney/regular/rejected", AxiosHeader({ token }))
+      .get(
+        `http://j9d209.p.ssafy.io:8081/api/pocketmoney/regular/rejected/${regularPocketMoneyId}`,
+        AxiosHeader({ token })
+      )
       .then((response) => {
-        if (response.data && Array.isArray(response.data)) {
-          setRejectedData(response.data);
+        if (response.data && Array.isArray(response.data.data)) {
+          setRejectedData(response.data.data);
         } else {
           console.error("Unexpected response:", response);
         }
       })
       .catch((error) => console.error("Error:", error));
-   }, [token]);
+  }, [token, regularPocketMoneyId]);
 
   const handleDeleteClick = () => {
     setIsDeleteModalOpen(true);
   };
-
 
   const handleCancelClick = () => {
     setIsDeleteModalOpen(false);
@@ -72,10 +75,10 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
       })
       .catch((error) => console.error("Error:", error));
   };
-  
+
   const handleShowUnpaidHistoryClick = () => {
     setIsUnpaidHistoryModalOpen(true);
-   };
+  };
 
   return (
     <div className="bg-gray p-10 pr-6 rounded-xl mt-5 text-s">
@@ -98,10 +101,17 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
               <p className="text-center mb-12">미입금 내역이 없습니다.</p>
             ) : (
               rejectedData.map((data) => (
-                <div key={data.regularPocketMoneyRejectedId}>
-                  <p>{data.amount}원</p>
-                  <p>{data.dueDate}</p>
+                <>
+                <div className="text-center text-m mb-10">미입금내역</div>
+                <div
+                  key={data.regularPocketMoneyRejectedId}
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                  className="mb-5"
+                >
+                  <p className="text-m m-2">{data.dueDate}</p>
+                  <p className="text-m m-2">{data.amount}원</p>
                 </div>
+                </>
               ))
             )}
             <FullBtn buttonText="확인" onClick={handleCancelClick} />
@@ -116,7 +126,7 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
         </Link>
 
         {isDeleteModalOpen && (
-         <BottomModal>
+          <BottomModal>
             <div className="mt-10 mb-10">
               <p className="text-center">정기용돈을 해제할까요?</p>
               <YesNoBtn

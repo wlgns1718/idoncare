@@ -26,3 +26,14 @@ export type MissionResistType = {
   beforeMessage?: string;
   afterMessage: string;
 };
+
+export type MissionDetailType = {
+  missionId: number;
+  parentName: string;
+  childName: string;
+  title: string;
+  amount: number;
+  type: "REQUEST" | "PROCESS" | "UNPAID" | "COMPLETE";
+  message?: string; 
+  createdAt: string;
+};

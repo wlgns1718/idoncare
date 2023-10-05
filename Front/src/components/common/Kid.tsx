@@ -5,16 +5,17 @@ type KidProps = {
   is_connect?: boolean;
   kname?: React.ReactNode;
   className?: string; 
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
   childUserId?: string;
   isSelected?: boolean;
 }
 
 const Kid: React.FC<KidProps> = ({ imgSrc = "/icons/circle-pink.png", is_connect = true, kname, className, onClick, isSelected }) => {
   
-    const handleClick = () => {
+    const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.preventDefault();
         if (is_connect && onClick) {
-            onClick();
+            onClick(event);
         }
     }
 

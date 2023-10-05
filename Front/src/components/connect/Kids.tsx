@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Kid from "../../components/common/Kid";
 import Modal from "../../components/common/Modal";
-import FullBtn from "../../components/common/FullBtn";
+import YesNoBtn from "../common/YesNoBtn";
 import KidAdd from "../../components/connect/KidAdd";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/selectors";
-import AxiosHeader from "../../apis/axios/AxiosHeader";
-import { baseUrl } from "../../apis/url/baseUrl";
 
 type KidData = {
   relationshipId: number;
@@ -19,16 +17,23 @@ type KidData = {
 type KidsProps = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  handleCloseModal: () => void;
 };
 
-const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
+const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
   const token = useRecoilValue(userToken);
   const [kidsData, setKidsData] = useState<KidData[]>([]);
 
+  const [selectedRelationshipId, setSelectedRelationshipId] = useState<
+    number | null
+  >(null);
+
   useEffect(() => {
     axios
-      .get(baseUrl + `api/relationship`, AxiosHeader({ token }))
+      .get("https://j9d209.p.ssafy.io:9081/api/relationship", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.data.data && response.data.data.relationList) {
           setKidsData(response.data.data.relationList);
@@ -37,7 +42,35 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
         }
       })
       .catch((error) => console.error("Error:", error));
-  }, []);
+
+    if (!isOpen) setSelectedRelationshipId(null);
+  }, [isOpen]);
+
+  const onDelete = () => {
+    if (!selectedRelationshipId) return;
+
+    axios
+      .delete("https://j9d209.p.ssafy.io:9081/api/relationship", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          relationshipId: selectedRelationshipId,
+        },
+      })
+      .then(() => {
+        setKidsData(
+          kidsData.filter(
+            (kid) => kid.relationshipId !== selectedRelationshipId
+          )
+        );
+        setIsOpen(false);
+      })
+      .catch((error) => {
+        console.log(selectedRelationshipId);
+        console.error("Error:", error);
+      });
+  };
 
   return (
     <div className="flex flex-wrap justify-between">
@@ -46,8 +79,12 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
           key={kid.relationshipId}
           className="w-1/4"
           is_connect={true}
+          isSelected={selectedRelationshipId === kid.relationshipId}
           kname={kid.userName}
-          onClick={() => setIsOpen(true)}
+          onClick={() => {
+            setSelectedRelationshipId(kid.relationshipId);
+            setIsOpen(true);
+          }}
         />
       ))}
 
@@ -58,11 +95,7 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen, handleCloseModal }) => {
             <br />
             끊으시겠습니까?
           </div>
-          <FullBtn
-            buttonText="확인"
-            buttonLink="/"
-            onClick={handleCloseModal}
-          />
+          <YesNoBtn yesText="확인" noText="취소" onYesClick={onDelete} onNoClick={() => setIsOpen(false)} />
         </Modal>
       )}
 

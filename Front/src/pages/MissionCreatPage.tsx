@@ -2,20 +2,21 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { userToken } from "../store/common/selectors";
+import { myId } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
 import { createMissionData } from "../store/mission/atoms";
 import KidSelectForm from "../components/common/KidSelectForm";
 import MissionSetName from "../components/mission/MissionSetName";
 import PocketMoneySendForm from "../components/pocketmoney/PocketSendForm";
-import PocketSendMsgForm from "../components/pocketmoney/PocketSendMsgForm";
+import MissionMsgForm from "../components/mission/MissionMsgForm";
 import FullBtn from "../components/common/FullBtn";
 import MoneyDone from "../components/pocketmoney/MoneyDone";
-import { userBalanace } from "../store/wallet/atoms";
+import Header from "../components/common/Header";
 
 const MissionCreate: React.FC = () => {
   const token = useRecoilValue(userToken);
-  const balance = useRecoilValue(userBalanace);
+  const parentId = useRecoilValue(myId);
   const [step, setStep] = useState(1);
   const [childUserId, setChildUserId] = useState<number | null>(null);
   const [childUserName, setChildUserName] = useState<string | null>(null);
@@ -40,21 +41,20 @@ const MissionCreate: React.FC = () => {
   const onNextPocketMsgSetForm = (message: string) => {
     setBeforeMessage(message);
     console.log("메세지:", message);
-    nextStep();
+    nextStep(message);
   };
-
-  const nextStep = () => {
+  
+  const nextStep = (message?: string) => {
     if (step === 4) {
       axios
         .post(
           baseUrl + "api/mission/regist",
           {
-            // parentId: token,
-            parentId: 2750899446843980000,
+            parentId,
             childIds: [childUserId],
             title: missionData.title,
             amount,
-            beforeMessage,
+            beforeMessage: message,
           },
           AxiosHeader({ token })
         )
@@ -67,7 +67,7 @@ const MissionCreate: React.FC = () => {
             setIsSuccess(false);
           }
         })
-        
+
         .catch((error) => {
           console.error("Error:", error);
           setIsSuccess(false);
@@ -76,21 +76,26 @@ const MissionCreate: React.FC = () => {
 
     setStep(step + 1);
   };
+  
 
   let form;
   switch (step) {
     case 1:
       form = (
-        <KidSelectForm onNext={onNextKidSelectForm} pageTitle="용돈 보내기" />
+        <KidSelectForm onNext={onNextKidSelectForm} pageTitle="미션 등록" />
       );
       break;
     case 2:
       form = (
-        <div className="mx-10">
-          <MissionSetName
-            missionData={missionData}
-            setMissionData={setMissionData}
-          />
+        <div className="flex flex-col h-screen pb-60">
+          <Header pageTitle="미션 등록" headerType="normal" headerLink="/" />
+
+          <div className="m-10 text-center flex-grow">
+            <MissionSetName
+              missionData={missionData}
+              setMissionData={setMissionData}
+            />
+          </div>
           <FullBtn
             isDone={!!missionData.title}
             onClick={() => {
@@ -110,7 +115,7 @@ const MissionCreate: React.FC = () => {
     case 4:
       if (childUserName && amount) {
         form = (
-          <PocketSendMsgForm
+          <MissionMsgForm
             kname={childUserName}
             smoney={amount}
             onNext={onNextPocketMsgSetForm}
@@ -118,7 +123,7 @@ const MissionCreate: React.FC = () => {
         );
       } else {
         form = (
-          <PocketSendMsgForm
+          <MissionMsgForm
             kname="자녀"
             smoney={0}
             onNext={onNextPocketMsgSetForm}
@@ -127,25 +132,27 @@ const MissionCreate: React.FC = () => {
       }
       break;
 
-      case 5:
-        form = (
-          <MoneyDone
-            title={isSuccess ? "용돈 보내기 완료" : "용돈 보내기 실패"}
-            content={
-              <>
-                <div className="text-m">{childUserName}</div>
-                <div className="text-m text-main">{amount}원</div>
-              </>
-            }
-            ps={
-              isSuccess
-                ? `남은 잔액: ${balance - (amount || 0)}원`
-                : "계좌 잔고가 부족합니다."
-            }
-            is_done={isSuccess}
-          />
-        );
-        break;
+    case 5:
+      form = (
+        <MoneyDone
+          title={isSuccess ? "미션 등록 완료" : "미션 등록 실패"}
+          content={
+            <>
+              <div className="text-m mb-6">{childUserName}</div>
+              <div className="text-m">{missionData.title}</div>
+              <div>{beforeMessage}</div>
+              <div className="text-m text-main">{amount}원</div>
+            </>
+          }
+          ps={
+            isSuccess
+              ? "미션 등록을 완료했습니다."
+              : "미션 등록에 실패했습니다."
+          }
+          is_done={isSuccess}
+        />
+      );
+      break;
 
     default:
       throw new Error("Invalid step");
