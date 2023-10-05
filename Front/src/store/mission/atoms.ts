@@ -3,8 +3,7 @@ import { atom } from "recoil";
 export interface MissionData {
   missionId: number;
   parentId: number;
-  // childId: number;
-  childId: number[];
+  childId: number;
   parentName: string;
   childName: string;
   title: string;
@@ -13,17 +12,25 @@ export interface MissionData {
 }
 
 
-// export const createMissionData = atom<MissionData>({
-//   key: "createMissionData",
-//   default: {
-//     title: "",
-//     type: "PROCESS",
-//     amount: 0,
-//     childId: [],
-//     beforeMessage: "",
-//     afterMessage: "",
-//   },
-// });
+export interface CreateMissionData {
+  parentId: number;
+  childIds: number[];
+  title: string;
+  amount: number;
+  beforeMessage: string;
+}
+
+export const createMissionData = atom<CreateMissionData>({
+  key: "createMissionData",
+  default: {
+    parentId : 0,
+    childIds : [],
+    title : "",
+    amount : 0,
+    beforeMessage : "",
+},
+});
+
 
 
 export const selectedChildId = atom<number | null>({

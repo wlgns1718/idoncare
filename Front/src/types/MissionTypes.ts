@@ -13,13 +13,14 @@ export type MissionDataType = {
   title: string;
   amount: number;
   type: MissionStateType;
+  childId: number;
 };
 
 export type MissionList = MissionDataType[];
 
 export type MissionResistType = {
   parentId: number;
-  childId: number[];
+  childIds: number[];
   title: string;
   amount: number;
   type: "REQUEST";

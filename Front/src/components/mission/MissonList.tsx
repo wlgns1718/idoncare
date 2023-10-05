@@ -59,19 +59,20 @@ const MissonList: React.FC = () => {
   useEffect(() => {
     axios.get(baseUrl + "api/mission", AxiosHeader({ token }))
       .then((response) => {
-        // Filter missions based on the selected childId
         let filteredMissions;
-        if (selectedUserId !== 0) {
-          // filteredMissions = response.data.data.filter(
-          //   (mission: MissionDataType) => mission.childId === selectedUserId
-          // );
+
+        if (selectedUserId !== 0) { 
+          filteredMissions = response.data.data.filter(
+            (mission: MissionDataType) => mission.childId === selectedUserId 
+          );
         } else {
           filteredMissions = response.data.data;
         }
         
         setMissions(filteredMissions);
       });
-  }, [token, selectedUserId]);
+}, [token, selectedUserId]);
+
   
 
   return (
