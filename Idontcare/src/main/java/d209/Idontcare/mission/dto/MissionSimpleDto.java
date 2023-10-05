@@ -2,12 +2,13 @@ package d209.Idontcare.mission.dto;
 
 import d209.Idontcare.mission.entity.Type;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Tuple;
 import java.time.LocalDateTime;
 
 
-@Getter
+@Getter @Setter
 public class MissionSimpleDto {
 
     private Long missionId;
