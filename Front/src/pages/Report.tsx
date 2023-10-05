@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Header from "../components/common/Header";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BarDatum, ResponsiveBar } from "@nivo/bar";
 import useComma from "../hooks/useComma";
 import axios from "axios";
