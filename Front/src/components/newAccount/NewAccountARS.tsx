@@ -38,8 +38,8 @@ const NewAccountARS = () => {
               state: {
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 title: `충전 계좌 등록 완료`,
-                content: "",
-                ps: "성공적으로 계좌가 등록 되었습니다.",
+                content: "성공적으로 계좌가 등록 되었습니다.",
+                ps: "",
               },
             }
           );
