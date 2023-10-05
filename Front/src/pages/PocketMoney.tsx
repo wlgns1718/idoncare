@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/common/Header";
 import KidDemandedList from "../components/pocketmoney/KidDemandedList";
-import SmallBtn from "../components/pocketmoney/SmallBtn";
 import RegularMoneyBox from "../components/pocketmoney/RegularBox";
 import RegularMoneyBoxEmpty from "../components/pocketmoney/RegularBoxEmpty";
 import SendMoneyBox from "../components/pocketmoney/MenuBox";
 
 import axios from "axios";
 import { useRecoilValue } from "recoil";
-import { myRole, userToken } from "../store/common/selectors";
+import { isParent, userToken } from "../store/common/selectors";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { baseUrl } from "../apis/url/baseUrl";
 import BottomNav from "../components/common/BottomNav";
@@ -45,7 +44,7 @@ const PocketMoney: React.FC = () => {
     RegularMoneyData[]
   >([]);
 
-  const role = useRecoilValue(myRole);
+  const roleIsParent = useRecoilValue(isParent);
 
   const getRegularDate = (type: string, cycle: number) => {
     const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
@@ -95,7 +94,7 @@ const PocketMoney: React.FC = () => {
     <div className="pb-60">
       <Header pageTitle="용돈" headerType="normal" headerLink="back" />
       <div className="m-8">
-        {role == "PARENT" && (
+        {roleIsParent && (
           <div>
             <div className="pt-3 pb-3 mb-5 text-m font-strong">
               자녀가 요청한 용돈
@@ -116,9 +115,9 @@ const PocketMoney: React.FC = () => {
               )}
             </div>
 
-            <div className="text-right">
-              <SmallBtn link="/" text="전체보기" classes="mb-10" />
-            </div>
+            {/* <div className="text-right">
+              <SmallBtn link="" text="전체보기" classes="mb-10" />
+            </div> */}
 
             <div className="flex justify-between">
               <SendMoneyBox
@@ -142,7 +141,7 @@ const PocketMoney: React.FC = () => {
             </div>
           </div>
         )}
-        {role == "CHILD" && (
+        {!roleIsParent && (
           <div>
             <div className="pt-3 pb-3 mb-5 text-m font-strong">
               내가 요청중인 용돈
@@ -152,16 +151,16 @@ const PocketMoney: React.FC = () => {
               {kidDemandedList.map((demand) => (
                 <KidDemandedList
                   key={demand.pocketMoneyRequestId}
-                  name={demand.child.name}
+                  name={demand.parent.name}
                   amount={demand.amount.toString()}
                   pocketMoneyRequestId={demand.pocketMoneyRequestId}
                 />
               ))}
             </div>
 
-            <div className="text-right">
-              <SmallBtn link="/" text="전체보기" classes="mb-10" />
-            </div>
+            {/* <div className="text-right">
+              <SmallBtn link="" text="전체보기" classes="mb-10" />
+            </div> */}
 
             <div className="flex justify-between">
               <SendMoneyBox
@@ -184,20 +183,24 @@ const PocketMoney: React.FC = () => {
             </div>
           </div>
         )}
-        <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
-        {regularPocketMoneyList.length > 0 ? (
-          regularPocketMoneyList.map((money) => (
-            <RegularMoneyBox
-              regularPocketMoneyId={money.regularPocketMoneyId}
-              regularDate={getRegularDate(money.type, money.cycle)}
-              cname={money.childName}
-              amount={`${money.amount.toLocaleString()}원`}
-              startDate={getStartDate(money.createdAt)}
-            />
-          ))
-        ) : (
-          <RegularMoneyBoxEmpty />
-        )}
+        { roleIsParent &&
+          <div>
+            <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
+            {regularPocketMoneyList.length > 0 ? (
+              regularPocketMoneyList.map((money) => (
+                <RegularMoneyBox
+                  regularPocketMoneyId={money.regularPocketMoneyId}
+                  regularDate={getRegularDate(money.type, money.cycle)}
+                  cname={money.childName}
+                  amount={`${money.amount.toLocaleString()}원`}
+                  startDate={getStartDate(money.createdAt)}
+                />
+              ))
+            ) : (
+              <RegularMoneyBoxEmpty />
+            )}
+          </div>
+        }
       </div>
       <BottomNav />
     </div>

@@ -16,6 +16,11 @@ export const myRole = selector({
   get: ({ get }) => get(userData).role,
 });
 
+export const isParent = selector({
+  key: "isParent",
+  get: ({ get }) => get(userData).role == "PARENT",
+});
+
 export const myId = selector({
   key: "myId",
   get: ({ get }) => get(userData).userId,
