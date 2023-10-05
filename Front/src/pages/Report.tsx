@@ -20,6 +20,14 @@ interface APIResult<T> {
   data: T;
 }
 
+interface UserType {
+  userId: number;
+  nickname: string;
+  name: string;
+  role: "CHILD" | "PARENT";
+  phoneNumber: string;
+}
+
 interface DateOptions {
   label: string;
   value: DataScale;
@@ -39,10 +47,59 @@ interface ChartData extends BarDatum {
 function Report() {
   const token = useRecoilValue(userToken);
 
+  const [user, setUser] = useState<UserType>({
+    name: "",
+    nickname: "",
+    phoneNumber: "",
+    userId: 1,
+    role: "CHILD",
+  });
   const [dateScale, setDateScale] = useState<DataScale>("daily");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dailyData, setDailyData] = useState<Array<ChartData>>([]);
   const [monthlyData, setMonthlyData] = useState<Array<ChartData>>([]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await axios.get<APIResult<UserType>>(
+        `${baseUrl}api/user`,
+        AxiosHeader({ token })
+      );
+
+      const { code, data } = result.data;
+
+      if (code === 200) {
+        setUser(data);
+
+        if (data.role === "CHILD") {
+          //아이 사용자의 경우 본인의 데이터만 바로 불러오면 된다
+          (async () => {
+            const result = await axios.get<APIResult<Array<ChartData>>>(
+              `${baseUrl}api/virtual/active/daily`,
+              AxiosHeader({ token })
+            );
+
+            const { code, data } = result.data;
+            if (code === 200) {
+              setDailyData(data);
+            }
+          })();
+
+          (async () => {
+            const result = await axios.get<APIResult<any>>(
+              `${baseUrl}api/virtual/active/monthly`,
+              AxiosHeader({ token })
+            );
+
+            const { code, data } = result.data;
+            if (code === 200) {
+              setMonthlyData(data.list);
+            }
+          })();
+        }
+      }
+    })();
+  }, []);
 
   const onClickChild = (child: RelationType) => {
     //해당 자녀를 선택하면 어떠한 행동을 할지 정의
@@ -80,7 +137,8 @@ function Report() {
   return (
     <div>
       <Header pageTitle="활동보고서" />
-      <Kids onClick={onClickChild} />
+
+      {user.role === "PARENT" && <Kids onClick={onClickChild} />}
       <div>
         <div className="flex p-2 justify-between">
           <div className="flex ml-5">
