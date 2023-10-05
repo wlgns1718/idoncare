@@ -100,7 +100,7 @@ public class InitService {
       mobileRepository.save(new Mobile("0104321001" + i, "김자식" + i, "2000010"+i, MobileSort.SK));
     }
     mobileRepository.save(new Mobile("01038300631", "이정훈", "19980502", MobileSort.LG));
-    mobileRepository.save(new Mobile("01031579908", "이정훈", "19980604", MobileSort.SK));
+    mobileRepository.save(new Mobile("01031579908", "이우철", "19980604", MobileSort.SK));
     mobileRepository.save(new Mobile("01050321051", "김슬기", "19980413", MobileSort.KT));
   }
 }
