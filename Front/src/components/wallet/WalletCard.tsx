@@ -42,10 +42,10 @@ const CardButton: React.FC<CardButtonProps> = ({ item }) => {
 
   return (
     <div className="h-10" onClick={() => navigate(item.link)}>
-      <div className="px-2">
+      <div className="px-5">
         <Icon size="small" name={item.icon} />
       </div>
-      <div className="w-16">{item.text}</div>
+      <div className="w-20 text-t">{item.text}</div>
     </div>
   );
 };
@@ -72,17 +72,17 @@ function WalletCard() {
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden">
-      <div className="p-10 text-white h-[140px] [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
+      <div className="pt-8 p-6 text-white h-[140px] [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
         <div
-          className="ml-3"
+          className="ml-3 text-m whitespace-nowrap"
           onClick={() => {
             navigate("/wallet");
           }}
         >
           <div>잔액</div>
-          <div className="text-m">{useComma(balance)} 원</div>
+          <div className="text-l">{useComma(balance)} 원</div>
         </div>
-        <div className="flex justify-between px-6 py-5 text-center">
+        <div className="flex justify-between mx-2 my-4 text-center">
           {cardButton.map((item, index) => {
             return <CardButton item={item} key={index} />;
           })}

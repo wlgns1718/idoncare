@@ -36,30 +36,30 @@ function PurchaseBody() {
 
   return (
     <div className="mt-20">
-      <div className="w-[240px] h-[130px] mx-auto p-4 pb-6 rounded-2xl flex-col flex justify-between [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))]">
+      <div className="w-[240px] h-[130px] mx-auto p-4 pb-6 rounded-2xl flex-col flex justify-between [background:linear-gradient(270deg,_#1c51ad_20%,_rgba(28,_81,_173,_0.3))] shadow-lg">
         <img
           src="/icons/icon-logo-2.png"
           alt="logo"
-          className="w-[15vw]"
+          className="w-[60px]"
         />
         <div className="text-end items-end">
           <div className="text-t text-mediumgray">부족금액은 자동충전됨</div>
           <div className="text-white text-m">{useComma(balance)} 원</div>
         </div>
       </div>
-      <div className="mt-20">
+      <div className="mt-20 text-xl">
         {menus.map((item, index) => {
           return (
             <div
-              className="w-full mt-8 p-7 rounded-xl bg-gray flex shadow-xl"
+              className="w-full mt-8 p-6 rounded-xl bg-gray flex shadow-xl"
               key={index}
               onClick={() => navigate(item.link)}
             >
-              <div className="mx-6">
+              <div className="mx-4 flex items-center justify-center">
                 <Icon name={item.icon} size="medium"/>
               </div>
-              <div>
-                <div className="text-gray-700">{item.Title}</div>
+              <div className="flex-col flex justify-center gap-1">
+                <div className="text-gray-700 mb-2">{item.Title}</div>
                 <div className="text-gray-500">{item.subTitle}</div>
               </div>
             </div>

@@ -53,7 +53,7 @@ const ParentSelectForm: React.FC<Props> = ({ onNext }) => {
 
   return (
     <div className="flex flex-col h-screen pb-60">
-      <Header pageTitle="용돈 받기" headerType="normal" headerLink="/" />
+      <Header pageTitle="용돈 조르기" headerType="normal" headerLink="/" />
 
       <div className="m-10 text-center flex-grow">
         <div className="text-l mt-24 mb-28">부모님을 선택해주세요.</div>

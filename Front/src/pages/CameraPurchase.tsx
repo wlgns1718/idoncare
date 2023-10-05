@@ -127,11 +127,11 @@ function CameraPurchase() {
           <video ref={videoRef} className="w-full h-full" />
         </div>
         <div>
-          <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">
+          <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl text-m">
             <div className="text-black">지갑잔액</div>
             <div className=" text-main ">{useComma(balance)} 원</div>
           </div>
-          <div className="w-full flex-col gap-4 p-10 bg-gray  rounded-3xl flex items-center justify-center">
+          <div className="w-full flex-col gap-4 p-10 bg-gray  rounded-3xl flex items-center justify-center text-lg">
             {isScanned && payType == "slow" && (
               <div className="py-3 px-6 text-white bg-darkgray rounded-3xl w-auto">
                 <input

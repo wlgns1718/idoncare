@@ -57,7 +57,7 @@ function QRcodePurchase() {
           </div>
           {params.payType == "fast" && (
             <div
-              className={`text-white text-center mt-4 ${
+              className={`text-white text-center mt-4 text-m ${
                 amount ? "opacity-0" : ""
               }`}
             >
@@ -65,7 +65,7 @@ function QRcodePurchase() {
             </div>
           )}
         </div>
-        <div>
+        <div className="text-s">
           <div className="bg-gray flex px-10 py-4 my-6 justify-between rounded-3xl">
             <div className="text-black">지갑잔액</div>
             <div className=" text-main ">{useComma(balance)} 원</div>
