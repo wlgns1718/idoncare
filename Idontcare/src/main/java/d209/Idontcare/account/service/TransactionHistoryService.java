@@ -128,7 +128,7 @@ public class TransactionHistoryService {
         return activeReq;
     }
     
-    public List<DailyHistoryRes> reportPerDaily(Long parentUserId, Long childUserId, LocalDateTime day) {
+    public List<DailyHistoryRes> reportPerDailyForParent(Long parentUserId, Long childUserId, LocalDateTime day) {
         if( !relationshipService.relationExistsByParentAndChild(parentUserId, childUserId) ) throw new AuthorizationException();
         
         TreeMap<Integer, DailyHistoryRes> result = new TreeMap<>();
@@ -142,6 +142,38 @@ public class TransactionHistoryService {
         List<Tuple> earns = transactionHistoryRepository.aggregationGroupByDay(childUserId, prev, day, CashFlow.DEPOSIT);        //벌었는(earn) 내역
         List<Tuple> expends = transactionHistoryRepository.aggregationGroupByDay(childUserId, prev, day, CashFlow.WITHDRAWAL);  //사용한(expend) 내역
 
+        for(Tuple earn: earns){
+            Long amount = (Long)earn.get("amount");
+            Date targetDay = (Date)earn.get("day");
+            
+            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDate());
+            targetRes.setEarn(amount);
+        }
+        
+        for(Tuple expend: expends){
+            Long amount = (Long)expend.get("amount");
+            Date targetDay = (Date)expend.get("day");
+            
+            DailyHistoryRes targetRes = result.get( (targetDay.getMonth()+1) * 100 + targetDay.getDate());
+            targetRes.setExpend(amount);
+        }
+        
+        List<DailyHistoryRes> list = result.values().stream().toList();
+        return list;
+    }
+    
+    public List<DailyHistoryRes> reportPerDaily(Long childUserId, LocalDateTime day) {
+        TreeMap<Integer, DailyHistoryRes> result = new TreeMap<>();
+        LocalDateTime prev = day.minusDays(6);
+        
+        for(int i = 0; i <= 6; i++){
+            LocalDateTime curr = day.minusDays(i);
+            result.put(curr.getMonthValue() * 100 + curr.getDayOfMonth(), new DailyHistoryRes(curr, 0L, 0L));
+        }
+        
+        List<Tuple> earns = transactionHistoryRepository.aggregationGroupByDay(childUserId, prev, day, CashFlow.DEPOSIT);        //벌었는(earn) 내역
+        List<Tuple> expends = transactionHistoryRepository.aggregationGroupByDay(childUserId, prev, day, CashFlow.WITHDRAWAL);  //사용한(expend) 내역
+        
         for(Tuple earn: earns){
             Long amount = (Long)earn.get("amount");
             Date targetDay = (Date)earn.get("day");
