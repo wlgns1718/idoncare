@@ -19,17 +19,17 @@ const cardButton: CardButtonType[] = [
   {
     link: "/pocketMoney",
     text: "용돈관리",
-    icon: "home",
+    icon: "pocketMoney",
   },
   {
     link: "/wallet/recharge",
     text: "충전",
-    icon: "home",
+    icon: "recharge",
   },
   {
     link: "/transfer/account",
     text: "송금",
-    icon: "home",
+    icon: "send",
   },
 ];
 
