@@ -275,4 +275,38 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
     return regularPocketMoneyRejectedRepository.findByRegularPocketMoneyId(regularPocketMoneyId)
         .stream().map(GetRegularPocketMoneyRejectedResDto::new).toList();
   }
+  
+  @Transactional(Transactional.TxType.REQUIRES_NEW)
+  @Override
+  public void processRegularPocketMoneyRejected(Long parentUserId, ProcessPcoketMoneyRejectedReqDto req) {
+    RegularPocketMoneyRejected rejected = regularPocketMoneyRejectedRepository.findById(req.getRegularPocketMoneyRejectedId())
+        .orElseThrow(() -> new NoSuchContentException("존재하지 않는 미입금내역입니다"));
+    
+    if( !rejected.getParent().getUserId().equals(parentUserId) ) throw new AuthorizationException();
+    
+    if(req.getType() == ProcessPcoketMoneyRejectedReqDto.Type.CANCEL){
+      //미입금 내역에 대해 취소 처리이면
+      // -> 미입금 내역 삭제해주기
+      regularPocketMoneyRejectedRepository.delete(rejected);
+    }
+    else if(req.getType() == ProcessPcoketMoneyRejectedReqDto.Type.SEND){
+      //보내기 처리이면
+      // -> 돈 보내주기
+      VirtualToVirtualReq virtualToVirtualReq = VirtualToVirtualReq.builder()
+          .content("정기용돈")
+          .money(rejected.getAmount().longValue())
+          .userId(rejected.getChild().getUserId())
+          .type(Type.POCKET)
+          .build();
+      try{
+        Long parentVirtualAcdountId =
+            virtualAccountService.userAccount(parentUserId);
+        virtualAccountService.virtualPayment(virtualToVirtualReq, parentVirtualAcdountId);
+        regularPocketMoneyRejectedRepository.delete(rejected);  //돈이 제대로 보내졌으면 삭제해주기
+      } catch(VirtualAccountException e){
+        //실제로 처리되지 못하면
+        throw new VirtualAccountException("돈이 부족합니다");
+      }
+    }
+  }
 }
