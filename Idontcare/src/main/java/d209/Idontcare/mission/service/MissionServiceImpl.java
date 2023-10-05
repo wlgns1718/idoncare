@@ -99,6 +99,8 @@ public class MissionServiceImpl implements MissionService {
 
         }
         else if(mission.getType() == Type.UNPAID && role == Role.PARENT){
+
+            log.info("완료 미션에 대해 리워드를 지급합니다.");
             Long childId = mission.getChild().getUserId();
             VirtualToVirtualReq virtualToVirtualReq = new VirtualToVirtualReq();
             virtualToVirtualReq.setUserId(childId);
@@ -107,6 +109,7 @@ public class MissionServiceImpl implements MissionService {
             virtualToVirtualReq.setMoney(mission.getAmount());
 
             virtualAccountService.virtualPayment(virtualToVirtualReq, mission.getParent().getUserId());
+            log.info("완료 미션에 대해 리워드를 지급 완료했습니다.");
             mission.setType(Type.COMPLETE);
         }
         else if (mission.getType() == Type.REQUEST && role == Role.PARENT) {
