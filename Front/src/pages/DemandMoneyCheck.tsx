@@ -111,7 +111,10 @@ const DemandMoneyCheck: React.FC = () => {
           onNoClick={handleOpenModal}
         />
 
-        {isModalOpen && <DemandCheckModal onClose={handleCloseModal} />}
+{isModalOpen && requestData && (
+  <DemandCheckModal onClose={handleCloseModal} name={requestData.child.name} />
+)}
+
       </div>
     </div>
   );
