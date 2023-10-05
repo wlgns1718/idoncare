@@ -8,7 +8,7 @@ import axios from "axios";
 import { baseUrl } from "../apis/url/baseUrl";
 import AxiosHeader from "../apis/axios/AxiosHeader";
 import { userToken } from "../store/common/selectors";
-import Header from './../components/common/Header';
+import Header from "./../components/common/Header";
 
 type Menu = {
   title: string;
@@ -108,7 +108,7 @@ function MyPage() {
 
   return (
     <div>
-      <Header pageTitle="메뉴"/>
+      <Header pageTitle="메뉴" />
       <div className="flex-col">
         <Profile
           size="medium"
@@ -117,7 +117,9 @@ function MyPage() {
           profileName={myData?.name}
         />
       </div>
-      <div className="text-center text-main text-s my-4">{myData?.phoneNumber}</div>
+      <div className="text-center text-main text-s my-4">
+        {myData?.phoneNumber}
+      </div>
       <div className="flex justify-center gap-5 my-10">
         {boxMenus.map((item, index) => {
           return (
@@ -126,8 +128,8 @@ function MyPage() {
               key={index}
               className="bg-gray w-[25%] rounded-xl text-center p-2"
             >
-              <Icon name={item.icon} className="mx-auto" />
-              <span>{item.title}</span>
+              <Icon name={item.icon} className="mx-auto" size="large" />
+              <span className="text-2xl">{item.title}</span>
             </Link>
           );
         })}
@@ -135,10 +137,13 @@ function MyPage() {
       <div className="my-10 mx-10">
         {menus.map((menu, index) => {
           return (
-            <div key={index} className="my-3">
-              <Link to={menu.link} className="flex items-center gap-2 shadow">
-                <Icon name={menu.icon} size="medium"></Icon>
-                <span className="text-lg">{menu.title}</span>
+            <div key={index} className="my-4">
+              <Link
+                to={menu.link}
+                className="flex items-center gap-2 shadow-sm p-2"
+              >
+                <Icon name={menu.icon} size="large"></Icon>
+                <span className="text-2xl">{menu.title}</span>
               </Link>
             </div>
           );

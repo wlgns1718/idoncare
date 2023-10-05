@@ -3,15 +3,15 @@ import FullBtn from "../common/FullBtn";
 import NewAccountInput from "./common/NewAccountInput";
 import NewAccountARSHelp from "./NewAccountARS/NewAccountARSHelp";
 import NewAccountText from "./NewAccountARS/NewAccountText";
-import { useState } from 'react';
+import { useState } from "react";
 
 const NewAccountARS = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
-  const handleEmailChange = (value : string | number) => {
+  const handleEmailChange = (value: string | number) => {
     setEmail(value as string);
-  }
+  };
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return (
@@ -29,7 +29,8 @@ const NewAccountARS = () => {
       <FullBtn
         buttonText="ARS 출금 동의 완료"
         isDone={emailRegex.test(email)}
-        onClick={()=>{
+        className="mb-4"
+        onClick={() => {
           navigate(
             {
               pathname: "/done",
