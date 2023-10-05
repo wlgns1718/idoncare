@@ -9,8 +9,7 @@ import javax.annotation.PostConstruct;
 @Service
 @RequiredArgsConstructor
 public class InitService {
-  
-  
+
   private final BankRepository bankRepository;
   private final BankAccountRepository bankAccountRepository;
   private final UserRepository userRepository;
@@ -59,8 +58,9 @@ public class InitService {
     Bank bank41 = bankRepository.getReferenceById("41");
     Bank bank12 = bankRepository.getReferenceById("12");
     Bank bank11 = bankRepository.getReferenceById("11");
-    bankAccountRepository.save(new BankAccount("40660204210915", bank11, 100000L, "이정훈", "19980502"));
-    bankAccountRepository.save(new BankAccount("24913128600", bank12, 100000L, "이우철", "19980604"));
+    bankAccountRepository.save(new BankAccount("40660204210915", bank11, 10000L, "이정훈", "19980502"));
+    bankAccountRepository.save(new BankAccount("110409773220", bank41, 100000L, "성연석", "19951006"));
+    bankAccountRepository.save(new BankAccount("24913128600", bank12, 10000L, "이우철", "19980604"));
     bankAccountRepository.save(new BankAccount("55555555", bank11, 1000000L, "김슬기", "19980413"));
     bankAccountRepository.save(new BankAccount("00000000", bank41, 1000000000000L, "아이돈케어", "202309011"));
     bankAccountRepository.save(new BankAccount("99999999", bank41, 1000000000000L, "starbucks", "202309011"));
@@ -100,6 +100,7 @@ public class InitService {
       mobileRepository.save(new Mobile("0104321001" + i, "김자식" + i, "2000010"+i, MobileSort.SK));
     }
     mobileRepository.save(new Mobile("01038300631", "이정훈", "19980502", MobileSort.LG));
+    mobileRepository.save(new Mobile("01030715123", "성연석", "19951006", MobileSort.KT));
     mobileRepository.save(new Mobile("01031579908", "이우철", "19980604", MobileSort.SK));
     mobileRepository.save(new Mobile("01050321051", "김슬기", "19980413", MobileSort.KT));
   }
