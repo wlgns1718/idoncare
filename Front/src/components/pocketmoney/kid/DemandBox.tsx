@@ -9,7 +9,7 @@ const DemandBox: React.FC = () => {
         <br />
         요청하기
       </div>
-      <Link to="/kidDemandMoney">
+      <Link to="/kidDemandMoney" className="self-center">
         <img src="/icons/icon-plus.png" alt="Icon" className="mt-2 w-24 h-30" />
       </Link>
     </div>

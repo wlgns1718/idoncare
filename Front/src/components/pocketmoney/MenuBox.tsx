@@ -19,7 +19,10 @@ const SendMoneyBox: React.FC<SendMoneyBoxProps> = ({
   return (
     <Link
       to={link}
-      className={`${bgColor} ${textColor} box-content rounded-xl h-40 w-60 pt-9 border-4 ${classes}`}
+      className={`${bgColor} ${textColor} 
+      flex justify-center items-center
+      box-content rounded-xl h-40 w-60
+      p-4  border-4 text-3xl ${classes}`}
     >
       {text}
     </Link>
