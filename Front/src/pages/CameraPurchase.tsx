@@ -114,8 +114,8 @@ function CameraPurchase() {
         QrOptions
       );
       QrScanner.listCameras().then(res=>{
-        setTestMsg(res[0].label+" "+res[1].label)
-        qrScanner.setCamera(res[0].id);
+        setTestMsg(JSON.stringify(res));
+        qrScanner.setCamera(res[3].id)
       });
       
       
