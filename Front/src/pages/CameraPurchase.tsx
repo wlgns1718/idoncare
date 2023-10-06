@@ -113,6 +113,7 @@ function CameraPurchase() {
         (result) => handleScan(result),
         QrOptions
       );
+      qrScanner.setCamera("environment");
       qrScanner.start();
 
       return () => qrScanner.destroy();
