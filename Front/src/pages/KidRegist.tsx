@@ -59,7 +59,7 @@ const KidRegist: React.FC = () => {
               buttonText="확인"
               onClick={() => {
                 setModalIsOpen(false);
-                if (modalMessage === "자녀 요청이 완료되었습니다.")
+                if (modalMessage === "요청이 전송되었습니다.")
                   navigate("/");
               }}
             />
