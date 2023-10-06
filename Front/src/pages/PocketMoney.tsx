@@ -124,7 +124,7 @@ const PocketMoney: React.FC = () => {
                 link="/sendPocketMoney"
                 bgColor="bg-yellow"
                 textColor="text-white"
-                text="용돈보내기"
+                text="용돈주기"
                 classes="mr-4"
               />
               <SendMoneyBox
@@ -133,8 +133,7 @@ const PocketMoney: React.FC = () => {
                 textColor="text-white"
                 text={
                   <>
-                    <p>정기용돈으로</p>
-                    <p>편하게 용돈 주기</p>
+                    <p>정기용돈 주기</p>
                   </>
                 }
               />

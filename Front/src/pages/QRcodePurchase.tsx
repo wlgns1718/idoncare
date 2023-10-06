@@ -77,11 +77,12 @@ function QRcodePurchase() {
                   눌러서 금액 입력
                 </div>
               ) : (
-                <div>
+                <div className="flex items-center px-2">
                   <input
                     type="number"
-                    className=" bg-white m-2 rounded-lg text-end outline-0 mx-3 p-2"
+                    className="w-full bg-white rounded-lg text-end outline-0 m-3 p-2"
                     value={amount ? amount : undefined}
+                    size={1}
                     onChange={handleAmount}
                   />{" "}
                   원

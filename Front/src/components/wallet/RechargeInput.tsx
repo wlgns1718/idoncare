@@ -32,7 +32,7 @@ function RechargeInput({
           .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}{" "}
         원
       </div>
-      <div className="flex justify-center gap-10  my-10">
+      <div className="flex justify-center gap-5  my-10">
         {Amounts.map((item, index) => {
           return (
             <div
