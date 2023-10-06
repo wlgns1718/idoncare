@@ -38,9 +38,16 @@ function CameraPurchase() {
     setPayType(parseData.payType);
     setAmount(parseData.money);
   };
-
+  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
+  const [cameraList, setCameraList] = useState<Array<QrScanner.Camera>>([]);
   const handleAmount = (event: ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
+  };
+
+  const changeCamera = () => {
+    setCurrentCameraIndex(
+      (cameraList.length + currentCameraIndex - 1) % cameraList.length
+    );
   };
 
   const payRequest = () => {
@@ -103,6 +110,16 @@ function CameraPurchase() {
   };
 
   useEffect(() => {
+    QrScanner.listCameras().then((res) => {
+      setCameraList(res);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (cameraList.length === 0) {
+      return;
+    }
+    console.log("HI");
     navigator.mediaDevices.getUserMedia({
       video: true,
     });
@@ -113,11 +130,13 @@ function CameraPurchase() {
         (result) => handleScan(result),
         QrOptions
       );
-      qrScanner.start();
 
+      qrScanner.start();
+      if (cameraList.length)
+        qrScanner.setCamera(cameraList[currentCameraIndex].id);
       return () => qrScanner.destroy();
     }
-  }, []);
+  }, [cameraList, currentCameraIndex]);
   return (
     <div>
       <Header
@@ -157,6 +176,14 @@ function CameraPurchase() {
             >
               {isScanned ? "결제 진행" : "스캔 중"}
             </div>
+          </div>
+        </div>
+        <div className="flex justify-center my-6">
+          <div
+            className="text-m bg-soft text-center rounded-2xl p-4"
+            onClick={changeCamera}
+          >
+            카메라 전환
           </div>
         </div>
       </div>
