@@ -83,6 +83,7 @@ function QRcodePurchase() {
                     className="w-full bg-white rounded-lg text-end outline-0 m-3 p-2"
                     value={amount ? amount : undefined}
                     size={1}
+                    maxLength={7}
                     onChange={handleAmount}
                   />{" "}
                   원
