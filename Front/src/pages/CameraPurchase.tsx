@@ -38,7 +38,7 @@ function CameraPurchase() {
     setPayType(parseData.payType);
     setAmount(parseData.money);
   };
-
+  const [testMsg, setTestMsg] = useState(""); 
   const handleAmount = (event: ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
   };
@@ -113,7 +113,13 @@ function CameraPurchase() {
         (result) => handleScan(result),
         QrOptions
       );
-      qrScanner.setCamera("environment");
+      QrScanner.listCameras().then(res=>{
+        setTestMsg(res[0].label+" "+res[1].label)
+        qrScanner.setCamera(res[0].id);
+      });
+      
+      
+      
       qrScanner.start();
 
       return () => qrScanner.destroy();
@@ -160,6 +166,7 @@ function CameraPurchase() {
             </div>
           </div>
         </div>
+        <div>{testMsg}</div>
       </div>
       <BottomNav />
     </div>
