@@ -45,7 +45,9 @@ function CameraPurchase() {
   };
 
   const changeCamera = () => {
-    setCurrentCameraIndex((currentCameraIndex + 3) % cameraList.length);
+    setCurrentCameraIndex(
+      (cameraList.length + currentCameraIndex - 1) % cameraList.length
+    );
   };
 
   const payRequest = () => {
