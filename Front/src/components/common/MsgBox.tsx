@@ -18,12 +18,12 @@ const MsgBox: React.FC<Props> = ({ onMessageChange }) => {
       <div className="flex justify-center items-center">
         <img src="/icons/icon-emoji-1.png" alt="Icon" className="w-32 h-32" />
       </div>
-      <div className="bg-white rounded-lg pt-4 pb-4 mt-10 w-full">
+      <div className="bg-white rounded-lg pt-4 pb-4 mt-10 w-full overflow-hidden">
         <textarea
           value={message}
           onChange={handleInputChange}
           placeholder="하고싶은 말을 적어주세요."
-          className="text-darkgray text-center"
+          className="text-darkgray text-center outline-none"
         />
       </div>
     </div>
