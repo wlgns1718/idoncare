@@ -45,7 +45,7 @@ function CameraPurchase() {
   };
 
   const changeCamera = () => {
-    setCurrentCameraIndex((currentCameraIndex + 1) % cameraList.length);
+    setCurrentCameraIndex((currentCameraIndex + 3) % cameraList.length);
   };
 
   const payRequest = () => {
@@ -131,7 +131,7 @@ function CameraPurchase() {
 
       qrScanner.start();
       if (cameraList.length)
-        qrScanner.setCamera(cameraList[(cameraList.length + currentCameraIndex - 1) % cameraList.length].id);
+        qrScanner.setCamera(cameraList[currentCameraIndex].id);
       return () => qrScanner.destroy();
     }
   }, [cameraList, currentCameraIndex]);
