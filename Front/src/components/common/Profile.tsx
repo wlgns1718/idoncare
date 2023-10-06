@@ -54,7 +54,7 @@ const Profile = ({
   return (
     <div className="flex flex-col items-center justify-around w-full">
       <img
-        className={`w-[${ProfileSize[size]}px] h-[${ProfileSize[size]}px] rounded-full`}
+        className={`h-[${ProfileSize[size]}px] rounded-full`}
         src={profileImages[type == "PARENT" ? ranNum : ranNum + 5]}
         alt="프로필 이미지"
       />

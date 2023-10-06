@@ -119,7 +119,7 @@ const PocketMoney: React.FC = () => {
               <SmallBtn link="" text="전체보기" classes="mb-10" />
             </div> */}
 
-            <div className="flex justify-between">
+            <div className="flex justify-between text-s text-center">
               <SendMoneyBox
                 link="/sendPocketMoney"
                 bgColor="bg-yellow"
@@ -162,7 +162,7 @@ const PocketMoney: React.FC = () => {
               <SmallBtn link="" text="전체보기" classes="mb-10" />
             </div> */}
 
-            <div className="flex justify-between">
+            <div className="flex justify-between text-s text-center">
               <SendMoneyBox
                 link="/kidDemandMoney"
                 bgColor="bg-yellow"
@@ -183,7 +183,7 @@ const PocketMoney: React.FC = () => {
             </div>
           </div>
         )}
-        { roleIsParent &&
+        {roleIsParent && (
           <div>
             <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
             {regularPocketMoneyList.length > 0 ? (
@@ -200,7 +200,7 @@ const PocketMoney: React.FC = () => {
               <RegularMoneyBoxEmpty />
             )}
           </div>
-        }
+        )}
       </div>
       <BottomNav />
     </div>

@@ -28,22 +28,6 @@ const SignupTypeSelect = ({
       <div className="flex-col mx-[14vw] mt-[-100px]">
         <div
           onClick={() => {
-            onSetInfo(step, "CHILD");
-          }}
-          className={`${
-            userType === "CHILD" ? "scale-105" : "scale-95 grayscale"
-          } transition duration-300 border-[5px]}`}
-        >
-          <Profile
-            size="large"
-            profileName="자식"
-            profileImage={""}
-            type="CHILD"
-          />
-          <p>용돈을 받을래요!</p>
-        </div>
-        <div
-          onClick={() => {
             onSetInfo(step, "PARENT");
           }}
           className={`${
@@ -57,6 +41,22 @@ const SignupTypeSelect = ({
             type="PARENT"
           />
           <p>용돈을 줄래요!</p>
+        </div>
+        <div
+          onClick={() => {
+            onSetInfo(step, "CHILD");
+          }}
+          className={`${
+            userType === "CHILD" ? "scale-105" : "scale-95 grayscale"
+          } transition duration-300 border-[5px]}`}
+        >
+          <Profile
+            size="large"
+            profileName="자식"
+            profileImage={""}
+            type="CHILD"
+          />
+          <p>용돈을 받을래요!</p>
         </div>
       </div>
       <div
