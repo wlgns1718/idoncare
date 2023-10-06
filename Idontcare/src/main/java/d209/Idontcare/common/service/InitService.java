@@ -101,7 +101,7 @@ public class InitService {
     for(long i = 3; i <= 5; i++){
       //아이들 결제내역 만들어주기
       long current = 1_000_000;
-      for(int j = 0; j <= i; j++) {
+      for(int j = 0; j <= 7; j++) {
         depository = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusDays(j), "장난감" + j, 1_000L * (j+1), Type.PAYMENT, CashFlow.DEPOSIT, current);
         transactionHistoryRepository.save(depository);
         current -= 1_000L * (j+1);
@@ -111,6 +111,18 @@ public class InitService {
         current -= 500L * (j+1);
 
         withdrawal = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusDays(j), "부모님으로부터 용돈" + j, 1_200L * (j+1), Type.POCKET, CashFlow.WITHDRAWAL, current);
+        transactionHistoryRepository.save(withdrawal);
+        current += 1_200L * (j+1);
+        
+        depository = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusMonths(j), "장난감" + j, 600L * (j+1), Type.PAYMENT, CashFlow.DEPOSIT, current);
+        transactionHistoryRepository.save(depository);
+        current -= 1_000L * (j+1);
+
+        depository = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusMonths(j), "장난감 두번사기" + j, 800L * (j+1), Type.PAYMENT, CashFlow.DEPOSIT, current);
+        transactionHistoryRepository.save(depository);
+        current -= 500L * (j+1);
+
+        withdrawal = new TransactionHistory(userRepository.findByKakaoId(i).get(), LocalDateTime.now().minusMonths(j), "부모님으로부터 용돈" + j, 800L * (j+1), Type.POCKET, CashFlow.WITHDRAWAL, current);
         transactionHistoryRepository.save(withdrawal);
         current += 1_200L * (j+1);
       }
