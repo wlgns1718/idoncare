@@ -131,7 +131,7 @@ function CameraPurchase() {
 
       qrScanner.start();
       if (cameraList.length)
-        qrScanner.setCamera(cameraList[cameraList.length -1 - currentCameraIndex].id);
+        qrScanner.setCamera(cameraList[(cameraList.length + currentCameraIndex - 1) % cameraList.length].id);
       return () => qrScanner.destroy();
     }
   }, [cameraList, currentCameraIndex]);
