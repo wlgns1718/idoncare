@@ -179,7 +179,7 @@ public class PocketMoneyController {
     }
 
     /* 매일 오전 01시 정기용돈 이체 */
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 0 1 * * *")
     public void executeRegularPocketMoney(){
         LocalDateTime now = LocalDateTime.now();
         pocketMoneyService.executeRegularPocketMoney(now);
