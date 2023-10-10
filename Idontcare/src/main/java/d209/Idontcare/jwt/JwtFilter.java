@@ -49,6 +49,11 @@ public class JwtFilter extends OncePerRequestFilter {
     
     MutableHttpServletRequest request = new MutableHttpServletRequest(httpServletRequest);
     
+    Cookie[] testCookies = request.getCookies();
+    for(Cookie c: testCookies){
+      System.out.printf("Cooki(%s) : %s\n", c.getName(), c.getValue());
+    }
+    
     String path = request.getServletPath();
     if(acceptPath.contains(path)){
       //통과되어야 되는 경우
