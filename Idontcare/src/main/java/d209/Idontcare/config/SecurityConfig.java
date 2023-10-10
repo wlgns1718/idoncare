@@ -42,11 +42,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+    http.cors();  //security에서도 cors를 해야 제대로 withCredentials를 할 수 있다
     http.csrf().disable()
         .formLogin(Customizer.withDefaults())
         .httpBasic(Customizer.withDefaults()) // 기본 인증 로그인 사용하지 않음. (rest api)
-
+        
         .sessionManagement((session) -> session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -67,4 +67,6 @@ public class SecurityConfig {
     public AesBytesEncryptor aesBytesEncryptor() {
       return new AesBytesEncryptor(secret, "70726574657374");
     }
+
+    
 }
