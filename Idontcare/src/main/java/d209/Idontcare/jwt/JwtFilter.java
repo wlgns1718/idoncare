@@ -1,6 +1,7 @@
 package d209.Idontcare.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import d209.Idontcare.common.MutableHttpServletRequest;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.CommonException;
 import d209.Idontcare.common.exception.ExpiredTokenException;
@@ -42,9 +43,11 @@ public class JwtFilter extends OncePerRequestFilter {
   }
   
   @Override
-  protected void doFilterInternal(HttpServletRequest request,
+  protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                   HttpServletResponse response,
                                   FilterChain filterChain) throws ServletException, IOException {
+    
+    MutableHttpServletRequest request = new MutableHttpServletRequest(httpServletRequest);
     
     String path = request.getServletPath();
     if(acceptPath.contains(path)){
@@ -78,9 +81,16 @@ public class JwtFilter extends OncePerRequestFilter {
             throw new ExpiredTokenException();
           }
           
+          //Refresh Token을 이용해 새로 발급해주자
           String createdAccessToken = created.getAccessToken();
           String createdRefreshToken = created.getRefreshToken();
           
+          //새로 발급된 토큰을 기준으로 유저 정보를 request에 넣어주자
+          AuthInfo authInfo = jwtTokenProvider.getAuthInfo(createdAccessToken);
+          request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
+          request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
+          
+          //Response에도 넣어주자
           response.addHeader("Authorization", "Bearer " + createdAccessToken);
           Cookie createdCookie = new Cookie("refreshToken", createdRefreshToken);
           createdCookie.setMaxAge((int)(refreshExpirationTime / 1000));
