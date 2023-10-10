@@ -13,12 +13,15 @@ public class WebConfig implements WebMvcConfigurer {
     registry.addMapping("/**")
         .allowedOrigins("*")
         .exposedHeaders("Authorization")  //Access Token에 대해 접근할 수 있도록 변경
+        .allowCredentials(true)           //쿠키 요청을 허용
         .allowedMethods(
             HttpMethod.GET.name(),
             HttpMethod.HEAD.name(),
             HttpMethod.POST.name(),
             HttpMethod.PUT.name(),
             HttpMethod.DELETE.name(),
-            HttpMethod.OPTIONS.name());
+            HttpMethod.OPTIONS.name(),
+            HttpMethod.PATCH.name()
+        );
   }
 }
