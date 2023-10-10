@@ -66,7 +66,6 @@ public class JwtFilter extends OncePerRequestFilter {
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
       }
-      System.out.println("여기는 오면 안되는데");
     } catch(ExpiredJwtException e){
       //Access Token이 만료된 경우
       System.out.println("Access Token 만료");
@@ -100,7 +99,6 @@ public class JwtFilter extends OncePerRequestFilter {
           response.addHeader("Authorization", "Bearer " + createdAccessToken);
           Cookie createdCookie = new Cookie("refreshToken", createdRefreshToken);
           createdCookie.setMaxAge((int)(refreshExpirationTime / 1000));
-          createdCookie.setDomain("j9d209.p.ssafy.io");
           response.addCookie(createdCookie);
         }
       }
