@@ -35,6 +35,8 @@ import PrivateRoute from "./routes/privateRoute";
 import DonePage from "./pages/DonePage";
 import NotFound from "./pages/NotFound";
 import Preparing from "./pages/Preparing";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const queryClient = new QueryClient();
@@ -170,6 +172,18 @@ function App() {
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={1000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </AppLayout>
     </RecoilRoot>
   );

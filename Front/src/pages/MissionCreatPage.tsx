@@ -61,6 +61,7 @@ const MissionCreate: React.FC = () => {
         .then((response) => {
           if (response.status >= 200 && response.status < 300) {
             console.log(response.data);
+            console.log(beforeMessage)
             setIsSuccess(true);
           } else {
             console.error("Server error:", response.data);
@@ -142,7 +143,7 @@ const MissionCreate: React.FC = () => {
             <>
               <div className="text-m mb-6">{childUserName}</div>
               <div className="text-m">{missionData.title}</div>
-              <div>{beforeMessage}</div>
+              {/* <div>{beforeMessage}</div> */}
               <div className="text-m text-main">{amount}원</div>
             </>
           }

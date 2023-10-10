@@ -51,7 +51,7 @@ const missionCards: {
     list: [
       {
         title: "설거지하기",
-        img: "../../assets/images/mission/1.png",
+        img: "/mission/1.png",
       },
     ],
   },
@@ -60,19 +60,19 @@ const missionCards: {
     list: [
       {
         title: "운동하기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/2.png",
       },
       {
         title: "자전거 타기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/3.png",
       },
       {
         title: "태권도 학원가기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/4.png",
       },
       {
         title: "수영장 가기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/5.png",
       },
     ],
   },
@@ -81,19 +81,19 @@ const missionCards: {
     list: [
       {
         title: "동생 돌보기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/6.png",
       },
       {
         title: "커피 타주기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/7.png",
       },
       {
         title: "안마해주기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/8.png",
       },
       {
         title: "포옹하기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/9.png",
       },
     ],
   },
@@ -102,19 +102,19 @@ const missionCards: {
     list: [
       {
         title: "숙제하기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/10.png",
       },
       {
         title: "책 읽기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/11.png",
       },
       {
         title: "학습지 풀기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/12.png",
       },
       {
         title: "영단어 외우기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/13.png",
       },
     ],
   },
@@ -123,19 +123,19 @@ const missionCards: {
     list: [
       {
         title: "양치질 하기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/14.png",
       },
       {
         title: "설거지 하기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/15.png",
       },
       {
         title: "빨래 하기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/16.png",
       },
       {
         title: "요리해서 밥차리기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/17.png",
       },
     ],
   },
@@ -144,19 +144,19 @@ const missionCards: {
     list: [
       {
         title: "강아지 산책시키기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/18.png",
       },
       {
         title: "강아지 밥 주기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/19.png",
       },
       {
         title: "강아지 목욕 시키기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/20.png",
       },
       {
         title: "고양이 놀아주기",
-        img: "../../assets/images/mission/2.png",
+        img: "/mission/21.png",
       },
     ],
   },

@@ -12,6 +12,7 @@ import AxiosHeader from "../apis/axios/AxiosHeader";
 import BottomNav from "../components/common/BottomNav";
 import useComma from "../hooks/useComma";
 import { useNavigate } from "react-router";
+import { toast } from 'react-toastify';
 
 function WalletRecharge() {
   const token = useRecoilValue(userToken);
@@ -64,7 +65,8 @@ function WalletRecharge() {
                 is_done: false,
               },
             }
-          );
+            );
+            toast('충전에 실패하였습니다.');
         }
       });
   };

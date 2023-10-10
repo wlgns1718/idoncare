@@ -37,4 +37,5 @@ export type MissionDetailType = {
   type: "REQUEST" | "PROCESS" | "UNPAID" | "COMPLETE";
   message?: string; 
   createdAt: string;
+  img?: string; 
 };

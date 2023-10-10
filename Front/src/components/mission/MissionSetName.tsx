@@ -5,8 +5,8 @@ import MissionBox from "./MissionBox";
 import { CreateMissionData } from "../../store/mission/atoms";
 
 interface MissionSetNameProps {
-  missionData: CreateMissionData; // change this line
-  setMissionData: (data: CreateMissionData) => void; // and this line
+  missionData: CreateMissionData;
+  setMissionData: (data: CreateMissionData) => void;
 }
 
 

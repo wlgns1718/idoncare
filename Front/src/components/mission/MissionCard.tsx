@@ -28,7 +28,8 @@ function MissionCard({ mission }: MissionCardProps) {
       }}
     >
       <div className="mx-auto text-center text-s my-6">{mission.title}</div>
-      <img src="../../assets/imgs/singup.smile.png" alt="" />
+      {/* <img src="/mission/1.png" alt="Icon" className="w-32" /> */}
+      <img src={mission.img} alt="MissionIcon" className="w-32" />
     </div>
   );
 }

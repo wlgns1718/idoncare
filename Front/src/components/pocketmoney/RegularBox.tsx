@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { userToken } from "../../store/common/selectors";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
 import { baseUrl } from "../../apis/url/baseUrl";
+import { toast } from 'react-toastify';
 
 type RegularMoneyBoxProps = {
   regularDate: string;
@@ -71,7 +72,10 @@ const RegularMoneyBox: React.FC<RegularMoneyBoxProps> = ({
         data: { regularPocketMoneyId },
       })
       .then(() => {
+        setIsDeleteModalOpen(false);
         navigate("/");
+        setTimeout(() => navigate("/pocketmoney"), 0);
+        toast('정기용돈이 해제되었습니다.');
       })
       .catch((error) => console.error("Error:", error));
   };

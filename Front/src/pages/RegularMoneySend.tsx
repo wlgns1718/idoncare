@@ -39,6 +39,21 @@ const SendRegularMoney: React.FC = () => {
     nextStep();
   };
 
+  const getRegularDate = (type: string | null, cycle: number | null) => {
+    const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  
+    switch (type) {
+      case "MONTH":
+        return `매월 ${cycle}일`;
+      case "WEEK":
+        return `매주 ${daysOfWeek[cycle! % 7]}요일`;
+      case "DAY":
+        return "매일";
+      default:
+        return "";
+    }
+  };  
+
   const nextStep = () => {
     if (step === 4) {
       axios
@@ -77,22 +92,23 @@ const SendRegularMoney: React.FC = () => {
     case 4:
       form = <MoneyPassword onNext={nextStep} />;
       break;
-    case 5:
-      form = (
+      case 5:
+        form = (
         <MoneyDone
-          title="정기용돈 등록 완료"
-          content={
-            <>
-              <div className="text-m">{childUserName}</div>
-              <div className="text-m">
-                매월 {cycle}일 <span className="text-main">{amount}</span>원
-              </div>
-            </>
-          }
-          ps="충전잔액이 부족하면 이체되지 않습니다."
+        title="정기용돈 등록 완료"
+        content={
+        <>
+        <div className="text-m">{childUserName}</div>
+        <div className="text-m">
+        {getRegularDate(type, cycle)} <span className="text-main">{amount}</span>원
+        </div>
+        </>
+        }
+        ps="충전잔액이 부족하면 이체되지 않습니다."
         />
-      );
-      break;
+        );
+        break;
+        
 
     default:
       throw new Error("Invalid step");
