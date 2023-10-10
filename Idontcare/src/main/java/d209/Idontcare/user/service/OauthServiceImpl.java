@@ -153,6 +153,8 @@ public class OauthServiceImpl implements OauthService{
         String jwtAccessToken = jwtTokenProvider.createAccessToken(user.getUserId(), user.getRole());
         String jwtRefreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
         
+        
+        
         GetUserInfoDto resultDto = GetUserInfoDto.builder()
             .userId(user.getUserId().toString())
             .msg("등록된 회원입니다.")
