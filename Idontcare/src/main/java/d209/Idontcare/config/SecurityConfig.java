@@ -45,6 +45,14 @@ public class SecurityConfig {
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      CorsConfiguration config = new CorsConfiguration();
+      config.addAllowedOriginPattern("*");
+      config.addAllowedHeader("*");
+      config.addAllowedMethod("*");
+      source.registerCorsConfiguration("/**", config);
+    
+      
       http.csrf().disable()
         .formLogin(Customizer.withDefaults())
         .httpBasic(Customizer.withDefaults()) // 기본 인증 로그인 사용하지 않음. (rest api)
