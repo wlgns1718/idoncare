@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry){
     registry.addMapping("/**")
-        .allowedOriginPatterns("*")       //credentials를 allow로 하면 patterns를 대신 사용 해야 정상 작동한다
+        .allowedOriginPatterns("http://localhost*", "https://localhost*", "http://j9d209.p.ssafy.io*", "https://j9d209.p.ssafy.io*")
         .exposedHeaders("Authorization")  //Access Token에 대해 접근할 수 있도록 변경
         .allowCredentials(true)           //쿠키 요청을 허용
         .allowedMethods(
