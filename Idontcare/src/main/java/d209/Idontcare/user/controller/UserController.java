@@ -9,6 +9,7 @@ import d209.Idontcare.jwt.JwtTokenProvider;
 import d209.Idontcare.user.dto.*;
 import d209.Idontcare.user.dto.req.LoginReqDto;
 import d209.Idontcare.user.dto.req.RefreshReqDto;
+import d209.Idontcare.user.dto.res.LoginResDto;
 import d209.Idontcare.user.dto.res.UserInfoResDto;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.service.OauthService;
@@ -20,9 +21,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Map;
 
@@ -36,6 +40,9 @@ public class UserController {
     private final OauthService oauthService;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    
+    @Value("${jwt.refresh-expiration-time}")
+    private Long refreshExpirationTime;
     
     @PostMapping(value = "/login")
     @Operation(summary="로그인", description = "카카오 코드를 통해 로그인을 요청합니다")
@@ -82,12 +89,24 @@ public class UserController {
     @Operation(summary = "테스트 로그인", description = "코드를 통해 로그인, [1 ~ 2]: 부모, [3 ~ 5] : 자식")
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
-            content=@Content(schema = @Schema(implementation = GetUserInfoDto.class)))
+            content=@Content(schema = @Schema(implementation = LoginResDto.class)))
     })
-    public ResponseDto loginTest(@PathVariable("kakaoId") Long kakaoId){
+    public ResponseDto loginTest(@PathVariable("kakaoId") Long kakaoId,
+                                 HttpServletResponse response){
         GetUserInfoDto userInfo = oauthService.getUserInfoTest(kakaoId);
         
-        return ResponseDto.success(userInfo);
+        response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
+        
+        Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
+        
+        int expireTime = (int)(refreshExpirationTime / 1000);
+        cookie.setMaxAge(expireTime);
+        cookie.setDomain("j9d209.p.ssafy.io");
+//        cookie.setDomain("localhos");
+        
+        response.addCookie(cookie);
+
+        return ResponseDto.success(new LoginResDto(userInfo));
     }
     
     @PostMapping("/refresh")
