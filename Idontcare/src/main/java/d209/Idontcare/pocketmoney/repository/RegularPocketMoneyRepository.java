@@ -12,10 +12,15 @@ import java.util.List;
 
 public interface RegularPocketMoneyRepository extends JpaRepository<RegularPocketMoney, Long> {
   
-  @Query("select r.regularPocketMoneyId as regularPocketMoneyId, r.child.userId as childUserId, r.child.name as childName, " +
+  @Query("select r.regularPocketMoneyId as regularPocketMoneyId, r.child.userId as userId, r.child.name as name, " +
       "r.type as type, r.cycle as cycle, r.amount as amount, r.createdAt as createdAt " +
       "from RegularPocketMoney r where r.parent.userId = :parentUserId")
   List<Tuple> findAllByParentUserId(@Param("parentUserId") Long parentUserId);
+  
+  @Query("select r.regularPocketMoneyId as regularPocketMoneyId, r.parent.userId as userId, r.parent.name as name, " +
+      "r.type as type, r.cycle as cycle, r.amount as amount, r.createdAt as createdAt " +
+      "from RegularPocketMoney r where r.child.userId = :childUserId")
+  List<Tuple> findAllByChildUserId(@Param("childUserId") Long childUserId);
   
   @EntityGraph(attributePaths = {"parent.userId", "child.userId"}, type= EntityGraph.EntityGraphType.LOAD)
   List<RegularPocketMoney> findAllByDueDate(Integer dueDate);

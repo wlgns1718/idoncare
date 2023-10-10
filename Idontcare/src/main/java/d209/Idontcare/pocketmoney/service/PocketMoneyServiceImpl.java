@@ -12,6 +12,7 @@ import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoneyRejected;
 import d209.Idontcare.pocketmoney.repository.*;
 import d209.Idontcare.relationship.service.RelationshipService;
+import d209.Idontcare.user.entity.Role;
 import d209.Idontcare.user.entity.User;
 import d209.Idontcare.user.repository.UserRepository;
 import d209.Idontcare.user.service.UserService;
@@ -25,6 +26,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,8 +100,14 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
   }
   
   @Override
-  public List<GetRegularPocketMoneysResDto> getRegularPocketMoneys(Long parentUserId) {
-    List<Tuple> tuples = regularPocketMoneyRepository.findAllByParentUserId(parentUserId);
+  public List<GetRegularPocketMoneysResDto> getRegularPocketMoneys(Long userId, Role role) {
+    List<Tuple> tuples = new LinkedList<>();
+    if(role == Role.PARENT){
+      tuples = regularPocketMoneyRepository.findAllByParentUserId(userId);
+    }
+    else if(role == Role.CHILD){
+      tuples = regularPocketMoneyRepository.findAllByChildUserId(userId);
+    }
     
     return tuples.stream().map(GetRegularPocketMoneysResDto::new).toList();
   }

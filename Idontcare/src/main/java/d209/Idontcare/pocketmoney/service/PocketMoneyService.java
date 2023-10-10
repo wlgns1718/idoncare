@@ -6,6 +6,7 @@ import d209.Idontcare.pocketmoney.dto.req.*;
 import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.dto.res.GetRegularPocketMoneysResDto;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
+import d209.Idontcare.user.entity.Role;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 public interface PocketMoneyService {
-  List<GetRegularPocketMoneysResDto> getRegularPocketMoneys(Long parentUserId);
+  List<GetRegularPocketMoneysResDto> getRegularPocketMoneys(Long userId, Role role);
   
   RegularPocketMoney registryRegularPocketMoney(Long parentUserId, RegistRegularPocketMoneyReqDto req, LocalDateTime now)
       throws AuthenticationException, BadRequestException, NoSuchUserException, MustChildException, DuplicatedException;
