@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import d209.Idontcare.common.exception.AuthenticationException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -26,6 +27,13 @@ public class LoginAspect {
   public void LoginOnly(LoginOnly loginOnly) throws IOException {
     HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
         .getRequest();
+    
+    Cookie[] testCookies = request.getCookies();
+    if(testCookies != null){
+      for(Cookie c: testCookies){
+        System.out.printf("Cookie(%s) : %s\n", c.getName(), c.getValue());
+      }
+    }
     
     Role role;
     try{
