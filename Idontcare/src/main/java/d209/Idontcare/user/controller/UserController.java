@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -106,29 +107,30 @@ public class UserController {
         
         response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
         
-        Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", userInfo.getRefreshToken())
+            .sameSite("None")
+            .secure(false)
+            .maxAge(refreshExpirationTime / 1000)
+            .build();
         
-        int expireTime = (int)(refreshExpirationTime / 1000);
-        cookie.setMaxAge(expireTime);
-        
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseDto.success(new LoginResDto(userInfo));
     }
     
-    @PostMapping("/refresh")
-    @Operation(summary = "토큰 재발급", description = "리프레시 토큰을 사용하여 액세스토큰, 리프레시 토큰 재발급")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "성공",
-            content=@Content(schema = @Schema(implementation = AccessRefreshTokenDto.class))),
-        @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
-    })
-    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-    public ResponseDto refresh(@Valid @RequestBody RefreshReqDto req){
-        AccessRefreshTokenDto result = jwtTokenProvider.refresh(req.getRefreshToken());
-        
-        return ResponseDto.success(result);
-    }
+//    @PostMapping("/refresh")
+//    @Operation(summary = "토큰 재발급", description = "리프레시 토큰을 사용하여 액세스토큰, 리프레시 토큰 재발급")
+//    @ApiResponses(value = {
+//        @ApiResponse(responseCode = "200", description = "성공",
+//            content=@Content(schema = @Schema(implementation = AccessRefreshTokenDto.class))),
+//        @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
+//    })
+//    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
+//    public ResponseDto refresh(@Valid @RequestBody RefreshReqDto req){
+//        AccessRefreshTokenDto result = jwtTokenProvider.refresh(req.getRefreshToken());
+//
+//        return ResponseDto.success(result);
+//    }
     
     @PostMapping("/logout")
     @Operation(summary = "로그아웃", description = "로그아웃을 수행합니다")
