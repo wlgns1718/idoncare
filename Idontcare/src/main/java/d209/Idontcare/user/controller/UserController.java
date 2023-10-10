@@ -105,7 +105,7 @@ public class UserController {
                                  HttpServletResponse response){
         GetUserInfoDto userInfo = oauthService.getUserInfoTest(kakaoId);
         
-        response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
+        response.addHeader("authorization", "Bearer " + userInfo.getAccessToken());
         
         Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
         
