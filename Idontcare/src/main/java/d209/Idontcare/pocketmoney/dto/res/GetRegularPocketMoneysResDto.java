@@ -15,11 +15,11 @@ public class GetRegularPocketMoneysResDto {
   @Schema(description = "정기용돈 ID", example = "1")
   private Long regularPocketMoneyId;
   
-  @Schema(description = "아이 ID", example = "1")
-  private Long childUserId;
+  @Schema(description = "아이 또는 부모 ID", example = "1")
+  private Long userId;
   
-  @Schema(description = "아이 이름", example = "1")
-  private String childName;
+  @Schema(description = "아이 또는 부모 이름", example = "1")
+  private String name;
   
   @Schema(description = "정기용돈 타입", example = "DAY | WEEK | MONTH")
   private Type type;
@@ -35,8 +35,8 @@ public class GetRegularPocketMoneysResDto {
   
   public GetRegularPocketMoneysResDto(Tuple tuple){
     this.regularPocketMoneyId = (Long)tuple.get("regularPocketMoneyId");
-    this.childUserId = (Long)tuple.get("childUserId");
-    this.childName = (String)tuple.get("childName");
+    this.userId = (Long)tuple.get("userId");
+    this.name = (String)tuple.get("name");
     this.type = (Type)tuple.get("type");
     this.cycle = (Integer)tuple.get("cycle");
     this.amount = (Integer)tuple.get("amount");

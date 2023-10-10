@@ -10,6 +10,7 @@ import d209.Idontcare.pocketmoney.dto.res.*;
 import d209.Idontcare.pocketmoney.entity.RegularPocketMoney;
 import d209.Idontcare.pocketmoney.service.PocketMoneyService;
 import d209.Idontcare.common.annotation.LoginOnly.Level;
+import d209.Idontcare.user.entity.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,10 +48,11 @@ public class PocketMoneyController {
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
         @ApiResponse(responseCode= MustParentException.CODE, description = MustParentException.DESCRIPTION)
     })
-    @LoginOnly(level = Level.PARENT_ONLY)
+    @LoginOnly(level = Level.PARENT_OR_CHILD)
     public ResponseDto getRegularPocketMoneyRequest(HttpServletRequest request){
-        Long parentUserId = (Long)request.getAttribute("userId");
-        List<GetRegularPocketMoneysResDto> result = pocketMoneyService.getRegularPocketMoneys(parentUserId);
+        Long userId = (Long)request.getAttribute("userId");
+        Role role = (Role)request.getAttribute("role");
+        List<GetRegularPocketMoneysResDto> result = pocketMoneyService.getRegularPocketMoneys(userId, role);
         return ResponseDto.success(result);
     }
     
