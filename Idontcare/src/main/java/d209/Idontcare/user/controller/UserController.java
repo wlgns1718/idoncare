@@ -107,14 +107,9 @@ public class UserController {
         
         response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
         
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", userInfo.getRefreshToken())
-            .sameSite("None")
-            .secure(false)
-            .maxAge(refreshExpirationTime / 1000)
-            .build();
+        Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
         
-        response.addHeader("Set-Cookie", cookie.toString());
-
+        response.addCookie(cookie);
         return ResponseDto.success(new LoginResDto(userInfo));
     }
     
