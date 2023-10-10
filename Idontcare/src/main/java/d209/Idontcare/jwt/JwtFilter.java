@@ -61,21 +61,26 @@ public class JwtFilter extends OncePerRequestFilter {
     try{
       if(accessToken != null && jwtTokenProvider.validateToken(accessToken)){
         //Access Token이 제대로 있으면
+        System.out.println("Access token 유효");
         AuthInfo authInfo = jwtTokenProvider.getAuthInfo(accessToken);
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
       }
+      System.out.println("여기는 오면 안되는데");
     } catch(ExpiredJwtException e){
       //Access Token이 만료된 경우
+      System.out.println("Access Token 만료");
       Cookie[] cookies = request.getCookies();
       for(Cookie cookie: cookies){
         if(cookie.getName().equals("refreshToken")){
+          System.out.println("리프레시 토큰 발견");
           //Refresh Token이면
           String refreshToken = cookie.getValue();
           
           AccessRefreshTokenDto created = null;
           try{
             created = jwtTokenProvider.refresh(refreshToken);
+            System.out.println("리프레시 토큰으로 재발급 완료");
           } catch(ExpiredJwtException ex){
             //Refresh Token이 만료된 경우
             throw new ExpiredTokenException();
