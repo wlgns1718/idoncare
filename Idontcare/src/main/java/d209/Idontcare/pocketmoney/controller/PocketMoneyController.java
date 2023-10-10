@@ -188,7 +188,7 @@ public class PocketMoneyController {
     @PostMapping("/regular/test/{day}")
     @Operation(summary = "정기용돈 지급 테스트용", description = "정기용돈 지급 테스트")
     public void testRegularPocketMoney(@PathVariable("day") Integer day){
-        int year = day / 10_000;
+        int year = 2000 + day / 10_000;
         int month = (day % 10_000) / 100;
         int date = day % 100;
         

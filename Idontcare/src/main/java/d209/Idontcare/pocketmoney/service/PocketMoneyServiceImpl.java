@@ -241,7 +241,7 @@ public class PocketMoneyServiceImpl implements PocketMoneyService {
 
   @Override
   public void executeRegularPocketMoney(LocalDateTime now) {
-    int year = now.getYear();
+    int year = now.getYear() % 100;
     int month = now.getMonthValue();
     int day = now.getDayOfMonth();
     
