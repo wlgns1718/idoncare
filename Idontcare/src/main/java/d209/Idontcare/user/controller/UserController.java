@@ -83,13 +83,15 @@ public class UserController {
 
     @GetMapping("")
     @Operation(summary = "내정보", description = "내 정보 보기")
-    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     @ApiResponses(value = {
         @ApiResponse(responseCode="200", description = "성공",
             content=@Content(schema = @Schema(implementation = UserInfoResDto.class))),
         @ApiResponse(responseCode= AuthenticationException.CODE, description = AuthenticationException.DESCRIPTION),
     })
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto myInfo(HttpServletRequest request){
+
+        
         Long userId = (Long)request.getAttribute("userId");
         User user = userService.findByUserId(userId).get();
         return ResponseDto.success(new UserInfoResDto(user));
