@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -45,14 +46,18 @@ public class SecurityConfig {
     
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      CorsConfiguration config = new CorsConfiguration();
-      config.addAllowedOriginPattern("*");
-      config.addAllowedHeader("*");
-      config.addAllowedMethod("*");
-      config.setAllowCredentials(true);
-      source.registerCorsConfiguration("/**", config);
-    
+//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//      CorsConfiguration config = new CorsConfiguration();
+//      config.addAllowedOriginPattern("*");
+//      config.addAllowedHeader("*");
+//      config.addAllowedMethod("*");
+//      config.setAllowCredentials(true);
+//      source.registerCorsConfiguration("/**", config);
+      
+     
+      //쿠키를 사용할 수 있도록 CORS 관련 설정을 해주자
+      http.cors().configurationSource(corsConfigurationSource());
+      
       
       http.csrf().disable()
         .formLogin(Customizer.withDefaults())
@@ -79,5 +84,18 @@ public class SecurityConfig {
       return new AesBytesEncryptor(secret, "70726574657374");
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+      CorsConfiguration configuration = new CorsConfiguration();
+      configuration.addAllowedOriginPattern("*");
+      configuration.addAllowedHeader("*");
+      configuration.addAllowedMethod("*");
+      configuration.setAllowCredentials(true);
+      
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", configuration);
+      
+      return source;
+    }
     
 }
