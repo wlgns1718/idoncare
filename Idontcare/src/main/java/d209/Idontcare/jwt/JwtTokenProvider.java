@@ -128,14 +128,14 @@ public class JwtTokenProvider {
       Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
       return true;
     } catch(ExpiredJwtException e){
-      throw new ExpiredTokenException();
+      throw e;
     } catch(JwtException e){
       throw new AuthenticationException();
     }
   }
   
   /* Refresh Token으로 AccessToken, RefreshToken 발급 */
-  public AccessRefreshTokenDto refresh(String refreshToken){
+  public AccessRefreshTokenDto refresh(String refreshToken) throws ExpiredJwtException, JwtException{
     Long userId = getUserId(refreshToken);
     String savedRefreshToken = redisTemplate.opsForValue().get(REFRESH_PREFIX + userId);
     
@@ -143,6 +143,16 @@ public class JwtTokenProvider {
       //저장되어 있던 적이 없으면
       throw new BadRequestException("잘못 된 토큰입니다");
     }
+    
+    try{
+      //유효성 검증
+      Jwts.parser().setSigningKey(secret).parseClaimsJws(refreshToken);
+    } catch(ExpiredJwtException e){
+      throw e;
+    } catch(JwtException e){
+      throw new AuthenticationException();
+    }
+    
     
     User user = userRepository.findById(userId).orElseThrow(BadRequestException::new);
     

@@ -3,12 +3,16 @@ package d209.Idontcare.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import d209.Idontcare.common.dto.ResponseDto;
 import d209.Idontcare.common.exception.CommonException;
+import d209.Idontcare.common.exception.ExpiredTokenException;
 import d209.Idontcare.common.exception.InternalServerException;
 import d209.Idontcare.user.repository.UserRepository;
+import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,6 +23,9 @@ public class JwtFilter extends OncePerRequestFilter {
   
   private final JwtTokenProvider jwtTokenProvider;
   private final ObjectMapper mapper =  new ObjectMapper();
+  
+  @Value("${jwt.refresh-expiration-time}")
+  private Long refreshExpirationTime;
   
   private Set<String> acceptPath;
   
@@ -55,7 +62,35 @@ public class JwtFilter extends OncePerRequestFilter {
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
       }
-    } catch(CommonException e){
+    } catch(ExpiredJwtException e){
+      //Access Token이 만료된 경우
+      Cookie[] cookies = request.getCookies();
+      for(Cookie cookie: cookies){
+        if(cookie.getName().equals("refreshToken")){
+          //Refresh Token이면
+          String refreshToken = cookie.getValue();
+          
+          AccessRefreshTokenDto created = null;
+          try{
+            created = jwtTokenProvider.refresh(refreshToken);
+          } catch(ExpiredJwtException ex){
+            //Refresh Token이 만료된 경우
+            throw new ExpiredTokenException();
+          }
+          
+          String createdAccessToken = created.getAccessToken();
+          String createdRefreshToken = created.getRefreshToken();
+          
+          response.addHeader("Authorization", "Bearer " + createdAccessToken);
+          Cookie createdCookie = new Cookie("refreshToken", createdRefreshToken);
+          createdCookie.setMaxAge((int)(refreshExpirationTime / 1000));
+          createdCookie.setDomain("j9d209.p.ssafy.io");
+          response.addCookie(createdCookie);
+        }
+      }
+    }
+    
+    catch(CommonException e){
       ResponseDto<Void> result = ResponseDto.fail(e);
       String json = mapper.writeValueAsString(result);
       
