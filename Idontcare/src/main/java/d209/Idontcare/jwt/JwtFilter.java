@@ -72,6 +72,7 @@ public class JwtFilter extends OncePerRequestFilter {
       System.out.println("Access Token 만료");
       Cookie[] cookies = request.getCookies();
       for(Cookie cookie: cookies){
+        System.out.printf("Cookie [%s] : %s\n", cookie.getName(), cookie.getValue());
         if(cookie.getName().equals("refreshToken")){
           System.out.println("리프레시 토큰 발견");
           //Refresh Token이면
