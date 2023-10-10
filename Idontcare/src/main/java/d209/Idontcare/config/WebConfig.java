@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 //        )
         .allowedOriginPatterns("*")
         .exposedHeaders("Authorization")  //Access Token에 대해 접근할 수 있도록 변경
-        .allowCredentials(false)           //쿠키 요청을 허용
+        .allowCredentials(true)           //쿠키 요청을 허용
         .allowedMethods(
             HttpMethod.GET.name(),
             HttpMethod.HEAD.name(),
