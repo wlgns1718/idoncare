@@ -51,11 +51,22 @@ public class UserController {
             content=@Content(schema = @Schema(implementation = GetUserInfoDto.class))),
         @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
-    public ResponseDto login(@RequestBody LoginReqDto req){
+    public ResponseDto login(@RequestBody LoginReqDto req,
+                             HttpServletResponse response){
         String accessToken = oauthService.getOauthAccessToken(req);
         GetUserInfoDto userInfo = oauthService.getUserInfo(accessToken);
         
-        return ResponseDto.success(userInfo);
+        response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
+        
+        Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
+        
+        int expireTime = (int)(refreshExpirationTime / 1000);
+        cookie.setMaxAge(expireTime);
+        cookie.setDomain("j9d209.p.ssafy.io");
+        
+        response.addCookie(cookie);
+        
+        return ResponseDto.success(new LoginResDto(userInfo));
     }
 
     @PostMapping(value = "/regist")
@@ -102,7 +113,6 @@ public class UserController {
         int expireTime = (int)(refreshExpirationTime / 1000);
         cookie.setMaxAge(expireTime);
         cookie.setDomain("j9d209.p.ssafy.io");
-//        cookie.setDomain("localhos");
         
         response.addCookie(cookie);
 
