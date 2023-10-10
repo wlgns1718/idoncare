@@ -8,37 +8,9 @@ import { useSetRecoilState } from "recoil";
 import { SignupCode } from "../../store/signup/atoms";
 import { useNavigate } from "react-router-dom";
 import { userData } from "../../store/common/atoms";
+import { PostLogin } from "../../types/PostLogin";
 
 const LoginButton = () => {
-  type AccessToken = string | null;
-  type Email = string;
-  type Joined = boolean;
-  type Msg = string;
-  type Nickname = string;
-  type RefreshToken = string | null;
-  type UserId = string;
-  type Role = string;
-  type Data = null | PostLoginData;
-  type Error = string | null;
-  type Code = number;
-
-  interface PostLoginData {
-    accessToken: AccessToken;
-    email: Email;
-    joined: Joined;
-    msg: Msg;
-    nickname: Nickname;
-    refreshToken: RefreshToken;
-    userId: UserId;
-    role: Role;
-  }
-
-  interface PostLogin {
-    data: Data;
-    error: Error;
-    code: Code;
-  }
-
   const navigate = useNavigate();
   const handleLogin = () => {
     window.location.href = kakaoLoginUrl;
@@ -57,18 +29,18 @@ const LoginButton = () => {
   const { mutate } = useMutation<PostLogin>(PostLoginAxios, {
     onSuccess: (res) => {
       if (res.code === 200) {
-        setKakaoCode(res.data!.userId.toString());
-        if (res.data?.joined === false) {
+        setKakaoCode(res.info!.userId.toString());
+        if (res.info?.joined === false) {
           navigate("/signup");
         } else {
           setUserInfo({
-            nickname: res.data!.nickname,
+            nickname: res.info!.nickname,
             joined: true,
-            userId: res.data!.userId,
-            email: res.data!.email,
-            refreshToken: res.data!.refreshToken,
-            accessToken: res.data!.accessToken,
-            role: res.data!.role,
+            userId: res.info!.userId,
+            email: res.info!.email,
+            refreshToken: res.info!.refreshToken,
+            accessToken: res.info!.accessToken,
+            role: res.info!.role,
           });
           console.log(res);
           navigate("/");

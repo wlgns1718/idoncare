@@ -21,7 +21,7 @@ function TestLogin() {
               nickname: res.data.data!.nickname,
               joined: true,
               userId: res.data.data!.userId,
-              email:  res.data.data!.email,
+              email: res.data.data!.email,
               refreshToken: res.data.data!.refreshToken,
               accessToken: res.data.data.accessToken,
               role: res.data.data!.role,
@@ -36,24 +36,26 @@ function TestLogin() {
   };
   return (
     <div className="my-4 text-center">
-      <div className="text-m my-2">테스트 계정 로그인</div>
+      <div className="my-2 text-m">테스트 계정 로그인</div>
       <div className="p-4">부모</div>
       <div className="grid grid-cols-2 gap-4 text-m text-main">
-        {[...Array(2).keys()].map((i) => (
+        {[...Array(2).keys()].map((i, index) => (
           <div
-            className="bg-soft rounded-lg p-6"
+            className="p-6 rounded-lg bg-soft"
             onClick={() => loginTestAccount(i + 1)}
+            key={index}
           >
             {i + 1}
           </div>
         ))}
       </div>
       <div className="p-4">자녀</div>
-      <div className="grid grid-cols-3 gap-4  text-m text-main">
-        {[...Array(3).keys()].map((i) => (
+      <div className="grid grid-cols-3 gap-4 text-m text-main">
+        {[...Array(3).keys()].map((i, index) => (
           <div
-            className="bg-soft rounded-lg p-6"
+            className="p-6 rounded-lg bg-soft"
             onClick={() => loginTestAccount(i + 3)}
+            key={index}
           >
             {i + 3}
           </div>
