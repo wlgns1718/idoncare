@@ -62,7 +62,6 @@ public class UserController {
         
         int expireTime = (int)(refreshExpirationTime / 1000);
         cookie.setMaxAge(expireTime);
-        cookie.setDomain("j9d209.p.ssafy.io");
         
         response.addCookie(cookie);
         
@@ -112,7 +111,6 @@ public class UserController {
         
         int expireTime = (int)(refreshExpirationTime / 1000);
         cookie.setMaxAge(expireTime);
-        cookie.setDomain("j9d209.p.ssafy.io");
         
         response.addCookie(cookie);
 
