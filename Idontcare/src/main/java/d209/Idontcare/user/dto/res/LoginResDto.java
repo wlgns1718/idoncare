@@ -1,16 +1,12 @@
-package d209.Idontcare.user.dto;
+package d209.Idontcare.user.dto.res;
 
+import d209.Idontcare.user.dto.GetUserInfoDto;
 import d209.Idontcare.user.entity.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
 
-@Builder
-@Getter
-@ToString
-public class GetUserInfoDto {
+@Data
+public class LoginResDto {
   @Schema(description = "유저 ID", example = "1")
   private String userId;
   
@@ -29,9 +25,12 @@ public class GetUserInfoDto {
   @Schema(description = "유저 타입", example = "PARENT | CHILD" , nullable = true)
   private Role role;
   
-//  @Schema(description = "액세스 토큰", example = "회원가입이 되어있을 경우 토큰 발급 | null", nullable = true)
-  private String refreshToken;
-//
-//  @Schema(description = "리프레시 토큰", example = "회원가입이 되어있을 경우 토큰 발급 | null", nullable = true)
-  private String accessToken;
+  public LoginResDto(GetUserInfoDto dto){
+    this.userId = dto.getUserId();
+    this.msg = dto.getUserId();
+    this.joined = dto.isJoined();
+    this.nickname = dto.getNickname();
+    this.email = dto.getEmail();
+    this.role = dto.getRole();
+  }
 }
