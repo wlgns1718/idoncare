@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry){
     registry.addMapping("/**")
         .allowedOrigins("*")
+        .exposedHeaders("Authorization")  //Access Token에 대해 접근할 수 있도록 변경
         .allowedMethods(
             HttpMethod.GET.name(),
             HttpMethod.HEAD.name(),
