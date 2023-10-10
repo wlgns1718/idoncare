@@ -115,7 +115,7 @@ public class JwtTokenProvider {
   }
   
   /* Access Token 검증 */
-  public boolean validateToken(String token){
+  public boolean validateToken(String token) throws ExpiredJwtException, AuthenticationException{
     Long userId = getAuthInfo(token).getUserId();
     
     // 못 쓰는 액세스 토큰 목록에서 보기
