@@ -65,6 +65,7 @@ function TradeHistory() {
       )
       .then((response) => {
         console.log(token);
+        console.log(response);
         console.log(response.data.data);
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
