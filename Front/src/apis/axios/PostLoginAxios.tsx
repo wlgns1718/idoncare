@@ -8,9 +8,10 @@ export const PostLoginAxios = async (): Promise<PostLogin> => {
   const code = params.get("code");
   const path = "api/user/login";
   const payload = { code, redirectUrl: REDIRECT_URI };
-  const withCredentials = { withCredentials: true };
+  // const withCredentials = { withCredentials: true };
+  axios.defaults.withCredentials = true;
 
-  const result = await axios.post(baseUrl + path, payload, withCredentials);
+  const result = await axios.post(baseUrl + path, payload);
 
   return {
     info: result.data.data,
