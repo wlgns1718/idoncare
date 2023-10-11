@@ -31,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -43,21 +44,24 @@ public class SecurityConfig {
     private String secret;
     @Value("${springsecurity.secret.salt}")
     private String salt;
-    
-    @Bean
+    @Value("${jwt.refresh-expiration-time}")
+    private Long refreshExpirationTime;
+  
+  
+  @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//      CorsConfiguration config = new CorsConfiguration();
-//      config.addAllowedOriginPattern("*");
-//      config.addAllowedHeader("*");
-//      config.addAllowedMethod("*");
-//      config.setAllowCredentials(true);
-//      source.registerCorsConfiguration("/**", config);
-      
-     
       //쿠키를 사용할 수 있도록 CORS 관련 설정을 해주자
-      http.cors().configurationSource(corsConfigurationSource());
+      CorsConfiguration config = new CorsConfiguration();
+      config.setExposedHeaders(Arrays.asList("Authorization"));
+      config.addAllowedOriginPattern("*");
+      config.addAllowedHeader("*");
+      config.addAllowedMethod("*");
+      config.setAllowCredentials(true);
       
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", config);
+     
+      http.cors().configurationSource(source);
       
       http.csrf().disable()
         .formLogin(Customizer.withDefaults())
@@ -75,7 +79,7 @@ public class SecurityConfig {
             .anyRequest().authenticated()
         );
 
-    http.apply(new JwtSecurityConfig(jwtTokenProvider));
+    http.apply(new JwtSecurityConfig(jwtTokenProvider, refreshExpirationTime));
     return http.build();
     }
 
@@ -83,20 +87,4 @@ public class SecurityConfig {
     public AesBytesEncryptor aesBytesEncryptor() {
       return new AesBytesEncryptor(secret, "70726574657374");
     }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-      CorsConfiguration config = new CorsConfiguration();
-      config.addAllowedOriginPattern("*");
-      config.addAllowedHeader("*");
-      config.addAllowedMethod("*");
-      
-      config.setAllowCredentials(true);
-      
-      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-      source.registerCorsConfiguration("/**", config);
-      
-      return source;
-    }
-    
 }

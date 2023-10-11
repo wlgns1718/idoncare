@@ -29,6 +29,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.Collection;
 import java.util.Map;
 
 @Tag(name="유저 API")
@@ -62,6 +63,7 @@ public class UserController {
         
         int expireTime = (int)(refreshExpirationTime / 1000);
         cookie.setMaxAge(expireTime);
+        cookie.setPath("/");
         
         response.addCookie(cookie);
         
@@ -107,27 +109,22 @@ public class UserController {
                                  HttpServletResponse response){
         GetUserInfoDto userInfo = oauthService.getUserInfoTest(kakaoId);
         
-        response.addHeader("authorization", "Bearer " + userInfo.getAccessToken());
+        response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
         
-        Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", userInfo.getRefreshToken())
+            .path("/")
+            .sameSite("None")
+            .secure(true)
+//            .httpOnly(true)
+            .domain("j9d209.p.ssafy.io")
+            .maxAge(refreshExpirationTime / 1000)
+            .build();
+        System.out.println(cookie.toString());
         
-        response.addCookie(cookie);
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("set-cookie", cookie.toString());
         return ResponseDto.success(new LoginResDto(userInfo));
     }
-    
-//    @PostMapping("/refresh")
-//    @Operation(summary = "토큰 재발급", description = "리프레시 토큰을 사용하여 액세스토큰, 리프레시 토큰 재발급")
-//    @ApiResponses(value = {
-//        @ApiResponse(responseCode = "200", description = "성공",
-//            content=@Content(schema = @Schema(implementation = AccessRefreshTokenDto.class))),
-//        @ApiResponse(responseCode= BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
-//    })
-//    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
-//    public ResponseDto refresh(@Valid @RequestBody RefreshReqDto req){
-//        AccessRefreshTokenDto result = jwtTokenProvider.refresh(req.getRefreshToken());
-//
-//        return ResponseDto.success(result);
-//    }
     
     @PostMapping("/logout")
     @Operation(summary = "로그아웃", description = "로그아웃을 수행합니다")

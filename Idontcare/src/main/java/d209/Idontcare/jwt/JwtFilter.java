@@ -9,6 +9,7 @@ import d209.Idontcare.common.exception.InternalServerException;
 import d209.Idontcare.user.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,11 +23,15 @@ import java.util.Set;
 
 public class JwtFilter extends OncePerRequestFilter {
   
-  private final JwtTokenProvider jwtTokenProvider;
+  private JwtTokenProvider jwtTokenProvider;
   private final ObjectMapper mapper =  new ObjectMapper();
-  
-  @Value("${jwt.refresh-expiration-time}")
   private Long refreshExpirationTime;
+  
+  public JwtFilter(JwtTokenProvider jwtTokenProvider,
+                   Long refreshExpirationTime){
+    this.jwtTokenProvider = jwtTokenProvider;
+    this.refreshExpirationTime = refreshExpirationTime;
+  }
   
   private Set<String> acceptPath;
   
@@ -52,8 +57,11 @@ public class JwtFilter extends OncePerRequestFilter {
     Cookie[] testCookies = request.getCookies();
     if(testCookies != null){
       for(Cookie c: testCookies){
-        System.out.printf("Cooki(%s) : %s\n", c.getName(), c.getValue());
+        System.out.printf("Cookie(%s) : %s\n", c.getName(), c.getValue());
       }
+    }
+    else{
+      System.out.println("Not Cookie");
     }
     
     String path = request.getServletPath();
@@ -68,26 +76,25 @@ public class JwtFilter extends OncePerRequestFilter {
     try{
       if(accessToken != null && jwtTokenProvider.validateToken(accessToken)){
         //Access Token이 제대로 있으면
-        System.out.println("Access token 유효");
+        System.out.println("Access token Valid");
         AuthInfo authInfo = jwtTokenProvider.getAuthInfo(accessToken);
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
       }
     } catch(ExpiredJwtException e){
       //Access Token이 만료된 경우
-      System.out.println("Access Token 만료");
+      System.out.println("Access Token Expired");
       Cookie[] cookies = request.getCookies();
       for(Cookie cookie: cookies){
-        System.out.printf("Cookie [%s] : %s\n", cookie.getName(), cookie.getValue());
         if(cookie.getName().equals("refreshToken")){
-          System.out.println("리프레시 토큰 발견");
+          System.out.println("Finded Refresh Token");
           //Refresh Token이면
           String refreshToken = cookie.getValue();
           
           AccessRefreshTokenDto created = null;
           try{
             created = jwtTokenProvider.refresh(refreshToken);
-            System.out.println("리프레시 토큰으로 재발급 완료");
+            System.out.println("Token Refresh Success by RefreshToken");
           } catch(ExpiredJwtException ex){
             //Refresh Token이 만료된 경우
             throw new ExpiredTokenException();
@@ -106,6 +113,8 @@ public class JwtFilter extends OncePerRequestFilter {
           response.addHeader("Authorization", "Bearer " + createdAccessToken);
           Cookie createdCookie = new Cookie("refreshToken", createdRefreshToken);
           createdCookie.setMaxAge((int)(refreshExpirationTime / 1000));
+          createdCookie.setPath("/");
+          
           response.addCookie(createdCookie);
         }
       }
