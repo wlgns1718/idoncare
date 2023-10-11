@@ -9,11 +9,7 @@ type Role = string;
 type Info = null | PostLoginInfo;
 type Error = string | null;
 type Code = number;
-type Headers = PostLoginHeaders;
-
-interface PostLoginHeaders {
-  authorization: string;
-}
+type Headers = string;
 
 interface PostLoginInfo {
   accessToken: AccessToken;

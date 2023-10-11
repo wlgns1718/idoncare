@@ -29,6 +29,7 @@ const LoginButton = () => {
   const { mutate } = useMutation<PostLogin>(PostLoginAxios, {
     onSuccess: (res) => {
       if (res.code === 200) {
+        console.log(res.headers);
         setKakaoCode(res.info!.userId.toString());
         if (res.info?.joined === false) {
           navigate("/signup");
@@ -38,17 +39,15 @@ const LoginButton = () => {
             joined: true,
             userId: res.info!.userId,
             email: res.info!.email,
-            refreshToken: res.info!.refreshToken,
-            accessToken: res.info!.accessToken,
+            refreshToken: null,
+            accessToken: res.headers,
             role: res.info!.role,
           });
-          console.log(res);
           navigate("/");
         }
       } else {
         alert("Error: " + res.code + " " + res.error);
       }
-
       console.log(res);
     },
   });

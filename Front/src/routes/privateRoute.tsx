@@ -8,6 +8,7 @@ export function PrivateRoute(): React.ReactElement | null {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(accessToken);
     if (!accessToken) {
       navigate("/login");
     } else {
