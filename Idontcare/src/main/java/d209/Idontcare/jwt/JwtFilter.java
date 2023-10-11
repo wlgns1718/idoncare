@@ -76,6 +76,10 @@ public class JwtFilter extends OncePerRequestFilter {
       
       boolean refreshTokenFinded = false;
       Cookie[] cookies = request.getCookies();
+      
+      if(cookies == null || cookies.length == 0){
+        throw new ExpiredTokenException("리프레시 토큰이 만료되었습니다");
+      }
       for(Cookie cookie: cookies){
         if(cookie.getName().equals("refreshToken")){
           refreshTokenFinded = true;  //리프레시 토큰 찾았다고 표시
