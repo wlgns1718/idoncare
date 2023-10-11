@@ -59,13 +59,15 @@ public class UserController {
         
         response.addHeader("Authorization", "Bearer " + userInfo.getAccessToken());
         
-        Cookie cookie = new Cookie("refreshToken", userInfo.getRefreshToken());
-        
-        int expireTime = (int)(refreshExpirationTime / 1000);
-        cookie.setMaxAge(expireTime);
-        cookie.setPath("/");
-        
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", userInfo.getRefreshToken())
+            .path("/")
+            .sameSite("None")
+            .secure(true)
+//            .httpOnly(true)
+            .domain("j9d209.p.ssafy.io")
+            .maxAge(refreshExpirationTime / 1000)
+            .build();
+        response.addHeader("set-cookie", cookie.toString());
         
         return ResponseDto.success(new LoginResDto(userInfo));
     }
@@ -119,10 +121,8 @@ public class UserController {
             .domain("j9d209.p.ssafy.io")
             .maxAge(refreshExpirationTime / 1000)
             .build();
-        System.out.println(cookie.toString());
-        
-//        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader("set-cookie", cookie.toString());
+        
         return ResponseDto.success(new LoginResDto(userInfo));
     }
     
