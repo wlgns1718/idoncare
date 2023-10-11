@@ -1,7 +1,7 @@
 import axios from "axios";
 import { baseUrl } from "../url/baseUrl";
 import { PostLogin } from "../../types/PostLogin";
-// API 호출
+
 export const PostLoginAxios = async (): Promise<PostLogin> => {
   const REDIRECT_URI = `${window.location.origin}/login`;
   const params = new URLSearchParams(window.location.search);
@@ -9,7 +9,7 @@ export const PostLoginAxios = async (): Promise<PostLogin> => {
   const path = "api/user/login";
   const payload = { code, redirectUrl: REDIRECT_URI };
 
-  const result = await axios.post(baseUrl + path, payload);
+  const result = await axios.post(baseUrl + path, payload, { withCredentials: true });
 
   return {
     info: result.data.data,
