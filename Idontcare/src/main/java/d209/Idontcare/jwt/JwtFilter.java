@@ -9,6 +9,7 @@ import d209.Idontcare.common.exception.InternalServerException;
 import d209.Idontcare.user.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -54,16 +55,6 @@ public class JwtFilter extends OncePerRequestFilter {
     
     MutableHttpServletRequest request = new MutableHttpServletRequest(httpServletRequest);
     
-    Cookie[] testCookies = request.getCookies();
-    if(testCookies != null){
-      for(Cookie c: testCookies){
-        System.out.printf("Cookie(%s) : %s\n", c.getName(), c.getValue());
-      }
-    }
-    else{
-      System.out.println("Not Cookie");
-    }
-    
     String path = request.getServletPath();
     if(acceptPath.contains(path)){
       //통과되어야 되는 경우
@@ -76,25 +67,21 @@ public class JwtFilter extends OncePerRequestFilter {
     try{
       if(accessToken != null && jwtTokenProvider.validateToken(accessToken)){
         //Access Token이 제대로 있으면
-        System.out.println("Access token Valid");
         AuthInfo authInfo = jwtTokenProvider.getAuthInfo(accessToken);
         request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
         request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
       }
     } catch(ExpiredJwtException e){
       //Access Token이 만료된 경우
-      System.out.println("Access Token Expired");
       Cookie[] cookies = request.getCookies();
       for(Cookie cookie: cookies){
         if(cookie.getName().equals("refreshToken")){
-          System.out.println("Finded Refresh Token");
           //Refresh Token이면
           String refreshToken = cookie.getValue();
           
           AccessRefreshTokenDto created = null;
           try{
             created = jwtTokenProvider.refresh(refreshToken);
-            System.out.println("Token Refresh Success by RefreshToken");
           } catch(ExpiredJwtException ex){
             //Refresh Token이 만료된 경우
             throw new ExpiredTokenException();
@@ -109,13 +96,17 @@ public class JwtFilter extends OncePerRequestFilter {
           request.setAttribute("userId", authInfo.getUserId()); //정보 담아서 보내기
           request.setAttribute("role", authInfo.getRole());    //정보 담아서 보내기
           
-          //Response에도 넣어주자
+          //발급된 토큰들을 헤더와 쿠키에 넣어주자
           response.addHeader("Authorization", "Bearer " + createdAccessToken);
-          Cookie createdCookie = new Cookie("refreshToken", createdRefreshToken);
-          createdCookie.setMaxAge((int)(refreshExpirationTime / 1000));
-          createdCookie.setPath("/");
-          
-          response.addCookie(createdCookie);
+          ResponseCookie createdCookie = ResponseCookie.from("refreshToken", createdRefreshToken)
+              .path("/")
+              .sameSite("None")
+              .secure(true)
+//            .httpOnly(true)
+              .domain("j9d209.p.ssafy.io")
+              .maxAge(refreshExpirationTime / 1000)
+              .build();
+          response.addHeader("set-cookie", createdCookie.toString());
         }
       }
     }
