@@ -3,7 +3,6 @@ type Email = string;
 type Joined = boolean;
 type Msg = string;
 type Nickname = string;
-type RefreshToken = string | null;
 type UserId = string;
 type Role = string;
 type Info = null | PostLoginInfo;
@@ -17,7 +16,6 @@ interface PostLoginInfo {
   joined: Joined;
   msg: Msg;
   nickname: Nickname;
-  refreshToken: RefreshToken;
   userId: UserId;
   role: Role;
 }

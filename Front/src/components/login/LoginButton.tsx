@@ -39,7 +39,6 @@ const LoginButton = () => {
             joined: true,
             userId: res.info!.userId,
             email: res.info!.email,
-            refreshToken: null,
             accessToken: res.headers,
             role: res.info!.role,
           });

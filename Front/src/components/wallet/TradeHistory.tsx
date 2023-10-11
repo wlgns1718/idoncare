@@ -9,6 +9,7 @@ import { userToken } from "../../store/common/selectors";
 import { useRecoilValue } from "recoil";
 import { baseUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
+import AxiosToken from "../../apis/axios/AxiosToken";
 
 export interface MonthlyTradeListResponse {
   date: number;
@@ -64,6 +65,7 @@ function TradeHistory() {
         AxiosHeader({ token })
       )
       .then((response) => {
+        AxiosToken(response.headers.authorization);
         console.log(token);
         console.log(response);
         console.log(response.data.data);
