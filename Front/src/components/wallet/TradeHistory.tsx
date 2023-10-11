@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DailyTradeList from "./DailyTradeList";
 import Chip from "../common/Chip";
 import Icon from "../common/Icon";
-import {
-  CashFlow,
-  TradeHistoryCategory,
-  TradeItem,
-} from "../../types/WalletTypes";
+import { CashFlow, TradeHistoryCategory, TradeItem } from "../../types/WalletTypes";
 import axios from "axios";
 import { userToken } from "../../store/common/selectors";
 import { useRecoilValue } from "recoil";
@@ -40,10 +36,7 @@ function TradeHistory() {
   };
 
   const isNowMonth = () => {
-    return (
-      thisYear === currentDate.getFullYear() &&
-      thisMonth === currentDate.getMonth()
-    );
+    return thisYear === currentDate.getFullYear() && thisMonth === currentDate.getMonth();
   };
 
   const handleNextMonth = () => {
@@ -62,18 +55,13 @@ function TradeHistory() {
     });
   };
 
-  const [monthlyTradeList, setMonthlyTradeList] = useState<
-    MonthlyTradeListResponse[]
-  >([]);
+  const [monthlyTradeList, setMonthlyTradeList] = useState<MonthlyTradeListResponse[]>([]);
 
   const getTradeHistory = () => {
     axios
       .get(
-        baseUrl +
-          `api/virtual/${currentDate.getFullYear()}/${
-            currentDate.getMonth() + 1
-          }`,
-          AxiosHeader({ token })
+        baseUrl + `api/virtual/${currentDate.getFullYear()}/${currentDate.getMonth() + 1}`,
+        AxiosHeader({ token })
       )
       .then((response) => {
         console.log(response.data.data);
@@ -105,7 +93,7 @@ function TradeHistory() {
 
   return (
     <>
-      <div className="flex py-6 justify-between pr-5">
+      <div className="flex justify-between py-6 pr-5">
         <div className="flex gap-5 overflow-x-auto no-scrollbar">
           {categorys.map((category, index) => (
             <div className="flex-none" key={index}>
@@ -121,7 +109,7 @@ function TradeHistory() {
           <Icon name="search" size="small" />
         </button>
       </div>
-      <div className="bg-gray h-16 rounded-xl flex justify-between p-4 items-center">
+      <div className="flex items-center justify-between h-16 p-4 bg-gray rounded-xl">
         <button
           onClick={() => {
             handlePrevMonth();
@@ -147,20 +135,12 @@ function TradeHistory() {
       {monthlyTradeList && (
         <div>
           {monthlyTradeList.map((list, index) => {
-            return (
-              <DailyTradeList
-                key={index}
-                list={list}
-                showCategory={currentCategory}
-              />
-            );
+            return <DailyTradeList key={index} list={list} showCategory={currentCategory} />;
           })}
         </div>
       )}
       {!monthlyTradeList && (
-        <div className="p-10 text-m text-center text-main">
-          거래 내역이 없습니다..
-        </div>
+        <div className="p-10 text-center text-m text-main">거래 내역이 없습니다..</div>
       )}
     </>
   );

@@ -6,7 +6,7 @@ interface AxiosHeaderProps {
 
 export const AxiosHeader = ({ token }: AxiosHeaderProps) => {
   const axiosHeader = {
-    headers: { Authorization: token as string },
+    headers: { Authorization: token as string, withCredentials: true },
   };
   return axiosHeader;
 };
