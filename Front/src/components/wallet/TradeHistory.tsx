@@ -66,7 +66,9 @@ function TradeHistory() {
       )
       .then((response) => {
         AxiosToken(response.headers.authorization);
+        console.log("Test");
         console.log(token);
+        console.log(response.headers.authorization);
         console.log(response);
         console.log(response.data.data);
         if (response.data.data) {
