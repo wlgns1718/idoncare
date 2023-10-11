@@ -73,9 +73,12 @@ public class JwtFilter extends OncePerRequestFilter {
       }
     } catch(ExpiredJwtException e){
       //Access Token이 만료된 경우
+      
+      boolean refreshTokenFinded = false;
       Cookie[] cookies = request.getCookies();
       for(Cookie cookie: cookies){
         if(cookie.getName().equals("refreshToken")){
+          refreshTokenFinded = true;  //리프레시 토큰 찾았다고 표시
           //Refresh Token이면
           String refreshToken = cookie.getValue();
           
@@ -84,7 +87,7 @@ public class JwtFilter extends OncePerRequestFilter {
             created = jwtTokenProvider.refresh(refreshToken);
           } catch(ExpiredJwtException ex){
             //Refresh Token이 만료된 경우
-            throw new ExpiredTokenException();
+            throw new ExpiredTokenException("리프레시 토큰이 만료되었습니다");
           }
           
           //Refresh Token을 이용해 새로 발급해주자
@@ -108,6 +111,11 @@ public class JwtFilter extends OncePerRequestFilter {
               .build();
           response.addHeader("set-cookie", createdCookie.toString());
         }
+      }
+      
+      if( !refreshTokenFinded ){
+        //만약 리프레시 토큰을 못 찾았으면
+        throw new ExpiredTokenException("리프레시 토큰이 만료되었습니다");
       }
     }
     
