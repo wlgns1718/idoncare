@@ -8,11 +8,7 @@ interface AxiosTokenProps {
 const AxiosToken = ({ token }: AxiosTokenProps) => {
   const [userInfo, setUserInfo] = useRecoilState(userData);
 
-  if (token === undefined) {
-    token = userInfo.accessToken!;
-  }
-
-  setUserInfo({ ...userInfo, accessToken: token });
+  setUserInfo({ ...userInfo, accessToken: token === undefined ? userInfo.accessToken : token });
 };
 
 export default AxiosToken;
