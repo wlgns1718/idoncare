@@ -71,7 +71,7 @@ function TradeHistory() {
         console.log(token);
         console.log(response.headers.authorization);
         console.log(response);
-        setUserInfo(() => ({ ...userInfo, accessToken: token }));
+        setUserInfo(() => ({ ...userInfo, accessToken: response.headers.authorization }));
         // AxiosToken(response.headers.authorization);
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
