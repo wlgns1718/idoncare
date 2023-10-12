@@ -1,6 +1,5 @@
 import { useRecoilState } from "recoil";
 import { userData } from "../../store/common/atoms";
-import { useEffect } from "react";
 
 interface AxiosTokenProps {
   token: string;
@@ -8,10 +7,8 @@ interface AxiosTokenProps {
 
 const AxiosToken = ({ token }: AxiosTokenProps) => {
   const [userInfo, setUserInfo] = useRecoilState(userData);
-  console.log(userInfo);
-  useEffect(() => {
-    setUserInfo((currentUserInfo) => ({ ...currentUserInfo, accessToken: token }));
-  }, [token]);
+
+  setUserInfo(() => ({ ...userInfo, accessToken: token }));
 
   return null;
 };
