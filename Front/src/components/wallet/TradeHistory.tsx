@@ -6,11 +6,10 @@ import Icon from "../common/Icon";
 import { CashFlow, TradeHistoryCategory, TradeItem } from "../../types/WalletTypes";
 import axios from "axios";
 import { userToken } from "../../store/common/selectors";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { baseUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
 // import AxiosToken from "../../apis/axios/AxiosToken";
-import { userData } from "../../store/common/atoms";
 
 export interface MonthlyTradeListResponse {
   date: number;
@@ -21,7 +20,7 @@ function TradeHistory() {
   const navigate = useNavigate();
 
   const [currentCategory, setCurrentCategory] = useState<CashFlow>("ALL");
-  const [token, setToken] = useState(useRecoilValue(userToken));
+  const [token, setToken] = useRecoilState(userToken);
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -58,11 +57,6 @@ function TradeHistory() {
   };
 
   const [monthlyTradeList, setMonthlyTradeList] = useState<MonthlyTradeListResponse[]>([]);
-  const [userInfo, setUserInfo] = useRecoilState(userData);
-
-  useEffect(() => {
-    setToken(userInfo.accessToken);
-  }, [userInfo]);
 
   const getTradeHistory = () => {
     axios
@@ -71,17 +65,11 @@ function TradeHistory() {
         AxiosHeader({ token })
       )
       .then((response) => {
-        console.log("Test");
-        console.log(token);
-        console.log(response.headers.authorization);
         console.log(response);
-        setUserInfo(() => ({
-          ...userInfo,
-          accessToken:
-            response.headers.authorization === undefined
-              ? userInfo.accessToken
-              : response.headers.authorization,
-        }));
+        setToken(
+          response.headers.authorization === undefined ? token : response.headers.authorization
+        );
+
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
         } else {
