@@ -9,7 +9,6 @@ import { userToken } from "../../store/common/selectors";
 import { useRecoilState } from "recoil";
 import { baseUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
-// import AxiosToken from "../../apis/axios/AxiosToken";
 
 export interface MonthlyTradeListResponse {
   date: number;
