@@ -6,10 +6,11 @@ import Icon from "../common/Icon";
 import { CashFlow, TradeHistoryCategory, TradeItem } from "../../types/WalletTypes";
 import axios from "axios";
 import { userToken } from "../../store/common/selectors";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { baseUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
-import AxiosToken from "../../apis/axios/AxiosToken";
+// import AxiosToken from "../../apis/axios/AxiosToken";
+import { userData } from "../../store/common/atoms";
 
 export interface MonthlyTradeListResponse {
   date: number;
@@ -57,6 +58,7 @@ function TradeHistory() {
   };
 
   const [monthlyTradeList, setMonthlyTradeList] = useState<MonthlyTradeListResponse[]>([]);
+  const [userInfo, setUserInfo] = useRecoilState(userData);
 
   const getTradeHistory = () => {
     axios
@@ -69,7 +71,8 @@ function TradeHistory() {
         console.log(token);
         console.log(response.headers.authorization);
         console.log(response);
-        AxiosToken(response.headers.authorization);
+        setUserInfo(() => ({ ...userInfo, accessToken: token }));
+        // AxiosToken(response.headers.authorization);
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
         } else {
