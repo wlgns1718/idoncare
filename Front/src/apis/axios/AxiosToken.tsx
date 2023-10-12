@@ -10,7 +10,7 @@ const AxiosToken = ({ token }: AxiosTokenProps) => {
 
   setUserInfo(() => ({ ...userInfo, accessToken: token }));
 
-  return null;
+  return <></>;
 };
 
 export default AxiosToken;
