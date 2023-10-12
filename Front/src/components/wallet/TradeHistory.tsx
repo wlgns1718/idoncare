@@ -65,11 +65,11 @@ function TradeHistory() {
         AxiosHeader({ token })
       )
       .then((response) => {
-        AxiosToken(response.headers.authorization);
         console.log("Test");
         console.log(token);
         console.log(response.headers.authorization);
         console.log(response);
+        AxiosToken(response.headers.authorization);
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
         } else {
