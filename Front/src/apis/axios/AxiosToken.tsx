@@ -8,10 +8,12 @@ interface AxiosTokenProps {
 
 const AxiosToken = ({ token }: AxiosTokenProps) => {
   const [userInfo, setUserInfo] = useRecoilState(userData);
-
+  console.log(userInfo);
   useEffect(() => {
-    setUserInfo(() => ({ ...userInfo, accessToken: token }));
+    setUserInfo((currentUserInfo) => ({ ...currentUserInfo, accessToken: token }));
   }, [token]);
+
+  return null;
 };
 
 export default AxiosToken;
