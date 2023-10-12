@@ -196,7 +196,7 @@ const PocketMoney: React.FC = () => {
           </div>
         )}
 
-{!roleIsParent && (
+        {!roleIsParent && (
           <div>
             <div className="text-m mt-14 font-strong">정기 용돈 목록</div>
             {regularPocketMoneyList.length > 0 ? (
@@ -214,7 +214,6 @@ const PocketMoney: React.FC = () => {
             )}
           </div>
         )}
-
       </div>
       <BottomNav />
     </div>
