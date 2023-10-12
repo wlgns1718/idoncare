@@ -65,6 +65,7 @@ function TradeHistory() {
         AxiosHeader({ token })
       )
       .then((response) => {
+        console.log(token);
         console.log(response);
         setToken(
           response.headers.authorization === undefined ? token : response.headers.authorization
