@@ -23,12 +23,12 @@ function TopMenu() {
           <WalletCard />
         </div>
         <div className="flex justify-between w-full gap-4 pb-4">
-          <Link to="/pocketMoney" className="bg-pi text-center text-m text-white bg-opacity-90 box-content rounded-xl p-12 mt-4 w-48 flex flex-col justify-center items-center">
+          <Link to="/pocketMoney" className="bg-sky text-center text-m text-white bg-opacity-90 box-content rounded-xl p-12 mt-4 w-48 flex flex-col justify-center items-center">
               용돈
               <img src="/icons/icon-money.png" alt="Icon" className="w-24 h-20 mt-5"/>
             </Link>
 
-            <Link to="/mission" className="bg-or text-center text-m text-white bg-opacity-90 box-content rounded-xl p-12 mt-4 w-48 flex flex-col justify-center items-center">
+            <Link to="/mission" className="bg-pi text-center text-m text-white bg-opacity-90 box-content rounded-xl p-12 mt-4 w-48 flex flex-col justify-center items-center">
               미션 
               <img src="/icons/icon-mission.png" alt="Icon" className="w-20 h-20 mt-5"/>
             </Link>
