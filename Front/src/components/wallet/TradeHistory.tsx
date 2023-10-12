@@ -70,7 +70,6 @@ function TradeHistory() {
         console.log(token);
         console.log(response.headers.authorization);
         console.log(response);
-        console.log(response.data.data);
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
         } else {

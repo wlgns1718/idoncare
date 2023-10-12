@@ -22,7 +22,6 @@ function TestLogin() {
               joined: true,
               userId: res.data.data!.userId,
               email: res.data.data!.email,
-              refreshToken: res.data.data!.refreshToken,
               accessToken: res.data.data.accessToken,
               role: res.data.data!.role,
             });
