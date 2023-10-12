@@ -7,6 +7,7 @@ import { userData } from "../../store/common/atoms";
 function TestLogin() {
   const navigate = useNavigate();
 
+  axios.defaults.withCredentials = true;
   const setUserInfo = useSetRecoilState(userData);
   const loginTestAccount = (number: number) => {
     axios
@@ -22,7 +23,7 @@ function TestLogin() {
               joined: true,
               userId: res.data.data!.userId,
               email: res.data.data!.email,
-              accessToken: res.data.data.accessToken,
+              accessToken: res.headers.authorization,
               role: res.data.data!.role,
             });
             navigate("/");
