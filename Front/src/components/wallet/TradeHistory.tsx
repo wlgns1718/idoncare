@@ -60,6 +60,10 @@ function TradeHistory() {
   const [monthlyTradeList, setMonthlyTradeList] = useState<MonthlyTradeListResponse[]>([]);
   const [userInfo, setUserInfo] = useRecoilState(userData);
 
+  useEffect(() => {
+    setToken(userInfo.accessToken);
+  }, [userInfo]);
+
   const getTradeHistory = () => {
     axios
       .get(
@@ -78,7 +82,6 @@ function TradeHistory() {
               ? userInfo.accessToken
               : response.headers.authorization,
         }));
-        setToken(userInfo.accessToken);
         if (response.data.data) {
           setMonthlyTradeList(response.data.data);
         } else {
