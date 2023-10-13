@@ -66,7 +66,7 @@ export const RechargeAccountComponent = () => {
         <div className="w-[40px] mr-6">
           <img
             className=""
-            src={`https://j9d209.p.ssafy.io:9082/${myRechargeAccount?.bankName}`}
+            src={`https://j9d209.p.ssafy.io:9082/${myRechargeAccount?.bankName}.png`}
           ></img>
         </div>
         <div className="flex flex-col justify-center text-t">
