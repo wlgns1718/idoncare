@@ -31,7 +31,7 @@ const Kids: React.FC<KidsProps> = ({ isOpen, setIsOpen }) => {
     axios
       .get("https://j9d209.p.ssafy.io:9081/api/relationship", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
       })
       .then((response) => {
