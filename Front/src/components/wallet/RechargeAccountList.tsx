@@ -44,7 +44,7 @@ export const RechargeAccountComponent = () => {
   const handleRemoveAccount = () => {
     axios
       .delete(baseUrl + `api/account/`, {
-        headers: { Authorization: ("Bearer " + Token) as string },
+        headers: { Authorization: Token as string },
         data: {
           bankCode: myRechargeAccount?.bankCode,
           realAccountId: myRechargeAccount?.realAccountId,
@@ -66,7 +66,7 @@ export const RechargeAccountComponent = () => {
         <div className="w-[40px] mr-6">
           <img
             className=""
-            src={`https://j9d209.p.ssafy.io:9082/${myRechargeAccount?.bankName}.png`}
+            src={`https://j9d209.p.ssafy.io:9082/images/${myRechargeAccount?.bankName}.png`}
           ></img>
         </div>
         <div className="flex flex-col justify-center text-t">
