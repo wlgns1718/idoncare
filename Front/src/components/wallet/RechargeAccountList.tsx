@@ -7,7 +7,7 @@ import Modal from "../common/Modal";
 import axios from "axios";
 import { userToken } from "../../store/common/selectors";
 import { RechargeAccountResponse } from "../../types/WalletTypes";
-import { baseUrl } from "../../apis/url/baseUrl";
+import { baseUrl, imageUrl } from "../../apis/url/baseUrl";
 import AxiosHeader from "../../apis/axios/AxiosHeader";
 import YesNoBtn from "../common/YesNoBtn";
 
@@ -47,8 +47,8 @@ export const RechargeAccountComponent = () => {
         headers: { Authorization: Token as string },
         data: {
           bankCode: myRechargeAccount?.bankCode,
-          realAccountId: myRechargeAccount?.realAccountId,
-        },
+          realAccountId: myRechargeAccount?.realAccountId
+        }
       })
       .then((res) => {
         if (res.data.code == 200) {
@@ -64,10 +64,7 @@ export const RechargeAccountComponent = () => {
     <div className="w-full h-[80px] px-8 my-4 bg-gray rounded-xl flex items-center justify-between ">
       <div className="flex">
         <div className="w-[40px] mr-6">
-          <img
-            className=""
-            src={`https://j9d209.p.ssafy.io:9082/images/${myRechargeAccount?.bankName}.png`}
-          ></img>
+          <img className="" src={imageUrl + `/images/${myRechargeAccount?.bankName}.png`}></img>
         </div>
         <div className="flex flex-col justify-center text-t">
           <div>{myRechargeAccount?.bankName}</div>
@@ -86,12 +83,7 @@ export const RechargeAccountComponent = () => {
         <Modal>
           <div className="mt-10 mb-10">
             <p className="text-center text-m">출금 계좌 연결을 해제할까요?</p>
-            <YesNoBtn
-              noText="아니오"
-              yesText="네"
-              onNoClick={handleCancelClick}
-              onYesClick={handleRemoveAccount}
-            />
+            <YesNoBtn noText="아니오" yesText="네" onNoClick={handleCancelClick} onYesClick={handleRemoveAccount} />
           </div>
         </Modal>
       )}
@@ -104,21 +96,19 @@ function RechargeAccountList() {
   const setRechargeAccount = useSetRecoilState(rechargeAccount);
   useEffect(() => {
     if (!isRechargeAccount) {
-      axios
-        .get(baseUrl + `api/account/my`, AxiosHeader({ token }))
-        .then((res) => {
-          console.log(res.data);
-          if (res.data.error) {
-            return;
-          }
-          const account: RechargeAccountResponse = res.data.data;
-          setRechargeAccount({
-            realAccountId: account.realAccountId,
-            pinNumber: account.pinNumber,
-            bankName: account.bankName,
-            bankCode: account.bankCode,
-          });
+      axios.get(baseUrl + `api/account/my`, AxiosHeader({ token })).then((res) => {
+        console.log(res.data);
+        if (res.data.error) {
+          return;
+        }
+        const account: RechargeAccountResponse = res.data.data;
+        setRechargeAccount({
+          realAccountId: account.realAccountId,
+          pinNumber: account.pinNumber,
+          bankName: account.bankName,
+          bankCode: account.bankCode
         });
+      });
     }
   }, []);
 
@@ -129,14 +119,8 @@ function RechargeAccountList() {
       <div className="flex justify-between text-s">
         <div>출금 계좌</div>
       </div>
-      <div className="">
-        {!isRechargeAccount ? <EmptyAccount /> : <RechargeAccountComponent />}
-      </div>
-      {!isRechargeAccount && (
-        <div className="text-center text-red-600">
-          충전 계좌가 등록되지 않았습니다
-        </div>
-      )}
+      <div className="">{!isRechargeAccount ? <EmptyAccount /> : <RechargeAccountComponent />}</div>
+      {!isRechargeAccount && <div className="text-center text-red-600">충전 계좌가 등록되지 않았습니다</div>}
     </div>
   );
 }
