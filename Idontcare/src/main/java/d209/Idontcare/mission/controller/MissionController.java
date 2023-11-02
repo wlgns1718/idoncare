@@ -37,7 +37,7 @@ public class MissionController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = BadRequestException.CODE, description = BadRequestException.DESCRIPTION),
     })
-    @LoginOnly(level = LoginOnly.Level.PARENT_ONLY)
+    @LoginOnly(level = LoginOnly.Level.PARENT_OR_CHILD)
     public ResponseDto<?> regist(@RequestBody MissionDto missionDto,HttpServletRequest request){
 //        (Long)request.getAttribute("userId");
         Role role = (Role) request.getAttribute("role");
