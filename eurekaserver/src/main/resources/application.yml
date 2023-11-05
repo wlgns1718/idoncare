@@ -1,11 +1,13 @@
 server:
-  port: ${SERVER_PORT}
+  port: 18761
 
 spring:
   application:
-    name: discoveryservice
+    name: eurekaserver
 
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
