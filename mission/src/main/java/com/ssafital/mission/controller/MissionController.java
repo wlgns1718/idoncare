@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
-@RequestMapping("/api/user")
+@RequestMapping("/api/mission")
 @RestController
 @RequiredArgsConstructor
 public class MissionController {
