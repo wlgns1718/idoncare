@@ -1,0 +1,13 @@
+server:
+  port: 13309
+
+spring:
+  application:
+    name: virtualaccount-service
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:18761/eureka
