@@ -1,0 +1,24 @@
+server:
+    port: ${SERVER_PORT}
+
+eureka:
+    client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+            defaultZone: ${EUREKA_HOST}:${EUREKA_PORT}/eureka
+
+spring:
+    application:
+        name: apigateway
+    cloud:
+        gateway:
+            routes:
+                - id: relation-service
+                  uri: lb://RELATION-SERVICE
+                  predicates:
+                      - Path=/api/relation/**
+                - id: mission-service
+                  uri: lb://MISSION-SERVICE
+                  predicates:
+                    - path=/api/mission/**
