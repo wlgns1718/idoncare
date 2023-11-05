@@ -1,12 +1,12 @@
 server:
-    port: ${SERVER_PORT}
+    port: 18001
 
 eureka:
     client:
         register-with-eureka: true
         fetch-registry: true
         service-url:
-            defaultZone: ${EUREKA_HOST}:${EUREKA_PORT}/eureka
+            defaultZone: http://k9d103a.p.ssafy.io/:${server.port}/eureka/
 
 spring:
     application:
