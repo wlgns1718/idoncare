@@ -11,14 +11,14 @@ eureka:
 spring:
     application:
         name: apigateway
-    cloud:
-        gateway:
-            routes:
-                - id: relation-service
-                  uri: lb://RELATION-SERVICE
-                  predicates:
-                      - Path=/api/relation/**
-                - id: mission-service
-                  uri: lb://MISSION-SERVICE
-                  predicates:
-                    - path=/api/mission/**
+#    cloud:
+#        gateway:
+#            routes:
+#                - id: relation-service
+#                  uri: lb://RELATION-SERVICE
+#                  predicates:
+#                      - Path=/api/relation/**
+#                - id: mission-service
+#                  uri: lb://MISSION-SERVICE
+#                  predicates:
+#                    - path=/api/mission/**
