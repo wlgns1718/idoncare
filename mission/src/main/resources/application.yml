@@ -1,0 +1,20 @@
+server:
+  port: 13311
+
+spring:
+  application:
+    name: mission-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${db_HOST}:${db_PORT}//${db_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${db_USER}
+    password: ${db_PASSWORD}
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:18761/eureka
